@@ -1,5 +1,5 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
-import { PrismaService } from '../../../prisma/prisma.service';
+import { PrismaService } from '@shared/infrastructure/prisma/prisma.service';
 import Stripe from 'stripe';
 
 const PRICE_IDS: Record<string, string> = {

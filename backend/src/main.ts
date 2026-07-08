@@ -2,8 +2,10 @@ import 'dotenv/config';
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
+import { validateRequiredEnvVars } from '@shared/infrastructure/config/env.validation';
 
 async function bootstrap() {
+  validateRequiredEnvVars();
   const app = await NestFactory.create(AppModule, { rawBody: true });
 
   app.setGlobalPrefix('api');

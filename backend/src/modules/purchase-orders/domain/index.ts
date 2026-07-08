@@ -1,2 +1,2 @@
-export { PurchaseOrder } from './PurchaseOrder';
-export { PurchaseOrderItem } from './PurchaseOrderItem';
+export type { PurchaseOrder } from './PurchaseOrder';
+export type { PurchaseOrderItem } from './PurchaseOrderItem';

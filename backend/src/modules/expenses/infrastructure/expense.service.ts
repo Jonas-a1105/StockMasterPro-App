@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { PostgresExpenseRepo } from './PostgresExpenseRepo';
-import { CreateExpense } from '../core/CreateExpense';
+import { PostgresExpenseRepo } from './persistence/PostgresExpenseRepo';
+import { CreateExpense } from '../application/use-cases/CreateExpense';
 
 @Injectable()
 export class ExpenseService {

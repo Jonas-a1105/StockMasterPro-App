@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { EventController } from './event.controller';
-import { PostgresEventRepo } from './PostgresEventRepo';
+import { EventController } from './http/event.controller';
+import { PostgresEventRepo } from './persistence/PostgresEventRepo';
 
 @Module({
   controllers: [EventController],

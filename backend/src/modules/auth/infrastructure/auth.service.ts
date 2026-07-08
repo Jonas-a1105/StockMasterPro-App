@@ -2,20 +2,22 @@ import {
   Injectable,
   ConflictException,
   UnauthorizedException,
+  Inject,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-import { PrismaService } from '../../../prisma/prisma.service';
-import { PostgresAuthRepo } from './PostgresAuthRepo';
-import { RegisterTenant } from '../core/RegisterTenant';
-import { ValidateUser } from '../core/ValidateUser';
+import { PrismaService } from '@shared/infrastructure/prisma/prisma.service';
+import type { AuthRepository } from '../application/ports/AuthRepository.interface';
+import { RegisterTenant } from '../application/use-cases/RegisterTenant';
+import { ValidateUser } from '../application/use-cases/ValidateUser';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly jwtService: JwtService,
-    private readonly authRepo: PostgresAuthRepo,
+    @Inject('AuthRepository')
+    private readonly authRepo: AuthRepository,
   ) {}
 
   async register(dto: {

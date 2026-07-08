@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { ReportController } from './report.controller';
-import { PostgresReportRepo } from './PostgresReportRepo';
+import { ReportController } from './http/report.controller';
+import { PostgresReportRepo } from './persistence/PostgresReportRepo';
 
 @Module({
   controllers: [ReportController],

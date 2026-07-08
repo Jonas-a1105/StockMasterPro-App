@@ -1,11 +1,17 @@
 import { Module } from '@nestjs/common';
-import { InventoryController } from './inventory.controller';
+import { InventoryController } from './http/inventory.controller';
 import { InventoryService } from './inventory.service';
-import { PostgresProductRepo } from './PostgresProductRepo';
+import { PostgresProductRepo } from './persistence/PostgresProductRepo';
 
 @Module({
   controllers: [InventoryController],
-  providers: [InventoryService, PostgresProductRepo],
-  exports: [PostgresProductRepo],
+  providers: [
+    InventoryService,
+    {
+      provide: 'ProductRepository',
+      useClass: PostgresProductRepo,
+    },
+  ],
+  exports: ['ProductRepository'],
 })
 export class InventoryModule {}

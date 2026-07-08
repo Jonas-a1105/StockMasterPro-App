@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from 'react';
-import { api } from '../lib/api';
-import { loadConfig, saveConfig, formatPrice as fp, formatBs, formatUsd } from '../utils/currency';
-import type { CurrencyConfig, FormatPriceOptions } from '../utils/currency';
+import { api } from '@shared/lib/http/client';
+import { loadConfig, saveConfig, formatPrice as fp, formatBs, formatUsd } from '@shared/lib/format/currency';
+import type { CurrencyConfig, FormatPriceOptions } from '@shared/lib/format/currency';
 
 interface ExchangeRateContextValue {
   rate: number;

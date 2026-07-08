@@ -1,14 +1,17 @@
-import { Injectable } from '@nestjs/common';
-import { PostgresSaleRepo } from './PostgresSaleRepo';
-import { PostgresProductRepo } from '../../inventory/infrastructure/PostgresProductRepo';
-import { ProcessSale } from '../core/ProcessSale';
-import { PaymentMethod } from '../domain';
+import { Injectable, Inject } from '@nestjs/common';
+import type { SaleRepository } from '../application/ports/SaleRepository.interface';
+import type { ProductRepository } from '../../inventory/application/ports/ProductRepository.interface';
+import { ProcessSale } from '../application/use-cases/ProcessSale';
+import { Sale, PaymentMethod } from '../domain';
+import { ProcessSaleDto } from './dto/process-sale.dto';
 
 @Injectable()
 export class SalesService {
   constructor(
-    private readonly saleRepo: PostgresSaleRepo,
-    private readonly productRepo: PostgresProductRepo,
+    @Inject('SaleRepository')
+    private readonly saleRepo: SaleRepository,
+    @Inject('ProductRepository')
+    private readonly productRepo: ProductRepository,
   ) {}
 
   async processSale(input: {
@@ -32,15 +35,24 @@ export class SalesService {
     });
   }
 
-  async processBulkSales(sales: any[], user: any) {
-    const results = [];
-    for (const dto of sales) {
-      const result = await this.processSale({
-        ...dto,
-        tenantId: user.tenantId,
-        userId: user.id,
-      });
-      results.push(result);
+  async processBulkSales(
+    sales: ProcessSaleDto[],
+    user: { tenantId: string; id: string },
+  ) {
+    const results: { index: number; success: boolean; data?: Sale; error?: string }[] = [];
+
+    for (let i = 0; i < sales.length; i++) {
+      try {
+        const result = await this.processSale({
+          ...sales[i],
+          tenantId: user.tenantId,
+          userId: user.id,
+        });
+        results.push({ index: i, success: true, data: result });
+      } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : 'Error desconocido';
+        results.push({ index: i, success: false, error: message });
+      }
     }
     return results;
   }

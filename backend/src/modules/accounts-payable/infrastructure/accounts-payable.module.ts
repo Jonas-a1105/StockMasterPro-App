@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { AccountsPayableController } from './accounts-payable.controller';
+import { AccountsPayableController } from './http/accounts-payable.controller';
 import { AccountsPayableService } from './accounts-payable.service';
-import { PostgresAccountsPayableRepo } from './PostgresAccountsPayableRepo';
+import { PostgresAccountsPayableRepo } from './persistence/PostgresAccountsPayableRepo';
 
 @Module({
   controllers: [AccountsPayableController],

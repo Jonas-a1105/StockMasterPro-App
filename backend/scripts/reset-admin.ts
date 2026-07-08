@@ -14,21 +14,26 @@ if (!url) {
   process.exit(1);
 }
 
+const email = process.env.ADMIN_EMAIL;
+const newPassword = process.env.ADMIN_PASSWORD;
+
+if (!email || !newPassword) {
+  console.error('ERROR: Set ADMIN_EMAIL and ADMIN_PASSWORD in .env before running this script.');
+  process.exit(1);
+}
+
 const pool = new pg.Pool({
   connectionString: url,
-  ssl: { rejectUnauthorized: false },
+  ssl: { rejectUnauthorized: process.env.NODE_ENV === 'production' },
 });
 const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
 
 async function reset() {
-  const email = 'admin@stockmaster.com';
-  const newPassword = 'Admin123!';
-
   console.log(`Buscando usuario admin: ${email}...`);
   const user = await prisma.user.findUnique({ where: { email } });
 
-  const passwordHash = await bcrypt.hash(newPassword, 10);
+  const passwordHash = await bcrypt.hash(newPassword!, 10);
 
   if (!user) {
     console.log('El usuario admin no existe. Creándolo...');
@@ -51,7 +56,7 @@ async function reset() {
     await prisma.user.create({
       data: {
         tenantId: tenant.id,
-        email,
+        email: email!,
         passwordHash,
         name: 'Administrador Principal',
         role: 'admin',
@@ -73,7 +78,7 @@ async function reset() {
   }
 
   console.log(`Email:    ${email}`);
-  console.log(`Password: ${newPassword}`);
+  console.log('Password: [set via ADMIN_PASSWORD env var]');
 }
 
 reset()

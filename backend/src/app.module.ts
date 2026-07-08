@@ -2,13 +2,13 @@ import { Module } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
-import { PrismaModule } from './prisma/prisma.module';
+import { PrismaModule } from '@shared/infrastructure/prisma/prisma.module';
 import { AuthModule } from './modules/auth/infrastructure/auth.module';
 import { InventoryModule } from './modules/inventory/infrastructure/inventory.module';
 import { SalesModule } from './modules/sales/infrastructure/sales.module';
 import { SuppliersModule } from './modules/suppliers/infrastructure/supplier.module';
 import { PurchaseOrdersModule } from './modules/purchase-orders/infrastructure/purchase-order.module';
-import { LicensesModule } from './modules/licenses/licenses.module';
+import { LicensesModule } from './modules/licenses/infrastructure/licenses.module';
 import { UsersModule } from './modules/users/infrastructure/users.module';
 import { CustomersModule } from './modules/customers/infrastructure/customers.module';
 import { AccountsPayableModule } from './modules/accounts-payable/infrastructure/accounts-payable.module';
@@ -18,11 +18,16 @@ import { ReportModule } from './modules/reports/infrastructure/report.module';
 import { ExchangeRateModule } from './modules/exchange-rate/infrastructure/exchange-rate.module';
 import { WarehouseModule } from './modules/warehouses/infrastructure/warehouse.module';
 import { CategoryModule } from './modules/categories/infrastructure/category.module';
-import { WebhooksModule } from './modules/webhooks/webhooks.module';
+import { WebhooksModule } from './modules/webhooks/infrastructure/webhooks.module';
 import { EventModule } from './modules/events/infrastructure/event.module';
 import { NotificationsModule } from './modules/notifications/infrastructure/notifications.module';
 import { SocialModule } from './modules/social/infrastructure/social.module';
-import { TenantLicenseGuard } from './common/guards/tenant-license.guard';
+import { AccountsReceivableModule } from './modules/accounts-receivable/infrastructure/accounts-receivable.module';
+import { CashRegisterModule } from './modules/cash-register/infrastructure/cash-register.module';
+
+import { JwtAuthGuard } from '@shared/infrastructure/guards/jwt-auth.guard';
+import { RolesGuard } from '@shared/infrastructure/guards/roles.guard';
+import { TenantLicenseGuard } from '@shared/infrastructure/guards/tenant-license.guard';
 
 @Module({
   imports: [
@@ -48,9 +53,14 @@ import { TenantLicenseGuard } from './common/guards/tenant-license.guard';
     EventModule,
     NotificationsModule,
     SocialModule,
+    AccountsReceivableModule,
+    CashRegisterModule,
   ],
   providers: [
+    // Order matters: Throttle → Auth → Roles → License
     { provide: APP_GUARD, useClass: ThrottlerGuard },
+    { provide: APP_GUARD, useClass: JwtAuthGuard },
+    { provide: APP_GUARD, useClass: RolesGuard },
     { provide: APP_GUARD, useClass: TenantLicenseGuard },
   ],
 })

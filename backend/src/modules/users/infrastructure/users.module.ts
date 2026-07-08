@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { UsersController } from './users.controller';
+import { UsersController } from './http/users.controller';
 import { UsersService } from './users.service';
-import { PostgresUserRepo } from './PostgresUserRepo';
+import { PostgresUserRepo } from './persistence/PostgresUserRepo';
 
 @Module({
   controllers: [UsersController],

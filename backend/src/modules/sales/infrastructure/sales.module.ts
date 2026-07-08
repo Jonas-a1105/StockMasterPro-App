@@ -1,11 +1,18 @@
 import { Module } from '@nestjs/common';
-import { SalesController } from './sales.controller';
+import { SalesController } from './http/sales.controller';
 import { SalesService } from './sales.service';
-import { PostgresSaleRepo } from './PostgresSaleRepo';
-import { PostgresProductRepo } from '../../inventory/infrastructure/PostgresProductRepo';
+import { PostgresSaleRepo } from './persistence/PostgresSaleRepo';
+import { InventoryModule } from '../../inventory/infrastructure/inventory.module';
 
 @Module({
+  imports: [InventoryModule],
   controllers: [SalesController],
-  providers: [SalesService, PostgresSaleRepo, PostgresProductRepo],
+  providers: [
+    SalesService,
+    {
+      provide: 'SaleRepository',
+      useClass: PostgresSaleRepo,
+    },
+  ],
 })
 export class SalesModule {}

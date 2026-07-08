@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { WarehouseController } from './warehouse.controller';
-import { PostgresWarehouseRepo } from './PostgresWarehouseRepo';
+import { WarehouseController } from './http/warehouse.controller';
+import { WarehouseService } from './warehouse.service';
 
 @Module({
   controllers: [WarehouseController],
-  providers: [PostgresWarehouseRepo],
-  exports: [PostgresWarehouseRepo],
+  providers: [WarehouseService],
+  exports: [WarehouseService],
 })
 export class WarehouseModule {}

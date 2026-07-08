@@ -4,8 +4,8 @@ import {
   ConflictException,
 } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
-import { PostgresUserRepo } from './PostgresUserRepo';
-import { PrismaService } from '../../../prisma/prisma.service';
+import { PostgresUserRepo } from './persistence/PostgresUserRepo';
+import { PrismaService } from '@shared/infrastructure/prisma/prisma.service';
 
 @Injectable()
 export class UsersService {

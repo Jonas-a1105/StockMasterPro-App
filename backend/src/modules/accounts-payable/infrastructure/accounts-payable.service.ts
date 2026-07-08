@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { PostgresAccountsPayableRepo } from './PostgresAccountsPayableRepo';
-import { CreateAccountsPayable } from '../core/CreateAccountsPayable';
-import { PayAccountsPayable } from '../core/PayAccountsPayable';
+import { PostgresAccountsPayableRepo } from './persistence/PostgresAccountsPayableRepo';
+import { CreateAccountsPayable } from '../application/use-cases/CreateAccountsPayable';
+import { PayAccountsPayable } from '../application/use-cases/PayAccountsPayable';
 
 @Injectable()
 export class AccountsPayableService {
@@ -11,8 +11,8 @@ export class AccountsPayableService {
     return this.repo.findAll(tenantId);
   }
 
-  async findById(id: string) {
-    return this.repo.findById(id);
+  async findById(id: string, tenantId: string) {
+    return this.repo.findById(id, tenantId);
   }
 
   async create(dto: any, tenantId: string) {

@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { PurchaseOrderController } from './purchase-order.controller';
+import { PurchaseOrderController } from './http/purchase-order.controller';
 import { PurchaseOrderService } from './purchase-order.service';
-import { PostgresPurchaseOrderRepo } from './PostgresPurchaseOrderRepo';
+import { PostgresPurchaseOrderRepo } from './persistence/PostgresPurchaseOrderRepo';
 
 @Module({
   controllers: [PurchaseOrderController],

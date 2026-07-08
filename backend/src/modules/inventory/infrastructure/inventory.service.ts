@@ -2,15 +2,18 @@ import {
   Injectable,
   NotFoundException,
   BadRequestException,
+  Inject,
 } from '@nestjs/common';
-import { PostgresProductRepo } from './PostgresProductRepo';
-import { CreateProduct } from '../core/CreateProduct';
-import { PrismaService } from '../../../prisma/prisma.service';
+import type { ProductRepository } from '../application/ports/ProductRepository.interface';
+import { CreateProduct } from '../application/use-cases/CreateProduct';
+import { AdjustStock } from '../application/use-cases/AdjustStock';
+import { PrismaService } from '@shared/infrastructure/prisma/prisma.service';
 
 @Injectable()
 export class InventoryService {
   constructor(
-    private readonly productRepo: PostgresProductRepo,
+    @Inject('ProductRepository')
+    private readonly productRepo: ProductRepository,
     private readonly prisma: PrismaService,
   ) {}
 
@@ -61,31 +64,21 @@ export class InventoryService {
     userId: string,
     data: { quantity: number; type: string; reason?: string },
   ) {
-    return this.prisma.$transaction(async (tx) => {
-      const product = await tx.product.findUnique({
-        where: { id: productId },
+    // Verify product exists and belongs to the tenant first
+    await this.findById(productId, tenantId);
+    const useCase = new AdjustStock(this.productRepo);
+    try {
+      return await useCase.execute({
+        productId,
+        tenantId,
+        userId,
+        quantity: data.quantity,
+        type: data.type,
+        reason: data.reason,
       });
-      if (!product || product.tenantId !== tenantId)
-        throw new NotFoundException('Producto no encontrado');
-      const newStock = product.stock + data.quantity;
-      if (newStock < 0)
-        throw new BadRequestException('Stock no puede ser negativo');
-      await tx.product.update({
-        where: { id: productId },
-        data: { stock: newStock },
-      });
-      await tx.inventoryMovement.create({
-        data: {
-          tenantId,
-          productId,
-          type: data.type,
-          quantity: data.quantity,
-          notes: data.reason || null,
-          userId,
-        },
-      });
-      return this.productRepo.findById(productId, tenantId);
-    });
+    } catch (err: any) {
+      throw new BadRequestException(err.message);
+    }
   }
 
   async findAllAdjustments(tenantId: string, limit?: number, offset?: number) {
