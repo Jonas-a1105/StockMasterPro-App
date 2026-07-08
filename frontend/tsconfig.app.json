@@ -24,6 +24,7 @@
 
     "baseUrl": "./",
     "paths": {
+      "@app/*": ["src/app/*"],
       "@features/*": ["src/features/*"],
       "@shared/*": ["src/shared/*"],
       "@contexts/*": ["src/contexts/*"],
