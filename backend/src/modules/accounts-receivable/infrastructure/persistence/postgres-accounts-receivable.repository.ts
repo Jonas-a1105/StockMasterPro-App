@@ -13,12 +13,18 @@ import { AccountsReceivable as PrismaReceivable, ReceivablePayment as PrismaPaym
 export class PostgresAccountsReceivableRepo implements AccountsReceivableRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async findAll(tenantId: string): Promise<AccountsReceivable[]> {
+  async findAll(tenantId: string, limit = 50, offset = 0): Promise<AccountsReceivable[]> {
     const records = await this.prisma.accountsReceivable.findMany({
       where: { tenantId },
       orderBy: { createdAt: 'desc' },
+      take: limit,
+      skip: offset,
     });
     return records.map((r) => this.toDomain(r));
+  }
+
+  async count(tenantId: string): Promise<number> {
+    return this.prisma.accountsReceivable.count({ where: { tenantId } });
   }
 
   async findById(id: string, tenantId: string): Promise<AccountsReceivable | null> {

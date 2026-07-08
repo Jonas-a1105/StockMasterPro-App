@@ -44,8 +44,12 @@ export class InventoryController {
   }
 
   @Get()
-  async findAll(@CurrentUser() user: AuthenticatedUser) {
-    return this.findAllProductsUseCase.execute(user.tenantId);
+  async findAll(
+    @CurrentUser() user: AuthenticatedUser,
+    @Query('page') page?: string,
+    @Query('limit') limit?: string,
+  ) {
+    return this.findAllProductsUseCase.execute(user.tenantId, Number(page) || 1, Number(limit) || 50);
   }
 
   @Get('adjustments')

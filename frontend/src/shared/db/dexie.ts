@@ -23,6 +23,8 @@ export interface OfflineSale {
   paymentMethod: string;
   createdAt: string;
   synced: boolean;
+  idempotencyKey: string;
+  retryCount: number;
 }
 
 export interface LicenseData {
@@ -40,9 +42,9 @@ class StockMasterDB extends Dexie {
 
   constructor() {
     super('StockMasterDB');
-    this.version(1).stores({
+    this.version(2).stores({
       products: 'id, tenantId, barcode, name',
-      offlineSales: '++id, tenantId, synced, createdAt',
+      offlineSales: '++id, tenantId, synced, createdAt, idempotencyKey',
       licenses: '++id, tenantId',
     });
   }

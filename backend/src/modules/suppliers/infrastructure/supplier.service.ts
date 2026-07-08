@@ -7,11 +7,18 @@ import { UpdateSupplierDto } from './dto/update-supplier.dto';
 export class SupplierService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async findAll(tenantId: string) {
-    return this.prisma.supplier.findMany({
-      where: { tenantId },
-      orderBy: { name: 'asc' },
-    });
+  async findAll(tenantId: string, page = 1, limit = 50) {
+    const skip = (page - 1) * limit;
+    const [data, total] = await Promise.all([
+      this.prisma.supplier.findMany({
+        where: { tenantId },
+        orderBy: { name: 'asc' },
+        take: limit,
+        skip,
+      }),
+      this.prisma.supplier.count({ where: { tenantId } }),
+    ]);
+    return { data, total, limit, offset: skip };
   }
 
   async findById(id: string, tenantId: string) {

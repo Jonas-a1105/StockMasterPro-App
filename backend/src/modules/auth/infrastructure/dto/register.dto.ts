@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, MinLength, IsString } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsOptional, MinLength, IsString } from 'class-validator';
 
 export class RegisterTenantDto {
   @IsString()
@@ -17,4 +17,16 @@ export class RegisterTenantDto {
   @IsString()
   @IsNotEmpty()
   name: string;
+
+  @IsOptional()
+  @IsString()
+  deviceId?: string;
+
+  @IsOptional()
+  @IsString()
+  userAgent?: string;
+
+  @IsOptional()
+  @IsString()
+  ipAddress?: string;
 }

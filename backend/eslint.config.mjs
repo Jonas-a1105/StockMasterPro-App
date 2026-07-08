@@ -30,6 +30,15 @@ export default tseslint.config(
       '@typescript-eslint/no-floating-promises': 'warn',
       '@typescript-eslint/no-unsafe-argument': 'warn',
       "prettier/prettier": ["error", { endOfLine: "auto" }],
+      // Layer boundaries: domain must not import infrastructure or NestJS
+      'no-restricted-imports': ['error', {
+        patterns: [
+          {
+            group: ['**/infrastructure/**', '@nestjs/*', '@prisma/*'],
+            message: 'Domain/Application layer must not import infrastructure or NestJS directly',
+          },
+        ],
+      }],
     },
   },
 );

@@ -22,7 +22,8 @@ export interface PayablePaymentData {
 }
 
 export interface AccountsPayableRepository {
-  findAll(tenantId: string): Promise<AccountsPayable[]>;
+  findAll(tenantId: string, limit?: number, offset?: number): Promise<AccountsPayable[]>;
+  count(tenantId: string): Promise<number>;
   findById(id: string, tenantId: string): Promise<AccountsPayable | null>;
   create(data: CreatePayableData): Promise<AccountsPayable>;
   updatePendingAmount(id: string, tenantId: string, amount: number): Promise<void>;

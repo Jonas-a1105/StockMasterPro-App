@@ -23,12 +23,18 @@ export class PostgresProductRepo implements ProductRepository {
     return p ? this.toProduct(p) : null;
   }
 
-  async findAll(tenantId: string): Promise<Product[]> {
+  async findAll(tenantId: string, limit = 50, offset = 0): Promise<Product[]> {
     const products = await this.prisma.product.findMany({
       where: { tenantId, isActive: true },
       orderBy: { name: 'asc' },
+      take: limit,
+      skip: offset,
     });
     return products.map((p) => this.toProduct(p));
+  }
+
+  async count(tenantId: string): Promise<number> {
+    return this.prisma.product.count({ where: { tenantId, isActive: true } });
   }
 
   async findByIds(ids: string[], tenantId: string): Promise<Product[]> {

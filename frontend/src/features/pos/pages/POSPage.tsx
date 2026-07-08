@@ -10,6 +10,7 @@ import { useCart } from '../hooks/useCart';
 import { useCheckout } from '../hooks/useCheckout';
 import { useBarcodeScanner } from '../hooks/useBarcodeScanner';
 import { usePosShortcuts } from '../hooks/usePosShortcuts';
+import { useCashRegister } from '../hooks/useCashRegister';
 import { ProductSearch } from '../components/ProductSearch';
 import { ProductGrid } from '../components/ProductGrid';
 import { Cart } from '../components/Cart';
@@ -26,9 +27,9 @@ import styles from './POSPage.module.css';
 export function POSPage() {
   const { user } = useAuth();
   const { showToast } = useToast();
-  const { formatPrice, formatUsd, formatBs } = useExchangeRate();
   const { config } = useTheme();
   const cart = useCart();
+  const cash = useCashRegister();
   const { checkout, isProcessing, lastSale, showSuccess, reset, setShowSuccess } = useCheckout();
 
   const [initialLoading, setInitialLoading] = useState(true);
@@ -43,17 +44,6 @@ export function POSPage() {
   const [cartOpen, setCartOpen] = useState(false);
   const [carts, setCarts] = useState<PausedCart[]>([]);
 
-  const [showCashModal, setShowCashModal] = useState(false);
-  const [cashOpening, setCashOpening] = useState(0);
-  const [cashOpeningDate, setCashOpeningDate] = useState<string | null>(null);
-  const [cashSalesTotal, setCashSalesTotal] = useState(0);
-  const [declaredAmount, setDeclaredAmount] = useState(0);
-  const [showExpenseModal, setShowExpenseModal] = useState(false);
-  const [expenseAmount, setExpenseAmount] = useState(0);
-  const [expenseReason, setExpenseReason] = useState('');
-
-  const isTodayOpen = cashOpeningDate && new Date(cashOpeningDate).toDateString() === new Date().toDateString();
-
   useEffect(() => {
     const handleOnline = () => setIsOnline(true);
     const handleOffline = () => setIsOnline(false);
@@ -66,23 +56,8 @@ export function POSPage() {
       getCustomers().then(setCustomers).catch(() => {}),
     ]).finally(() => setInitialLoading(false));
 
-    const savedClosings = localStorage.getItem('stockmaster-cash');
-    if (savedClosings) setCashClosings(JSON.parse(savedClosings));
-    const savedOpening = localStorage.getItem('stockmaster-cash-opening');
-    if (savedOpening) {
-      const data = JSON.parse(savedOpening);
-      if (new Date(data.date).toDateString() === new Date().toDateString()) {
-        setCashOpening(data.amount);
-        setCashOpeningDate(data.date);
-      }
-    }
-    const savedCashSales = localStorage.getItem('stockmaster-cash-sales');
-    if (savedCashSales) setCashSalesTotal(parseFloat(savedCashSales));
-
     return () => { window.removeEventListener('online', handleOnline); window.removeEventListener('offline', handleOffline); };
   }, []);
-
-  const [cashClosings, setCashClosings] = useState<any[]>([]);
 
   const loadProducts = async () => {
     try {
@@ -124,15 +99,13 @@ export function POSPage() {
     }
     await checkout(cart.items, paymentMethod, cart.subtotal, cart.tax, cart.total, selectedCustomerId, customers, isOnline);
     if (paymentMethod === 'cash') {
-      const newTotal = cashSalesTotal + cart.total;
-      setCashSalesTotal(newTotal);
-      localStorage.setItem('stockmaster-cash-sales', String(newTotal));
+      cash.setCashSalesTotal(cash.cashSalesTotal + cart.total);
     }
     if (isOnline) {
       if (paymentMethod === 'credit') getCustomers().then(setCustomers).catch(() => {});
     }
     cart.clear();
-  }, [cart, paymentMethod, selectedCustomerId, customers, isOnline, checkout, cashSalesTotal, showToast]);
+  }, [cart, paymentMethod, selectedCustomerId, customers, isOnline, checkout, cash, showToast]);
 
   const searchInputRef = useBarcodeScanner(cart.add, products, search, setSearch, filteredProducts);
 
@@ -146,6 +119,17 @@ export function POSPage() {
   });
 
   if (initialLoading) return config.skeletonEnabled ? <SkeletonPOSLayout /> : <LoadingDots text="Cargando POS..." />;
+
+  const handleOpenCash = () => cash.openCash(cash.cashOpening);
+  const handleCloseCash = () => {
+    const { difference } = cash.closeCash(cash.declaredAmount);
+    if (difference !== 0) {
+      showToast(
+        `Diferencia en caja: ${difference > 0 ? 'Sobrante' : 'Faltante'} de $${Math.abs(difference).toFixed(2)}`,
+        difference > 0 ? 'warning' : 'error',
+      );
+    }
+  };
 
   return (
     <>
@@ -170,7 +154,7 @@ export function POSPage() {
           <Cart
             items={cart.items} onUpdateQty={cart.updateQty} onRemove={cart.remove}
             totalItems={cart.totalItems} isOnline={isOnline}
-            onPauseOrder={pauseOrder} onOpenCash={() => setShowCashModal(true)} onOpenExpense={() => setShowExpenseModal(true)}
+            onPauseOrder={pauseOrder} onOpenCash={() => cash.setShowCashModal(true)} onOpenExpense={() => cash.setShowExpenseModal(true)}
             carts={carts}
             onResumeOrder={(pc) => { cart.setItems(pc.items); setCarts(prev => prev.filter(c => c.id !== pc.id)); }}
             onDiscardCart={(id) => setCarts(prev => prev.filter(c => c.id !== id))}
@@ -193,46 +177,17 @@ export function POSPage() {
       </div>
 
       <CashRegisterModal
-        show={showCashModal} isTodayOpen={isTodayOpen}
-        cashOpening={cashOpening} cashSalesTotal={cashSalesTotal} declaredAmount={declaredAmount}
-        onCashOpeningChange={setCashOpening} onDeclaredAmountChange={setDeclaredAmount}
-        onOpenCash={() => {
-          const data = { amount: cashOpening, date: new Date().toISOString() };
-          localStorage.setItem('stockmaster-cash-opening', JSON.stringify(data));
-          setCashOpeningDate(data.date);
-          setCashSalesTotal(0);
-          localStorage.setItem('stockmaster-cash-sales', '0');
-          setShowCashModal(false);
-        }}
-        onCloseCash={() => {
-          const expected = cashOpening + cashSalesTotal;
-          const diff = declaredAmount - expected;
-          const close = { opening: cashOpening, sales: cashSalesTotal, expected, declared: declaredAmount, difference: diff, date: new Date().toISOString() };
-          const updated = [...cashClosings, close];
-          setCashClosings(updated);
-          localStorage.setItem('stockmaster-cash', JSON.stringify(updated));
-          localStorage.removeItem('stockmaster-cash-opening');
-          setCashOpening(0);
-          setCashOpeningDate(null);
-          setDeclaredAmount(0);
-          setShowCashModal(false);
-          if (diff !== 0) showToast(`Diferencia en caja: ${diff > 0 ? 'Sobrante' : 'Faltante'} de $${Math.abs(diff).toFixed(2)}`, diff > 0 ? 'warning' : 'error');
-        }}
-        onClose={() => { setShowCashModal(false); setDeclaredAmount(0); setCashOpening(0); }}
+        show={cash.showCashModal} isTodayOpen={cash.isTodayOpen}
+        cashOpening={cash.cashOpening} cashSalesTotal={cash.cashSalesTotal} declaredAmount={cash.declaredAmount}
+        onCashOpeningChange={cash.setCashOpening} onDeclaredAmountChange={cash.setDeclaredAmount}
+        onOpenCash={handleOpenCash}
+        onCloseCash={handleCloseCash}
+        onClose={() => { cash.setShowCashModal(false); cash.setDeclaredAmount(0); cash.setCashOpening(0); }}
       />
 
       <ExpenseModal
-        show={showExpenseModal} expenseAmount={expenseAmount} expenseReason={expenseReason}
-        onAmountChange={setExpenseAmount} onReasonChange={setExpenseReason}
-        onSave={() => {
-          const expenses = JSON.parse(localStorage.getItem('stockmaster-expenses') || '[]');
-          expenses.push({ amount: expenseAmount, reason: expenseReason, date: new Date().toISOString() });
-          localStorage.setItem('stockmaster-expenses', JSON.stringify(expenses));
-          setShowExpenseModal(false);
-          setExpenseAmount(0);
-          setExpenseReason('');
-        }}
-        onClose={() => { setShowExpenseModal(false); setExpenseAmount(0); setExpenseReason(''); }}
+        show={cash.showExpenseModal}
+        onClose={() => cash.setShowExpenseModal(false)}
       />
 
       {showSuccess && lastSale && <CheckoutModal lastSale={lastSale} onNewSale={() => { reset(); setSelectedCustomerId(''); setPaymentMethod('cash'); loadProducts(); }} onPrintTicket={() => {

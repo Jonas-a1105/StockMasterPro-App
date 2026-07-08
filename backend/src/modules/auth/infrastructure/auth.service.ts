@@ -4,6 +4,7 @@ import {
   UnauthorizedException,
   Inject,
   NotFoundException,
+  ForbiddenException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
@@ -12,6 +13,8 @@ import { PrismaService } from '@shared/infrastructure/prisma/prisma.service';
 import type { AuthRepository } from '../application/ports/auth.repository.interface';
 import { RegisterTenant } from '../application/use-cases/register-tenant.use-case';
 import { ValidateUser } from '../application/use-cases/validate-user.use-case';
+
+const MAX_REFRESH_TOKENS_PER_USER = 10;
 
 @Injectable()
 export class AuthService {
@@ -27,6 +30,9 @@ export class AuthService {
     email: string;
     password: string;
     name: string;
+    deviceId?: string;
+    userAgent?: string;
+    ipAddress?: string;
   }) {
     const existingUser = await this.authRepo.findByEmail(dto.email);
     if (existingUser) {
@@ -48,7 +54,10 @@ export class AuthService {
       role: user.role,
     });
 
-    const refreshToken = await this.createRefreshToken(user.id, tenant.id);
+    const refreshToken = await this.createRefreshToken(
+      user.id, tenant.id,
+      dto.deviceId, dto.userAgent, dto.ipAddress,
+    );
 
     return {
       accessToken,
@@ -63,7 +72,13 @@ export class AuthService {
     };
   }
 
-  async login(dto: { email: string; password: string }) {
+  async login(dto: {
+    email: string;
+    password: string;
+    deviceId?: string;
+    userAgent?: string;
+    ipAddress?: string;
+  }) {
     const validateUseCase = new ValidateUser(this.authRepo);
     const user = await validateUseCase.execute(dto.email, dto.password);
 
@@ -77,7 +92,10 @@ export class AuthService {
       role: user.role,
     });
 
-    const refreshToken = await this.createRefreshToken(user.id, user.tenantId);
+    const refreshToken = await this.createRefreshToken(
+      user.id, user.tenantId,
+      dto.deviceId, dto.userAgent, dto.ipAddress,
+    );
 
     return {
       accessToken,
@@ -92,9 +110,10 @@ export class AuthService {
     };
   }
 
-  async refresh(tokenStr: string) {
+  async refresh(tokenStr: string, deviceId?: string, userAgent?: string, ipAddress?: string) {
+    const tokenHash = this.hashToken(tokenStr);
     const dbToken = await this.prisma.refreshToken.findUnique({
-      where: { token: tokenStr },
+      where: { token: tokenHash },
     });
 
     if (!dbToken || dbToken.revokedAt || dbToken.expiresAt < new Date()) {
@@ -118,7 +137,10 @@ export class AuthService {
       role: user.role,
     });
 
-    const newRefreshToken = await this.createRefreshToken(user.id, user.tenantId);
+    const newRefreshToken = await this.createRefreshToken(
+      user.id, user.tenantId,
+      deviceId, userAgent, ipAddress,
+    );
 
     return {
       accessToken,
@@ -127,30 +149,60 @@ export class AuthService {
   }
 
   async logout(tokenStr: string) {
+    const tokenHash = this.hashToken(tokenStr);
     await this.prisma.refreshToken.updateMany({
-      where: { token: tokenStr },
+      where: { token: tokenHash },
       data: { revokedAt: new Date() },
     });
     return { success: true };
   }
 
+  async logoutAll(userId: string) {
+    await this.prisma.refreshToken.updateMany({
+      where: { userId, revokedAt: null },
+      data: { revokedAt: new Date() },
+    });
+    return { success: true };
+  }
+
+  async logoutDevice(userId: string, deviceId: string) {
+    await this.prisma.refreshToken.updateMany({
+      where: { userId, deviceId, revokedAt: null },
+      data: { revokedAt: new Date() },
+    });
+    return { success: true };
+  }
+
+  async listSessions(userId: string) {
+    const sessions = await this.prisma.refreshToken.findMany({
+      where: { userId, revokedAt: null, expiresAt: { gte: new Date() } },
+      select: {
+        id: true,
+        deviceId: true,
+        userAgent: true,
+        ipAddress: true,
+        createdAt: true,
+        expiresAt: true,
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+    return sessions;
+  }
+
   async forgotPassword(email: string) {
     const user = await this.authRepo.findByEmail(email);
     if (!user) {
-      // Return generic success for security (don't leak registered emails)
       return { message: 'Si el email está registrado, se enviará un enlace de restablecimiento' };
     }
 
-    // Generate a stateless password reset token with 15-minute expiry
     const resetToken = this.jwtService.sign(
       { uid: user.id, purpose: 'reset-password' },
       { expiresIn: '15m' },
     );
 
-    // In production we would email this. For development/audit, we return it.
     return {
       message: 'Si el email está registrado, se enviará un enlace de restablecimiento',
-      resetToken, // Returned for dev mode / testing convenience
+      resetToken,
     };
   }
 
@@ -168,7 +220,6 @@ export class AuthService {
 
       const passwordHash = await bcrypt.hash(newPassword, 10);
 
-      // Update password using Prisma directly
       await this.prisma.user.update({
         where: { id: user.id },
         data: { passwordHash },
@@ -181,26 +232,75 @@ export class AuthService {
       });
 
       return { success: true };
-    } catch (err) {
+    } catch {
       throw new UnauthorizedException('Token de restablecimiento inválido o expirado');
     }
   }
 
-  private async createRefreshToken(userId: string, tenantId: string): Promise<string> {
-    const token = crypto.randomBytes(64).toString('hex');
+  /** Clean up expired & revoked tokens older than 30 days */
+  async cleanupExpiredTokens(): Promise<number> {
+    const cutoff = new Date();
+    cutoff.setDate(cutoff.getDate() - 30);
+
+    const result = await this.prisma.refreshToken.deleteMany({
+      where: {
+        OR: [
+          { expiresAt: { lt: new Date() }, revokedAt: { not: null } },
+          { expiresAt: { lt: cutoff } },
+        ],
+      },
+    });
+    return result.count;
+  }
+
+  private hashToken(token: string): string {
+    return crypto.createHash('sha256').update(token).digest('hex');
+  }
+
+  private async createRefreshToken(
+    userId: string,
+    tenantId: string,
+    deviceId?: string,
+    userAgent?: string,
+    ipAddress?: string,
+  ): Promise<string> {
+    // Enforce session limit: revoke oldest if at max
+    const activeCount = await this.prisma.refreshToken.count({
+      where: { userId, revokedAt: null, expiresAt: { gte: new Date() } },
+    });
+
+    if (activeCount >= MAX_REFRESH_TOKENS_PER_USER) {
+      const oldest = await this.prisma.refreshToken.findFirst({
+        where: { userId, revokedAt: null, expiresAt: { gte: new Date() } },
+        orderBy: { createdAt: 'asc' },
+      });
+      if (oldest) {
+        await this.prisma.refreshToken.update({
+          where: { id: oldest.id },
+          data: { revokedAt: new Date() },
+        });
+      }
+    }
+
+    const rawToken = crypto.randomBytes(64).toString('hex');
+    const tokenHash = this.hashToken(rawToken);
+
     const expiresAt = new Date();
-    expiresAt.setDate(expiresAt.getDate() + 7); // 7 days expiration
+    expiresAt.setDate(expiresAt.getDate() + 7);
 
     await this.prisma.refreshToken.create({
       data: {
         tenantId,
         userId,
-        token,
+        token: tokenHash,
+        deviceId,
+        userAgent,
+        ipAddress,
         expiresAt,
       },
     });
 
-    return token;
+    return rawToken;
   }
 }
 

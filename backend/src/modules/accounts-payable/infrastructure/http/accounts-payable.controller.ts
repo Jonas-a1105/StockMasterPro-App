@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Query } from '@nestjs/common';
 import { Roles } from '@shared/infrastructure/decorators/roles.decorator';
 import { CurrentUser } from '@shared/infrastructure/decorators/current-user.decorator';
 import { AuthenticatedUser } from '@shared/infrastructure/types/authenticated-user';
@@ -22,8 +22,12 @@ export class AccountsPayableController {
 
   @Get()
   @Roles('admin', 'gerente')
-  findAll(@CurrentUser() user: AuthenticatedUser) {
-    return this.listPayables.execute(user.tenantId);
+  findAll(
+    @CurrentUser() user: AuthenticatedUser,
+    @Query('page') page?: string,
+    @Query('limit') limit?: string,
+  ) {
+    return this.listPayables.execute(user.tenantId, Number(page) || 1, Number(limit) || 50);
   }
 
   @Get(':id')

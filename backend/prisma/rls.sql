@@ -37,6 +37,22 @@ ALTER TABLE expenses ENABLE ROW LEVEL SECURITY;
 ALTER TABLE credit_notes ENABLE ROW LEVEL SECURITY;
 ALTER TABLE credit_note_items ENABLE ROW LEVEL SECURITY;
 ALTER TABLE events ENABLE ROW LEVEL SECURITY;
+ALTER TABLE accounts_receivable ENABLE ROW LEVEL SECURITY;
+ALTER TABLE receivable_payments ENABLE ROW LEVEL SECURITY;
+ALTER TABLE cash_sessions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE cash_transactions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE refresh_tokens ENABLE ROW LEVEL SECURITY;
+ALTER TABLE social_profiles ENABLE ROW LEVEL SECURITY;
+ALTER TABLE social_posts ENABLE ROW LEVEL SECURITY;
+ALTER TABLE social_catalogs ENABLE ROW LEVEL SECURITY;
+ALTER TABLE social_catalog_items ENABLE ROW LEVEL SECURITY;
+ALTER TABLE social_comments ENABLE ROW LEVEL SECURITY;
+ALTER TABLE social_reactions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE social_follows ENABLE ROW LEVEL SECURITY;
+ALTER TABLE social_notifications ENABLE ROW LEVEL SECURITY;
+ALTER TABLE social_threads ENABLE ROW LEVEL SECURITY;
+ALTER TABLE social_thread_members ENABLE ROW LEVEL SECURITY;
+ALTER TABLE social_messages ENABLE ROW LEVEL SECURITY;
 
 -- 2. Políticas SELECT (lectura)
 -- Cada usuario solo ve registros de su propio tenant
@@ -94,6 +110,54 @@ CREATE POLICY tenant_select ON credit_note_items
 CREATE POLICY tenant_select ON events
   FOR SELECT USING (tenant_id = current_setting('app.tenant_id')::uuid);
 
+CREATE POLICY tenant_select ON accounts_receivable
+  FOR SELECT USING (tenant_id = current_setting('app.tenant_id')::uuid);
+
+CREATE POLICY tenant_select ON receivable_payments
+  FOR SELECT USING (tenant_id = current_setting('app.tenant_id')::uuid);
+
+CREATE POLICY tenant_select ON cash_sessions
+  FOR SELECT USING (tenant_id = current_setting('app.tenant_id')::uuid);
+
+CREATE POLICY tenant_select ON cash_transactions
+  FOR SELECT USING (tenant_id = current_setting('app.tenant_id')::uuid);
+
+CREATE POLICY tenant_select ON refresh_tokens
+  FOR SELECT USING (tenant_id = current_setting('app.tenant_id')::uuid);
+
+CREATE POLICY tenant_select ON social_profiles
+  FOR SELECT USING (tenant_id = current_setting('app.tenant_id')::uuid);
+
+CREATE POLICY tenant_select ON social_posts
+  FOR SELECT USING (tenant_id = current_setting('app.tenant_id')::uuid);
+
+CREATE POLICY tenant_select ON social_catalogs
+  FOR SELECT USING (tenant_id = current_setting('app.tenant_id')::uuid);
+
+CREATE POLICY tenant_select ON social_catalog_items
+  FOR SELECT USING (tenant_id = current_setting('app.tenant_id')::uuid);
+
+CREATE POLICY tenant_select ON social_comments
+  FOR SELECT USING (tenant_id = current_setting('app.tenant_id')::uuid);
+
+CREATE POLICY tenant_select ON social_reactions
+  FOR SELECT USING (tenant_id = current_setting('app.tenant_id')::uuid);
+
+CREATE POLICY tenant_select ON social_follows
+  FOR SELECT USING (tenant_id = current_setting('app.tenant_id')::uuid);
+
+CREATE POLICY tenant_select ON social_notifications
+  FOR SELECT USING (tenant_id = current_setting('app.tenant_id')::uuid);
+
+CREATE POLICY tenant_select ON social_threads
+  FOR SELECT USING (tenant_id = current_setting('app.tenant_id')::uuid);
+
+CREATE POLICY tenant_select ON social_thread_members
+  FOR SELECT USING (tenant_id = current_setting('app.tenant_id')::uuid);
+
+CREATE POLICY tenant_select ON social_messages
+  FOR SELECT USING (tenant_id = current_setting('app.tenant_id')::uuid);
+
 -- 3. Políticas INSERT (creación)
 CREATE POLICY tenant_insert ON products
   FOR INSERT WITH CHECK (tenant_id = current_setting('app.tenant_id')::uuid);
@@ -143,6 +207,54 @@ CREATE POLICY tenant_insert ON credit_note_items
 CREATE POLICY tenant_insert ON events
   FOR INSERT WITH CHECK (tenant_id = current_setting('app.tenant_id')::uuid);
 
+CREATE POLICY tenant_insert ON accounts_receivable
+  FOR INSERT WITH CHECK (tenant_id = current_setting('app.tenant_id')::uuid);
+
+CREATE POLICY tenant_insert ON receivable_payments
+  FOR INSERT WITH CHECK (tenant_id = current_setting('app.tenant_id')::uuid);
+
+CREATE POLICY tenant_insert ON cash_sessions
+  FOR INSERT WITH CHECK (tenant_id = current_setting('app.tenant_id')::uuid);
+
+CREATE POLICY tenant_insert ON cash_transactions
+  FOR INSERT WITH CHECK (tenant_id = current_setting('app.tenant_id')::uuid);
+
+CREATE POLICY tenant_insert ON refresh_tokens
+  FOR INSERT WITH CHECK (tenant_id = current_setting('app.tenant_id')::uuid);
+
+CREATE POLICY tenant_insert ON social_profiles
+  FOR INSERT WITH CHECK (tenant_id = current_setting('app.tenant_id')::uuid);
+
+CREATE POLICY tenant_insert ON social_posts
+  FOR INSERT WITH CHECK (tenant_id = current_setting('app.tenant_id')::uuid);
+
+CREATE POLICY tenant_insert ON social_catalogs
+  FOR INSERT WITH CHECK (tenant_id = current_setting('app.tenant_id')::uuid);
+
+CREATE POLICY tenant_insert ON social_catalog_items
+  FOR INSERT WITH CHECK (tenant_id = current_setting('app.tenant_id')::uuid);
+
+CREATE POLICY tenant_insert ON social_comments
+  FOR INSERT WITH CHECK (tenant_id = current_setting('app.tenant_id')::uuid);
+
+CREATE POLICY tenant_insert ON social_reactions
+  FOR INSERT WITH CHECK (tenant_id = current_setting('app.tenant_id')::uuid);
+
+CREATE POLICY tenant_insert ON social_follows
+  FOR INSERT WITH CHECK (tenant_id = current_setting('app.tenant_id')::uuid);
+
+CREATE POLICY tenant_insert ON social_notifications
+  FOR INSERT WITH CHECK (tenant_id = current_setting('app.tenant_id')::uuid);
+
+CREATE POLICY tenant_insert ON social_threads
+  FOR INSERT WITH CHECK (tenant_id = current_setting('app.tenant_id')::uuid);
+
+CREATE POLICY tenant_insert ON social_thread_members
+  FOR INSERT WITH CHECK (tenant_id = current_setting('app.tenant_id')::uuid);
+
+CREATE POLICY tenant_insert ON social_messages
+  FOR INSERT WITH CHECK (tenant_id = current_setting('app.tenant_id')::uuid);
+
 -- 4. Políticas UPDATE y DELETE se manejan con USING (igual que SELECT)
 -- Nota: se crea una política FOR ALL que cubre UPDATE y DELETE
 CREATE POLICY tenant_modify ON products
@@ -179,6 +291,54 @@ CREATE POLICY tenant_modify ON inventory_movements
   FOR ALL USING (tenant_id = current_setting('app.tenant_id')::uuid);
 
 CREATE POLICY tenant_modify ON events
+  FOR ALL USING (tenant_id = current_setting('app.tenant_id')::uuid);
+
+CREATE POLICY tenant_modify ON accounts_receivable
+  FOR ALL USING (tenant_id = current_setting('app.tenant_id')::uuid);
+
+CREATE POLICY tenant_modify ON receivable_payments
+  FOR ALL USING (tenant_id = current_setting('app.tenant_id')::uuid);
+
+CREATE POLICY tenant_modify ON cash_sessions
+  FOR ALL USING (tenant_id = current_setting('app.tenant_id')::uuid);
+
+CREATE POLICY tenant_modify ON cash_transactions
+  FOR ALL USING (tenant_id = current_setting('app.tenant_id')::uuid);
+
+CREATE POLICY tenant_modify ON refresh_tokens
+  FOR ALL USING (tenant_id = current_setting('app.tenant_id')::uuid);
+
+CREATE POLICY tenant_modify ON social_profiles
+  FOR ALL USING (tenant_id = current_setting('app.tenant_id')::uuid);
+
+CREATE POLICY tenant_modify ON social_posts
+  FOR ALL USING (tenant_id = current_setting('app.tenant_id')::uuid);
+
+CREATE POLICY tenant_modify ON social_catalogs
+  FOR ALL USING (tenant_id = current_setting('app.tenant_id')::uuid);
+
+CREATE POLICY tenant_modify ON social_catalog_items
+  FOR ALL USING (tenant_id = current_setting('app.tenant_id')::uuid);
+
+CREATE POLICY tenant_modify ON social_comments
+  FOR ALL USING (tenant_id = current_setting('app.tenant_id')::uuid);
+
+CREATE POLICY tenant_modify ON social_reactions
+  FOR ALL USING (tenant_id = current_setting('app.tenant_id')::uuid);
+
+CREATE POLICY tenant_modify ON social_follows
+  FOR ALL USING (tenant_id = current_setting('app.tenant_id')::uuid);
+
+CREATE POLICY tenant_modify ON social_notifications
+  FOR ALL USING (tenant_id = current_setting('app.tenant_id')::uuid);
+
+CREATE POLICY tenant_modify ON social_threads
+  FOR ALL USING (tenant_id = current_setting('app.tenant_id')::uuid);
+
+CREATE POLICY tenant_modify ON social_thread_members
+  FOR ALL USING (tenant_id = current_setting('app.tenant_id')::uuid);
+
+CREATE POLICY tenant_modify ON social_messages
   FOR ALL USING (tenant_id = current_setting('app.tenant_id')::uuid);
 
 -- =============================================================================

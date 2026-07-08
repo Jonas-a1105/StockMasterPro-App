@@ -5,6 +5,7 @@ import { AuthController } from './http/auth.controller';
 import { AuthService } from './auth.service';
 import { PostgresAuthRepo } from './persistence/postgres-auth.repository';
 import { JwtStrategy } from './strategies/jwt.strategy';
+import { RefreshTokenCleanupService } from './refresh-token-cleanup.service';
 
 import { ConfigService } from '@nestjs/config';
 
@@ -18,7 +19,7 @@ import { ConfigService } from '@nestjs/config';
         if (!secret) throw new Error('JWT_SECRET no definida en variables de entorno');
         return {
           secret,
-          signOptions: { expiresIn: '15m' }, // 15 minutes as per plan
+          signOptions: { expiresIn: '15m' },
         };
       },
     }),
@@ -27,6 +28,7 @@ import { ConfigService } from '@nestjs/config';
   providers: [
     AuthService,
     JwtStrategy,
+    RefreshTokenCleanupService,
     {
       provide: 'AuthRepository',
       useClass: PostgresAuthRepo,

@@ -3,6 +3,7 @@ import { PrismaModule } from '@shared/infrastructure/prisma/prisma.module';
 import { CustomersController } from './http/customers.controller';
 import { CUSTOMER_REPOSITORY } from '../application/ports/customer.repository.interface';
 import { PostgresCustomerRepo } from './persistence/postgres-customer.repository';
+import { AccountsReceivableModule } from '../../accounts-receivable';
 import { FindAllCustomersUseCase } from '../application/use-cases/find-all-customers.use-case';
 import { FindCustomerByIdUseCase } from '../application/use-cases/find-customer-by-id.use-case';
 import { CreateCustomerUseCase } from '../application/use-cases/create-customer.use-case';
@@ -11,7 +12,7 @@ import { DeleteCustomerUseCase } from '../application/use-cases/delete-customer.
 import { PayCustomerCreditUseCase } from '../application/use-cases/pay-customer-credit.use-case';
 
 @Module({
-  imports: [PrismaModule],
+  imports: [PrismaModule, AccountsReceivableModule],
   controllers: [CustomersController],
   providers: [
     { provide: CUSTOMER_REPOSITORY, useClass: PostgresCustomerRepo },

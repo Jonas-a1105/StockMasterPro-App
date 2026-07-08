@@ -22,5 +22,6 @@ import { GetReceivablePaymentsUseCase } from '../application/use-cases/get-recei
     PayAccountsReceivableUseCase,
     GetReceivablePaymentsUseCase,
   ],
+  exports: [ACCOUNTS_RECEIVABLE_REPOSITORY],
 })
 export class AccountsReceivableModule {}

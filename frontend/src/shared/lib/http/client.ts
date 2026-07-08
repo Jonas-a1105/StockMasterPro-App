@@ -59,11 +59,11 @@ class ApiClient {
 
   // Auth
   register(data: { tenantName: string; email: string; password: string; name: string }) {
-    return this.request<{ token: string; user: any }>('/auth/register', { method: 'POST', body: JSON.stringify(data) });
+    return this.request<{ accessToken: string; refreshToken: string; user: any }>('/auth/register', { method: 'POST', body: JSON.stringify(data) });
   }
 
   login(data: { email: string; password: string }) {
-    return this.request<{ token: string; user: any }>('/auth/login', { method: 'POST', body: JSON.stringify(data) });
+    return this.request<{ accessToken: string; refreshToken: string; user: any }>('/auth/login', { method: 'POST', body: JSON.stringify(data) });
   }
 
   // Inventory

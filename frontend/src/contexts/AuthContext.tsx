@@ -50,14 +50,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       api.getLicenseUsage().then(setLicenseUsage).catch(() => {});
     }
     setIsLoading(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const login = async (email: string, password: string) => {
     const res = await api.login({ email, password });
-    setToken(res.token);
+    const accessToken = res.accessToken;
+    setToken(accessToken);
     setUser(res.user);
-    api.setToken(res.token);
-    localStorage.setItem('stockmaster-token', res.token);
+    api.setToken(accessToken);
+    localStorage.setItem('stockmaster-token', accessToken);
     localStorage.setItem('stockmaster-user', JSON.stringify(res.user));
     api.getLicenseStatus().then(setLicenseStatus).catch(() => {});
     api.getLicenseUsage().then(setLicenseUsage).catch(() => {});
@@ -65,10 +67,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const register = async (data: { tenantName: string; email: string; password: string; name: string }) => {
     const res = await api.register(data);
-    setToken(res.token);
+    const accessToken = res.accessToken;
+    setToken(accessToken);
     setUser(res.user);
-    api.setToken(res.token);
-    localStorage.setItem('stockmaster-token', res.token);
+    api.setToken(accessToken);
+    localStorage.setItem('stockmaster-token', accessToken);
     localStorage.setItem('stockmaster-user', JSON.stringify(res.user));
     api.getLicenseStatus().then(setLicenseStatus).catch(() => {});
     api.getLicenseUsage().then(setLicenseUsage).catch(() => {});

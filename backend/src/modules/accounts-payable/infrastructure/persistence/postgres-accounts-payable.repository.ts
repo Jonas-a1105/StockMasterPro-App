@@ -8,13 +8,19 @@ import { PayablePayment } from '../../domain/payable-payment.entity';
 export class PostgresAccountsPayableRepo implements AccountsPayableRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async findAll(tenantId: string): Promise<AccountsPayable[]> {
+  async findAll(tenantId: string, limit = 50, offset = 0): Promise<AccountsPayable[]> {
     const rows = await this.prisma.accountsPayable.findMany({
       where: { tenantId },
       include: { supplier: true, payments: true },
       orderBy: { createdAt: 'desc' },
+      take: limit,
+      skip: offset,
     });
     return rows.map(r => this.toDomain(r, r.payments));
+  }
+
+  async count(tenantId: string): Promise<number> {
+    return this.prisma.accountsPayable.count({ where: { tenantId } });
   }
 
   async findById(id: string, tenantId: string): Promise<AccountsPayable | null> {

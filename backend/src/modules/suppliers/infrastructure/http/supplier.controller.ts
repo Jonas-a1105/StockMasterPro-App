@@ -6,6 +6,7 @@ import {
   Delete,
   Body,
   Param,
+  Query,
 } from '@nestjs/common';
 import { SupplierService } from '../supplier.service';
 import { CreateSupplierDto } from '../dto/create-supplier.dto';
@@ -19,8 +20,12 @@ export class SupplierController {
   constructor(private readonly supplierService: SupplierService) {}
 
   @Get()
-  async findAll(@CurrentUser() user: AuthenticatedUser) {
-    return this.supplierService.findAll(user.tenantId);
+  async findAll(
+    @CurrentUser() user: AuthenticatedUser,
+    @Query('page') page?: string,
+    @Query('limit') limit?: string,
+  ) {
+    return this.supplierService.findAll(user.tenantId, Number(page) || 1, Number(limit) || 50);
   }
 
   @Get(':id')

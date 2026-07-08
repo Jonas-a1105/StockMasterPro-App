@@ -8,12 +8,18 @@ import { Customer as PrismaCustomer } from '@prisma/client';
 export class PostgresCustomerRepo implements CustomerRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async findAll(tenantId: string): Promise<Customer[]> {
+  async findAll(tenantId: string, limit = 50, offset = 0): Promise<Customer[]> {
     const rows = await this.prisma.customer.findMany({
       where: { tenantId },
       orderBy: { name: 'asc' },
+      take: limit,
+      skip: offset,
     });
     return rows.map((r) => this.toDomain(r));
+  }
+
+  async count(tenantId: string): Promise<number> {
+    return this.prisma.customer.count({ where: { tenantId } });
   }
 
   async findById(id: string, tenantId: string): Promise<Customer | null> {

@@ -24,5 +24,6 @@ import { GetCurrentSessionUseCase } from '../application/use-cases/get-current-s
     GetSessionTransactionsUseCase,
     GetCurrentSessionUseCase,
   ],
+  exports: [CASH_REGISTER_REPOSITORY],
 })
 export class CashRegisterModule {}

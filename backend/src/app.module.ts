@@ -3,6 +3,7 @@ import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { RLSInterceptor } from '@shared/infrastructure/http/interceptors/rls.interceptor';
+import { TransformInterceptor } from '@shared/infrastructure/http/interceptors/transform.interceptor';
 import { PrismaModule } from '@shared/infrastructure/prisma/prisma.module';
 import { AuthModule } from './modules/auth';
 import { InventoryModule } from './modules/inventory';
@@ -64,6 +65,7 @@ import { TenantLicenseGuard } from '@shared/infrastructure/guards/tenant-license
     { provide: APP_GUARD, useClass: JwtAuthGuard },
     { provide: APP_GUARD, useClass: RolesGuard },
     { provide: APP_GUARD, useClass: TenantLicenseGuard },
+    { provide: APP_INTERCEPTOR, useClass: TransformInterceptor },
     { provide: APP_INTERCEPTOR, useClass: RLSInterceptor },
   ],
 })

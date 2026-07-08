@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Query } from '@nestjs/common';
 import { ProcessSaleDto } from '../dto/process-sale.dto';
 import { Roles } from '@shared/infrastructure/decorators/roles.decorator';
 import { CurrentUser } from '@shared/infrastructure/decorators/current-user.decorator';
@@ -45,8 +45,12 @@ export class SalesController {
 
   @Get()
   @Roles('admin', 'gerente')
-  async findAll(@CurrentUser() user: AuthenticatedUser) {
-    return this.findAllSalesUseCase.execute(user.tenantId);
+  async findAll(
+    @CurrentUser() user: AuthenticatedUser,
+    @Query('page') page?: string,
+    @Query('limit') limit?: string,
+  ) {
+    return this.findAllSalesUseCase.execute(user.tenantId, Number(page) || 1, Number(limit) || 50);
   }
 
   @Get('daily-summary')

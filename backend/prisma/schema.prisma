@@ -211,6 +211,7 @@ model Sale {
 
   @@index([tenantId])
   @@index([tenantId, createdAt])
+  @@index([offlineId])
   @@map("sales")
 }
 
@@ -730,6 +731,9 @@ model RefreshToken {
   tenantId  String    @map("tenant_id") @db.Uuid
   userId    String    @map("user_id") @db.Uuid
   token     String    @unique @db.VarChar(512)
+  deviceId  String?   @map("device_id") @db.VarChar(255)
+  userAgent String?   @map("user_agent") @db.Text
+  ipAddress String?   @map("ip_address") @db.VarChar(45)
   expiresAt DateTime  @map("expires_at") @db.Timestamptz
   revokedAt DateTime? @map("revoked_at") @db.Timestamptz
   createdAt DateTime  @default(now()) @map("created_at")
@@ -738,6 +742,8 @@ model RefreshToken {
 
   @@index([token])
   @@index([userId])
+  @@index([userId, expiresAt])
+  @@index([userId, deviceId])
   @@map("refresh_tokens")
 }
 

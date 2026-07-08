@@ -53,6 +53,7 @@ export function useCheckout() {
       if (isOnline) {
         await processSale(saleData);
       } else {
+        const idempotencyKey = crypto.randomUUID();
         await db.offlineSales.add({
           tenantId: user!.tenantId,
           userId: user!.id,
@@ -61,6 +62,8 @@ export function useCheckout() {
           paymentMethod,
           createdAt: new Date().toISOString(),
           synced: false,
+          idempotencyKey,
+          retryCount: 0,
         });
       }
 

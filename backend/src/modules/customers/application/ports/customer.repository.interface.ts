@@ -12,7 +12,8 @@ export interface CreateCustomerData {
 }
 
 export interface CustomerRepository {
-  findAll(tenantId: string): Promise<Customer[]>;
+  findAll(tenantId: string, limit?: number, offset?: number): Promise<Customer[]>;
+  count(tenantId: string): Promise<number>;
   findById(id: string, tenantId: string): Promise<Customer | null>;
   create(data: CreateCustomerData): Promise<Customer>;
   update(id: string, tenantId: string, data: Partial<CreateCustomerData> & { balance?: number }): Promise<Customer>;

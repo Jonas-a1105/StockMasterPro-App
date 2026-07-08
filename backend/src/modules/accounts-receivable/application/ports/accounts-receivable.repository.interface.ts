@@ -22,7 +22,8 @@ export interface ReceivablePaymentData {
 }
 
 export interface AccountsReceivableRepository {
-  findAll(tenantId: string): Promise<AccountsReceivable[]>;
+  findAll(tenantId: string, limit?: number, offset?: number): Promise<AccountsReceivable[]>;
+  count(tenantId: string): Promise<number>;
   findById(id: string, tenantId: string): Promise<AccountsReceivable | null>;
   findByCustomer(customerId: string, tenantId: string): Promise<AccountsReceivable[]>;
   create(data: CreateReceivableData): Promise<AccountsReceivable>;

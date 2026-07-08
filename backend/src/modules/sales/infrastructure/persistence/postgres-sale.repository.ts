@@ -35,7 +35,7 @@ export class PostgresSaleRepo implements SaleRepository {
     return sales.map((s) => this.toSale(s));
   }
 
-  async create(sale: Sale): Promise<Sale> {
+  async create(sale: Sale, offlineId?: string): Promise<Sale> {
     const created = await this.prisma.$transaction(async (tx) => {
       if (sale.paymentMethod === 'credit') {
         if (!sale.customerId) {
@@ -77,6 +77,8 @@ export class PostgresSaleRepo implements SaleRepository {
           total: sale.total,
           paymentMethod: sale.paymentMethod,
           status: sale.status,
+          isOffline: !!offlineId,
+          offlineId: offlineId ?? null,
           items: {
             create: sale.items.map((i) => ({
               tenantId: sale.tenantId,
@@ -130,6 +132,10 @@ export class PostgresSaleRepo implements SaleRepository {
     });
 
     return this.toSale(created);
+  }
+
+  async count(tenantId: string): Promise<number> {
+    return this.prisma.sale.count({ where: { tenantId } });
   }
 
   async getDailySummary(

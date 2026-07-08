@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Patch, Delete, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Delete, Body, Param, Query } from '@nestjs/common';
 import { CreateCustomerDto } from '../dto/create-customer.dto';
 import { UpdateCustomerDto } from '../dto/update-customer.dto';
 import { Roles } from '@shared/infrastructure/decorators/roles.decorator';
@@ -23,8 +23,12 @@ export class CustomersController {
   ) {}
 
   @Get()
-  async findAll(@CurrentUser() user: AuthenticatedUser) {
-    return this.findAllUseCase.execute(user.tenantId);
+  async findAll(
+    @CurrentUser() user: AuthenticatedUser,
+    @Query('page') page?: string,
+    @Query('limit') limit?: string,
+  ) {
+    return this.findAllUseCase.execute(user.tenantId, Number(page) || 1, Number(limit) || 50);
   }
 
   @Get(':id')
