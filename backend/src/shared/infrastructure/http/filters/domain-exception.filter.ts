@@ -8,18 +8,7 @@ export class DomainExceptionFilter implements ExceptionFilter {
     const ctx = context.switchToHttp();
     const response = ctx.getResponse<Response>();
 
-    let status = HttpStatus.BAD_REQUEST;
-    
-    // We can define custom status codes based on exception types/codes
-    if (exception.code === 'NOT_FOUND') {
-      status = HttpStatus.NOT_FOUND;
-    } else if (exception.code === 'UNAUTHORIZED') {
-      status = HttpStatus.UNAUTHORIZED;
-    } else if (exception.code === 'FORBIDDEN') {
-      status = HttpStatus.FORBIDDEN;
-    } else if (exception.code === 'CONFLICT') {
-      status = HttpStatus.CONFLICT;
-    }
+    const status = exception.status || HttpStatus.BAD_REQUEST;
 
     response.status(status).json({
       statusCode: status,

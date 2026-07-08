@@ -13,15 +13,15 @@ import { UpdateProductDto } from '../dto/update-product.dto';
 import { Roles } from '@shared/infrastructure/decorators/roles.decorator';
 import { CurrentUser } from '@shared/infrastructure/decorators/current-user.decorator';
 import { AuthenticatedUser } from '@shared/infrastructure/types/authenticated-user';
-import { CreateProductUseCase } from '../../application/use-cases/CreateProduct';
-import { AdjustStockUseCase } from '../../application/use-cases/AdjustStock';
-import { FindAllProductsUseCase } from '../../application/use-cases/FindAllProducts';
-import { FindProductByIdUseCase } from '../../application/use-cases/FindProductById';
-import { UpdateProductUseCase } from '../../application/use-cases/UpdateProduct';
-import { DeleteProductUseCase } from '../../application/use-cases/DeleteProduct';
-import { FindAllAdjustmentsUseCase } from '../../application/use-cases/FindAllAdjustments';
-import { GetLowStockProductsUseCase } from '../../application/use-cases/GetLowStockProducts';
-import { GetProductMovementsUseCase } from '../../application/use-cases/GetProductMovements';
+import { CreateProductUseCase } from '../../application/use-cases/create-product.use-case';
+import { AdjustStockUseCase } from '../../application/use-cases/adjust-stock.use-case';
+import { FindAllProductsUseCase } from '../../application/use-cases/find-all-products.use-case';
+import { FindProductByIdUseCase } from '../../application/use-cases/find-product-by-id.use-case';
+import { UpdateProductUseCase } from '../../application/use-cases/update-product.use-case';
+import { DeleteProductUseCase } from '../../application/use-cases/delete-product.use-case';
+import { FindAllAdjustmentsUseCase } from '../../application/use-cases/find-all-adjustments.use-case';
+import { GetLowStockProductsUseCase } from '../../application/use-cases/get-low-stock-products.use-case';
+import { GetProductMovementsUseCase } from '../../application/use-cases/get-product-movements.use-case';
 
 @Controller('inventory')
 export class InventoryController {

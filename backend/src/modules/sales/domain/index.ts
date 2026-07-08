@@ -1,2 +1,2 @@
-export { Sale, type PaymentMethod, type SaleStatus } from './Sale';
-export { SaleItem } from './SaleItem';
+export { Sale, type PaymentMethod, type SaleStatus } from './sale.entity';
+export { SaleItem } from './sale-item.entity';

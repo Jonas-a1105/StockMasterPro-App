@@ -2,7 +2,7 @@ import { Controller, Get, Post, Put, Delete, Body, Param, Query } from '@nestjs/
 import { Roles } from '@shared/infrastructure/decorators/roles.decorator';
 import { CurrentUser } from '@shared/infrastructure/decorators/current-user.decorator';
 import { AuthenticatedUser } from '@shared/infrastructure/types/authenticated-user';
-import { PostgresEventRepo } from '../persistence/PostgresEventRepo';
+import { PostgresEventRepo } from '../persistence/postgres-event.repository';
 import { CreateEventDto } from '../dto/create-event.dto';
 import { UpdateEventDto } from '../dto/update-event.dto';
 

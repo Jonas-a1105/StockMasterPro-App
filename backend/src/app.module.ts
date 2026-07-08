@@ -1,29 +1,31 @@
 import { Module } from '@nestjs/common';
-import { APP_GUARD } from '@nestjs/core';
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
+import { RLSInterceptor } from '@shared/infrastructure/http/interceptors/rls.interceptor';
 import { PrismaModule } from '@shared/infrastructure/prisma/prisma.module';
-import { AuthModule } from './modules/auth/infrastructure/auth.module';
-import { InventoryModule } from './modules/inventory/infrastructure/inventory.module';
-import { SalesModule } from './modules/sales/infrastructure/sales.module';
-import { SuppliersModule } from './modules/suppliers/infrastructure/supplier.module';
-import { PurchaseOrdersModule } from './modules/purchase-orders/infrastructure/purchase-order.module';
-import { LicensesModule } from './modules/licenses/infrastructure/licenses.module';
-import { UsersModule } from './modules/users/infrastructure/users.module';
-import { CustomersModule } from './modules/customers/infrastructure/customers.module';
-import { AccountsPayableModule } from './modules/accounts-payable/infrastructure/accounts-payable.module';
-import { ExpenseModule } from './modules/expenses/infrastructure/expense.module';
-import { CreditNoteModule } from './modules/credit-notes/infrastructure/credit-note.module';
-import { ReportModule } from './modules/reports/infrastructure/report.module';
-import { ExchangeRateModule } from './modules/exchange-rate/infrastructure/exchange-rate.module';
-import { WarehouseModule } from './modules/warehouses/infrastructure/warehouse.module';
-import { CategoryModule } from './modules/categories/infrastructure/category.module';
-import { WebhooksModule } from './modules/webhooks/infrastructure/webhooks.module';
-import { EventModule } from './modules/events/infrastructure/event.module';
-import { NotificationsModule } from './modules/notifications/infrastructure/notifications.module';
-import { SocialModule } from './modules/social/infrastructure/social.module';
-import { AccountsReceivableModule } from './modules/accounts-receivable/infrastructure/accounts-receivable.module';
-import { CashRegisterModule } from './modules/cash-register/infrastructure/cash-register.module';
+import { AuthModule } from './modules/auth';
+import { InventoryModule } from './modules/inventory';
+import { SalesModule } from './modules/sales';
+import { SuppliersModule } from './modules/suppliers';
+import { PurchaseOrdersModule } from './modules/purchase-orders';
+import { LicensesModule } from './modules/licenses';
+import { UsersModule } from './modules/users';
+import { CustomersModule } from './modules/customers';
+import { AccountsPayableModule } from './modules/accounts-payable';
+import { ExpenseModule } from './modules/expenses';
+import { CreditNoteModule } from './modules/credit-notes';
+import { ReportModule } from './modules/reports';
+import { ExchangeRateModule } from './modules/exchange-rate';
+import { WarehouseModule } from './modules/warehouses';
+import { CategoryModule } from './modules/categories';
+import { WebhooksModule } from './modules/webhooks';
+import { EventModule } from './modules/events';
+import { NotificationsModule } from './modules/notifications';
+import { SocialModule } from './modules/social';
+import { AccountsReceivableModule } from './modules/accounts-receivable';
+import { CashRegisterModule } from './modules/cash-register';
+
 
 import { JwtAuthGuard } from '@shared/infrastructure/guards/jwt-auth.guard';
 import { RolesGuard } from '@shared/infrastructure/guards/roles.guard';
@@ -62,6 +64,7 @@ import { TenantLicenseGuard } from '@shared/infrastructure/guards/tenant-license
     { provide: APP_GUARD, useClass: JwtAuthGuard },
     { provide: APP_GUARD, useClass: RolesGuard },
     { provide: APP_GUARD, useClass: TenantLicenseGuard },
+    { provide: APP_INTERCEPTOR, useClass: RLSInterceptor },
   ],
 })
 export class AppModule {}

@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { PostgresPurchaseOrderRepo } from './persistence/PostgresPurchaseOrderRepo';
+import { PostgresPurchaseOrderRepo } from './persistence/postgres-purchase-order.repository';
 
 @Injectable()
 export class PurchaseOrderService {

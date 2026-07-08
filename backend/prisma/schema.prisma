@@ -41,6 +41,11 @@ model Tenant {
   socialNotifications SocialNotification[]
   socialThreads   SocialThread[]
   socialMessages  SocialMessage[]
+  
+  accountsReceivable AccountsReceivable[]
+  receivablePayments ReceivablePayment[]
+  cashSessions       CashSession[]
+  refreshTokens      RefreshToken[]
 
   @@map("tenants")
 }
@@ -155,6 +160,7 @@ model Customer {
   tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   sales  Sale[]
   creditNotes CreditNote[]
+  accountsReceivable AccountsReceivable[]
 
   @@index([tenantId])
   @@index([tenantId, id])
@@ -201,6 +207,7 @@ model Sale {
   customer    Customer?     @relation(fields: [customerId], references: [id], onDelete: SetNull)
   items       SaleItem[]
   creditNotes CreditNote[]
+  accountsReceivable AccountsReceivable[]
 
   @@index([tenantId])
   @@index([tenantId, createdAt])
@@ -636,3 +643,101 @@ model CalendarEvent {
   @@index([tenantId, startDate])
   @@map("events")
 }
+
+model AccountsReceivable {
+  id              String   @id @default(uuid()) @db.Uuid
+  tenantId        String   @map("tenant_id") @db.Uuid
+  customerId      String   @map("customer_id") @db.Uuid
+  saleId          String?  @map("sale_id") @db.Uuid
+  totalAmount     Decimal  @map("total_amount") @db.Decimal(12, 2)
+  pendingAmount   Decimal  @map("pending_amount") @db.Decimal(12, 2)
+  dueDate         DateTime @map("due_date") @db.Date
+  status          String   @default("pending") @db.VarChar(50)
+  notes           String?  @db.Text
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  tenant   Tenant              @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  customer Customer            @relation(fields: [customerId], references: [id])
+  sale     Sale?               @relation(fields: [saleId], references: [id], onDelete: SetNull)
+  payments ReceivablePayment[]
+
+  @@index([tenantId])
+  @@index([tenantId, id])
+  @@index([tenantId, status])
+  @@map("accounts_receivable")
+}
+
+model ReceivablePayment {
+  id                  String   @id @default(uuid()) @db.Uuid
+  tenantId            String   @map("tenant_id") @db.Uuid
+  accountReceivableId String   @map("account_receivable_id") @db.Uuid
+  amount              Decimal  @db.Decimal(12, 2)
+  paymentMethod       String   @default("cash") @map("payment_method") @db.VarChar(50)
+  notes               String?  @db.Text
+  paidAt              DateTime @map("paid_at") @db.Timestamptz
+  createdAt           DateTime @default(now()) @map("created_at")
+
+  accountReceivable AccountsReceivable @relation(fields: [accountReceivableId], references: [id], onDelete: Cascade)
+  tenant            Tenant             @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId])
+  @@index([accountReceivableId])
+  @@map("receivable_payments")
+}
+
+model CashSession {
+  id              String    @id @default(uuid()) @db.Uuid
+  tenantId        String    @map("tenant_id") @db.Uuid
+  userId          String    @map("user_id") @db.Uuid
+  openingBalance  Decimal   @map("opening_balance") @db.Decimal(12, 2)
+  closingBalance  Decimal?  @map("closing_balance") @db.Decimal(12, 2)
+  actualBalance   Decimal?  @map("actual_balance") @db.Decimal(12, 2)
+  difference      Decimal?  @db.Decimal(12, 2)
+  status          String    @default("open") @db.VarChar(20)
+  openedAt        DateTime  @default(now()) @map("opened_at") @db.Timestamptz
+  closedAt        DateTime? @map("closed_at") @db.Timestamptz
+  notes           String?   @db.Text
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
+
+  tenant          Tenant                 @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  transactions    CashTransaction[]
+
+  @@index([tenantId])
+  @@index([tenantId, status])
+  @@map("cash_sessions")
+}
+
+model CashTransaction {
+  id            String   @id @default(uuid()) @db.Uuid
+  tenantId      String   @map("tenant_id") @db.Uuid
+  sessionId     String   @map("session_id") @db.Uuid
+  amount        Decimal  @db.Decimal(12, 2)
+  type          String   @db.VarChar(20)
+  description   String   @db.VarChar(255)
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  session       CashSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId])
+  @@index([sessionId])
+  @@map("cash_transactions")
+}
+
+model RefreshToken {
+  id        String    @id @default(uuid()) @db.Uuid
+  tenantId  String    @map("tenant_id") @db.Uuid
+  userId    String    @map("user_id") @db.Uuid
+  token     String    @unique @db.VarChar(512)
+  expiresAt DateTime  @map("expires_at") @db.Timestamptz
+  revokedAt DateTime? @map("revoked_at") @db.Timestamptz
+  createdAt DateTime  @default(now()) @map("created_at")
+
+  tenant    Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([token])
+  @@index([userId])
+  @@map("refresh_tokens")
+}
+

@@ -3,12 +3,12 @@ import { ProcessSaleDto } from '../dto/process-sale.dto';
 import { Roles } from '@shared/infrastructure/decorators/roles.decorator';
 import { CurrentUser } from '@shared/infrastructure/decorators/current-user.decorator';
 import { AuthenticatedUser } from '@shared/infrastructure/types/authenticated-user';
-import { ProcessSaleUseCase } from '../../application/use-cases/ProcessSale';
-import { ProcessBulkSalesUseCase } from '../../application/use-cases/ProcessBulkSales';
-import { FindAllSalesUseCase } from '../../application/use-cases/FindAllSales';
-import { FindSaleByIdUseCase } from '../../application/use-cases/FindSaleById';
-import { GetDailySalesSummaryUseCase } from '../../application/use-cases/GetDailySalesSummary';
-import { PaymentMethod } from '../../domain/Sale';
+import { ProcessSaleUseCase } from '../../application/use-cases/process-sale.use-case';
+import { ProcessBulkSalesUseCase } from '../../application/use-cases/process-bulk-sales.use-case';
+import { FindAllSalesUseCase } from '../../application/use-cases/find-all-sales.use-case';
+import { FindSaleByIdUseCase } from '../../application/use-cases/find-sale-by-id.use-case';
+import { GetDailySalesSummaryUseCase } from '../../application/use-cases/get-daily-sales-summary.use-case';
+import { PaymentMethod } from '../../domain/sale.entity';
 
 @Controller('sales')
 export class SalesController {

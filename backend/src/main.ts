@@ -2,6 +2,7 @@ import 'dotenv/config';
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
+import { DomainExceptionFilter } from '@shared/infrastructure/http/filters/domain-exception.filter';
 import { validateRequiredEnvVars } from '@shared/infrastructure/config/env.validation';
 
 async function bootstrap() {
@@ -14,6 +15,8 @@ async function bootstrap() {
     origin: process.env.FRONTEND_URL || ['http://localhost:5173', 'http://localhost:5174'],
     credentials: true,
   });
+
+  app.useGlobalFilters(new DomainExceptionFilter());
 
   app.useGlobalPipes(
     new ValidationPipe({

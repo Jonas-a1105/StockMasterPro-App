@@ -1,7 +1,9 @@
 declare module 'rxjs' {
   export class Observable<T> {
+    constructor(subscribe?: (subscriber: any) => any);
     pipe(...args: any[]): Observable<any>;
   }
+  export function from(promise: Promise<any>): Observable<any>;
   export interface CallHandler {
     handle(): Observable<any>;
   }

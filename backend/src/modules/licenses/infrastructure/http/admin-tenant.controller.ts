@@ -4,7 +4,7 @@ import { RolesGuard } from '@shared/infrastructure/guards/roles.guard';
 import { Roles } from '@shared/infrastructure/decorators/roles.decorator';
 import { SkipLicenseCheck } from '@shared/infrastructure/decorators/skip-license-check.decorator';
 import { PrismaService } from '@shared/infrastructure/prisma/prisma.service';
-import { PostgresLicenseRepo } from '../persistence/PostgresLicenseRepo';
+import { PostgresLicenseRepo } from '../persistence/postgres-license.repository';
 
 @Controller('admin/tenants')
 @UseGuards(JwtAuthGuard, RolesGuard)

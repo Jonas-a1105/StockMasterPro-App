@@ -1,7 +1,7 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from '@shared/infrastructure/prisma/prisma.service';
-import { PostgresLicenseRepo } from './persistence/PostgresLicenseRepo';
+import { PostgresLicenseRepo } from './persistence/postgres-license.repository';
 
 
 @Injectable()

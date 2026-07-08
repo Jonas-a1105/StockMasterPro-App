@@ -4,7 +4,7 @@ import {
   ConflictException,
 } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
-import { PostgresUserRepo } from './persistence/PostgresUserRepo';
+import { PostgresUserRepo } from './persistence/postgres-user.repository';
 import { PrismaService } from '@shared/infrastructure/prisma/prisma.service';
 
 @Injectable()

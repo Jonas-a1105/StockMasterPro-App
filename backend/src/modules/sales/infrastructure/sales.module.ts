@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
 import { PrismaModule } from '@shared/infrastructure/prisma/prisma.module';
 import { SalesController } from './http/sales.controller';
-import { PostgresSaleRepo } from './persistence/PostgresSaleRepo';
-import { SALES_REPOSITORY } from '../application/ports/SaleRepository.interface';
-import { InventoryModule } from '../../inventory/infrastructure/inventory.module';
-import { ProcessSaleUseCase } from '../application/use-cases/ProcessSale';
-import { ProcessBulkSalesUseCase } from '../application/use-cases/ProcessBulkSales';
-import { FindAllSalesUseCase } from '../application/use-cases/FindAllSales';
-import { FindSaleByIdUseCase } from '../application/use-cases/FindSaleById';
-import { GetDailySalesSummaryUseCase } from '../application/use-cases/GetDailySalesSummary';
+import { PostgresSaleRepo } from './persistence/postgres-sale.repository';
+import { SALES_REPOSITORY } from '../application/ports/sale.repository.interface';
+import { InventoryModule } from '../../inventory';
+import { ProcessSaleUseCase } from '../application/use-cases/process-sale.use-case';
+import { ProcessBulkSalesUseCase } from '../application/use-cases/process-bulk-sales.use-case';
+import { FindAllSalesUseCase } from '../application/use-cases/find-all-sales.use-case';
+import { FindSaleByIdUseCase } from '../application/use-cases/find-sale-by-id.use-case';
+import { GetDailySalesSummaryUseCase } from '../application/use-cases/get-daily-sales-summary.use-case';
 
 @Module({
   imports: [PrismaModule, InventoryModule],

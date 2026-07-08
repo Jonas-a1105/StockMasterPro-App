@@ -2,11 +2,11 @@ import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { Roles } from '@shared/infrastructure/decorators/roles.decorator';
 import { CurrentUser } from '@shared/infrastructure/decorators/current-user.decorator';
 import { AuthenticatedUser } from '@shared/infrastructure/types/authenticated-user';
-import { CreateAccountsPayableUseCase } from '../../application/use-cases/CreateAccountsPayable';
-import { PayAccountsPayableUseCase } from '../../application/use-cases/PayAccountsPayable';
-import { ListAccountsPayableUseCase } from '../../application/use-cases/ListAccountsPayable';
-import { FindAccountsPayableByIdUseCase } from '../../application/use-cases/FindAccountsPayableById';
-import { GetPayablePaymentsUseCase } from '../../application/use-cases/GetPayablePayments';
+import { CreateAccountsPayableUseCase } from '../../application/use-cases/create-accounts-payable.use-case';
+import { PayAccountsPayableUseCase } from '../../application/use-cases/pay-accounts-payable.use-case';
+import { ListAccountsPayableUseCase } from '../../application/use-cases/list-accounts-payable.use-case';
+import { FindAccountsPayableByIdUseCase } from '../../application/use-cases/find-accounts-payable-by-id.use-case';
+import { GetPayablePaymentsUseCase } from '../../application/use-cases/get-payable-payments.use-case';
 import { CreatePayableDto } from '../dto/create-payable.dto';
 import { PayPayableDto } from '../dto/pay-payable.dto';
 

@@ -1,17 +1,17 @@
 import { Module } from '@nestjs/common';
 import { PrismaModule } from '@shared/infrastructure/prisma/prisma.module';
 import { InventoryController } from './http/inventory.controller';
-import { PostgresProductRepo } from './persistence/PostgresProductRepo';
-import { PRODUCT_REPOSITORY } from '../application/ports/ProductRepository.interface';
-import { CreateProductUseCase } from '../application/use-cases/CreateProduct';
-import { AdjustStockUseCase } from '../application/use-cases/AdjustStock';
-import { FindAllProductsUseCase } from '../application/use-cases/FindAllProducts';
-import { FindProductByIdUseCase } from '../application/use-cases/FindProductById';
-import { UpdateProductUseCase } from '../application/use-cases/UpdateProduct';
-import { DeleteProductUseCase } from '../application/use-cases/DeleteProduct';
-import { FindAllAdjustmentsUseCase } from '../application/use-cases/FindAllAdjustments';
-import { GetLowStockProductsUseCase } from '../application/use-cases/GetLowStockProducts';
-import { GetProductMovementsUseCase } from '../application/use-cases/GetProductMovements';
+import { PostgresProductRepo } from './persistence/postgres-product.repository';
+import { PRODUCT_REPOSITORY } from '../application/ports/product.repository.interface';
+import { CreateProductUseCase } from '../application/use-cases/create-product.use-case';
+import { AdjustStockUseCase } from '../application/use-cases/adjust-stock.use-case';
+import { FindAllProductsUseCase } from '../application/use-cases/find-all-products.use-case';
+import { FindProductByIdUseCase } from '../application/use-cases/find-product-by-id.use-case';
+import { UpdateProductUseCase } from '../application/use-cases/update-product.use-case';
+import { DeleteProductUseCase } from '../application/use-cases/delete-product.use-case';
+import { FindAllAdjustmentsUseCase } from '../application/use-cases/find-all-adjustments.use-case';
+import { GetLowStockProductsUseCase } from '../application/use-cases/get-low-stock-products.use-case';
+import { GetProductMovementsUseCase } from '../application/use-cases/get-product-movements.use-case';
 
 @Module({
   imports: [PrismaModule],

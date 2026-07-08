@@ -4,7 +4,7 @@ import { RolesGuard } from '@shared/infrastructure/guards/roles.guard';
 import { Roles } from '@shared/infrastructure/decorators/roles.decorator';
 import { CurrentUser } from '@shared/infrastructure/decorators/current-user.decorator';
 import { AuthenticatedUser } from '@shared/infrastructure/types/authenticated-user';
-import { PostgresReportRepo } from '../persistence/PostgresReportRepo';
+import { PostgresReportRepo } from '../persistence/postgres-report.repository';
 
 @Controller('reports')
 @UseGuards(JwtAuthGuard, RolesGuard)
