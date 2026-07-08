@@ -36,24 +36,29 @@ export class CustomersService {
   }
 
   async update(id: string, tenantId: string, dto: UpdateCustomerDto) {
-    await this.findById(id, tenantId); // ownership check
-    return this.prisma.customer.update({
-      where: { id },
+    const { count } = await this.prisma.customer.updateMany({
+      where: { id, tenantId },
       data: dto,
     });
+    if (count === 0) throw new NotFoundException('Cliente no encontrado');
+    return this.findById(id, tenantId);
   }
 
   async delete(id: string, tenantId: string) {
-    await this.findById(id, tenantId); // ownership check
-    await this.prisma.customer.delete({ where: { id } });
+    const { count } = await this.prisma.customer.deleteMany({
+      where: { id, tenantId },
+    });
+    if (count === 0) throw new NotFoundException('Cliente no encontrado');
   }
 
   async payCredit(id: string, tenantId: string, amount: number) {
     const customer = await this.findById(id, tenantId);
     const newBalance = Math.max(0, Number(customer.balance) - amount);
-    return this.prisma.customer.update({
-      where: { id },
+    const { count } = await this.prisma.customer.updateMany({
+      where: { id, tenantId },
       data: { balance: newBalance },
     });
+    if (count === 0) throw new NotFoundException('Cliente no encontrado');
+    return this.findById(id, tenantId);
   }
 }

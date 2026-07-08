@@ -1,34 +1,29 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '@shared/infrastructure/prisma/prisma.service';
-import { EventRepository } from '../../application/ports/EventRepository.interface';
-import { CalendarEvent } from '../../domain/CalendarEvent';
 
 @Injectable()
-export class PostgresEventRepo implements EventRepository {
+export class PostgresEventRepo {
   constructor(private readonly prisma: PrismaService) {}
 
-  async findAll(tenantId: string): Promise<CalendarEvent[]> {
-    const rows = await this.prisma.calendarEvent.findMany({
+  async findAll(tenantId: string) {
+    return this.prisma.calendarEvent.findMany({
       where: { tenantId },
       orderBy: { startDate: 'asc' },
     });
-    return rows.map(r => this.toDomain(r));
   }
 
-  async findById(id: string, tenantId: string): Promise<CalendarEvent | null> {
-    const r = await this.prisma.calendarEvent.findFirst({ where: { id, tenantId } });
-    return r ? this.toDomain(r) : null;
+  async findById(id: string, tenantId: string) {
+    return this.prisma.calendarEvent.findFirst({ where: { id, tenantId } });
   }
 
-  async findByDateRange(tenantId: string, start: Date, end: Date): Promise<CalendarEvent[]> {
-    const rows = await this.prisma.calendarEvent.findMany({
+  async findByDateRange(tenantId: string, start: Date, end: Date) {
+    return this.prisma.calendarEvent.findMany({
       where: {
         tenantId,
         startDate: { gte: start, lte: end },
       },
       orderBy: { startDate: 'asc' },
     });
-    return rows.map(r => this.toDomain(r));
   }
 
   async create(data: {
@@ -40,8 +35,8 @@ export class PostgresEventRepo implements EventRepository {
     allDay?: boolean;
     color?: string;
     createdBy: string;
-  }): Promise<CalendarEvent> {
-    const r = await this.prisma.calendarEvent.create({
+  }) {
+    return this.prisma.calendarEvent.create({
       data: {
         tenantId: data.tenantId,
         title: data.title,
@@ -53,7 +48,6 @@ export class PostgresEventRepo implements EventRepository {
         createdBy: data.createdBy,
       },
     });
-    return this.toDomain(r);
   }
 
   async update(id: string, tenantId: string, data: {
@@ -63,24 +57,19 @@ export class PostgresEventRepo implements EventRepository {
     endDate?: Date;
     allDay?: boolean;
     color?: string;
-  }): Promise<CalendarEvent> {
-    const existing = await this.prisma.calendarEvent.findFirst({ where: { id, tenantId } });
-    if (!existing) throw new Error('Evento no encontrado');
-    const r = await this.prisma.calendarEvent.update({ where: { id }, data });
-    return this.toDomain(r);
+  }) {
+    const { count } = await this.prisma.calendarEvent.updateMany({
+      where: { id, tenantId },
+      data,
+    });
+    if (count === 0) throw new NotFoundException('Evento no encontrado');
+    return this.prisma.calendarEvent.findFirst({ where: { id, tenantId } });
   }
 
-  async delete(id: string, tenantId: string): Promise<void> {
-    const existing = await this.prisma.calendarEvent.findFirst({ where: { id, tenantId } });
-    if (!existing) throw new Error('Evento no encontrado');
-    await this.prisma.calendarEvent.delete({ where: { id } });
-  }
-
-  private toDomain(r: any): CalendarEvent {
-    return new CalendarEvent(
-      r.id, r.tenantId, r.title, r.description,
-      r.startDate, r.endDate, r.allDay, r.color,
-      r.createdBy, r.createdAt, r.updatedAt,
-    );
+  async delete(id: string, tenantId: string) {
+    const { count } = await this.prisma.calendarEvent.deleteMany({
+      where: { id, tenantId },
+    });
+    if (count === 0) throw new NotFoundException('Evento no encontrado');
   }
 }

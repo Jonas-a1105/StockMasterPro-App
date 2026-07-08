@@ -1,6 +1,7 @@
 import { Controller, Get, Post, Put, Delete, Body, Param, Query } from '@nestjs/common';
 import { Roles } from '@shared/infrastructure/decorators/roles.decorator';
 import { CurrentUser } from '@shared/infrastructure/decorators/current-user.decorator';
+import { AuthenticatedUser } from '@shared/infrastructure/types/authenticated-user';
 import { PostgresEventRepo } from '../persistence/PostgresEventRepo';
 import { CreateEventDto } from '../dto/create-event.dto';
 import { UpdateEventDto } from '../dto/update-event.dto';
@@ -12,7 +13,7 @@ export class EventController {
   @Get()
   @Roles('admin', 'gerente', 'vendedor')
   findAll(
-    @CurrentUser() user: any,
+    @CurrentUser() user: AuthenticatedUser,
     @Query('start') start?: string,
     @Query('end') end?: string,
   ) {
@@ -24,13 +25,13 @@ export class EventController {
 
   @Get(':id')
   @Roles('admin', 'gerente', 'vendedor')
-  findById(@Param('id') id: string, @CurrentUser() user: any) {
+  findById(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser) {
     return this.repo.findById(id, user.tenantId);
   }
 
   @Post()
   @Roles('admin', 'gerente')
-  create(@CurrentUser() user: any, @Body() body: CreateEventDto) {
+  create(@CurrentUser() user: AuthenticatedUser, @Body() body: CreateEventDto) {
     return this.repo.create({
       tenantId: user.tenantId,
       createdBy: user.id,
@@ -45,7 +46,7 @@ export class EventController {
 
   @Put(':id')
   @Roles('admin', 'gerente')
-  update(@Param('id') id: string, @CurrentUser() user: any, @Body() body: UpdateEventDto) {
+  update(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser, @Body() body: UpdateEventDto) {
     return this.repo.update(id, user.tenantId, {
       ...body,
       startDate: body.startDate ? new Date(body.startDate) : undefined,
@@ -55,7 +56,7 @@ export class EventController {
 
   @Delete(':id')
   @Roles('admin')
-  delete(@Param('id') id: string, @CurrentUser() user: any) {
+  delete(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser) {
     return this.repo.delete(id, user.tenantId);
   }
 }

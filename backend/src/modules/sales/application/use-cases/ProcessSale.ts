@@ -1,5 +1,6 @@
-import { SaleRepository } from '../ports/SaleRepository.interface';
-import { ProductRepository } from '@modules/inventory/application/ports/ProductRepository.interface';
+import { Inject, Injectable } from '@nestjs/common';
+import { SaleRepository, SALES_REPOSITORY } from '../ports/SaleRepository.interface';
+import { ProductRepository, PRODUCT_REPOSITORY } from '@modules/inventory/application/ports/ProductRepository.interface';
 import { Sale, PaymentMethod } from '../../domain/Sale';
 import { SaleItem } from '../../domain/SaleItem';
 
@@ -18,17 +19,16 @@ interface ProcessSaleInput {
   taxRate?: number;
 }
 
-export class ProcessSale {
+@Injectable()
+export class ProcessSaleUseCase {
   constructor(
+    @Inject(SALES_REPOSITORY)
     private readonly saleRepo: SaleRepository,
+    @Inject(PRODUCT_REPOSITORY)
     private readonly productRepo: ProductRepository,
-  ) {}
+  ) { }
 
   async execute(input: ProcessSaleInput): Promise<Sale> {
-    // Build the Sale domain object with preliminary totals.
-    // Stock validation now happens INSIDE the repository's $transaction
-    // to prevent race conditions between concurrent sales.
-
     const productIds = input.items.map((i) => i.productId);
     const products = await this.productRepo.findByIds(productIds, input.tenantId);
 
@@ -40,7 +40,6 @@ export class ProcessSale {
     for (const item of input.items) {
       const product = productMap.get(item.productId);
       if (!product) throw new Error(`Producto ${item.productId} no encontrado`);
-      // Preliminary stock check (non-authoritative — final check is inside $transaction)
       if (product.stock < item.quantity)
         throw new Error(`Stock insuficiente para ${product.name}`);
       saleItems.push(

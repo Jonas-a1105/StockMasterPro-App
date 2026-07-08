@@ -1,4 +1,5 @@
-import { ProductRepository } from '../ports/ProductRepository.interface';
+import { Inject, Injectable } from '@nestjs/common';
+import { ProductRepository, PRODUCT_REPOSITORY } from '../ports/ProductRepository.interface';
 import { Product } from '../../domain/Product';
 
 interface AdjustStockInput {
@@ -10,8 +11,12 @@ interface AdjustStockInput {
   reason?: string;
 }
 
-export class AdjustStock {
-  constructor(private readonly productRepo: ProductRepository) {}
+@Injectable()
+export class AdjustStockUseCase {
+  constructor(
+    @Inject(PRODUCT_REPOSITORY)
+    private readonly productRepo: ProductRepository,
+  ) {}
 
   async execute(input: AdjustStockInput): Promise<Product> {
     if (input.quantity === 0) {

@@ -1,1 +1,0 @@
-export { Supplier } from './Supplier';

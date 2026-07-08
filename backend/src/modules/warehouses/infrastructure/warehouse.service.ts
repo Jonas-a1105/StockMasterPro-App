@@ -36,23 +36,22 @@ export class WarehouseService {
   }
 
   async update(id: string, tenantId: string, dto: UpdateWarehouseDto) {
-    await this.findById(id, tenantId); // checks ownership and throws 404 if not found
-    return this.prisma.warehouse.update({
-      where: { id },
+    const { count } = await this.prisma.warehouse.updateMany({
+      where: { id, tenantId },
       data: dto,
     });
+    if (count === 0) throw new NotFoundException('Almacén no encontrado');
+    return this.findById(id, tenantId);
   }
 
   async delete(id: string, tenantId: string) {
-    await this.findById(id, tenantId); // checks ownership
-    // Unlink products associated with this warehouse
     await this.prisma.product.updateMany({
-      where: { warehouseId: id },
+      where: { warehouseId: id, tenantId },
       data: { warehouseId: null },
     });
-    // Delete the warehouse
-    await this.prisma.warehouse.delete({
-      where: { id },
+    const { count } = await this.prisma.warehouse.deleteMany({
+      where: { id, tenantId },
     });
+    if (count === 0) throw new NotFoundException('Almacén no encontrado');
   }
 }

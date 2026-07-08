@@ -1,16 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@shared/infrastructure/prisma/prisma.service';
-import { LicenseRepository } from '../../application/ports/LicenseRepository.interface';
-import { Tenant } from '../../../auth/domain/Tenant';
 
 @Injectable()
-export class PostgresLicenseRepo implements LicenseRepository {
+export class PostgresLicenseRepo {
   constructor(private readonly prisma: PrismaService) {}
 
-  async findTenantById(id: string): Promise<Tenant | null> {
-    const row = await this.prisma.tenant.findUnique({ where: { id } });
-    if (!row) return null;
-    return new Tenant(row.id, row.name, row.planType, row.subscriptionStatus, row.licenseExpiresAt, row.isBlocked);
+  async findTenantById(id: string) {
+    return this.prisma.tenant.findUnique({ where: { id } });
   }
 
   async updateLicense(tenantId: string, expiresAt: Date, tier: string): Promise<void> {

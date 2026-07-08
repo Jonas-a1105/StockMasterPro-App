@@ -36,15 +36,18 @@ export class SupplierService {
   }
 
   async update(id: string, tenantId: string, dto: UpdateSupplierDto) {
-    await this.findById(id, tenantId);
-    return this.prisma.supplier.update({
-      where: { id },
+    const { count } = await this.prisma.supplier.updateMany({
+      where: { id, tenantId },
       data: dto,
     });
+    if (count === 0) throw new NotFoundException('Proveedor no encontrado');
+    return this.findById(id, tenantId);
   }
 
   async delete(id: string, tenantId: string) {
-    await this.findById(id, tenantId);
-    await this.prisma.supplier.delete({ where: { id } });
+    const { count } = await this.prisma.supplier.deleteMany({
+      where: { id, tenantId },
+    });
+    if (count === 0) throw new NotFoundException('Proveedor no encontrado');
   }
 }

@@ -1,31 +1,38 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@shared/infrastructure/prisma/prisma.service';
-import { PurchaseOrderRepository } from '../../application/ports/PurchaseOrderRepository.interface';
-import { PurchaseOrder, PurchaseOrderItem } from '../../domain';
+
+export interface PurchaseOrderInput {
+  id: string;
+  tenantId: string;
+  supplierId: string;
+  userId: string;
+  status: string;
+  total: number;
+  notes?: string | null;
+  items: { productId: string; quantity: number; cost: number; subtotal: number }[];
+}
 
 @Injectable()
-export class PostgresPurchaseOrderRepo implements PurchaseOrderRepository {
+export class PostgresPurchaseOrderRepo {
   constructor(private readonly prisma: PrismaService) {}
 
-  async findAll(tenantId: string): Promise<PurchaseOrder[]> {
-    const orders = await this.prisma.purchaseOrder.findMany({
+  async findAll(tenantId: string) {
+    return this.prisma.purchaseOrder.findMany({
       where: { tenantId },
       include: { items: true },
       orderBy: { createdAt: 'desc' },
     });
-    return orders.map((o) => this.toPurchaseOrder(o));
   }
 
-  async findById(id: string, tenantId: string): Promise<PurchaseOrder | null> {
-    const o = await this.prisma.purchaseOrder.findFirst({
+  async findById(id: string, tenantId: string) {
+    return this.prisma.purchaseOrder.findFirst({
       where: { id, tenantId },
       include: { items: true },
     });
-    return o ? this.toPurchaseOrder(o) : null;
   }
 
-  async create(order: PurchaseOrder): Promise<PurchaseOrder> {
-    const created = await this.prisma.$transaction(async (tx) => {
+  async create(order: PurchaseOrderInput) {
+    return this.prisma.$transaction(async (tx) => {
       const po = await tx.purchaseOrder.create({
         data: {
           id: order.id,
@@ -49,8 +56,8 @@ export class PostgresPurchaseOrderRepo implements PurchaseOrderRepository {
       });
 
       for (const item of order.items) {
-        const product = await tx.product.findUnique({
-          where: { id: item.productId },
+        const product = await tx.product.findFirst({
+          where: { id: item.productId, tenantId: order.tenantId },
         });
         if (!product)
           throw new Error(`Producto ${item.productId} no encontrado`);
@@ -67,8 +74,8 @@ export class PostgresPurchaseOrderRepo implements PurchaseOrderRepository {
               (currentStock + purchasedQty)
             : purchaseCost;
 
-        await tx.product.update({
-          where: { id: item.productId },
+        await tx.product.updateMany({
+          where: { id: item.productId, tenantId: order.tenantId },
           data: {
             stock: newStock,
             cost: Math.round(newCost * 100) / 100,
@@ -89,28 +96,5 @@ export class PostgresPurchaseOrderRepo implements PurchaseOrderRepository {
 
       return po;
     });
-
-    return this.toPurchaseOrder(created);
-  }
-
-  private toPurchaseOrder(o: any): PurchaseOrder {
-    return {
-      id: o.id,
-      tenantId: o.tenantId,
-      supplierId: o.supplierId,
-      userId: o.userId,
-      status: o.status,
-      total: Number(o.total),
-      notes: o.notes,
-      items: o.items?.map(
-        (i: any) => ({
-          productId: i.productId,
-          quantity: i.quantity,
-          cost: Number(i.cost),
-          subtotal: Number(i.subtotal),
-        }),
-      ) ?? [],
-      createdAt: o.createdAt,
-    };
   }
 }

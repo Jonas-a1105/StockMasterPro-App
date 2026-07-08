@@ -3,6 +3,7 @@ import { JwtAuthGuard } from '@shared/infrastructure/guards/jwt-auth.guard';
 import { RolesGuard } from '@shared/infrastructure/guards/roles.guard';
 import { Roles } from '@shared/infrastructure/decorators/roles.decorator';
 import { CurrentUser } from '@shared/infrastructure/decorators/current-user.decorator';
+import { AuthenticatedUser } from '@shared/infrastructure/types/authenticated-user';
 import { PostgresReportRepo } from '../persistence/PostgresReportRepo';
 
 @Controller('reports')
@@ -13,7 +14,7 @@ export class ReportController {
   @Get('net-profit')
   @Roles('admin', 'gerente')
   getNetProfit(
-    @CurrentUser() user: any,
+    @CurrentUser() user: AuthenticatedUser,
     @Query('startDate') startDate?: string,
     @Query('endDate') endDate?: string,
   ) {
@@ -23,7 +24,7 @@ export class ReportController {
   @Get('best-sellers')
   @Roles('admin', 'gerente')
   getBestSellers(
-    @CurrentUser() user: any,
+    @CurrentUser() user: AuthenticatedUser,
     @Query('limit') limit?: string,
     @Query('startDate') startDate?: string,
     @Query('endDate') endDate?: string,
@@ -34,7 +35,7 @@ export class ReportController {
   @Get('dead-products')
   @Roles('admin', 'gerente')
   getDeadProducts(
-    @CurrentUser() user: any,
+    @CurrentUser() user: AuthenticatedUser,
     @Query('days') days?: string,
   ) {
     return this.repo.getDeadProducts(user.tenantId, days ? parseInt(days) : 90);
@@ -43,7 +44,7 @@ export class ReportController {
   @Get('monthly-profit')
   @Roles('admin', 'gerente')
   getMonthlyProfit(
-    @CurrentUser() user: any,
+    @CurrentUser() user: AuthenticatedUser,
     @Query('year') year?: string,
   ) {
     return this.repo.getMonthlyProfit(user.tenantId, year ? parseInt(year) : new Date().getFullYear());

@@ -2,7 +2,7 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from '@shared/infrastructure/prisma/prisma.service';
 import { PostgresLicenseRepo } from './persistence/PostgresLicenseRepo';
-import { ActivateLicense } from '../application/use-cases/ActivateLicense';
+
 
 @Injectable()
 export class LicensesService {
@@ -111,8 +111,7 @@ export class LicensesService {
       const payload = this.jwtService.verify(code, {
         secret: process.env.LICENSE_JWT_SECRET!, // validated at bootstrap
       });
-      const useCase = new ActivateLicense(this.licenseRepo);
-      await useCase.execute(tenantId, payload.targetTenantId, new Date(payload.expiresAt));
+      await this.licenseRepo.updateLicense(tenantId, new Date(payload.expiresAt), payload.tier || 'pro');
       return { message: 'Licencia activada exitosamente', expiresAt: payload.expiresAt };
     } catch (err: any) {
       const msg = err.name === 'JsonWebTokenError' || err.name === 'TokenExpiredError'

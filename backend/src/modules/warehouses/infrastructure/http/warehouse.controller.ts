@@ -1,6 +1,7 @@
 import { Controller, Get, Post, Put, Delete, Body, Param } from '@nestjs/common';
 import { Roles } from '@shared/infrastructure/decorators/roles.decorator';
 import { CurrentUser } from '@shared/infrastructure/decorators/current-user.decorator';
+import { AuthenticatedUser } from '@shared/infrastructure/types/authenticated-user';
 import { WarehouseService } from '../warehouse.service';
 import { CreateWarehouseDto } from '../dto/create-warehouse.dto';
 import { UpdateWarehouseDto } from '../dto/update-warehouse.dto';
@@ -11,19 +12,19 @@ export class WarehouseController {
 
   @Get()
   @Roles('admin', 'gerente', 'vendedor')
-  findAll(@CurrentUser() user: any) {
+  findAll(@CurrentUser() user: AuthenticatedUser) {
     return this.service.findAll(user.tenantId);
   }
 
   @Get(':id')
   @Roles('admin', 'gerente', 'vendedor')
-  findById(@Param('id') id: string, @CurrentUser() user: any) {
+  findById(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser) {
     return this.service.findById(id, user.tenantId);
   }
 
   @Post()
   @Roles('admin')
-  create(@CurrentUser() user: any, @Body() body: CreateWarehouseDto) {
+  create(@CurrentUser() user: AuthenticatedUser, @Body() body: CreateWarehouseDto) {
     return this.service.create(user.tenantId, body);
   }
 
@@ -31,7 +32,7 @@ export class WarehouseController {
   @Roles('admin')
   update(
     @Param('id') id: string,
-    @CurrentUser() user: any,
+    @CurrentUser() user: AuthenticatedUser,
     @Body() body: UpdateWarehouseDto,
   ) {
     return this.service.update(id, user.tenantId, body);
@@ -39,7 +40,7 @@ export class WarehouseController {
 
   @Delete(':id')
   @Roles('admin')
-  delete(@Param('id') id: string, @CurrentUser() user: any) {
+  delete(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser) {
     return this.service.delete(id, user.tenantId);
   }
 }

@@ -27,17 +27,18 @@ export class CategoryService {
   }
 
   async update(id: string, tenantId: string, name: string) {
-    await this.findById(id, tenantId);
-    return this.prisma.category.update({
-      where: { id },
+    const { count } = await this.prisma.category.updateMany({
+      where: { id, tenantId },
       data: { name },
     });
+    if (count === 0) throw new NotFoundException('Categoría no encontrada');
+    return this.findById(id, tenantId);
   }
 
   async delete(id: string, tenantId: string) {
-    await this.findById(id, tenantId);
-    return this.prisma.category.delete({
-      where: { id },
+    const { count } = await this.prisma.category.deleteMany({
+      where: { id, tenantId },
     });
+    if (count === 0) throw new NotFoundException('Categoría no encontrada');
   }
 }

@@ -1,6 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@shared/infrastructure/prisma/prisma.service';
-import { NetProfitData } from '../../application/ports/ReportRepository.interface';
+
+export interface NetProfitData {
+  grossRevenue: number;
+  cogs: number;
+  grossProfit: number;
+  totalExpenses: number;
+  netProfit: number;
+  profitMargin: number;
+  periodStart: string;
+  periodEnd: string;
+}
 
 @Injectable()
 export class PostgresReportRepo {

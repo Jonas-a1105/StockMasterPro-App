@@ -8,34 +8,53 @@ import {
   Param,
   Query,
 } from '@nestjs/common';
-import { InventoryService } from '../inventory.service';
 import { CreateProductDto } from '../dto/create-product.dto';
 import { UpdateProductDto } from '../dto/update-product.dto';
 import { Roles } from '@shared/infrastructure/decorators/roles.decorator';
 import { CurrentUser } from '@shared/infrastructure/decorators/current-user.decorator';
+import { AuthenticatedUser } from '@shared/infrastructure/types/authenticated-user';
+import { CreateProductUseCase } from '../../application/use-cases/CreateProduct';
+import { AdjustStockUseCase } from '../../application/use-cases/AdjustStock';
+import { FindAllProductsUseCase } from '../../application/use-cases/FindAllProducts';
+import { FindProductByIdUseCase } from '../../application/use-cases/FindProductById';
+import { UpdateProductUseCase } from '../../application/use-cases/UpdateProduct';
+import { DeleteProductUseCase } from '../../application/use-cases/DeleteProduct';
+import { FindAllAdjustmentsUseCase } from '../../application/use-cases/FindAllAdjustments';
+import { GetLowStockProductsUseCase } from '../../application/use-cases/GetLowStockProducts';
+import { GetProductMovementsUseCase } from '../../application/use-cases/GetProductMovements';
 
 @Controller('inventory')
 export class InventoryController {
-  constructor(private readonly inventoryService: InventoryService) {}
+  constructor(
+    private readonly getLowStockUseCase: GetLowStockProductsUseCase,
+    private readonly findAllProductsUseCase: FindAllProductsUseCase,
+    private readonly findAllAdjustmentsUseCase: FindAllAdjustmentsUseCase,
+    private readonly findProductByIdUseCase: FindProductByIdUseCase,
+    private readonly createProductUseCase: CreateProductUseCase,
+    private readonly updateProductUseCase: UpdateProductUseCase,
+    private readonly deleteProductUseCase: DeleteProductUseCase,
+    private readonly adjustStockUseCase: AdjustStockUseCase,
+    private readonly getProductMovementsUseCase: GetProductMovementsUseCase,
+  ) {}
 
   @Get('low-stock')
   @Roles('admin', 'gerente', 'vendedor')
-  async getLowStock(@CurrentUser() user: any) {
-    return this.inventoryService.getLowStock(user.tenantId);
+  async getLowStock(@CurrentUser() user: AuthenticatedUser) {
+    return this.getLowStockUseCase.execute(user.tenantId);
   }
 
   @Get()
-  async findAll(@CurrentUser() user: any) {
-    return this.inventoryService.findAll(user.tenantId);
+  async findAll(@CurrentUser() user: AuthenticatedUser) {
+    return this.findAllProductsUseCase.execute(user.tenantId);
   }
 
   @Get('adjustments')
   async findAllAdjustments(
     @Query('limit') limit: string,
     @Query('offset') offset: string,
-    @CurrentUser() user: any,
+    @CurrentUser() user: AuthenticatedUser,
   ) {
-    return this.inventoryService.findAllAdjustments(
+    return this.findAllAdjustmentsUseCase.execute(
       user.tenantId,
       limit ? Number(limit) : undefined,
       offset ? Number(offset) : undefined,
@@ -43,14 +62,14 @@ export class InventoryController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string, @CurrentUser() user: any) {
-    return this.inventoryService.findById(id, user.tenantId);
+  async findOne(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser) {
+    return this.findProductByIdUseCase.execute(id, user.tenantId);
   }
 
   @Post()
   @Roles('admin', 'gerente')
-  async create(@Body() dto: CreateProductDto, @CurrentUser() user: any) {
-    return this.inventoryService.create({ ...dto, tenantId: user.tenantId });
+  async create(@Body() dto: CreateProductDto, @CurrentUser() user: AuthenticatedUser) {
+    return this.createProductUseCase.execute({ ...dto, tenantId: user.tenantId });
   }
 
   @Patch(':id')
@@ -58,15 +77,15 @@ export class InventoryController {
   async update(
     @Param('id') id: string,
     @Body() dto: UpdateProductDto,
-    @CurrentUser() user: any,
+    @CurrentUser() user: AuthenticatedUser,
   ) {
-    return this.inventoryService.update(id, user.tenantId, dto);
+    return this.updateProductUseCase.execute(id, user.tenantId, dto);
   }
 
   @Delete(':id')
   @Roles('admin')
-  async delete(@Param('id') id: string, @CurrentUser() user: any) {
-    return this.inventoryService.delete(id, user.tenantId);
+  async delete(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser) {
+    return this.deleteProductUseCase.execute(id, user.tenantId);
   }
 
   @Post(':id/adjust')
@@ -74,9 +93,16 @@ export class InventoryController {
   async adjustStock(
     @Param('id') id: string,
     @Body() body: { quantity: number; type: string; reason?: string },
-    @CurrentUser() user: any,
+    @CurrentUser() user: AuthenticatedUser,
   ) {
-    return this.inventoryService.adjustStock(id, user.tenantId, user.id, body);
+    return this.adjustStockUseCase.execute({
+      productId: id,
+      tenantId: user.tenantId,
+      userId: user.id,
+      quantity: body.quantity,
+      type: body.type,
+      reason: body.reason,
+    });
   }
 
   @Get(':id/movements')
@@ -84,9 +110,9 @@ export class InventoryController {
     @Param('id') id: string,
     @Query('limit') limit: string,
     @Query('offset') offset: string,
-    @CurrentUser() user: any,
+    @CurrentUser() user: AuthenticatedUser,
   ) {
-    return this.inventoryService.getMovements(
+    return this.getProductMovementsUseCase.execute(
       id,
       user.tenantId,
       limit ? Number(limit) : undefined,

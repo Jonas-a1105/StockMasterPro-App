@@ -1,4 +1,5 @@
-import { ProductRepository } from '../ports/ProductRepository.interface';
+import { Inject, Injectable } from '@nestjs/common';
+import { ProductRepository, PRODUCT_REPOSITORY } from '../ports/ProductRepository.interface';
 import { Product } from '../../domain/Product';
 
 export interface CreateProductInput {
@@ -15,8 +16,12 @@ export interface CreateProductInput {
   brand?: string | null;
 }
 
-export class CreateProduct {
-  constructor(private readonly productRepo: ProductRepository) {}
+@Injectable()
+export class CreateProductUseCase {
+  constructor(
+    @Inject(PRODUCT_REPOSITORY)
+    private readonly productRepo: ProductRepository,
+  ) {}
 
   async execute(data: CreateProductInput): Promise<Product> {
     const barcode = data.barcode ?? null;

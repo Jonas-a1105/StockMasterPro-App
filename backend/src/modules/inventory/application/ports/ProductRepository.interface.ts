@@ -1,5 +1,7 @@
 import { Product } from '../../domain/Product';
 
+export const PRODUCT_REPOSITORY = Symbol('PRODUCT_REPOSITORY');
+
 export interface CreateProductData {
   tenantId: string;
   name: string;

@@ -1,24 +1,23 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '@shared/infrastructure/prisma/prisma.service';
-import { UserRepository } from '../../application/ports/UserRepository.interface';
-import { User } from '../../domain/User';
-import { User as PrismaUser } from '@prisma/client';
 
 @Injectable()
-export class PostgresUserRepo implements UserRepository {
+export class PostgresUserRepo {
   constructor(private readonly prisma: PrismaService) {}
 
-  async findAll(tenantId: string): Promise<User[]> {
-    const users = await this.prisma.user.findMany({
+  async findAll(tenantId: string) {
+    return this.prisma.user.findMany({
       where: { tenantId },
       orderBy: { name: 'asc' },
+      select: { id: true, tenantId: true, email: true, name: true, role: true, isActive: true, createdAt: true, updatedAt: true },
     });
-    return users.map((u) => this.toUser(u));
   }
 
-  async findById(id: string, tenantId: string): Promise<User | null> {
-    const u = await this.prisma.user.findFirst({ where: { id, tenantId } });
-    return u ? this.toUser(u) : null;
+  async findById(id: string, tenantId: string) {
+    return this.prisma.user.findFirst({
+      where: { id, tenantId },
+      select: { id: true, tenantId: true, email: true, name: true, role: true, isActive: true, createdAt: true, updatedAt: true },
+    });
   }
 
   async create(data: {
@@ -27,9 +26,8 @@ export class PostgresUserRepo implements UserRepository {
     passwordHash: string;
     name: string;
     role: string;
-  }): Promise<User> {
-    const u = await this.prisma.user.create({ data });
-    return this.toUser(u);
+  }) {
+    return this.prisma.user.create({ data });
   }
 
   async update(
@@ -41,29 +39,19 @@ export class PostgresUserRepo implements UserRepository {
       role: string;
       isActive: boolean;
     }>,
-  ): Promise<User> {
-    const existing = await this.prisma.user.findFirst({ where: { id, tenantId } });
-    if (!existing) throw new Error('Usuario no encontrado');
-    const u = await this.prisma.user.update({ where: { id }, data });
-    return this.toUser(u);
+  ) {
+    const { count } = await this.prisma.user.updateMany({
+      where: { id, tenantId },
+      data,
+    });
+    if (count === 0) throw new NotFoundException('Usuario no encontrado');
+    return this.findById(id, tenantId);
   }
 
   async delete(id: string, tenantId: string): Promise<void> {
-    const existing = await this.prisma.user.findFirst({ where: { id, tenantId } });
-    if (!existing) throw new Error('Usuario no encontrado');
-    await this.prisma.user.delete({ where: { id } });
-  }
-
-  private toUser(u: PrismaUser): User {
-    return new User(
-      u.id,
-      u.tenantId,
-      u.email,
-      u.name,
-      u.role,
-      u.isActive,
-      u.createdAt,
-      u.updatedAt,
-    );
+    const { count } = await this.prisma.user.deleteMany({
+      where: { id, tenantId },
+    });
+    if (count === 0) throw new NotFoundException('Usuario no encontrado');
   }
 }

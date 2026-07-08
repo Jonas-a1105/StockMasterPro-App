@@ -1,8 +1,13 @@
-import { AccountsPayableRepository, CreatePayableData } from '../ports/AccountsPayableRepository.interface';
+import { Inject, Injectable } from '@nestjs/common';
+import { AccountsPayableRepository, CreatePayableData, ACCOUNTS_PAYABLE_REPOSITORY } from '../ports/AccountsPayableRepository.interface';
 import { AccountsPayable } from '../../domain/AccountsPayable';
 
-export class CreateAccountsPayable {
-  constructor(private readonly repo: AccountsPayableRepository) {}
+@Injectable()
+export class CreateAccountsPayableUseCase {
+  constructor(
+    @Inject(ACCOUNTS_PAYABLE_REPOSITORY)
+    private readonly repo: AccountsPayableRepository,
+  ) {}
 
   async execute(data: CreatePayableData): Promise<AccountsPayable> {
     if (data.totalAmount <= 0) throw new Error('El monto total debe ser mayor a cero');

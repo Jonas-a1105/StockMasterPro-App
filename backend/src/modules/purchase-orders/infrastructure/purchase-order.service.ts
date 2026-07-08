@@ -1,6 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PostgresPurchaseOrderRepo } from './persistence/PostgresPurchaseOrderRepo';
-import { ReceivePurchaseOrder } from '../application/use-cases/ReceivePurchaseOrder';
 
 @Injectable()
 export class PurchaseOrderService {
@@ -23,7 +22,21 @@ export class PurchaseOrderService {
     items: { productId: string; quantity: number; cost: number }[];
     notes?: string;
   }) {
-    const useCase = new ReceivePurchaseOrder(this.poRepo);
-    return useCase.execute(input);
+    const total = input.items.reduce((sum, i) => sum + i.quantity * i.cost, 0);
+    return this.poRepo.create({
+      id: crypto.randomUUID(),
+      tenantId: input.tenantId,
+      supplierId: input.supplierId ?? '',
+      userId: input.userId,
+      status: 'received',
+      total,
+      notes: input.notes,
+      items: input.items.map((i) => ({
+        productId: i.productId,
+        quantity: i.quantity,
+        cost: i.cost,
+        subtotal: i.quantity * i.cost,
+      })),
+    });
   }
 }

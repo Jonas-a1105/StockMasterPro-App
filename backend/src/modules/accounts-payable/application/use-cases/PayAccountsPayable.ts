@@ -1,8 +1,13 @@
-import { AccountsPayableRepository, PayablePaymentData } from '../ports/AccountsPayableRepository.interface';
+import { Inject, Injectable } from '@nestjs/common';
+import { AccountsPayableRepository, PayablePaymentData, ACCOUNTS_PAYABLE_REPOSITORY } from '../ports/AccountsPayableRepository.interface';
 import { PayablePayment } from '../../domain/PayablePayment';
 
-export class PayAccountsPayable {
-  constructor(private readonly repo: AccountsPayableRepository) {}
+@Injectable()
+export class PayAccountsPayableUseCase {
+  constructor(
+    @Inject(ACCOUNTS_PAYABLE_REPOSITORY)
+    private readonly repo: AccountsPayableRepository,
+  ) {}
 
   async execute(data: PayablePaymentData): Promise<PayablePayment> {
     const payable = await this.repo.findById(data.accountPayableId, data.tenantId);

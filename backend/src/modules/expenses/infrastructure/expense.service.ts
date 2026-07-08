@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PostgresExpenseRepo } from './persistence/PostgresExpenseRepo';
-import { CreateExpense } from '../application/use-cases/CreateExpense';
+import { PostgresExpenseRepo, CreateExpenseData } from './persistence/PostgresExpenseRepo';
 
 @Injectable()
 export class ExpenseService {
@@ -10,13 +9,12 @@ export class ExpenseService {
     return this.repo.findAll({ tenantId, category, startDate, endDate });
   }
 
-  async findById(id: string) {
-    return this.repo.findById(id);
+  async findById(id: string, tenantId: string) {
+    return this.repo.findById(id, tenantId);
   }
 
-  async create(dto: any, userId: string, tenantId: string) {
-    const useCase = new CreateExpense(this.repo);
-    return useCase.execute({ ...dto, registeredBy: userId, tenantId, paymentMethod: dto.paymentMethod || 'cash' });
+  async create(dto: CreateExpenseData) {
+    return this.repo.create(dto);
   }
 
   async delete(id: string, tenantId: string) {

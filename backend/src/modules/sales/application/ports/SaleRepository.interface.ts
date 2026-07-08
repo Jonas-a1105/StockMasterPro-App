@@ -1,5 +1,7 @@
 import { Sale } from '../../domain/Sale';
 
+export const SALES_REPOSITORY = Symbol('SALES_REPOSITORY');
+
 export interface SaleRepository {
   findById(id: string, tenantId: string): Promise<Sale | null>;
   findAll(tenantId: string, limit?: number, offset?: number): Promise<Sale[]>;

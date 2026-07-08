@@ -1,13 +1,29 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@shared/infrastructure/prisma/prisma.service';
-import { ExpenseRepository, CreateExpenseData, ExpenseFilter } from '../../application/ports/ExpenseRepository.interface';
-import { Expense } from '../../domain/Expense';
+
+export interface CreateExpenseData {
+  tenantId: string;
+  description: string;
+  amount: number;
+  category: string;
+  paymentMethod?: string;
+  notes?: string;
+  registeredBy: string;
+  expenseDate: string;
+}
+
+export interface ExpenseFilter {
+  tenantId: string;
+  category?: string;
+  startDate?: string;
+  endDate?: string;
+}
 
 @Injectable()
-export class PostgresExpenseRepo implements ExpenseRepository {
+export class PostgresExpenseRepo {
   constructor(private readonly prisma: PrismaService) {}
 
-  async findAll(filter: ExpenseFilter): Promise<Expense[]> {
+  async findAll(filter: ExpenseFilter) {
     const where: any = { tenantId: filter.tenantId };
     if (filter.category) where.category = filter.category;
     if (filter.startDate || filter.endDate) {
@@ -15,17 +31,15 @@ export class PostgresExpenseRepo implements ExpenseRepository {
       if (filter.startDate) where.expenseDate.gte = new Date(filter.startDate);
       if (filter.endDate) where.expenseDate.lte = new Date(filter.endDate);
     }
-    const rows = await this.prisma.expense.findMany({ where, orderBy: { expenseDate: 'desc' } });
-    return rows.map(r => this.toDomain(r));
+    return this.prisma.expense.findMany({ where, orderBy: { expenseDate: 'desc' } });
   }
 
-  async findById(id: string): Promise<Expense | null> {
-    const row = await this.prisma.expense.findUnique({ where: { id } });
-    return row ? this.toDomain(row) : null;
+  async findById(id: string, tenantId: string) {
+    return this.prisma.expense.findFirst({ where: { id, tenantId } });
   }
 
-  async create(data: CreateExpenseData): Promise<Expense> {
-    const row = await this.prisma.expense.create({
+  async create(data: CreateExpenseData) {
+    return this.prisma.expense.create({
       data: {
         tenantId: data.tenantId,
         description: data.description,
@@ -37,7 +51,6 @@ export class PostgresExpenseRepo implements ExpenseRepository {
         expenseDate: new Date(data.expenseDate),
       },
     });
-    return this.toDomain(row);
   }
 
   async delete(id: string, tenantId: string): Promise<void> {
@@ -57,9 +70,5 @@ export class PostgresExpenseRepo implements ExpenseRepository {
       _sum: { amount: true },
     });
     return rows.map(r => ({ category: r.category, total: Number(r._sum.amount) }));
-  }
-
-  private toDomain(row: any): Expense {
-    return new Expense(row.id, row.tenantId, row.description, Number(row.amount), row.category, row.paymentMethod, row.notes, row.registeredBy, row.expenseDate, row.createdAt);
   }
 }

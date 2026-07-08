@@ -3,6 +3,7 @@ import { JwtAuthGuard } from '@shared/infrastructure/guards/jwt-auth.guard';
 import { RolesGuard } from '@shared/infrastructure/guards/roles.guard';
 import { Roles } from '@shared/infrastructure/decorators/roles.decorator';
 import { CurrentUser } from '@shared/infrastructure/decorators/current-user.decorator';
+import { AuthenticatedUser } from '@shared/infrastructure/types/authenticated-user';
 import { PrismaService } from '@shared/infrastructure/prisma/prisma.service';
 
 @Controller('notifications')
@@ -12,7 +13,7 @@ export class NotificationsController {
   constructor(private readonly prisma: PrismaService) {}
 
   @Get()
-  async findAll(@CurrentUser() user: any) {
+  async findAll(@CurrentUser() user: AuthenticatedUser) {
     const tenantId = user.tenantId;
     const notifications: any[] = [];
 

@@ -1,6 +1,8 @@
 import { AccountsPayable } from '../../domain/AccountsPayable';
 import { PayablePayment } from '../../domain/PayablePayment';
 
+export const ACCOUNTS_PAYABLE_REPOSITORY = Symbol('ACCOUNTS_PAYABLE_REPOSITORY');
+
 export interface CreatePayableData {
   tenantId: string;
   supplierId: string;
