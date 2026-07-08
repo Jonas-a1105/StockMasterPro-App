@@ -1,10 +1,38 @@
 const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 
+let isRefreshing = false;
+let refreshPromise: Promise<string | null> | null = null;
+
 class ApiClient {
   private token: string | null = null;
+  private refreshToken: string | null = null;
 
   setToken(token: string | null) {
     this.token = token;
+  }
+
+  setRefreshToken(token: string | null) {
+    this.refreshToken = token;
+  }
+
+  getToken() {
+    return this.token;
+  }
+
+  getRefreshToken() {
+    return this.refreshToken;
+  }
+
+  /** Decode JWT payload client-side to check expiration (no verification) */
+  isTokenExpired(): boolean {
+    if (!this.token) return true;
+    try {
+      const payload = JSON.parse(atob(this.token.split('.')[1]));
+      // 30s buffer to avoid edge-case where token expires mid-flight
+      return (payload.exp * 1000) < (Date.now() + 30_000);
+    } catch {
+      return true;
+    }
   }
 
   async get<T = any>(path: string): Promise<T> {
@@ -27,6 +55,51 @@ class ApiClient {
     return this.request<T>(path, { method: 'DELETE' });
   }
 
+  async tryRefresh(): Promise<string | null> {
+    if (!this.refreshToken) return null;
+
+    if (isRefreshing) {
+      return refreshPromise;
+    }
+
+    isRefreshing = true;
+    refreshPromise = (async () => {
+      try {
+        const response = await fetch(`${BASE_URL}/auth/refresh`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ refreshToken: this.refreshToken }),
+        });
+
+        if (!response.ok) {
+          this.token = null;
+          this.refreshToken = null;
+          window.dispatchEvent(new Event('auth-expired'));
+          return null;
+        }
+
+        const data = await response.json();
+        this.token = data.accessToken;
+        this.refreshToken = data.refreshToken;
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('stockmaster-token', data.accessToken);
+          localStorage.setItem('stockmaster-refresh-token', data.refreshToken);
+        }
+        return data.accessToken;
+      } catch (err) {
+        this.token = null;
+        this.refreshToken = null;
+        window.dispatchEvent(new Event('auth-expired'));
+        return null;
+      } finally {
+        isRefreshing = false;
+        refreshPromise = null;
+      }
+    })();
+
+    return refreshPromise;
+  }
+
   private async request<T>(path: string, options: RequestInit = {}): Promise<T> {
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
@@ -37,9 +110,26 @@ class ApiClient {
       headers['Authorization'] = `Bearer ${this.token}`;
     }
 
-    const response = await fetch(`${BASE_URL}${path}`, { ...options, headers });
+    let response = await fetch(`${BASE_URL}${path}`, { ...options, headers });
+
+    // License endpoints: graceful null fallback after refresh attempt fails
+    const isLicenseEndpoint = path.startsWith('/licenses/');
+
+    if (response.status === 401 && this.refreshToken && !path.includes('/auth/')) {
+      const newToken = await this.tryRefresh();
+      if (newToken) {
+        headers['Authorization'] = `Bearer ${newToken}`;
+        response = await fetch(`${BASE_URL}${path}`, { ...options, headers });
+      } else {
+        window.dispatchEvent(new Event('auth-expired'));
+        throw new Error('UNAUTHORIZED');
+      }
+    }
 
     if (response.status === 401) {
+      if (isLicenseEndpoint) {
+        return null as T;
+      }
       window.dispatchEvent(new Event('auth-expired'));
       throw new Error('UNAUTHORIZED');
     }

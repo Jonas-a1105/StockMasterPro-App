@@ -28,28 +28,87 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [licenseStatus, setLicenseStatus] = useState<any>(null);
   const [licenseUsage, setLicenseUsage] = useState<any>(null);
 
+  const clearSession = useCallback(() => {
+    setToken(null);
+    setUser(null);
+    setLicenseStatus(null);
+    setLicenseUsage(null);
+    api.setToken(null);
+    api.setRefreshToken(null);
+    localStorage.removeItem('stockmaster-token');
+    localStorage.removeItem('stockmaster-refresh-token');
+    localStorage.removeItem('stockmaster-user');
+  }, []);
+
   const refreshLicense = useCallback(async () => {
     try {
-      const status = await api.getLicenseStatus();
-      setLicenseStatus(status);
-      const usage = await api.getLicenseUsage();
-      setLicenseUsage(usage);
-    } catch (err) {
-      console.error('Error fetching license stats:', err);
+      const [status, usage] = await Promise.all([
+        api.getLicenseStatus(),
+        api.getLicenseUsage(),
+      ]);
+      if (status) setLicenseStatus(status);
+      if (usage) setLicenseUsage(usage);
+    } catch {
+      // Un fallo de red puntual no debe cerrar sesión
+      console.warn('[Auth] Error al refrescar estado de licencia');
     }
   }, []);
 
   useEffect(() => {
-    const savedToken = localStorage.getItem('stockmaster-token');
-    const savedUser = localStorage.getItem('stockmaster-user');
-    if (savedToken && savedUser) {
-      setToken(savedToken);
-      setUser(JSON.parse(savedUser));
-      api.setToken(savedToken);
-      api.getLicenseStatus().then(setLicenseStatus).catch(() => {});
-      api.getLicenseUsage().then(setLicenseUsage).catch(() => {});
-    }
-    setIsLoading(false);
+    const init = async () => {
+      const savedToken = localStorage.getItem('stockmaster-token');
+      const savedUser = localStorage.getItem('stockmaster-user');
+      const savedRefreshToken = localStorage.getItem('stockmaster-refresh-token');
+
+      if (savedToken && savedUser && savedUser !== 'undefined') {
+        api.setToken(savedToken);
+        api.setRefreshToken(savedRefreshToken);
+        let parsedUser: User | null = null;
+        try { parsedUser = JSON.parse(savedUser); } catch { /* corrupt localStorage */ }
+        if (!parsedUser) {
+          clearSession();
+          setIsLoading(false);
+          return;
+        }
+        setUser(parsedUser);
+
+        try {
+          // Si el access token expiró (15min TTL), refrescar proactivamente
+          // para evitar 401s visibles en la consola
+          if (api.isTokenExpired() && savedRefreshToken) {
+            const freshToken = await api.tryRefresh();
+            if (!freshToken) {
+              clearSession();
+              setIsLoading(false);
+              return;
+            }
+          } else if (api.isTokenExpired()) {
+            // Token expirado sin refresh token → sesión irrecuperable
+            clearSession();
+            setIsLoading(false);
+            return;
+          }
+
+          // Ahora el token es válido (original o refrescado)
+          const [status, usage] = await Promise.all([
+            api.getLicenseStatus(),
+            api.getLicenseUsage(),
+          ]);
+
+          if (status) {
+            setToken(api.getToken() || savedToken);
+            setLicenseStatus(status);
+          } else {
+            clearSession();
+          }
+          if (usage) setLicenseUsage(usage);
+        } catch {
+          clearSession();
+        }
+      }
+      setIsLoading(false);
+    };
+    init();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -59,10 +118,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setToken(accessToken);
     setUser(res.user);
     api.setToken(accessToken);
+    api.setRefreshToken(res.refreshToken);
     localStorage.setItem('stockmaster-token', accessToken);
+    localStorage.setItem('stockmaster-refresh-token', res.refreshToken);
     localStorage.setItem('stockmaster-user', JSON.stringify(res.user));
-    api.getLicenseStatus().then(setLicenseStatus).catch(() => {});
-    api.getLicenseUsage().then(setLicenseUsage).catch(() => {});
+    const [status, usage] = await Promise.all([
+      api.getLicenseStatus().catch(() => null),
+      api.getLicenseUsage().catch(() => null),
+    ]);
+    if (status) setLicenseStatus(status);
+    if (usage) setLicenseUsage(usage);
   };
 
   const register = async (data: { tenantName: string; email: string; password: string; name: string }) => {
@@ -71,21 +136,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setToken(accessToken);
     setUser(res.user);
     api.setToken(accessToken);
+    api.setRefreshToken(res.refreshToken);
     localStorage.setItem('stockmaster-token', accessToken);
+    localStorage.setItem('stockmaster-refresh-token', res.refreshToken);
     localStorage.setItem('stockmaster-user', JSON.stringify(res.user));
-    api.getLicenseStatus().then(setLicenseStatus).catch(() => {});
-    api.getLicenseUsage().then(setLicenseUsage).catch(() => {});
+    const [status, usage] = await Promise.all([
+      api.getLicenseStatus().catch(() => null),
+      api.getLicenseUsage().catch(() => null),
+    ]);
+    if (status) setLicenseStatus(status);
+    if (usage) setLicenseUsage(usage);
   };
 
   const logout = useCallback(() => {
-    setToken(null);
-    setUser(null);
-    api.setToken(null);
-    setLicenseStatus(null);
-    setLicenseUsage(null);
-    localStorage.removeItem('stockmaster-token');
-    localStorage.removeItem('stockmaster-user');
-  }, []);
+    clearSession();
+  }, [clearSession]);
 
   useEffect(() => {
     const handleLicenseBlocked = () => setLicenseBlocked(true);
