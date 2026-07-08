@@ -1,0 +1,608 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+  padding: 16px;
+}
+
+.modal {
+  width: 100%;
+  max-width: 1200px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background-color: var(--bg-card) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: var(--card-radius);
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  box-shadow: var(--shadow-lg) !important;
+}
+
+.modal::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+.modal::-webkit-scrollbar-thumb {
+  background-color: var(--text-muted);
+}
+
+/* Header */
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background-color: var(--bg-main) !important;
+  padding: 16px 20px;
+  border: 1px solid var(--border-color) !important;
+  border-radius: var(--card-radius) !important;
+}
+
+.headerTitleRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.headerTitle {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: var(--text-dark);
+  text-transform: none;
+}
+
+.headerBadge {
+  font-size: 9px;
+  background-color: var(--bg-hover);
+  border: 1px solid var(--border-color);
+  padding: 3px 8px;
+  color: var(--color-primary);
+  font-weight: 700;
+  text-transform: none;
+  letter-spacing: 1px;
+  border-radius: 4px;
+}
+
+.headerSubtitle {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.headerControls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.rateInputGroup {
+  background-color: var(--bg-main);
+  padding: 6px 10px;
+  border: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: var(--input-radius);
+}
+
+.rateInputLabel {
+  font-size: 10px;
+  color: var(--text-muted);
+  text-transform: none;
+  font-weight: 600;
+}
+
+.rateInput {
+  width: 80px;
+  background-color: var(--bg-card) !important;
+  border: 1px solid var(--input-border) !important;
+  color: var(--text-dark);
+  font-weight: 700;
+  padding: 4px 8px;
+  text-align: right;
+  outline: none;
+  font-size: 13px;
+  border-radius: 4px;
+}
+
+.rateInput:focus {
+  border-color: var(--color-primary) !important;
+}
+
+.rateInputUnit {
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+.headerClose {
+  background: none;
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: color 0.15s;
+  flex-shrink: 0;
+  border-radius: 50%;
+}
+
+.headerClose:hover {
+  color: var(--color-primary);
+}
+
+/* KPI Row */
+.kpiRow {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.kpiCard {
+  background-color: var(--bg-card) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: var(--card-radius) !important;
+  box-shadow: var(--shadow-sm) !important;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.kpiLabel {
+  font-size: 10px;
+  color: var(--text-muted);
+  text-transform: none;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.kpiValue {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.kpiValuePrefix {
+  font-size: 11px;
+  color: var(--text-muted);
+
+}
+
+.kpiValueNum {
+  font-size: 24px;
+  font-weight: 700;
+
+  color: var(--text-dark);
+  letter-spacing: -0.5px;
+}
+
+.kpiValueTag {
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: none;
+  font-weight: 600;
+  margin-left: 4px;
+}
+
+.kpiChange {
+  font-size: 10px;
+  color: var(--color-success);
+
+  margin-top: 4px;
+}
+
+.kpiChangeSub {
+  color: var(--text-muted);
+
+}
+
+.kpiSub {
+  font-size: 10px;
+  color: var(--text-muted);
+
+  margin-top: 4px;
+}
+
+.kpiDanger {
+  font-size: 10px;
+  color: var(--color-danger);
+
+  margin-top: 4px;
+}
+
+/* Row 2 */
+.row2 {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+}
+
+.chartPanel {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--card-radius);
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.chartPanelHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.chartPanelTitle {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: none;
+  color: var(--text-muted);
+}
+
+.chartPanelSub {
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+.chartBox {
+  height: 260px;
+  background-color: var(--bg-main);
+  padding: 8px;
+  border: 1px solid var(--border-color);
+}
+
+.converterPanel {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--card-radius);
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.converterTitle {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: none;
+  color: var(--text-muted);
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.converterBox {
+  background-color: var(--bg-main);
+  border: 1px solid var(--border-color);
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.converterInputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.converterLabel {
+  font-size: 9px;
+  color: var(--text-muted);
+  text-transform: none;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
+.converterInput {
+  width: 100%;
+  background-color: var(--bg-input);
+  border: 1px solid var(--border-color);
+  padding: 8px 10px;
+
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-dark);
+  text-align: right;
+  outline: none;
+}
+
+.converterInput:focus {
+  border-color: var(--color-primary);
+}
+
+.converterDivider {
+  border-top: 1px solid var(--border-color);
+}
+
+.converterLabelResult {
+  font-size: 9px;
+  color: var(--color-success);
+  text-transform: none;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
+.converterResult {
+  text-align: right;
+
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-success);
+  margin-top: 2px;
+}
+
+.arbitrageBox {
+  background-color: var(--bg-main);
+  border: 1px solid var(--border-color);
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 11px;
+
+}
+
+.arbitrageTitle {
+  font-size: 9px;
+  color: var(--text-muted);
+
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 1px;
+}
+
+.arbitrageRow {
+  display: flex;
+  justify-content: space-between;
+  color: var(--text-muted);
+}
+
+.arbitrageValue {
+  color: var(--text-dark);
+}
+
+/* Row 3 */
+.row3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.projectionPanel {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--card-radius);
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.projectionTitle {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: none;
+  color: var(--text-muted);
+}
+
+.projectionSub {
+  font-size: 10px;
+  color: var(--text-muted);
+  margin-top: -12px;
+}
+
+.projectionBars {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.projectionBarGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.projectionBarLabel {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+}
+
+.projectionBarText {
+  font-weight: 600;
+  color: var(--text-dark);
+  text-transform: none;
+  letter-spacing: 0.5px;
+}
+
+.projectionBarPctRed {
+
+  font-weight: 700;
+  color: var(--color-danger);
+}
+
+.projectionBarPctGreen {
+
+  font-weight: 700;
+  color: var(--color-success);
+}
+
+.projectionBarTrack {
+  width: 100%;
+  height: 8px;
+  background-color: var(--bg-main);
+  position: relative;
+  border: 1px solid var(--border-color);
+}
+
+.projectionBarRed {
+  background-color: var(--color-danger);
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.projectionBarGreen {
+  background-color: var(--color-success);
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.supportResistance {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.supportCard {
+  background-color: var(--bg-main);
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.supportLabel {
+  font-size: 9px;
+  color: var(--text-muted);
+  text-transform: none;
+
+}
+
+.supportValueRed {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-dark);
+
+  margin-top: 2px;
+}
+
+.supportValueGreen {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-dark);
+
+  margin-top: 2px;
+}
+
+/* Index Panel */
+.indexPanel {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--card-radius);
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.indexTitle {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: none;
+  color: var(--text-muted);
+}
+
+.indexSub {
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+.indexTable {
+  overflow-x: auto;
+  font-size: 11px;
+}
+
+.indexTableHeader {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1.5fr 1.5fr;
+  gap: 8px;
+  background-color: var(--bg-main);
+  color: var(--text-muted);
+  text-transform: none;
+  font-size: 9px;
+  letter-spacing: 1px;
+
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.indexTableRow {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1.5fr 1.5fr;
+  gap: 8px;
+  padding: 10px;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-muted);
+
+  align-items: center;
+}
+
+.indexTableRow:hover {
+  background-color: var(--bg-hover);
+}
+
+.indexColAsset {
+
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.indexColUsd {
+  text-align: right;
+}
+
+.indexColVesInit {
+  text-align: right;
+  color: var(--text-muted);
+}
+
+.indexColVesReval {
+  text-align: right;
+  color: var(--color-success);
+  font-weight: 700;
+}
+
+@media (max-width: 900px) {
+  .kpiRow {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .row2 {
+    grid-template-columns: 1fr;
+  }
+
+  .row3 {
+    grid-template-columns: 1fr;
+  }
+
+  .modal {
+    padding: 12px 16px;
+  }
+}
+
+@media (max-width: 500px) {
+  .kpiRow {
+    grid-template-columns: 1fr;
+  }
+}

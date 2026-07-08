@@ -1,0 +1,421 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  perspective: 1200px;
+}
+
+.cinemaWrapper {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background-color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  animation: cameraEarthquake 0.6s cubic-bezier(0.19, 1, 0.22, 1) 1.6s forwards;
+}
+
+/* Grid */
+.gridSpace {
+  position: absolute;
+  width: 160%;
+  height: 160%;
+  background-image:
+    linear-gradient(to right, #0F0F0F 1px, transparent 1px),
+    linear-gradient(to bottom, #0F0F0F 1px, transparent 1px);
+  background-size: 50px 50px;
+  background-position: center;
+  transform: translateZ(-100px) rotate(-10deg);
+  opacity: 0;
+  animation: gridWakeUp 2s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+}
+
+/* HUD */
+.hudTerminal {
+  position: absolute;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.65rem;
+  color: #333;
+  pointer-events: none;
+  text-transform: none;
+  letter-spacing: 2px;
+  z-index: 1;
+}
+
+.hudTopLeft { top: 40px; left: 40px; text-align: left; }
+.hudTopRight { top: 40px; right: 40px; text-align: right; }
+.hudBotLeft { bottom: 40px; left: 40px; text-align: left; }
+
+.hudOrange { color: #FF4500; }
+
+.dataStream::after {
+  content: " [OK]";
+  color: #7FFF00;
+  animation: flashText 0.4s steps(2, start) infinite;
+}
+
+/* Laser line */
+.laserLine {
+  position: absolute;
+  background-color: #00FFFF;
+  opacity: 0;
+}
+
+.laserH {
+  width: 100%;
+  height: 1px;
+  top: 50%;
+  transform: scaleX(0);
+  animation: laserScanH 1s cubic-bezier(0.77, 0, 0.17, 1) 0.5s forwards;
+}
+
+/* Energy loader */
+.energyLoaderTrack {
+  position: absolute;
+  width: 200px;
+  height: 2px;
+  background-color: #1C1C1C;
+  top: calc(50% + 110px);
+  overflow: hidden;
+}
+
+.energyBar {
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  transform: translateX(-100%);
+  animation: chargeEnergy 1.1s cubic-bezier(0.77, 0, 0.17, 1) 0.5s forwards;
+}
+
+/* Emblem */
+.emblemTheater {
+  position: relative;
+  width: 320px;
+  height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+  margin-bottom: 10px;
+  animation: emblemIdle 4s ease-in-out 2.2s infinite alternate;
+}
+
+.outerRingBracket {
+  position: absolute;
+  width: 260px;
+  height: 260px;
+  border: 2px dashed #1a1a1a;
+  transform: scale(0) rotate(0deg);
+  animation: ringLockIn 1s cubic-bezier(0.25, 1.5, 0.35, 1) 0.2s forwards, rotateCW 40s linear infinite 1.2s;
+}
+
+.innerRingBracket {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  border: 1px solid #1C1C1C;
+  transform: scale(0) rotate(0deg);
+  animation: ringLockIn 0.8s cubic-bezier(0.25, 1.5, 0.35, 1) 0.4s forwards, rotateCCW 25s linear infinite 1.2s;
+}
+
+.assemblySvg {
+  width: 220px;
+  height: 220px;
+  overflow: visible;
+}
+
+.assemblySvg g path {
+  fill: none;
+  stroke-width: 4;
+  stroke-linecap: square;
+  stroke-linejoin: miter;
+  transform-origin: 100px 100px;
+}
+
+.pieceN {
+  fill: none;
+  stroke-width: 4;
+  stroke-linecap: square;
+  stroke-linejoin: miter;
+  stroke: #fff;
+  animation: snapNorth 0.45s cubic-bezier(0.19, 1, 0.22, 1) 1.6s forwards;
+  transform: translateY(-400px) scaleY(3);
+  opacity: 0;
+}
+
+.pieceE {
+  fill: none;
+  stroke-width: 4;
+  stroke-linecap: square;
+  stroke-linejoin: miter;
+  stroke: #7FFF00;
+  animation: snapEast 0.45s cubic-bezier(0.19, 1, 0.22, 1) 1.63s forwards;
+  transform: translateX(400px) scaleX(3);
+  opacity: 0;
+}
+
+.pieceS {
+  fill: none;
+  stroke-width: 4;
+  stroke-linecap: square;
+  stroke-linejoin: miter;
+  stroke: #FF4500;
+  animation: snapSouth 0.45s cubic-bezier(0.19, 1, 0.22, 1) 1.66s forwards;
+  transform: translateY(400px) scaleY(3);
+  opacity: 0;
+}
+
+.pieceW {
+  fill: none;
+  stroke-width: 4;
+  stroke-linecap: square;
+  stroke-linejoin: miter;
+  stroke: #fff;
+  animation: snapWest 0.45s cubic-bezier(0.19, 1, 0.22, 1) 1.69s forwards;
+  transform: translateX(-400px) scaleX(3);
+  opacity: 0;
+}
+
+.pieceSub {
+  fill: none;
+  stroke-width: 4;
+  stroke-linecap: square;
+  stroke-linejoin: miter;
+  stroke: #333;
+  stroke-dasharray: 40;
+  stroke-dashoffset: 40;
+  animation: drawLine 0.6s ease-out 2s forwards;
+}
+
+.brandCore {
+  fill: none;
+  stroke-width: 5;
+  stroke-linecap: square;
+  stroke-linejoin: miter;
+  stroke: #7FFF00;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: drawLine 0.8s cubic-bezier(0.19, 1, 0.22, 1) 1.9s forwards;
+}
+
+/* Flash */
+.whiteoutFlash {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  opacity: 0;
+  z-index: 9;
+  pointer-events: none;
+  animation: triggerFlash 0.3s ease-out 1.65s;
+}
+
+/* Blast rings */
+.blastRing {
+  position: absolute;
+  border: 6px solid #fff;
+  width: 20px;
+  height: 20px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.br1 { border-color: #7FFF00; animation: blastRadial 0.6s cubic-bezier(0.19, 1, 0.22, 1) 1.65s forwards; }
+.br2 { border-color: #FF4500; animation: blastRadial 0.6s cubic-bezier(0.19, 1, 0.22, 1) 1.75s forwards; }
+.br3 { border-color: #00FFFF; animation: blastRadial 0.8s cubic-bezier(0.19, 1, 0.22, 1) 1.85s forwards; }
+
+/* Shrapnel */
+.shrapnelField {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.chunk {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 4px;
+  height: 16px;
+  background-color: #fff;
+  opacity: 0;
+}
+
+.chunk:nth-child(1) { --cx: -120px; --cy: -120px; --rot: 45deg; background-color: #FF4500; animation: chunkShoot 0.5s cubic-bezier(0.19, 1, 0.22, 1) 1.65s forwards; }
+.chunk:nth-child(2) { --cx: 120px; --cy: -120px; --rot: -45deg; background-color: #7FFF00; animation: chunkShoot 0.5s cubic-bezier(0.19, 1, 0.22, 1) 1.65s forwards; }
+.chunk:nth-child(3) { --cx: -120px; --cy: 120px; --rot: -135deg; background-color: #00FFFF; animation: chunkShoot 0.5s cubic-bezier(0.19, 1, 0.22, 1) 1.65s forwards; }
+.chunk:nth-child(4) { --cx: 120px; --cy: 120px; --rot: 135deg; background-color: #fff; animation: chunkShoot 0.5s cubic-bezier(0.19, 1, 0.22, 1) 1.65s forwards; }
+.chunk:nth-child(5) { --cx: -170px; --cy: 0px; --rot: 90deg; background-color: #7FFF00; animation: chunkShoot 0.5s cubic-bezier(0.19, 1, 0.22, 1) 1.68s forwards; }
+.chunk:nth-child(6) { --cx: 170px; --cy: 0px; --rot: 90deg; background-color: #FF4500; animation: chunkShoot 0.5s cubic-bezier(0.19, 1, 0.22, 1) 1.68s forwards; }
+
+/* Text */
+.textEngine {
+  text-align: center;
+  z-index: 5;
+}
+
+.gateOverflow {
+  overflow: hidden;
+  margin-bottom: 4px;
+}
+
+.kBadge {
+  display: inline-block;
+  background-color: #121212;
+  border: 1px solid #222;
+  color: #00FFFF;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 4px 12px;
+  letter-spacing: 4px;
+  transform: translateY(105%);
+  animation: entryRise 0.6s cubic-bezier(0.19, 1, 0.22, 1) 2.1s forwards;
+}
+
+.kTitle {
+  color: #fff;
+  font-size: 3rem;
+  font-weight: 900;
+  letter-spacing: -1px;
+  line-height: 0.95;
+  text-transform: none;
+  transform: translateY(105%);
+  animation: entryRise 0.6s cubic-bezier(0.19, 1, 0.22, 1) 2.25s forwards;
+}
+
+.kTitleSpan {
+  color: #FF4500;
+  position: relative;
+}
+
+.kDesc {
+  color: #555;
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: none;
+  margin-top: 8px;
+  transform: translateY(105%);
+  animation: entryRise 0.6s cubic-bezier(0.19, 1, 0.22, 1) 2.4s forwards;
+}
+
+/* Button */
+.gateButtonArea {
+  margin-top: 32px;
+  height: 50px;
+  overflow: hidden;
+}
+
+.btnPremiumLaunch {
+  background-color: transparent;
+  border: 2px solid #fff;
+  color: #fff;
+  padding: 14px 44px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: none;
+  letter-spacing: 3px;
+  cursor: pointer;
+  transform: translateY(115%);
+  animation: entryRise 0.5s cubic-bezier(0.19, 1, 0.22, 1) 2.7s forwards;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.btnPremiumLaunch:hover {
+  background-color: #fff;
+  color: #000;
+  box-shadow: 0 0 20px rgba(255,255,255,0.2);
+}
+
+.systemRebootTrigger {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  background: none;
+  border: 1px solid #111;
+  color: #333;
+  padding: 6px 12px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.6rem;
+  cursor: pointer;
+  z-index: 99;
+}
+
+.systemRebootTrigger:hover {
+  border-color: #00FFFF;
+  color: #00FFFF;
+}
+
+/* Keyframes */
+@keyframes gridWakeUp {
+  0% { transform: translateZ(-200px) rotate(-10deg) scale(1.3); opacity: 0; }
+  100% { transform: translateZ(0) rotate(-10deg) scale(1); opacity: 1; }
+}
+
+@keyframes ringLockIn {
+  0% { transform: scale(0) rotate(-180deg); opacity: 0; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+@keyframes laserScanH {
+  0% { transform: scaleX(0); opacity: 0; }
+  40% { transform: scaleX(1); opacity: 1; }
+  100% { transform: scaleX(1); opacity: 0; }
+}
+
+@keyframes chargeEnergy {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(0%); opacity: 0; }
+}
+
+@keyframes snapNorth { to { transform: translateY(0) scaleY(1); opacity: 1; } }
+@keyframes snapEast  { to { transform: translateX(0) scaleX(1); opacity: 1; } }
+@keyframes snapSouth { to { transform: translateY(0) scaleY(1); opacity: 1; } }
+@keyframes snapWest  { to { transform: translateX(0) scaleX(1); opacity: 1; } }
+
+@keyframes drawLine { to { stroke-dashoffset: 0; } }
+
+@keyframes triggerFlash {
+  0% { opacity: 0; }
+  10% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@keyframes blastRadial {
+  0% { transform: scale(0.1); opacity: 1; border-width: 15px; }
+  100% { transform: scale(3.5); opacity: 0; border-width: 1px; }
+}
+
+@keyframes chunkShoot {
+  0% { transform: translate(-50%, -100%) rotate(var(--rot)) translate(0, 0) scaleY(0.1); opacity: 0; }
+  20% { opacity: 1; }
+  100% { transform: translate(-50%, -100%) rotate(var(--rot)) translate(var(--cx), var(--cy)) scaleY(1); opacity: 0; }
+}
+
+@keyframes entryRise { to { transform: translateY(0); } }
+
+@keyframes cameraEarthquake {
+  0% { transform: translate(0, 0); }
+  10% { transform: translate(-14px, 10px) scale(1.04); }
+  20% { transform: translate(14px, -10px) scale(1.02); }
+  35% { transform: translate(-8px, -6px) scale(1.01); }
+  50% { transform: translate(8px, 6px) scale(1); }
+  65% { transform: translate(-4px, 2px); }
+  80% { transform: translate(2px, -2px); }
+  100% { transform: translate(0, 0); }
+}
+
+@keyframes emblemIdle {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-8px); }
+}
+
+@keyframes rotateCW { to { transform: rotate(360deg); } }
+@keyframes rotateCCW { to { transform: rotate(-360deg); } }
+
+@keyframes flashText { from, to { color: transparent } 50% { color: #7FFF00; } }

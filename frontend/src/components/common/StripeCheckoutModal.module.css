@@ -1,0 +1,176 @@
+.body {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--bg-hover, #fafafa);
+  border: 1px solid var(--border-color, #eeeeee);
+  padding: 10px 12px;
+  border-radius: var(--card-radius, 4px);
+}
+
+.planLabel {
+  font-size: 12px;
+  color: var(--text-muted, #888888);
+  font-weight: 500;
+}
+
+.planValue {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-primary, #f05a28);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted, #888888);
+  text-transform: none;
+  letter-spacing: 0.3px;
+}
+
+.input {
+  width: 100%;
+  padding: 7px 10px;
+  border: 1px solid var(--border-color, #eeeeee);
+  border-radius: var(--input-radius, 4px);
+  font-size: 12px;
+  outline: none;
+  background-color: var(--bg-input, #f5f5f5);
+  color: var(--text-dark, #333333);
+  box-sizing: border-box;
+}
+
+.input:focus {
+  border-color: var(--color-primary, #f05a28);
+}
+
+.cardElementWrap {
+  padding: 8px 10px;
+  border: 1px solid var(--border-color, #eeeeee);
+  border-radius: var(--input-radius, 4px);
+  background-color: var(--bg-input, #f5f5f5);
+  box-sizing: border-box;
+}
+
+.errorBox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--bg-danger, #fef2f2);
+  border: 1px solid var(--color-danger, #fee2e2);
+  color: var(--color-danger, #dc2626);
+  padding: 8px 10px;
+  border-radius: var(--card-radius, 4px);
+  font-size: 12px;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.btnCancel {
+  padding: 7px 14px;
+  background-color: transparent;
+  border: 1px solid var(--border-color, #eeeeee);
+  color: var(--text-muted, #888888);
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: var(--card-radius, 4px);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btnCancel:hover:not(:disabled) {
+  background-color: var(--bg-hover, rgba(0, 0, 0, 0.04));
+  color: var(--text-dark, #333333);
+}
+
+.btnCancel:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btnSubmit {
+  padding: 7px 14px;
+  background-color: var(--color-primary, #f05a28);
+  border: none;
+  color: var(--text-on-primary, #ffffff);
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: var(--card-radius, 4px);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.btnSubmit:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+
+.btnSubmit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Polling & Success Areas */
+.loaderArea, .successArea {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 30px 10px;
+}
+
+.loaderArea h4, .successArea h4 {
+  margin: 14px 0 8px 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-dark, #333333);
+}
+
+.loaderArea p, .successArea p {
+  margin: 0;
+  font-size: 12px;
+  color: var(--text-muted, #888888);
+  max-width: 320px;
+  line-height: 1.5;
+}
+
+.successIconWrap {
+  background-color: rgba(22, 163, 74, 0.1);
+  color: var(--color-success, #16a34a);
+  padding: 12px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.successIcon {
+  color: var(--color-success, #16a34a);
+}

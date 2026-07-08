@@ -1,0 +1,431 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.card {
+  background: var(--bg-card, #1c1c1c);
+  padding: 16px;
+}
+
+.cardColumn {
+  composes: card;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.subCard {
+  background: var(--bg-main, #222);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.subGrid {
+  background: var(--bg-main, #222);
+  padding: 8px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.tabbar {
+  display: flex;
+  border-bottom: 1px solid var(--border-color, #262626);
+}
+
+.tab {
+  padding: 8px 20px;
+  font-size: 11px;
+  text-transform: none;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+  border-bottom: 2px solid transparent;
+  color: var(--text-muted, #888);
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  font-family: inherit;
+}
+
+.tab:hover {
+  color: var(--text-dark, #fff);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.tabActive {
+  border-bottom-color: var(--color-orange-red, #f97316);
+  color: var(--text-dark, #fff);
+  background: var(--bg-card, #1c1c1c);
+}
+
+.grid3 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+@media (min-width: 1024px) {
+  .grid3 {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+.image {
+  width: 100%;
+  height: 130px;
+  object-fit: cover;
+  display: block;
+}
+
+.imagePlaceholder {
+  width: 100%;
+  height: 130px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-main, #222);
+  color: var(--text-muted, #666);
+}
+
+.productName {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-dark, #fff);
+  display: block;
+}
+
+.label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: none;
+  color: var(--text-muted, #888);
+  display: block;
+  margin-bottom: 2px;
+}
+
+.value {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dark, #e5e5e5);
+  display: block;
+}
+
+.valueMono {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-orange-red, #f97316);
+}
+
+.valueStock {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dark, #fff);
+}
+
+.stockMin {
+  font-size: 11px;
+  color: var(--color-orange-red, #f97316);
+  font-weight: 400;
+}
+
+.description {
+  font-size: 12px;
+  font-style: italic;
+  color: var(--text-muted, #888);
+  margin: 0;
+}
+
+.sectionTitle {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: none;
+  color: var(--text-muted, #888);
+  display: block;
+  margin-bottom: 12px;
+}
+
+.sectionSubtitle {
+  font-size: 11px;
+  color: var(--text-muted, #666);
+  margin: -8px 0 8px 0;
+}
+
+.apiGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.apiInput {
+  width: 100%;
+  background: var(--bg-card, #141414);
+  font-size: 12px;
+  color: var(--text-dark, #fff);
+  font-weight: 600;
+  padding: 4px 6px;
+  border: none;
+  outline: none;
+  text-align: right;
+  font-family: inherit;
+}
+
+.financialRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+}
+
+.financialLabel {
+  color: var(--text-muted, #888);
+}
+
+.financialValue {
+  font-weight: 600;
+  color: var(--text-dark, #e5e5e5);
+}
+
+.financialValueSecondary {
+  font-weight: 400;
+  color: var(--text-muted, #888);
+  font-size: 11px;
+}
+
+.financialDivider {
+  border: none;
+  border-top: 1px solid var(--border-color, #333);
+  margin: 6px 0;
+  padding: 0;
+}
+
+.profitDivider {
+  border: none;
+  border-top: 1px solid rgba(249, 115, 22, 0.2);
+  margin: 6px 0;
+  padding: 0;
+}
+
+.profitRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+}
+
+.profitLabel {
+  font-weight: 600;
+  text-transform: none;
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  color: var(--text-dark, #ccc);
+}
+
+.profitValue {
+  text-align: right;
+}
+
+.profitAmountPositive {
+  display: block;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--color-success, #16a34a);
+}
+
+.profitAmountNegative {
+  display: block;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--color-danger, #dc2626);
+}
+
+.profitBsPositive {
+  display: block;
+  font-size: 11px;
+  color: var(--color-success, #16a34a);
+}
+
+.profitBsNegative {
+  display: block;
+  font-size: 11px;
+  color: var(--color-danger, #dc2626);
+}
+
+.chartContainer {
+  height: 130px;
+  width: 100%;
+  position: relative;
+}
+
+.stockChartContainer {
+  height: 144px;
+  width: 100%;
+}
+
+/* === KARDEX TAB === */
+.kardexHeader {
+  border-bottom: 1px solid var(--border-color, #333);
+  padding-bottom: 8px;
+  margin-bottom: 8px;
+}
+
+.kardexTitle {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: none;
+  color: var(--color-orange-red, #f97316);
+  display: block;
+}
+
+.kardexSubtitle {
+  font-size: 12px;
+  color: var(--text-muted, #888);
+  margin: 2px 0 0 0;
+}
+
+.kardexGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+@media (min-width: 1024px) {
+  .kardexGrid {
+    grid-template-columns: 7fr 5fr;
+  }
+}
+
+.tableWrapper {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  text-align: left;
+  font-size: 12px;
+  color: var(--text-dark, #ccc);
+  min-width: 500px;
+  border-collapse: collapse;
+}
+
+.tableHead {
+  background: var(--bg-main, #222);
+  color: var(--text-muted, #888);
+  text-transform: none;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 10px;
+  letter-spacing: 0.5px;
+}
+
+.tableHead th {
+  padding: 10px 12px;
+  font-weight: 600;
+}
+
+.tableBody tr {
+  border-bottom: 1px solid var(--border-color, #2a2a2a);
+  transition: background 0.15s ease;
+}
+
+.tableBody tr:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.tableBody td {
+  padding: 10px 12px;
+}
+
+.dateCell {
+  font-family: 'Courier New', Courier, monospace;
+  color: var(--text-muted, #888);
+}
+
+.descCell {
+  font-weight: 600;
+  color: var(--text-muted, #888);
+}
+
+.entryCell {
+  text-align: center;
+  color: var(--color-success, #10b981);
+  font-weight: 700;
+}
+
+.exitCell {
+  text-align: center;
+  color: var(--color-danger, #f43f5e);
+  font-weight: 700;
+}
+
+.balanceCell {
+  text-align: right;
+  font-weight: 700;
+  color: var(--text-dark, #fff);
+}
+
+.dashCell {
+  text-align: center;
+  color: var(--text-muted, #555);
+}
+
+.kardexChartCard {
+  background: var(--bg-main, #141414);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.kardexChartTitle {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: none;
+  color: var(--text-muted, #888);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.kardexChartContainer {
+  height: 160px;
+  width: 100%;
+  position: relative;
+}
+
+.loadingState {
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted, #888);
+  font-size: 13px;
+}
+
+.emptyState {
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted, #888);
+  font-size: 13px;
+}
+
+/* Custom scrollbar */
+.tableWrapper::-webkit-scrollbar {
+  height: 4px;
+}
+
+.tableWrapper::-webkit-scrollbar-thumb {
+  background-color: var(--border-color, #333);
+}

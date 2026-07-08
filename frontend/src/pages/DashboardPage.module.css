@@ -1,0 +1,206 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+.kpiContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.kpiCard {
+  --kpi-color: currentColor;
+  flex: 1 1 180px;
+  max-width: 240px;
+  width: 100%;
+  background-color: var(--bg-card, #ffffff);
+  display: flex;
+  align-items: center;
+  border-radius: var(--card-radius, 4px);
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  padding: 10px 14px;
+  border: var(--card-border-width, 1px) solid var(--border-color, #e2e8f0);
+}
+
+.kpiCard:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.kpiIconBox {
+  width: 42px;
+  height: 42px;
+  border-radius: var(--card-radius, 8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-left: 10px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.kpiIconBox svg {
+  color: currentColor !important;
+  fill: currentColor !important;
+  width: 20px !important;
+  height: 20px !important;
+}
+
+.kpiIconBox .lottie-icon svg {
+  filter: none !important;
+}
+
+.kpiInfo {
+  padding-left: 15px;
+}
+
+.kpiTitle {
+  font-size: 10px;
+  color: var(--text-muted, #888888);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  margin-bottom: 2px;
+}
+
+.kpiValue {
+  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  color: var(--text-dark, #333333);
+}
+
+.kpiSubValue {
+  display: block;
+  font-size: 10.5px;
+  font-weight: 500;
+  color: var(--text-muted, #888888);
+  margin-top: 1px;
+}
+
+.total { color: var(--color-orange-red); }
+.views { color: var(--color-orange); }
+.visitors { color: var(--color-green); }
+.shares { color: var(--color-teal); }
+.low { color: var(--color-red); }
+.profit { color: var(--color-purple); }
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.grid3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.bestSellersLayout {
+  display: grid;
+  grid-template-columns: 5fr 7fr;
+  gap: 20px;
+  align-items: center;
+}
+
+.card {
+  background-color: var(--bg-card, #ffffff);
+  border-radius: var(--card-radius, 4px);
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 0;
+}
+
+.card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.cardTitle {
+  margin-bottom: 15px;
+}
+
+.cardBody {
+  color: var(--text-dark, #333333);
+}
+
+.muted {
+  color: var(--text-muted, #888888);
+  font-size: 13px;
+}
+
+.list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.listItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  padding: 6px 0;
+  border-bottom: var(--card-border-width, 1px) solid var(--border-color, #eeeeee);
+}
+
+.danger {
+  color: #dc2626;
+  font-weight: 600;
+}
+
+/* ===========================================
+   RESPONSIVE / MEDIA QUERIES
+   =========================================== */
+@media (max-width: 1200px) {
+  .grid,
+  .grid3 {
+    grid-template-columns: 1fr;
+  }
+  .bestSellersLayout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .kpiContainer {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .kpiCard {
+    max-width: none;
+    min-height: 64px;
+  }
+
+  .kpiIconBox {
+    width: 44px;
+    height: 56px;
+  }
+
+  .kpiIconBox svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .kpiInfo {
+    padding-left: 12px;
+  }
+
+  .kpiValue {
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}

@@ -1,0 +1,61 @@
+.tabs {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 24px;
+  overflow-x: auto;
+  overflow-y: hidden; /* Firefox scroll fix */
+  scrollbar-width: none; /* Firefox */
+}
+
+.tabs::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
+}
+
+.tab {
+  background: none;
+  border: none;
+  padding: 10px 14px;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+  white-space: nowrap;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: color 0.15s ease;
+  border-radius: 0;
+}
+
+.tab:hover {
+  color: var(--text-main);
+  background: none !important;
+}
+
+.tab svg, .tab i {
+  width: 22px !important;
+  height: 22px !important;
+  color: var(--text-light);
+}
+
+.tabActive {
+  color: var(--brand-orange) !important;
+  font-weight: 600;
+  background: none !important;
+}
+
+.tabActive svg, .tabActive i {
+  color: var(--brand-orange) !important;
+}
+
+.tabActive::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: var(--brand-orange);
+}

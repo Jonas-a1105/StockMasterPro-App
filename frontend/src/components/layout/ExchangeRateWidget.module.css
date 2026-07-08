@@ -1,0 +1,408 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.panel {
+  width: 380px;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--card-radius);
+  box-shadow: var(--shadow-lg) !important;
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+  overflow: hidden;
+}
+
+.header {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid var(--border-color);
+  background-color: var(--bg-main);
+  padding: 0 10px;
+}
+
+.tab {
+  flex: 1;
+  text-align: center;
+  padding: 12px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: var(--text-muted);
+  transition: color 0.15s ease;
+  border-radius: 0;
+  position: relative;
+}
+
+.tab:hover {
+  color: var(--text-main);
+  background: none !important;
+}
+
+.tabActive {
+  composes: tab;
+  color: var(--brand-orange) !important;
+  font-weight: 600;
+  background: none !important;
+}
+
+.tabActive::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: var(--brand-orange);
+}
+
+.panelBody {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.trendHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.trendTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  background-color: var(--color-primary, #f05a28);
+  display: inline-block;
+}
+
+.titleLabel {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-dark);
+  letter-spacing: 1px;
+  text-transform: none;
+}
+
+.sourceLabel {
+  font-size: 9px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.variationBadge {
+  background-color: var(--bg-success);
+  color: var(--color-success);
+  border: 1px solid var(--border-color);
+  padding: 3px 10px;
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 4px;
+}
+
+.rateBlock {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 6px 0;
+}
+
+.rateValue {
+  font-size: 38px;
+  font-weight: 700;
+  color: var(--text-dark);
+  letter-spacing: -1px;
+  line-height: 1;
+}
+
+.rateUnit {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-success);
+  letter-spacing: 2px;
+  text-transform: none;
+}
+
+.chartSection {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.chartLabel {
+  font-size: 9px;
+  color: var(--text-muted, #888);
+  text-transform: none;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
+.chartBox {
+  height: 112px;
+  background-color: var(--bg-main);
+  padding: 8px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--card-radius);
+}
+
+.chartBox svg {
+  display: block;
+}
+
+.chartDates {
+  display: flex;
+  justify-content: space-between;
+  font-size: 9px;
+  color: var(--text-muted, #888);
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-color);
+  font-size: 10px;
+}
+
+.footerTime {
+  color: var(--text-muted);
+}
+
+.footerConvertBtn {
+  color: var(--color-primary);
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 1px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  transition: color 0.15s;
+}
+
+.footerConvertBtn:hover {
+  color: var(--brand-orange);
+}
+
+/* Calculator panel */
+.calcDisplay {
+  background-color: var(--bg-main);
+  border: 1px solid var(--border-color);
+  border-radius: var(--card-radius);
+  padding: 28px 16px 12px;
+  position: relative;
+}
+
+.calcDirectionBadge {
+  position: absolute;
+  right: 10px;
+  top: 8px;
+  font-size: 9px;
+  letter-spacing: 1px;
+  text-transform: none;
+  color: var(--color-primary);
+  font-weight: 600;
+  background-color: var(--bg-hover);
+  padding: 2px 8px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+}
+
+.calcInputRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.calcSymbol {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  width: 20px;
+}
+
+.calcInput {
+  width: 100%;
+  background: transparent;
+  text-align: right;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-dark);
+  border: none;
+  outline: none;
+}
+
+.calcResultRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--border-color);
+  padding-top: 8px;
+  margin-top: 8px;
+}
+
+.calcResultSymbol {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-success);
+  width: 30px;
+}
+
+.calcResultValue {
+  width: 100%;
+  text-align: right;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-success);
+}
+
+.calcGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.key {
+  background-color: var(--bg-hover) !important;
+  border: 1px solid var(--border-color) !important;
+  color: var(--text-dark) !important;
+  padding: 12px 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.1s;
+  user-select: none;
+  border-radius: 4px;
+}
+
+.key:hover {
+  background-color: var(--bg-input) !important;
+  filter: brightness(0.95);
+}
+
+.key:active {
+  background-color: var(--border-color) !important;
+}
+
+.keyClear {
+  composes: key;
+  background-color: var(--brand-orange-light) !important;
+  color: var(--color-primary) !important;
+  font-size: 11px;
+  text-transform: none;
+  letter-spacing: 1px;
+}
+
+.keyClear:hover {
+  background-color: rgba(234, 88, 12, 0.15) !important;
+}
+
+.keySwap {
+  composes: key;
+  color: var(--text-muted) !important;
+}
+
+.keySwap:hover {
+  color: var(--text-dark) !important;
+}
+
+.keyBackspace {
+  composes: key;
+  grid-row: span 2;
+  color: var(--text-muted) !important;
+}
+
+.keyBackspace:hover {
+  color: var(--text-dark) !important;
+}
+
+.keyDouble {
+  composes: key;
+  grid-column: span 2;
+}
+
+.calcSubmitBtn {
+  width: 100%;
+  background-color: var(--color-primary) !important;
+  border: 1px solid var(--color-primary) !important;
+  color: white !important;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 1px;
+  padding: 10px 0;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border-radius: var(--btn-radius);
+}
+
+.calcSubmitBtn:hover {
+  background-color: var(--brand-orange) !important;
+  filter: brightness(0.9) !important;
+}
+
+/* Close button */
+.closeBtn {
+  width: 36px;
+  background: none;
+  border: none;
+  color: var(--text-muted) !important;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s;
+  flex-shrink: 0;
+}
+
+.closeBtn:hover {
+  color: var(--color-primary) !important;
+}
+
+/* Analytics trigger button */
+.analyticsBtn {
+  width: 26px;
+  height: 22px;
+  background-color: var(--bg-hover) !important;
+  border: 1px solid var(--border-color) !important;
+  color: var(--text-muted) !important;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s, background-color 0.15s;
+  flex-shrink: 0;
+  border-radius: 4px;
+}
+
+.analyticsBtn:hover {
+  color: var(--color-primary) !important;
+  background-color: var(--bg-hover) !important;
+  filter: brightness(0.95);
+}
+
+.panelWrapper {
+  position: relative;
+}

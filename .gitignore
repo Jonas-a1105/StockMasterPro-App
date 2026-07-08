@@ -1,0 +1,57 @@
+# Node dependencies
+node_modules/
+**/node_modules/
+
+# Production build directories
+dist/
+**/dist/
+dist-ssr/
+build/
+out/
+
+# Environment variables (CRITICAL)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+**/.env
+**/.env*.local
+
+# Database / SQLite / Temp files
+*.db
+*.sqlite
+*.sqlite3
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Editor configs
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Tauri specific build files
+src-tauri/target/
+src-tauri/binaries/
+
+# Speckit/AI Agent local files
+.agent/
+architecture-spec.md
+Done.json
+
+# Design Templates, Mockups and TXT guides (As requested)
+*.html
+/templates - desing components/
+/templates - icons - animations/
+*.txt

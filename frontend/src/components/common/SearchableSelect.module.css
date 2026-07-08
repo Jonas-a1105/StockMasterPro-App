@@ -1,0 +1,148 @@
+.container {
+  position: relative;
+  width: 100%;
+}
+
+.inputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.inputField {
+  width: 100%;
+  height: 38px;
+  padding: 0 36px 0 12px;
+  font-size: 13.5px;
+  color: var(--text-main);
+  background-color: var(--bg-card, #ffffff);
+  border: 1px solid var(--input-border, var(--border-color));
+  border-radius: var(--input-radius, 8px) !important;
+  outline: none;
+  transition: all 0.15s ease-in-out;
+  cursor: text;
+}
+
+.inputField:focus {
+  border-color: var(--brand-orange, #f05a28);
+  box-shadow: 0 0 0 3px var(--brand-orange-light, rgba(240, 90, 40, 0.15));
+}
+
+.inputField::placeholder {
+  color: var(--text-main);
+  opacity: 0.9;
+}
+
+.inputField:focus::placeholder {
+  color: var(--text-muted);
+  opacity: 0.6;
+}
+
+.chevronBtn {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 36px;
+  background: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-muted);
+  padding: 0;
+}
+
+.chevronBtn:hover {
+  color: var(--text-main);
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.chevronIcon {
+  transition: transform 0.2s ease;
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
+}
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background-color: var(--bg-card, #ffffff);
+  border: 1px solid var(--border-color, #eeeeee);
+  border-radius: var(--card-radius, 12px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  z-index: 250;
+  overflow: hidden;
+  animation: slideDown 0.15s ease-out;
+}
+
+.optionsList {
+  max-height: 200px;
+  overflow-y: auto;
+  padding: 4px;
+}
+
+/* Scrollbar styling */
+.optionsList::-webkit-scrollbar {
+  width: 6px;
+}
+
+.optionsList::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.optionsList::-webkit-scrollbar-thumb {
+  background-color: var(--text-muted);
+  border-radius: 6px;
+}
+
+.optionItem {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 8px 12px;
+  border: none;
+  background: transparent;
+  font-size: 13.5px;
+  color: var(--text-main);
+  text-align: left;
+  cursor: pointer;
+  border-radius: var(--btn-radius, 8px);
+  transition: all 0.15s ease;
+}
+
+.optionItem:hover {
+  background-color: var(--bg-hover, rgba(0, 0, 0, 0.03));
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.optionActive {
+  background-color: var(--brand-orange, #f05a28) !important;
+  color: var(--text-on-primary, #ffffff) !important;
+}
+
+.emptyOption {
+  padding: 12px;
+  font-size: 13px;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

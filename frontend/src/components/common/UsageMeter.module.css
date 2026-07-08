@@ -1,0 +1,87 @@
+.card {
+  background: var(--bg-card, #ffffff);
+  border: 1px solid var(--border-color, #eee);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.title {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: none;
+  letter-spacing: 0.5px;
+  color: var(--text-dark, #333);
+}
+
+.badge {
+  font-size: 9px;
+  font-family: monospace;
+  font-weight: 700;
+  letter-spacing: 1px;
+  background: #f05a28;
+  color: #000;
+  padding: 2px 8px;
+}
+
+.bars {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.barRow {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.barLabel {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--text-muted, #888);
+}
+
+.barCount {
+  font-weight: 600;
+  color: var(--text-dark, #333);
+}
+
+.barTrack {
+  height: 6px;
+  background: var(--border-color, #eee);
+  overflow: hidden;
+}
+
+.barFill {
+  height: 100%;
+  background: #f05a28;
+  transition: width 0.5s ease;
+}
+
+.barFill.warning {
+  background: #eab308;
+}
+
+.barFill.danger {
+  background: #dc2626;
+}
+
+.skeleton {
+  height: 200px;
+  background: var(--border-color, #eee);
+  margin-bottom: 20px;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}

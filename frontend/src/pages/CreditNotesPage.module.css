@@ -1,0 +1,340 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.tableCard {
+  background-color: var(--bg-card, #ffffff);
+  border-radius: var(--card-radius, 4px);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th {
+  text-align: left;
+  padding: 12px 16px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted, #888888);
+  text-transform: none;
+  letter-spacing: 0.5px;
+  border-bottom: var(--card-border-width, 1px) solid var(--border-color, #eeeeee);
+  background-color: var(--bg-hover, rgba(0, 0, 0, 0.02));
+}
+
+.table td {
+  padding: 12px 16px;
+  font-size: 13px;
+  color: var(--text-dark, #333333);
+  border-bottom: var(--card-border-width, 1px) solid var(--border-color, #eeeeee);
+}
+
+.reasonCell {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.amountCell {
+  font-weight: 700;
+  color: var(--color-orange-red, #f05a28);
+}
+
+.statusBadge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: var(--border-radius-sm, 2px);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.active {
+  background-color: #f0fdf4;
+  color: #16a34a;
+}
+
+.voided {
+  background-color: #fef2f2;
+  color: #dc2626;
+}
+
+.actions {
+  display: flex;
+  gap: 6px;
+}
+
+.viewBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-color: var(--border-color); border-style: solid;
+  border-radius: var(--card-radius, 4px);
+  background: none;
+  cursor: pointer;
+  color: var(--text-muted, #888888);
+  transition: all 0.2s ease;
+}
+
+.viewBtn:hover {
+  background-color: #eff6ff;
+  color: #2563eb;
+  border-color: #2563eb;
+}
+
+.empty {
+  text-align: center;
+  color: var(--text-muted, #888888);
+  padding: 30px !important;
+  font-size: 13px;
+}
+
+.modalContent {
+  padding: 0;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.field label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-dark, #333333);
+}
+
+.field input,
+.field select,
+.field textarea {
+  padding: 10px 12px;
+  border-color: var(--border-color); border-style: solid;
+  border-radius: var(--card-radius, 4px);
+  font-size: 13px;
+  outline: none;
+  background-color: var(--bg-card, #ffffff);
+  color: var(--text-dark, #333333);
+  transition: border-color 0.2s ease;
+  font-family: inherit;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  border-color: var(--color-orange-red, #f05a28);
+}
+
+.fieldRow {
+  display: flex;
+  gap: 12px;
+}
+
+.itemsSection {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-top: var(--card-border-width, 1px) solid var(--border-color, #eeeeee);
+  padding-top: 12px;
+}
+
+.itemsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.itemsHeader label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-dark, #333333);
+}
+
+.addItemBtn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  border: 1px solid var(--color-orange-red, #f05a28);
+  border-radius: var(--card-radius, 4px);
+  background: none;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-orange-red, #f05a28);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.addItemBtn:hover {
+  background-color: var(--color-orange-red, #f05a28);
+  color: white;
+}
+
+.itemRow {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.itemRow select {
+  flex: 1;
+  padding: 8px 10px;
+  border-color: var(--border-color); border-style: solid;
+  border-radius: var(--card-radius, 4px);
+  font-size: 13px;
+  outline: none;
+  background-color: var(--bg-card, #ffffff);
+  color: var(--text-dark, #333333);
+  font-family: inherit;
+}
+
+.qtyInput {
+  width: 70px;
+  padding: 8px 10px;
+  border-color: var(--border-color); border-style: solid;
+  border-radius: var(--card-radius, 4px);
+  font-size: 13px;
+  outline: none;
+  background-color: var(--bg-card, #ffffff);
+  color: var(--text-dark, #333333);
+  font-family: inherit;
+}
+
+.priceInput {
+  width: 100px;
+  padding: 8px 10px;
+  border-color: var(--border-color); border-style: solid;
+  border-radius: var(--card-radius, 4px);
+  font-size: 13px;
+  outline: none;
+  background-color: var(--bg-card, #ffffff);
+  color: var(--text-dark, #333333);
+  font-family: inherit;
+}
+
+.itemSubtotal {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-orange-red, #f05a28);
+  min-width: 80px;
+  text-align: right;
+}
+
+.removeBtn {
+  width: 28px;
+  height: 28px;
+  border-color: var(--border-color); border-style: solid;
+  border-radius: var(--card-radius, 4px);
+  background: none;
+  cursor: pointer;
+  color: var(--text-muted, #888888);
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.removeBtn:hover:not(:disabled) {
+  background-color: #fef2f2;
+  color: #dc2626;
+  border-color: #dc2626;
+}
+
+.removeBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.totalField {
+  background-color: var(--bg-hover, #f9f9f9) !important;
+  font-weight: 700;
+  color: var(--color-orange-red, #f05a28) !important;
+}
+
+.modalActions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
+.cancelBtn {
+  padding: 10px 20px;
+  border-color: var(--border-color); border-style: solid;
+  border-radius: var(--card-radius, 4px);
+  background: none;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dark, #333333);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cancelBtn:hover {
+  background-color: var(--bg-hover, rgba(0, 0, 0, 0.04));
+}
+
+.saveBtn {
+  padding: 10px 20px;
+  background-color: var(--color-orange-red, #f05a28);
+  color: white;
+  border: none;
+  border-radius: var(--card-radius, 4px);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.saveBtn:hover {
+  filter: brightness(1.08);
+}
+
+.saveBtn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.detailGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.detailField {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.detailLabel {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted, #888888);
+  text-transform: none;
+  letter-spacing: 0.5px;
+}
+
+.detailItems h4 {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-dark, #333333);
+  margin: 0 0 8px;
+}

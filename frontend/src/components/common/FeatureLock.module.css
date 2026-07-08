@@ -1,0 +1,25 @@
+.wrapper {
+  position: relative;
+  pointer-events: none;
+  opacity: 0.5;
+  user-select: none;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: rgba(0, 0, 0, 0.4);
+  color: #ffaa00;
+  font-size: 11px;
+  font-weight: 600;
+  z-index: 10;
+}
+
+.text {
+  text-transform: none;
+  letter-spacing: 0.5px;
+}

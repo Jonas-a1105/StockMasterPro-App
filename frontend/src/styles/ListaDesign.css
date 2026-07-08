@@ -1,0 +1,413 @@
+/* ===========================================
+   Lista Design Global - StockMaster Pro
+   Diseño plano corporativo con variables
+   Adaptado de lista desing.html
+   =========================================== */
+
+/* Container de tabla con scroll plano */
+.lista-container {
+  overflow-x: auto;
+  background-color: var(--bg-card) !important;
+  border: var(--card-border-width, 1px) solid var(--border-color) !important;
+  border-radius: var(--card-radius) !important;
+  box-shadow: var(--shadow-sm) !important;
+  margin-bottom: 20px !important;
+}
+
+.lista-container::-webkit-scrollbar {
+  height: 4px;
+  width: 4px;
+}
+
+.lista-container::-webkit-scrollbar-thumb {
+  background-color: var(--list-border-color, var(--border-color, #cbd5e1));
+}
+
+/* Tabla plana corporativa */
+.lista-table {
+  width: 100%;
+  text-align: left;
+  border-collapse: collapse;
+  font-size: var(--list-body-font-size, 12px);
+  min-width: 950px;
+}
+
+/* Encabezados - estilo plano tipo consola */
+.lista-table thead {
+  background-color: var(--list-header-bg, var(--bg-app, #f8fafc)) !important;
+  color: var(--text-muted, #475569) !important;
+  border-bottom: 1px solid var(--list-border-color, var(--border-color, #e2e8f0)) !important;
+}
+
+.lista-table thead tr th {
+  padding: var(--list-cell-padding, 12px);
+  font-size: var(--list-header-font-size, 10px);
+  font-weight: var(--list-header-font-weight, 700);
+  font-family: var(--list-font-family, var(--font-family, sans-serif));
+  text-transform: var(--list-header-uppercase, uppercase);
+  letter-spacing: 0.5px;
+  color: var(--text-muted, #475569) !important;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--list-border-color, var(--border-color, #e2e8f0)) !important;
+  background-color: var(--list-header-bg, var(--bg-app, #f8fafc)) !important;
+}
+
+.lista-table thead tr th:first-child {
+  text-align: left;
+  border-top-left-radius: var(--card-radius);
+}
+
+.lista-table thead tr th:last-child {
+  text-align: center;
+  border-top-right-radius: var(--card-radius);
+}
+
+/* Cuerpo de tabla */
+.lista-table tbody {
+  border-top: none;
+}
+
+.lista-table tbody tr {
+  transition: background-color 0.15s ease;
+  border-bottom: 1px solid var(--list-border-color, var(--border-color, #e2e8f0)) !important;
+}
+
+.lista-table tbody tr:last-child {
+  border-bottom: none !important;
+}
+
+.lista-table tbody tr:last-child td:first-child {
+  border-bottom-left-radius: var(--card-radius);
+}
+
+.lista-table tbody tr:last-child td:last-child {
+  border-bottom-right-radius: var(--card-radius);
+}
+
+.lista-table tbody tr:hover {
+  background-color: var(--list-row-hover, var(--bg-hover, #f1f5f9)) !important;
+}
+
+/* Filas alternadas (cebradas) */
+.lista-stripe tbody tr:nth-child(even) {
+  background-color: var(--list-stripe, transparent);
+}
+
+/* Celdas del cuerpo */
+.lista-table tbody tr td {
+  padding: var(--list-cell-padding, 12px);
+  font-size: var(--list-body-font-size, 12px);
+  font-family: var(--list-font-family, var(--font-family, sans-serif));
+  color: var(--text-main, #0f172a) !important;
+  vertical-align: middle;
+}
+
+/* Indicador de color izquierdo (barra de estado) */
+.lista-indicator {
+  width: 6px;
+  height: 12px;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+/* Nombre con icono */
+.lista-name-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.lista-name-cell .lista-name-text {
+  font-weight: var(--list-body-font-weight, 700);
+  font-size: calc(var(--list-body-font-size, 12px) + 1px);
+  font-family: var(--list-font-family, var(--font-family, sans-serif));
+  letter-spacing: 0.3px;
+  color: var(--text-main, #0f172a) !important;
+}
+
+/* Código monoespaciado */
+.lista-code {
+  font-family: var(--list-number-font-family, 'Courier New', Courier, monospace) !important;
+  font-weight: var(--list-body-font-weight, 700);
+  letter-spacing: 0.5px;
+  color: var(--list-accent-color, #f97316);
+}
+
+.lista-code-muted {
+  font-family: var(--list-number-font-family, 'Courier New', Courier, monospace) !important;
+  letter-spacing: 0.5px;
+  color: var(--text-muted, #888);
+}
+
+/* Dirección */
+.lista-address {
+  color: var(--text-muted, #888);
+  font-weight: 400;
+}
+
+/* Números alineados a la derecha */
+.lista-number {
+  text-align: right;
+  font-family: var(--list-number-font-family, 'Courier New', Courier, monospace) !important;
+}
+
+.lista-number-value {
+  font-family: var(--list-number-font-family, 'Courier New', Courier, monospace) !important;
+  font-weight: var(--list-body-font-weight, 700);
+  color: var(--text-main, #0f172a) !important;
+}
+
+.lasta-number-suffix {
+  font-size: calc(var(--list-body-font-size, 12px) - 2px);
+  color: var(--text-muted, #888);
+  font-family: var(--list-font-family, var(--font-family, sans-serif));
+  font-weight: 400;
+}
+
+/* Barra de progreso plana */
+.lista-progress-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.lista-progress-track {
+  width: 96px;
+  height: 8px;
+  background-color: var(--bg-hover, #f1f5f9) !important;
+  border: 1px solid var(--border-color, #e2e8f0) !important;
+  position: relative;
+  overflow: hidden;
+  border-radius: 4px !important;
+}
+
+.lista-progress-fill {
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: width 0.3s ease;
+}
+
+.lista-progress-fill.blue {
+  background-color: var(--color-blue, #3b82f6);
+}
+
+.lista-progress-fill.red {
+  background-color: var(--color-red, #dc2626);
+}
+
+.lista-progress-fill.green {
+  background-color: var(--color-success, #16a34a);
+}
+
+.lista-progress-fill.orange {
+  background-color: var(--list-accent-color, #f97316);
+}
+
+.lista-progress-value {
+  font-family: var(--list-number-font-family, 'Courier New', Courier, monospace) !important;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.lista-progress-value.white {
+  color: var(--text-dark, #e5e5e5);
+}
+
+.lista-progress-value.red {
+  color: var(--color-red, #dc2626);
+}
+
+/* Badge de estado rectangular plano */
+.lista-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  font-size: 10px;
+  font-family: var(--list-number-font-family, 'Courier New', Courier, monospace) !important;
+  text-transform: none;
+  letter-spacing: 0.5px;
+  font-weight: 700;
+  border: 1px solid;
+  line-height: 1.4;
+  border-radius: 0 !important;
+}
+
+.lista-badge.active {
+  background-color: rgba(22, 163, 74, 0.1);
+  color: var(--color-success, #16a34a);
+  border-color: rgba(22, 163, 74, 0.3);
+}
+
+.lista-badge.inactive {
+  background-color: rgba(107, 114, 128, 0.1);
+  color: var(--text-muted, #6b7280);
+  border-color: rgba(107, 114, 128, 0.3);
+}
+
+.lista-badge.saturated {
+  background-color: rgba(220, 38, 38, 0.1);
+  color: var(--color-red, #dc2626);
+  border-color: rgba(220, 38, 38, 0.3);
+}
+
+.lista-badge.warning {
+  background-color: rgba(245, 158, 11, 0.1);
+  color: var(--color-warning, #f59e0b);
+  border-color: rgba(245, 158, 11, 0.3);
+}
+
+/* Acciones - botones planos */
+.lista-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+}
+
+.lista-action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background-color: var(--bg-hover, #f1f5f9) !important;
+  color: var(--text-muted, #475569) !important;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  padding: 0;
+  border-radius: var(--btn-radius, 4px) !important;
+}
+
+.lista-action-btn:hover {
+  background-color: var(--border-color, #cbd5e1) !important;
+  color: var(--text-main, #0f172a) !important;
+}
+
+.lista-action-btn.danger:hover {
+  background-color: rgba(220, 38, 38, 0.15);
+  color: var(--color-red, #dc2626);
+}
+
+/* Buscador plano */
+.lista-search {
+  display: flex;
+  align-items: center;
+  background-color: var(--bg-card, #ffffff) !important;
+  border: 1px solid var(--border-color, #cbd5e1) !important;
+  padding: 6px 12px;
+  gap: 8px;
+  border-radius: var(--input-radius, 4px) !important;
+}
+
+.lista-search input {
+  background: transparent;
+  border: none;
+  color: var(--text-main, #0f172a) !important;
+  font-size: var(--list-body-font-size, 12px);
+  font-weight: 600;
+  outline: none;
+  width: 100%;
+}
+
+.lista-search input::placeholder {
+  color: var(--text-muted, #888);
+  font-weight: 400;
+}
+
+.lista-search svg {
+  color: var(--text-muted, #888);
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+}
+
+/* Botón nuevo plano */
+.lista-add-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background-color: var(--list-accent-color, #f97316);
+  color: #ffffff !important;
+  font-size: var(--list-body-font-size, 12px);
+  font-weight: 700;
+  text-transform: none;
+  letter-spacing: 0.5px;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+  border-radius: var(--btn-radius, 4px) !important;
+  white-space: nowrap;
+}
+
+.lista-add-btn:hover {
+  opacity: 0.85;
+}
+
+/* Toolbar de lista */
+.lista-toolbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background-color: var(--bg-card, #ffffff) !important;
+  border-bottom: 1px solid var(--border-color, #e2e8f0) !important;
+}
+
+.lista-toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.lista-toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* Header del card de lista */
+.lista-card-header {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: var(--text-muted, #888);
+  padding: 4px 0;
+}
+
+/* Responsive */
+/* Lottie animated icons - visible on dark backgrounds */
+.lottie-icon svg {
+  filter: brightness(0) invert(0.82);
+}
+
+[data-theme="dark"] .lottie-icon svg,
+[data-theme="oled"] .lottie-icon svg {
+  filter: brightness(0) invert(0.85);
+}
+
+@media (max-width: 768px) {
+  .lista-table {
+    min-width: 700px;
+  }
+
+  .lista-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .lista-toolbar-right {
+    justify-content: flex-end;
+  }
+
+  .lista-search {
+    width: 100%;
+  }
+}

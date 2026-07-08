@@ -1,0 +1,89 @@
+.container {
+  position: relative;
+  display: inline-block;
+  user-select: none;
+}
+
+.lockWrapper {
+  position: absolute;
+  top: -14px;
+  right: -14px;
+  width: 32px;
+  height: 32px;
+  pointer-events: none;
+  z-index: 20;
+  transition: all 0.3s ease;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.6));
+}
+
+.lockSvg {
+  width: 100%;
+  height: 100%;
+  color: var(--text-muted, #f1f5f9);
+}
+
+.shackle {
+  transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-origin: 20px 13px;
+}
+
+.lockSvg.unlocked .shackle {
+  transform: translateY(-5px) rotate(45deg);
+}
+
+.button {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-primary, #f05a28);
+  color: #ffffff;
+  border: none;
+  opacity: 0.6;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 16px;
+  box-sizing: border-box;
+  z-index: 10;
+  text-align: left;
+}
+
+.button {
+  border-radius: var(--card-radius, 4px) !important;
+}
+
+.buttonActive {
+  opacity: 0.9;
+  transform: scale(0.98);
+}
+
+.label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0.5px;
+}
+
+.sublabel {
+  display: block;
+  font-size: 8px;
+  opacity: 0.8;
+  text-transform: none;
+  margin-top: 2px;
+}
+
+/* Progress bar */
+.progress {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  background-color: #ffffff;
+  opacity: 0.8;
+  width: 0%;
+  transition: width 0.1s linear;
+}
