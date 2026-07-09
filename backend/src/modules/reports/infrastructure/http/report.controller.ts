@@ -29,7 +29,12 @@ export class ReportController {
     @Query('startDate') startDate?: string,
     @Query('endDate') endDate?: string,
   ) {
-    return this.repo.getBestSellers(user.tenantId, limit ? parseInt(limit) : 10, startDate, endDate);
+    return this.repo.getBestSellers(
+      user.tenantId,
+      limit ? parseInt(limit) : 10,
+      startDate,
+      endDate,
+    );
   }
 
   @Get('dead-products')
@@ -47,6 +52,9 @@ export class ReportController {
     @CurrentUser() user: AuthenticatedUser,
     @Query('year') year?: string,
   ) {
-    return this.repo.getMonthlyProfit(user.tenantId, year ? parseInt(year) : new Date().getFullYear());
+    return this.repo.getMonthlyProfit(
+      user.tenantId,
+      year ? parseInt(year) : new Date().getFullYear(),
+    );
   }
 }

@@ -14,7 +14,10 @@ import { GetReceivablePaymentsUseCase } from '../application/use-cases/get-recei
   imports: [PrismaModule],
   controllers: [AccountsReceivableController],
   providers: [
-    { provide: ACCOUNTS_RECEIVABLE_REPOSITORY, useClass: PostgresAccountsReceivableRepo },
+    {
+      provide: ACCOUNTS_RECEIVABLE_REPOSITORY,
+      useClass: PostgresAccountsReceivableRepo,
+    },
     CreateAccountsReceivableUseCase,
     ListAccountsReceivableUseCase,
     FindAccountsReceivableByIdUseCase,

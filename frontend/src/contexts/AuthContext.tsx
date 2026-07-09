@@ -113,6 +113,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const login = async (email: string, password: string) => {
+    // Limpiar estado previo antes de login
+    clearSession();
     const res = await api.login({ email, password });
     const accessToken = res.accessToken;
     setToken(accessToken);
@@ -131,6 +133,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const register = async (data: { tenantName: string; email: string; password: string; name: string }) => {
+    // Limpiar estado previo antes de registro
+    clearSession();
     const res = await api.register(data);
     const accessToken = res.accessToken;
     setToken(accessToken);

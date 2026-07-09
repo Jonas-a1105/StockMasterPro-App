@@ -3,7 +3,7 @@ import { Plus, X } from 'lucide-react';
 import { Modal } from '@shared/ui/Modal';
 import { ButtonLoader } from '@shared/ui/ButtonLoader';
 import { useExchangeRate } from '@contexts/ExchangeRateContext';
-import { getSuppliers } from '@features/suppliers/api/suppliers.api';
+import { getSuppliers } from '@features/suppliers';
 import { api } from '@shared/lib/http/client';
 import type { Product, Supplier } from '@types';
 import styles from '@features/inventory/pages/InventoryPage.module.css';

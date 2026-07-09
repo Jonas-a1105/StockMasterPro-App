@@ -1,6 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { CustomerRepository, CUSTOMER_REPOSITORY } from '../ports/customer.repository.interface';
-import { AccountsReceivableRepository, ACCOUNTS_RECEIVABLE_REPOSITORY } from '@modules/accounts-receivable';
+import {
+  CustomerRepository,
+  CUSTOMER_REPOSITORY,
+} from '../ports/customer.repository.interface';
+import {
+  AccountsReceivableRepository,
+  ACCOUNTS_RECEIVABLE_REPOSITORY,
+} from '@modules/accounts-receivable';
 import { Customer } from '../../domain/customer.entity';
 import { FindCustomerByIdUseCase } from './find-customer-by-id.use-case';
 
@@ -14,7 +20,11 @@ export class PayCustomerCreditUseCase {
     private readonly findCustomerById: FindCustomerByIdUseCase,
   ) {}
 
-  async execute(id: string, tenantId: string, amount: number): Promise<Customer> {
+  async execute(
+    id: string,
+    tenantId: string,
+    amount: number,
+  ): Promise<Customer> {
     const customer = await this.findCustomerById.execute(id, tenantId);
     const newBalance = customer.payCredit(amount);
 
@@ -28,7 +38,8 @@ export class PayCustomerCreditUseCase {
     for (const receivable of pending) {
       if (remaining <= 0) break;
       const paymentAmount = Math.min(remaining, receivable.pendingAmount);
-      const { newPendingAmount, newStatus } = receivable.applyPayment(paymentAmount);
+      const { newPendingAmount, newStatus } =
+        receivable.applyPayment(paymentAmount);
       await this.receivableRepo.addPayment({
         tenantId,
         accountReceivableId: receivable.id,
@@ -36,7 +47,12 @@ export class PayCustomerCreditUseCase {
         paymentMethod: 'cash',
         paidAt: new Date().toISOString(),
       });
-      await this.receivableRepo.updateStatus(receivable.id, tenantId, newPendingAmount, newStatus);
+      await this.receivableRepo.updateStatus(
+        receivable.id,
+        tenantId,
+        newPendingAmount,
+        newStatus,
+      );
       remaining -= paymentAmount;
     }
 

@@ -15,15 +15,23 @@ export class Customer {
   ) {}
 
   payCredit(amount: number): number {
-    if (amount <= 0) throw new InvalidCreditAmountException('El monto del abono debe ser mayor a cero');
+    if (amount <= 0)
+      throw new InvalidCreditAmountException(
+        'El monto del abono debe ser mayor a cero',
+      );
     return Math.max(0, this.balance - amount);
   }
 
   chargeCredit(amount: number): number {
-    if (amount <= 0) throw new InvalidCreditAmountException('El monto del cargo debe ser mayor a cero');
+    if (amount <= 0)
+      throw new InvalidCreditAmountException(
+        'El monto del cargo debe ser mayor a cero',
+      );
     const newBalance = this.balance + amount;
     if (newBalance > this.creditLimit && this.creditLimit > 0) {
-      throw new InvalidCreditAmountException(`El cargo excede el límite de crédito disponible de ${this.creditLimit}`);
+      throw new InvalidCreditAmountException(
+        `El cargo excede el límite de crédito disponible de ${this.creditLimit}`,
+      );
     }
     return newBalance;
   }

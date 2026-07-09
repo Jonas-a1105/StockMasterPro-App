@@ -1,5 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { CustomerRepository, CUSTOMER_REPOSITORY, CreateCustomerData } from '../ports/customer.repository.interface';
+import {
+  CustomerRepository,
+  CUSTOMER_REPOSITORY,
+  CreateCustomerData,
+} from '../ports/customer.repository.interface';
 import { Customer } from '../../domain/customer.entity';
 
 @Injectable()

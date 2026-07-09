@@ -1,10 +1,19 @@
-import { Controller, Post, Headers, Req, HttpException, HttpStatus } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Headers,
+  Req,
+  HttpException,
+  HttpStatus,
+} from '@nestjs/common';
 import { Public } from '@shared/infrastructure/decorators/public.decorator';
 import { PrismaService } from '@shared/infrastructure/prisma/prisma.service';
 import Stripe from 'stripe';
 import type { Request } from 'express';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || 'sk_test_placeholder');
+const stripe = new Stripe(
+  process.env.STRIPE_SECRET_KEY || 'sk_test_placeholder',
+);
 
 @Public()
 @Controller('webhooks')
@@ -17,12 +26,18 @@ export class WebhooksController {
     @Headers('stripe-signature') signature: string,
   ) {
     if (!signature) {
-      throw new HttpException('Missing stripe-signature header', HttpStatus.BAD_REQUEST);
+      throw new HttpException(
+        'Missing stripe-signature header',
+        HttpStatus.BAD_REQUEST,
+      );
     }
 
     const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
     if (!webhookSecret) {
-      throw new HttpException('Webhook secret not configured', HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new HttpException(
+        'Webhook secret not configured',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
 
     let event: Stripe.Event;
@@ -33,7 +48,10 @@ export class WebhooksController {
         webhookSecret,
       );
     } catch {
-      throw new HttpException('Invalid webhook signature', HttpStatus.UNAUTHORIZED);
+      throw new HttpException(
+        'Invalid webhook signature',
+        HttpStatus.UNAUTHORIZED,
+      );
     }
 
     if (!event.type) {
@@ -50,7 +68,12 @@ export class WebhooksController {
             where: { stripeCustomerId: object.customer },
             data: {
               planType: object.items?.data?.[0]?.price?.nickname || 'pro',
-              subscriptionStatus: object.status === 'active' ? 'active' : object.status === 'past_due' ? 'past_due' : 'canceled',
+              subscriptionStatus:
+                object.status === 'active'
+                  ? 'active'
+                  : object.status === 'past_due'
+                    ? 'past_due'
+                    : 'canceled',
               isBlocked: false,
               licenseExpiresAt: new Date(object.current_period_end * 1000),
             },
@@ -82,7 +105,10 @@ export class WebhooksController {
       return { received: true };
     } catch (err) {
       console.error('Webhook error:', err);
-      throw new HttpException('Webhook processing failed', HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new HttpException(
+        'Webhook processing failed',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 }

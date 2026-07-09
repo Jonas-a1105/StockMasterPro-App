@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Delete, Body, Param, Query, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Delete,
+  Body,
+  Param,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { JwtAuthGuard } from '@shared/infrastructure/guards/jwt-auth.guard';
 import { RolesGuard } from '@shared/infrastructure/guards/roles.guard';
 import { Roles } from '@shared/infrastructure/decorators/roles.decorator';
@@ -41,8 +50,16 @@ export class ExpenseController {
 
   @Post()
   @Roles('admin', 'gerente')
-  create(@Body() dto: CreateExpenseDto, @CurrentUser() user: AuthenticatedUser) {
-    return this.service.create({ ...dto, registeredBy: user.id, tenantId: user.tenantId, paymentMethod: dto.paymentMethod || 'cash' });
+  create(
+    @Body() dto: CreateExpenseDto,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
+    return this.service.create({
+      ...dto,
+      registeredBy: user.id,
+      tenantId: user.tenantId,
+      paymentMethod: dto.paymentMethod || 'cash',
+    });
   }
 
   @Delete(':id')

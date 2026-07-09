@@ -15,14 +15,18 @@ export class RefreshTokenCleanupService {
       try {
         const count = await this.authService.cleanupExpiredTokens();
         if (count > 0) {
-          this.logger.log(`Limpieza automática: ${count} refresh tokens expirados eliminados`);
+          this.logger.log(
+            `Limpieza automática: ${count} refresh tokens expirados eliminados`,
+          );
         }
       } catch (err) {
         this.logger.error('Error en limpieza de refresh tokens', err);
       }
     }, CLEANUP_INTERVAL_MS);
 
-    this.logger.log(`RefreshTokenCleanupService iniciado (cada ${CLEANUP_INTERVAL_MS / 60000} min)`);
+    this.logger.log(
+      `RefreshTokenCleanupService iniciado (cada ${CLEANUP_INTERVAL_MS / 60000} min)`,
+    );
   }
 
   onModuleDestroy() {

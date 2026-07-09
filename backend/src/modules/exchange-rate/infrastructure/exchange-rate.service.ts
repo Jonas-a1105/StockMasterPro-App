@@ -2,12 +2,24 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class ExchangeRateService {
-  private cachedRate: { rate: number; updatedAt: string; source: string } | null = null;
+  private cachedRate: {
+    rate: number;
+    updatedAt: string;
+    source: string;
+  } | null = null;
   private lastKnownRate: number | null = null;
   private readonly cacheTime = 5 * 60 * 1000; // 5 minutes cache
 
-  async getDolarRate(): Promise<{ rate: number; updatedAt: string; source: string }> {
-    if (this.cachedRate && Date.now() - new Date(this.cachedRate.updatedAt).getTime() < this.cacheTime) {
+  async getDolarRate(): Promise<{
+    rate: number;
+    updatedAt: string;
+    source: string;
+  }> {
+    if (
+      this.cachedRate &&
+      Date.now() - new Date(this.cachedRate.updatedAt).getTime() <
+        this.cacheTime
+    ) {
       return this.cachedRate;
     }
 
@@ -32,7 +44,9 @@ export class ExchangeRateService {
         const res = await fetch('https://ve.dolarapi.com/v1/dolares');
         const data = await res.json();
         if (Array.isArray(data) && data.length > 0) {
-          const bcv = data.find((d: any) => d.fuente === 'oficial' || d.nombre === 'Oficial');
+          const bcv = data.find(
+            (d: any) => d.fuente === 'oficial' || d.nombre === 'Oficial',
+          );
           rate = bcv ? bcv.promedio : data[0].promedio;
           source = 've.dolarapi.com';
         }
@@ -44,7 +58,9 @@ export class ExchangeRateService {
     // 3) Try exchangerate-api.com USD→VES
     if (!rate) {
       try {
-        const res = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
+        const res = await fetch(
+          'https://api.exchangerate-api.com/v4/latest/USD',
+        );
         const data = await res.json();
         if (data?.rates?.VES) {
           rate = data.rates.VES;
@@ -77,16 +93,26 @@ export class ExchangeRateService {
 
     // Fallback to last known rate
     if (this.lastKnownRate) {
-      this.cachedRate = { rate: this.lastKnownRate, updatedAt: new Date().toISOString(), source: 'cache' };
+      this.cachedRate = {
+        rate: this.lastKnownRate,
+        updatedAt: new Date().toISOString(),
+        source: 'cache',
+      };
       return this.cachedRate;
     }
 
     // Absolute last resort - approximate BCV rate
-    this.cachedRate = { rate: 36.5, updatedAt: new Date().toISOString(), source: 'fallback' };
+    this.cachedRate = {
+      rate: 36.5,
+      updatedAt: new Date().toISOString(),
+      source: 'fallback',
+    };
     return this.cachedRate;
   }
 
-  async convertPrice(amountInUsd: number): Promise<{ usd: number; bs: number; rate: number }> {
+  async convertPrice(
+    amountInUsd: number,
+  ): Promise<{ usd: number; bs: number; rate: number }> {
     const { rate } = await this.getDolarRate();
     return { usd: amountInUsd, bs: amountInUsd * rate, rate };
   }

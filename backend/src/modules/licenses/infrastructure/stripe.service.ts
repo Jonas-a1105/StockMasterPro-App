@@ -12,11 +12,16 @@ export class StripeService {
   private stripe: Stripe;
 
   constructor(private readonly prisma: PrismaService) {
-    this.stripe = new Stripe(process.env.STRIPE_SECRET_KEY || 'sk_test_placeholder', { apiVersion: '2026-06-24.dahlia' as any });
+    this.stripe = new Stripe(
+      process.env.STRIPE_SECRET_KEY || 'sk_test_placeholder',
+      { apiVersion: '2026-06-24.dahlia' },
+    );
   }
 
   async getOrCreateCustomer(tenantId: string): Promise<string> {
-    const tenant = await this.prisma.tenant.findUnique({ where: { id: tenantId } });
+    const tenant = await this.prisma.tenant.findUnique({
+      where: { id: tenantId },
+    });
     if (!tenant) throw new Error('Tenant no encontrado');
     if (tenant.stripeCustomerId) return tenant.stripeCustomerId;
 
@@ -33,10 +38,15 @@ export class StripeService {
     return customer.id;
   }
 
-  async createSubscription(tenantId: string, planType: string, returnUrl: string) {
+  async createSubscription(
+    tenantId: string,
+    planType: string,
+    returnUrl: string,
+  ) {
     const customerId = await this.getOrCreateCustomer(tenantId);
     const priceId = PRICE_IDS[planType];
-    if (!priceId) throw new HttpException('Plan inválido', HttpStatus.BAD_REQUEST);
+    if (!priceId)
+      throw new HttpException('Plan inválido', HttpStatus.BAD_REQUEST);
 
     const subscription = await this.stripe.subscriptions.create({
       customer: customerId,
@@ -53,7 +63,7 @@ export class StripeService {
     });
 
     const invoice = subscription.latest_invoice as any;
-    const paymentIntent = invoice?.payment_intent as any;
+    const paymentIntent = invoice?.payment_intent;
 
     return {
       subscriptionId: subscription.id,
@@ -63,7 +73,9 @@ export class StripeService {
   }
 
   async cancelSubscription(tenantId: string) {
-    const tenant = await this.prisma.tenant.findUnique({ where: { id: tenantId } });
+    const tenant = await this.prisma.tenant.findUnique({
+      where: { id: tenantId },
+    });
     if (!tenant) throw new Error('Tenant no encontrado');
 
     if (tenant.stripeSubscriptionId) {

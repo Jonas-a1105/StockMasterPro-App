@@ -9,6 +9,10 @@ declare module 'rxjs' {
   }
 }
 declare module 'rxjs/operators' {
-  export function tap(next?: (value: any) => void, error?: (error: any) => void, complete?: () => void): any;
+  export function tap(
+    next?: (value: any) => void,
+    error?: (error: any) => void,
+    complete?: () => void,
+  ): any;
   export function map(project: (value: any, index: number) => any): any;
 }

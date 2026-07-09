@@ -1,5 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { AccountsPayableRepository, ACCOUNTS_PAYABLE_REPOSITORY } from '../ports/accounts-payable.repository.interface';
+import {
+  AccountsPayableRepository,
+  ACCOUNTS_PAYABLE_REPOSITORY,
+} from '../ports/accounts-payable.repository.interface';
 import { PayablePayment } from '../../domain/payable-payment.entity';
 
 @Injectable()

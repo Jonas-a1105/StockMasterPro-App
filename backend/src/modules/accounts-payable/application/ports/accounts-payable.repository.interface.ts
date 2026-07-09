@@ -1,7 +1,9 @@
 import { AccountsPayable } from '../../domain/accounts-payable.entity';
 import { PayablePayment } from '../../domain/payable-payment.entity';
 
-export const ACCOUNTS_PAYABLE_REPOSITORY = Symbol('ACCOUNTS_PAYABLE_REPOSITORY');
+export const ACCOUNTS_PAYABLE_REPOSITORY = Symbol(
+  'ACCOUNTS_PAYABLE_REPOSITORY',
+);
 
 export interface CreatePayableData {
   tenantId: string;
@@ -22,11 +24,19 @@ export interface PayablePaymentData {
 }
 
 export interface AccountsPayableRepository {
-  findAll(tenantId: string, limit?: number, offset?: number): Promise<AccountsPayable[]>;
+  findAll(
+    tenantId: string,
+    limit?: number,
+    offset?: number,
+  ): Promise<AccountsPayable[]>;
   count(tenantId: string): Promise<number>;
   findById(id: string, tenantId: string): Promise<AccountsPayable | null>;
   create(data: CreatePayableData): Promise<AccountsPayable>;
-  updatePendingAmount(id: string, tenantId: string, amount: number): Promise<void>;
+  updatePendingAmount(
+    id: string,
+    tenantId: string,
+    amount: number,
+  ): Promise<void>;
   markAsPaid(id: string, tenantId: string): Promise<void>;
   addPayment(data: PayablePaymentData): Promise<PayablePayment>;
   getPayments(accountPayableId: string): Promise<PayablePayment[]>;

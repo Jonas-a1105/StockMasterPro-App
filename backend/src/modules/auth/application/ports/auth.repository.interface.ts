@@ -1,7 +1,6 @@
 import { User } from '../../domain/user.entity';
 import { Tenant } from '../../domain/tenant.entity';
 
-
 export interface AuthRepository {
   findByEmail(email: string): Promise<User | null>;
   findById(id: string): Promise<User | null>;

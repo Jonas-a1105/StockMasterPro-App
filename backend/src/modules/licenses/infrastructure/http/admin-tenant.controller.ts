@@ -21,7 +21,7 @@ export class AdminTenantController {
     const rows = await this.prisma.tenant.findMany({
       orderBy: { name: 'asc' },
     });
-    return rows.map(r => ({
+    return rows.map((r) => ({
       id: r.id,
       name: r.name,
       planType: r.planType,
@@ -45,10 +45,7 @@ export class AdminTenantController {
   }
 
   @Post(':id/extend')
-  async extend(
-    @Param('id') id: string,
-    @Body() body: { days: number },
-  ) {
+  async extend(@Param('id') id: string, @Body() body: { days: number }) {
     const tenant = await this.licenseRepo.findTenantById(id);
     if (!tenant) throw new Error('Tenant no encontrado');
 
@@ -63,7 +60,10 @@ export class AdminTenantController {
         isBlocked: false,
       },
     });
-    return { message: `Licencia extendida ${body.days} días`, expiresAt: newExpiry };
+    return {
+      message: `Licencia extendida ${body.days} días`,
+      expiresAt: newExpiry,
+    };
   }
 
   @Post(':id/plan')

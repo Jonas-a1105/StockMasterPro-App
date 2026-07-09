@@ -32,7 +32,7 @@ export class PrismaService
     return new Proxy(this, {
       get: (target, prop, receiver) => {
         const store = rlsStorage.getStore();
-        
+
         // Si ya hay una transacción de RLS activa y se solicita una sub-transacción,
         // simularla ejecutando el callback sobre la transacción existente (sin anidar en BD)
         if (prop === '$transaction' && store?.tx) {
@@ -54,8 +54,10 @@ export class PrismaService
 
         // Si hay una transacción activa de RLS en el storage, redirigir allí.
         // Pero excluir métodos de ciclo de vida de NestJS / Prisma
-        const isLifecycle = typeof prop === 'string' && (prop.startsWith('$') || prop.startsWith('onModule'));
-        const client = (!isLifecycle && store?.tx) ? store.tx : target;
+        const isLifecycle =
+          typeof prop === 'string' &&
+          (prop.startsWith('$') || prop.startsWith('onModule'));
+        const client = !isLifecycle && store?.tx ? store.tx : target;
         const value = Reflect.get(client, prop, receiver);
         if (typeof value === 'function') {
           return value.bind(client);

@@ -75,8 +75,8 @@ describe('Sale Entity', () => {
         0,
         0,
         200,
-        'cash' as PaymentMethod,
-        'completed' as SaleStatus,
+        'cash',
+        'completed',
         items,
         new Date('2026-07-08'),
       );
@@ -92,9 +92,18 @@ describe('Sale Entity', () => {
 
     it('should allow null customerId', () => {
       const sale = new Sale(
-        'sale-2', 'tenant-1', 'user-1', null,
-        100, 0, 0, 100, 'credit' as PaymentMethod, 'completed' as SaleStatus,
-        [], new Date(),
+        'sale-2',
+        'tenant-1',
+        'user-1',
+        null,
+        100,
+        0,
+        0,
+        100,
+        'credit',
+        'completed',
+        [],
+        new Date(),
       );
       expect(sale.customerId).toBeNull();
     });

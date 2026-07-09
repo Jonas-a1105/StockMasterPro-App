@@ -8,6 +8,7 @@ import { SkeletonTablePage } from '@shared/ui/Skeleton';
 import { useTheme } from '@contexts/ThemeContext';
 import { Plus, Eye, Users, DollarSign, RefreshCw } from 'lucide-react';
 import { useExchangeRate } from '@contexts/ExchangeRateContext';
+import { formatUsd } from '@shared/lib/format/currency';
 import { KpiGrid } from '@shared/ui/KpiGrid';
 import { Toolbar } from '@shared/ui/Toolbar';
 import styles from './CreditNotesPage.module.css';
@@ -217,7 +218,7 @@ export function CreditNotesPage() {
                 </div>
                 <div className={styles.field}>
                   <label>Total</label>
-                  <input type="number" value={form.total.toFixed(2)} readOnly className={styles.totalField} />
+                  <input type="number" value={formatUsd(form.total)} readOnly className={styles.totalField} />
                 </div>
               </div>
 

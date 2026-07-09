@@ -14,7 +14,9 @@ describe('Auth (e2e)', () => {
 
     app = moduleFixture.createNestApplication();
     app.setGlobalPrefix('api');
-    app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
+    app.useGlobalPipes(
+      new ValidationPipe({ whitelist: true, transform: true }),
+    );
     await app.init();
   });
 
@@ -40,7 +42,10 @@ describe('Auth (e2e)', () => {
 describe('Events (e2e)', () => {
   let app: INestApplication;
   let createdId: string;
-  const testEvent = { title: 'Test Event', startDate: new Date().toISOString() };
+  const testEvent = {
+    title: 'Test Event',
+    startDate: new Date().toISOString(),
+  };
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -57,14 +62,10 @@ describe('Events (e2e)', () => {
   });
 
   it('/api/events (GET) - should return 401 without token', () => {
-    return request(app.getHttpServer())
-      .get('/api/events')
-      .expect(401);
+    return request(app.getHttpServer()).get('/api/events').expect(401);
   });
 
   it('/api/admin/tenants (GET) - should return 401 without token', () => {
-    return request(app.getHttpServer())
-      .get('/api/admin/tenants')
-      .expect(401);
+    return request(app.getHttpServer()).get('/api/admin/tenants').expect(401);
   });
 });

@@ -5,7 +5,10 @@ import {
   CreateTransactionData,
 } from '../ports/cash-register.repository.interface';
 import { CashTransaction } from '../../domain/cash-transaction.entity';
-import { SessionNotFoundException, InvalidTransactionTypeException } from '../../domain/cash-register.errors';
+import {
+  SessionNotFoundException,
+  InvalidTransactionTypeException,
+} from '../../domain/cash-register.errors';
 
 const VALID_TYPES = ['income', 'expense', 'sale', 'refund'] as const;
 

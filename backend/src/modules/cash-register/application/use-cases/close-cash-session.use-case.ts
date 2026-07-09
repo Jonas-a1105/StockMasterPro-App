@@ -12,7 +12,11 @@ export class CloseCashSessionUseCase {
     private readonly repo: CashRegisterRepository,
   ) {}
 
-  async execute(id: string, tenantId: string, actualBalance: number): Promise<{
+  async execute(
+    id: string,
+    tenantId: string,
+    actualBalance: number,
+  ): Promise<{
     closingBalance: number;
     actualBalance: number;
     difference: number;
@@ -25,7 +29,13 @@ export class CloseCashSessionUseCase {
     // Domain entity validates open state and computes close values
     const closeData = session.close(actualBalance, transactionSum);
 
-    await this.repo.closeSession(id, tenantId, closeData.closingBalance, closeData.actualBalance, closeData.difference);
+    await this.repo.closeSession(
+      id,
+      tenantId,
+      closeData.closingBalance,
+      closeData.actualBalance,
+      closeData.difference,
+    );
 
     return closeData;
   }

@@ -12,6 +12,20 @@ function isFeatureModule(importPath) {
   return importPath.startsWith('@features/') || importPath.startsWith('features/');
 }
 
+function getFeatureName(path) {
+  const match = path.match(/(?:@features\/|features\/)([\w-]+)/);
+  return match ? match[1] : null;
+}
+
+function isBarrelImport(importPath, featureName) {
+  // Barrel imports are: @features/<name> or @features/<name>/index
+  return importPath === `@features/${featureName}` || importPath === `@features/${featureName}/index`;
+}
+
+function isCssModule(importPath) {
+  return importPath.endsWith('.module.css');
+}
+
 function checkFile(filePath) {
   const content = readFileSync(filePath, 'utf-8');
   const relPath = relative(srcDir, filePath).replace(/\\/g, '/');
@@ -31,9 +45,24 @@ function checkFile(filePath) {
       continue;
     }
 
+    // Absolute imports (@features/, @shared/)
     if (relPath.startsWith('shared') && isFeatureModule(importPath)) {
-      console.error(`BOUNDARY ERROR: ${relPath} imports from features/ (${importPath})`);
+      console.error(`BOUNDARY ERROR: shared/ (${relPath}) imports from features/ (${importPath})`);
       errors++;
+      continue;
+    }
+
+    // Skip CSS module imports — they are styling concerns, not logical coupling
+    if (isCssModule(importPath)) continue;
+
+    // A feature must not import internals of another feature; only barrels allowed
+    const sourceFeature = getFeatureName(relPath);
+    const targetFeature = getFeatureName(importPath);
+    if (sourceFeature && targetFeature && sourceFeature !== targetFeature) {
+      if (!isBarrelImport(importPath, targetFeature)) {
+        console.error(`BOUNDARY ERROR: ${relPath} imports internal path from ${targetFeature} feature (${importPath}). Use @features/${targetFeature} instead.`);
+        errors++;
+      }
     }
   }
 }

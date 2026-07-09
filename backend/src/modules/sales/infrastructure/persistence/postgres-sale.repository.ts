@@ -39,7 +39,9 @@ export class PostgresSaleRepo implements SaleRepository {
     const created = await this.prisma.$transaction(async (tx) => {
       if (sale.paymentMethod === 'credit') {
         if (!sale.customerId) {
-          throw new InvalidSaleOperationException('Debe seleccionar un cliente para ventas a crédito.');
+          throw new InvalidSaleOperationException(
+            'Debe seleccionar un cliente para ventas a crédito.',
+          );
         }
 
         const customer = await tx.customer.findFirst({
@@ -59,10 +61,11 @@ export class PostgresSaleRepo implements SaleRepository {
         }
 
         const { count } = await tx.customer.updateMany({
-          where: { id: sale.customerId!, tenantId: sale.tenantId },
+          where: { id: sale.customerId, tenantId: sale.tenantId },
           data: { balance: newBalance },
         });
-        if (count === 0) throw new InvalidSaleOperationException('Cliente no encontrado.');
+        if (count === 0)
+          throw new InvalidSaleOperationException('Cliente no encontrado.');
       }
 
       const s = await tx.sale.create({
@@ -97,7 +100,9 @@ export class PostgresSaleRepo implements SaleRepository {
       // Lock products with FOR UPDATE to prevent concurrent overselling.
       // This is the ONLY place where stock is validated and decremented.
       for (const item of sale.items) {
-        const locked = await tx.$queryRaw<{ id: string; stock: number; name: string }[]>`
+        const locked = await tx.$queryRaw<
+          { id: string; stock: number; name: string }[]
+        >`
           SELECT id, stock, name FROM "products"
           WHERE id = ${item.productId} AND "tenant_id" = ${sale.tenantId}
           FOR UPDATE
@@ -107,7 +112,7 @@ export class PostgresSaleRepo implements SaleRepository {
           throw new InsufficientStockException(
             locked[0].name,
             locked[0].stock,
-            item.quantity
+            item.quantity,
           );
         }
 

@@ -22,12 +22,20 @@ export class ProcessBulkSalesUseCase {
   async execute(
     sales: ProcessSaleInput[],
     user: { tenantId: string; id: string },
-  ): Promise<{ index: number; success: boolean; data?: Sale; error?: string }[]> {
-    const results: { index: number; success: boolean; data?: Sale; error?: string }[] = [];
+  ): Promise<
+    { index: number; success: boolean; data?: Sale; error?: string }[]
+  > {
+    const results: {
+      index: number;
+      success: boolean;
+      data?: Sale;
+      error?: string;
+    }[] = [];
 
     for (let i = 0; i < sales.length; i++) {
       try {
-        const idempotencyKey = sales[i].idempotencyKey || sales[i].items?.toString();
+        const idempotencyKey =
+          sales[i].idempotencyKey || sales[i].items?.toString();
 
         if (idempotencyKey) {
           const existing = await this.prisma.sale.findFirst({
@@ -55,7 +63,8 @@ export class ProcessBulkSalesUseCase {
         });
         results.push({ index: i, success: true, data: result });
       } catch (err: unknown) {
-        const message = err instanceof Error ? err.message : 'Error desconocido';
+        const message =
+          err instanceof Error ? err.message : 'Error desconocido';
         results.push({ index: i, success: false, error: message });
       }
     }

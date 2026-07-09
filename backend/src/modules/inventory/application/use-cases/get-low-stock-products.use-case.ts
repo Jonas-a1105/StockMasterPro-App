@@ -1,5 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { ProductRepository, PRODUCT_REPOSITORY } from '../ports/product.repository.interface';
+import {
+  ProductRepository,
+  PRODUCT_REPOSITORY,
+} from '../ports/product.repository.interface';
 import { Product } from '../../domain/product.entity';
 
 @Injectable()

@@ -16,7 +16,10 @@ import {
 export class PostgresCashRegisterRepo implements CashRegisterRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async findOpenSession(userId: string, tenantId: string): Promise<CashSession | null> {
+  async findOpenSession(
+    userId: string,
+    tenantId: string,
+  ): Promise<CashSession | null> {
     const record = await this.prisma.cashSession.findFirst({
       where: { userId, tenantId, status: 'open' },
     });
@@ -85,7 +88,10 @@ export class PostgresCashRegisterRepo implements CashRegisterRepository {
     return this.toTransactionDomain(record);
   }
 
-  async getTransactions(sessionId: string, tenantId: string): Promise<CashTransaction[]> {
+  async getTransactions(
+    sessionId: string,
+    tenantId: string,
+  ): Promise<CashTransaction[]> {
     const records = await this.prisma.cashTransaction.findMany({
       where: { sessionId, tenantId },
       orderBy: { createdAt: 'desc' },

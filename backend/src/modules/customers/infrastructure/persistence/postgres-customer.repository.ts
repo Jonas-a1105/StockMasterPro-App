@@ -1,6 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '@shared/infrastructure/prisma/prisma.service';
-import { CustomerRepository, CreateCustomerData } from '../../application/ports/customer.repository.interface';
+import {
+  CustomerRepository,
+  CreateCustomerData,
+} from '../../application/ports/customer.repository.interface';
 import { Customer } from '../../domain/customer.entity';
 import { Customer as PrismaCustomer } from '@prisma/client';
 
@@ -44,7 +47,11 @@ export class PostgresCustomerRepo implements CustomerRepository {
     return this.toDomain(row);
   }
 
-  async update(id: string, tenantId: string, data: Partial<CreateCustomerData> & { balance?: number }): Promise<Customer> {
+  async update(
+    id: string,
+    tenantId: string,
+    data: Partial<CreateCustomerData> & { balance?: number },
+  ): Promise<Customer> {
     const { count } = await this.prisma.customer.updateMany({
       where: { id, tenantId },
       data,

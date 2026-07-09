@@ -4,6 +4,7 @@ import { Modal } from '@shared/ui/Modal';
 import { ButtonLoader } from '@shared/ui/ButtonLoader';
 import { PremiumLockButton } from '@shared/ui/PremiumLockButton';
 import { SearchableSelect } from '@shared/ui/SearchableSelect';
+import { formatUsd } from '@shared/lib/format/currency';
 import styles from '../pages/InventoryPage.module.css';
 
 export interface ProductFormData {
@@ -26,7 +27,7 @@ export function ProductForm({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (form.cost > 0 && form.price < form.cost) {
-      if (!window.confirm(`⚠️ El precio de venta ($${form.price.toFixed(2)}) es menor que el costo ($${form.cost.toFixed(2)}).\n\nEsto genera pérdida en cada venta. ¿Desea continuar?`)) return;
+      if (!window.confirm(`⚠️ El precio de venta (${formatUsd(form.price)}) es menor que el costo (${formatUsd(form.cost)}).\n\nEsto genera pérdida en cada venta. ¿Desea continuar?`)) return;
     }
     await onSubmit(form);
   };
@@ -54,7 +55,7 @@ export function ProductForm({
           <div className={styles.field}>
             <label>Costo ($)</label>
             <input type="number" step="0.01" value={form.cost || ''} onChange={e => setForm(p => ({ ...p, cost: Number(e.target.value) }))} placeholder="0.00" />
-            {form.cost > 0 && form.price > 0 && form.price < form.cost && <span style={{ color: '#f97316', fontSize: 11, marginTop: 2, display: 'block' }}>⚠️ Precio por debajo del costo (margen negativo: -${(form.cost - form.price).toFixed(2)})</span>}
+            {form.cost > 0 && form.price > 0 && form.price < form.cost && <span style={{ color: '#f97316', fontSize: 11, marginTop: 2, display: 'block' }}>⚠️ Precio por debajo del costo (margen negativo: -${formatUsd(form.cost - form.price)})</span>}
           </div>
           <div className={styles.field}>
             <label>Stock</label>

@@ -24,13 +24,19 @@ export class CategoryController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser) {
+  async findOne(
+    @Param('id') id: string,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
     return this.categoryService.findById(id, user.tenantId);
   }
 
   @Post()
   @Roles('admin', 'gerente')
-  async create(@Body() dto: CreateCategoryDto, @CurrentUser() user: AuthenticatedUser) {
+  async create(
+    @Body() dto: CreateCategoryDto,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
     return this.categoryService.create(user.tenantId, dto.name);
   }
 
@@ -46,7 +52,10 @@ export class CategoryController {
 
   @Delete(':id')
   @Roles('admin')
-  async delete(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser) {
+  async delete(
+    @Param('id') id: string,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
     return this.categoryService.delete(id, user.tenantId);
   }
 }

@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException, BadRequestException, ForbiddenException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+  ForbiddenException,
+} from '@nestjs/common';
 import { PrismaService } from '@shared/infrastructure/prisma/prisma.service';
 
 @Injectable()
@@ -53,7 +58,9 @@ export class SocialService {
   }
 
   async updateProfile(userId: string, tenantId: string, data: any) {
-    const profile = await this.prisma.socialProfile.findUnique({ where: { userId } });
+    const profile = await this.prisma.socialProfile.findUnique({
+      where: { userId },
+    });
     if (!profile) throw new NotFoundException('Perfil no encontrado');
     return this.prisma.socialProfile.update({
       where: { userId },
@@ -113,16 +120,13 @@ export class SocialService {
       where: { followerUserId: userId, tenantId },
       select: { followedUserId: true },
     });
-    const followingIds = following.map(f => f.followedUserId);
+    const followingIds = following.map((f) => f.followedUserId);
 
     const posts = await this.prisma.socialPost.findMany({
       where: {
         tenantId,
         isActive: true,
-        OR: [
-          { userId: { in: followingIds } },
-          { userId },
-        ],
+        OR: [{ userId: { in: followingIds } }, { userId }],
       },
       orderBy: { createdAt: 'desc' },
       skip,
@@ -144,10 +148,7 @@ export class SocialService {
       where: {
         tenantId,
         isActive: true,
-        OR: [
-          { userId: { in: followingIds } },
-          { userId },
-        ],
+        OR: [{ userId: { in: followingIds } }, { userId }],
       },
     });
 
@@ -185,15 +186,20 @@ export class SocialService {
           reactions: { select: { type: true } },
         },
       }),
-      this.prisma.socialPost.count({ where: { userId, tenantId, isActive: true } }),
+      this.prisma.socialPost.count({
+        where: { userId, tenantId, isActive: true },
+      }),
     ]);
     return { posts, total, page, totalPages: Math.ceil(total / limit) };
   }
 
   async updatePost(id: string, tenantId: string, userId: string, data: any) {
-    const post = await this.prisma.socialPost.findFirst({ where: { id, tenantId } });
+    const post = await this.prisma.socialPost.findFirst({
+      where: { id, tenantId },
+    });
     if (!post) throw new NotFoundException('Publicación no encontrada');
-    if (post.userId !== userId) throw new ForbiddenException('No puedes editar esta publicación');
+    if (post.userId !== userId)
+      throw new ForbiddenException('No puedes editar esta publicación');
     return this.prisma.socialPost.update({
       where: { id },
       data: {
@@ -208,9 +214,12 @@ export class SocialService {
   }
 
   async deletePost(id: string, tenantId: string, userId: string) {
-    const post = await this.prisma.socialPost.findFirst({ where: { id, tenantId } });
+    const post = await this.prisma.socialPost.findFirst({
+      where: { id, tenantId },
+    });
     if (!post) throw new NotFoundException('Publicación no encontrada');
-    if (post.userId !== userId) throw new ForbiddenException('No puedes eliminar esta publicación');
+    if (post.userId !== userId)
+      throw new ForbiddenException('No puedes eliminar esta publicación');
     await this.prisma.socialPost.delete({ where: { id } });
     return { message: 'Publicación eliminada' };
   }
@@ -233,7 +242,13 @@ export class SocialService {
     });
   }
 
-  async getCatalogs(tenantId: string, userId: string, page = 1, limit = 20, status?: string) {
+  async getCatalogs(
+    tenantId: string,
+    userId: string,
+    page = 1,
+    limit = 20,
+    status?: string,
+  ) {
     const skip = (page - 1) * limit;
     const where: any = { tenantId, userId };
     if (status) where.status = status;
@@ -262,11 +277,19 @@ export class SocialService {
         skip,
         take: limit,
         include: {
-          user: { select: { id: true, name: true, socialProfile: { select: { avatarUrl: true, displayName: true } } } },
+          user: {
+            select: {
+              id: true,
+              name: true,
+              socialProfile: { select: { avatarUrl: true, displayName: true } },
+            },
+          },
           _count: { select: { items: true } },
         },
       }),
-      this.prisma.socialCatalog.count({ where: { tenantId, isPublic: true, status: 'published' } }),
+      this.prisma.socialCatalog.count({
+        where: { tenantId, isPublic: true, status: 'published' },
+      }),
     ]);
     return { catalogs, total, page, totalPages: Math.ceil(total / limit) };
   }
@@ -276,7 +299,13 @@ export class SocialService {
       where: { id, tenantId },
       include: {
         items: { orderBy: { sortOrder: 'asc' } },
-        user: { select: { id: true, name: true, socialProfile: { select: { avatarUrl: true, displayName: true } } } },
+        user: {
+          select: {
+            id: true,
+            name: true,
+            socialProfile: { select: { avatarUrl: true, displayName: true } },
+          },
+        },
       },
     });
     if (!catalog) throw new NotFoundException('Catálogo no encontrado');
@@ -284,13 +313,17 @@ export class SocialService {
   }
 
   async updateCatalog(id: string, tenantId: string, userId: string, data: any) {
-    const catalog = await this.prisma.socialCatalog.findFirst({ where: { id, tenantId } });
+    const catalog = await this.prisma.socialCatalog.findFirst({
+      where: { id, tenantId },
+    });
     if (!catalog) throw new NotFoundException('Catálogo no encontrado');
-    if (catalog.userId !== userId) throw new ForbiddenException('No puedes editar este catálogo');
+    if (catalog.userId !== userId)
+      throw new ForbiddenException('No puedes editar este catálogo');
 
     const updateData: any = {};
     if (data.title !== undefined) updateData.title = data.title;
-    if (data.description !== undefined) updateData.description = data.description;
+    if (data.description !== undefined)
+      updateData.description = data.description;
     if (data.coverImage !== undefined) updateData.coverImage = data.coverImage;
     if (data.category !== undefined) updateData.category = data.category;
     if (data.isPublic !== undefined) updateData.isPublic = data.isPublic;
@@ -305,17 +338,23 @@ export class SocialService {
   }
 
   async deleteCatalog(id: string, tenantId: string, userId: string) {
-    const catalog = await this.prisma.socialCatalog.findFirst({ where: { id, tenantId } });
+    const catalog = await this.prisma.socialCatalog.findFirst({
+      where: { id, tenantId },
+    });
     if (!catalog) throw new NotFoundException('Catálogo no encontrado');
-    if (catalog.userId !== userId) throw new ForbiddenException('No puedes eliminar este catálogo');
+    if (catalog.userId !== userId)
+      throw new ForbiddenException('No puedes eliminar este catálogo');
     await this.prisma.socialCatalog.delete({ where: { id } });
     return { message: 'Catálogo eliminado' };
   }
 
   async publishCatalog(id: string, tenantId: string, userId: string) {
-    const catalog = await this.prisma.socialCatalog.findFirst({ where: { id, tenantId } });
+    const catalog = await this.prisma.socialCatalog.findFirst({
+      where: { id, tenantId },
+    });
     if (!catalog) throw new NotFoundException('Catálogo no encontrado');
-    if (catalog.userId !== userId) throw new ForbiddenException('No puedes publicar este catálogo');
+    if (catalog.userId !== userId)
+      throw new ForbiddenException('No puedes publicar este catálogo');
 
     return this.prisma.socialCatalog.update({
       where: { id },
@@ -326,10 +365,18 @@ export class SocialService {
 
   // ── Catalog Items ────────────────────────────────────────────────────────
 
-  async addCatalogItem(catalogId: string, tenantId: string, userId: string, data: any) {
-    const catalog = await this.prisma.socialCatalog.findFirst({ where: { id: catalogId, tenantId } });
+  async addCatalogItem(
+    catalogId: string,
+    tenantId: string,
+    userId: string,
+    data: any,
+  ) {
+    const catalog = await this.prisma.socialCatalog.findFirst({
+      where: { id: catalogId, tenantId },
+    });
     if (!catalog) throw new NotFoundException('Catálogo no encontrado');
-    if (catalog.userId !== userId) throw new ForbiddenException('No puedes modificar este catálogo');
+    if (catalog.userId !== userId)
+      throw new ForbiddenException('No puedes modificar este catálogo');
 
     const maxOrder = await this.prisma.socialCatalogItem.aggregate({
       where: { catalogId },
@@ -351,12 +398,23 @@ export class SocialService {
     });
   }
 
-  async updateCatalogItem(itemId: string, catalogId: string, tenantId: string, userId: string, data: any) {
-    const catalog = await this.prisma.socialCatalog.findFirst({ where: { id: catalogId, tenantId } });
+  async updateCatalogItem(
+    itemId: string,
+    catalogId: string,
+    tenantId: string,
+    userId: string,
+    data: any,
+  ) {
+    const catalog = await this.prisma.socialCatalog.findFirst({
+      where: { id: catalogId, tenantId },
+    });
     if (!catalog) throw new NotFoundException('Catálogo no encontrado');
-    if (catalog.userId !== userId) throw new ForbiddenException('No puedes modificar este catálogo');
+    if (catalog.userId !== userId)
+      throw new ForbiddenException('No puedes modificar este catálogo');
 
-    const item = await this.prisma.socialCatalogItem.findFirst({ where: { id: itemId, catalogId } });
+    const item = await this.prisma.socialCatalogItem.findFirst({
+      where: { id: itemId, catalogId },
+    });
     if (!item) throw new NotFoundException('Item no encontrado');
 
     return this.prisma.socialCatalogItem.update({
@@ -373,21 +431,37 @@ export class SocialService {
     });
   }
 
-  async deleteCatalogItem(itemId: string, catalogId: string, tenantId: string, userId: string) {
-    const catalog = await this.prisma.socialCatalog.findFirst({ where: { id: catalogId, tenantId } });
+  async deleteCatalogItem(
+    itemId: string,
+    catalogId: string,
+    tenantId: string,
+    userId: string,
+  ) {
+    const catalog = await this.prisma.socialCatalog.findFirst({
+      where: { id: catalogId, tenantId },
+    });
     if (!catalog) throw new NotFoundException('Catálogo no encontrado');
-    if (catalog.userId !== userId) throw new ForbiddenException('No puedes modificar este catálogo');
+    if (catalog.userId !== userId)
+      throw new ForbiddenException('No puedes modificar este catálogo');
 
     await this.prisma.socialCatalogItem.delete({ where: { id: itemId } });
     return { message: 'Item eliminado' };
   }
 
-  async reorderCatalogItems(catalogId: string, tenantId: string, userId: string, items: { id: string; sortOrder: number }[]) {
-    const catalog = await this.prisma.socialCatalog.findFirst({ where: { id: catalogId, tenantId } });
+  async reorderCatalogItems(
+    catalogId: string,
+    tenantId: string,
+    userId: string,
+    items: { id: string; sortOrder: number }[],
+  ) {
+    const catalog = await this.prisma.socialCatalog.findFirst({
+      where: { id: catalogId, tenantId },
+    });
     if (!catalog) throw new NotFoundException('Catálogo no encontrado');
-    if (catalog.userId !== userId) throw new ForbiddenException('No puedes modificar este catálogo');
+    if (catalog.userId !== userId)
+      throw new ForbiddenException('No puedes modificar este catálogo');
 
-    const updates = items.map(item =>
+    const updates = items.map((item) =>
       this.prisma.socialCatalogItem.update({
         where: { id: item.id },
         data: { sortOrder: item.sortOrder },
@@ -414,35 +488,76 @@ export class SocialService {
         content: data.content,
       },
       include: {
-        user: { select: { id: true, name: true, socialProfile: { select: { avatarUrl: true, displayName: true } } } },
+        user: {
+          select: {
+            id: true,
+            name: true,
+            socialProfile: { select: { avatarUrl: true, displayName: true } },
+          },
+        },
       },
     });
 
     if (data.parentId) {
-      const parent = await this.prisma.socialComment.findUnique({ where: { id: data.parentId } });
+      const parent = await this.prisma.socialComment.findUnique({
+        where: { id: data.parentId },
+      });
       if (parent && parent.userId !== userId) {
-        await this.createNotification(tenantId, parent.userId, userId, 'comment_reply', 'Nueva respuesta', `${comment.user.name} respondió a tu comentario`, '');
+        await this.createNotification(
+          tenantId,
+          parent.userId,
+          userId,
+          'comment_reply',
+          'Nueva respuesta',
+          `${comment.user.name} respondió a tu comentario`,
+          '',
+        );
       }
     }
 
     if (data.postId) {
-      const post = await this.prisma.socialPost.findUnique({ where: { id: data.postId } });
+      const post = await this.prisma.socialPost.findUnique({
+        where: { id: data.postId },
+      });
       if (post && post.userId !== userId) {
-        await this.createNotification(tenantId, post.userId, userId, 'comment', 'Nuevo comentario', `${comment.user.name} comentó tu publicación`, `/social/post/${data.postId}`);
+        await this.createNotification(
+          tenantId,
+          post.userId,
+          userId,
+          'comment',
+          'Nuevo comentario',
+          `${comment.user.name} comentó tu publicación`,
+          `/social/post/${data.postId}`,
+        );
       }
     }
 
     if (data.catalogId) {
-      const catalog = await this.prisma.socialCatalog.findUnique({ where: { id: data.catalogId } });
+      const catalog = await this.prisma.socialCatalog.findUnique({
+        where: { id: data.catalogId },
+      });
       if (catalog && catalog.userId !== userId) {
-        await this.createNotification(tenantId, catalog.userId, userId, 'catalog_comment', 'Nuevo comentario en catálogo', `${comment.user.name} comentó tu catálogo`, `/social/catalog/${data.catalogId}`);
+        await this.createNotification(
+          tenantId,
+          catalog.userId,
+          userId,
+          'catalog_comment',
+          'Nuevo comentario en catálogo',
+          `${comment.user.name} comentó tu catálogo`,
+          `/social/catalog/${data.catalogId}`,
+        );
       }
     }
 
     return comment;
   }
 
-  async getPostComments(postId: string, tenantId: string, page = 1, limit = 20) {
+  async getPostComments(
+    postId: string,
+    tenantId: string,
+    page = 1,
+    limit = 20,
+  ) {
     const skip = (page - 1) * limit;
     const [comments, total] = await Promise.all([
       this.prisma.socialComment.findMany({
@@ -451,11 +566,25 @@ export class SocialService {
         skip,
         take: limit,
         include: {
-          user: { select: { id: true, name: true, socialProfile: { select: { avatarUrl: true, displayName: true } } } },
+          user: {
+            select: {
+              id: true,
+              name: true,
+              socialProfile: { select: { avatarUrl: true, displayName: true } },
+            },
+          },
           replies: {
             orderBy: { createdAt: 'asc' },
             include: {
-              user: { select: { id: true, name: true, socialProfile: { select: { avatarUrl: true, displayName: true } } } },
+              user: {
+                select: {
+                  id: true,
+                  name: true,
+                  socialProfile: {
+                    select: { avatarUrl: true, displayName: true },
+                  },
+                },
+              },
             },
           },
           _count: { select: { replies: true } },
@@ -466,7 +595,12 @@ export class SocialService {
     return { comments, total, page, totalPages: Math.ceil(total / limit) };
   }
 
-  async getCatalogComments(catalogId: string, tenantId: string, page = 1, limit = 20) {
+  async getCatalogComments(
+    catalogId: string,
+    tenantId: string,
+    page = 1,
+    limit = 20,
+  ) {
     const skip = (page - 1) * limit;
     const [comments, total] = await Promise.all([
       this.prisma.socialComment.findMany({
@@ -475,11 +609,25 @@ export class SocialService {
         skip,
         take: limit,
         include: {
-          user: { select: { id: true, name: true, socialProfile: { select: { avatarUrl: true, displayName: true } } } },
+          user: {
+            select: {
+              id: true,
+              name: true,
+              socialProfile: { select: { avatarUrl: true, displayName: true } },
+            },
+          },
           replies: {
             orderBy: { createdAt: 'asc' },
             include: {
-              user: { select: { id: true, name: true, socialProfile: { select: { avatarUrl: true, displayName: true } } } },
+              user: {
+                select: {
+                  id: true,
+                  name: true,
+                  socialProfile: {
+                    select: { avatarUrl: true, displayName: true },
+                  },
+                },
+              },
             },
           },
           _count: { select: { replies: true } },
@@ -491,9 +639,12 @@ export class SocialService {
   }
 
   async deleteComment(id: string, tenantId: string, userId: string) {
-    const comment = await this.prisma.socialComment.findFirst({ where: { id, tenantId } });
+    const comment = await this.prisma.socialComment.findFirst({
+      where: { id, tenantId },
+    });
     if (!comment) throw new NotFoundException('Comentario no encontrado');
-    if (comment.userId !== userId) throw new ForbiddenException('No puedes eliminar este comentario');
+    if (comment.userId !== userId)
+      throw new ForbiddenException('No puedes eliminar este comentario');
     await this.prisma.socialComment.delete({ where: { id } });
     return { message: 'Comentario eliminado' };
   }
@@ -502,7 +653,9 @@ export class SocialService {
 
   async toggleReaction(tenantId: string, userId: string, data: any) {
     if (!data.postId && !data.commentId && !data.catalogId) {
-      throw new BadRequestException('Debes especificar un postId, commentId o catalogId');
+      throw new BadRequestException(
+        'Debes especificar un postId, commentId o catalogId',
+      );
     }
 
     const existing = await this.prisma.socialReaction.findFirst({
@@ -539,17 +692,41 @@ export class SocialService {
     });
 
     if (data.postId) {
-      const post = await this.prisma.socialPost.findUnique({ where: { id: data.postId } });
+      const post = await this.prisma.socialPost.findUnique({
+        where: { id: data.postId },
+      });
       if (post && post.userId !== userId) {
-        const user = await this.prisma.user.findUnique({ where: { id: userId } });
-        await this.createNotification(tenantId, post.userId, userId, 'like', 'Nuevo like', `A ${user?.name || 'Alguien'} le gustó tu publicación`, `/social/post/${data.postId}`);
+        const user = await this.prisma.user.findUnique({
+          where: { id: userId },
+        });
+        await this.createNotification(
+          tenantId,
+          post.userId,
+          userId,
+          'like',
+          'Nuevo like',
+          `A ${user?.name || 'Alguien'} le gustó tu publicación`,
+          `/social/post/${data.postId}`,
+        );
       }
     }
     if (data.catalogId) {
-      const catalog = await this.prisma.socialCatalog.findUnique({ where: { id: data.catalogId } });
+      const catalog = await this.prisma.socialCatalog.findUnique({
+        where: { id: data.catalogId },
+      });
       if (catalog && catalog.userId !== userId) {
-        const user = await this.prisma.user.findUnique({ where: { id: userId } });
-        await this.createNotification(tenantId, catalog.userId, userId, 'catalog_like', 'Nuevo like en catálogo', `A ${user?.name || 'Alguien'} le gustó tu catálogo`, `/social/catalog/${data.catalogId}`);
+        const user = await this.prisma.user.findUnique({
+          where: { id: userId },
+        });
+        await this.createNotification(
+          tenantId,
+          catalog.userId,
+          userId,
+          'catalog_like',
+          'Nuevo like en catálogo',
+          `A ${user?.name || 'Alguien'} le gustó tu catálogo`,
+          `/social/catalog/${data.catalogId}`,
+        );
       }
     }
 
@@ -565,12 +742,18 @@ export class SocialService {
     const reactions = await this.prisma.socialReaction.findMany({
       where,
       include: {
-        user: { select: { id: true, name: true, socialProfile: { select: { avatarUrl: true } } } },
+        user: {
+          select: {
+            id: true,
+            name: true,
+            socialProfile: { select: { avatarUrl: true } },
+          },
+        },
       },
     });
 
     const counts: Record<string, number> = {};
-    reactions.forEach(r => {
+    reactions.forEach((r) => {
       counts[r.type] = (counts[r.type] || 0) + 1;
     });
 
@@ -579,7 +762,11 @@ export class SocialService {
 
   // ── Follows ──────────────────────────────────────────────────────────────
 
-  async toggleFollow(tenantId: string, followerUserId: string, followedUserId: string) {
+  async toggleFollow(
+    tenantId: string,
+    followerUserId: string,
+    followedUserId: string,
+  ) {
     if (followerUserId === followedUserId) {
       throw new BadRequestException('No puedes seguirte a ti mismo');
     }
@@ -603,8 +790,18 @@ export class SocialService {
       data: { tenantId, followerUserId, followedUserId },
     });
 
-    const user = await this.prisma.user.findUnique({ where: { id: followerUserId } });
-    await this.createNotification(tenantId, followedUserId, followerUserId, 'follow', 'Nuevo seguidor', `${user?.name || 'Alguien'} comenzó a seguirte`, '');
+    const user = await this.prisma.user.findUnique({
+      where: { id: followerUserId },
+    });
+    await this.createNotification(
+      tenantId,
+      followedUserId,
+      followerUserId,
+      'follow',
+      'Nuevo seguidor',
+      `${user?.name || 'Alguien'} comenzó a seguirte`,
+      '',
+    );
 
     return { action: 'followed' };
   }
@@ -627,7 +824,9 @@ export class SocialService {
         },
         orderBy: { createdAt: 'desc' },
       }),
-      this.prisma.socialFollow.count({ where: { followedUserId: userId, tenantId } }),
+      this.prisma.socialFollow.count({
+        where: { followedUserId: userId, tenantId },
+      }),
     ]);
     return { followers, total, page, totalPages: Math.ceil(total / limit) };
   }
@@ -650,20 +849,30 @@ export class SocialService {
         },
         orderBy: { createdAt: 'desc' },
       }),
-      this.prisma.socialFollow.count({ where: { followerUserId: userId, tenantId } }),
+      this.prisma.socialFollow.count({
+        where: { followerUserId: userId, tenantId },
+      }),
     ]);
     return { following, total, page, totalPages: Math.ceil(total / limit) };
   }
 
   async getFollowCounts(userId: string, tenantId: string) {
     const [followers, following] = await Promise.all([
-      this.prisma.socialFollow.count({ where: { followedUserId: userId, tenantId } }),
-      this.prisma.socialFollow.count({ where: { followerUserId: userId, tenantId } }),
+      this.prisma.socialFollow.count({
+        where: { followedUserId: userId, tenantId },
+      }),
+      this.prisma.socialFollow.count({
+        where: { followerUserId: userId, tenantId },
+      }),
     ]);
     return { followers, following };
   }
 
-  async isFollowing(followerUserId: string, followedUserId: string, tenantId: string) {
+  async isFollowing(
+    followerUserId: string,
+    followedUserId: string,
+    tenantId: string,
+  ) {
     const follow = await this.prisma.socialFollow.findUnique({
       where: {
         tenantId_followerUserId_followedUserId: {
@@ -678,13 +887,26 @@ export class SocialService {
 
   // ── Notifications ────────────────────────────────────────────────────────
 
-  private async createNotification(tenantId: string, userId: string, fromUserId: string, type: string, title: string, message: string, link: string) {
+  private async createNotification(
+    tenantId: string,
+    userId: string,
+    fromUserId: string,
+    type: string,
+    title: string,
+    message: string,
+    link: string,
+  ) {
     return this.prisma.socialNotification.create({
       data: { tenantId, userId, fromUserId, type, title, message, link },
     });
   }
 
-  async getNotifications(userId: string, tenantId: string, page = 1, limit = 50) {
+  async getNotifications(
+    userId: string,
+    tenantId: string,
+    page = 1,
+    limit = 50,
+  ) {
     const skip = (page - 1) * limit;
     const [notifications, total, unreadCount] = await Promise.all([
       this.prisma.socialNotification.findMany({
@@ -693,19 +915,39 @@ export class SocialService {
         skip,
         take: limit,
         include: {
-          fromUser: { select: { id: true, name: true, socialProfile: { select: { avatarUrl: true } } } },
+          fromUser: {
+            select: {
+              id: true,
+              name: true,
+              socialProfile: { select: { avatarUrl: true } },
+            },
+          },
         },
       }),
       this.prisma.socialNotification.count({ where: { userId, tenantId } }),
-      this.prisma.socialNotification.count({ where: { userId, tenantId, isRead: false } }),
+      this.prisma.socialNotification.count({
+        where: { userId, tenantId, isRead: false },
+      }),
     ]);
-    return { notifications, total, unreadCount, page, totalPages: Math.ceil(total / limit) };
+    return {
+      notifications,
+      total,
+      unreadCount,
+      page,
+      totalPages: Math.ceil(total / limit),
+    };
   }
 
   async markNotificationRead(id: string, userId: string) {
-    const notification = await this.prisma.socialNotification.findFirst({ where: { id, userId } });
-    if (!notification) throw new NotFoundException('Notificación no encontrada');
-    return this.prisma.socialNotification.update({ where: { id }, data: { isRead: true } });
+    const notification = await this.prisma.socialNotification.findFirst({
+      where: { id, userId },
+    });
+    if (!notification)
+      throw new NotFoundException('Notificación no encontrada');
+    return this.prisma.socialNotification.update({
+      where: { id },
+      data: { isRead: true },
+    });
   }
 
   async markAllNotificationsRead(userId: string, tenantId: string) {
@@ -717,7 +959,9 @@ export class SocialService {
   }
 
   async getUnreadNotificationCount(userId: string) {
-    const count = await this.prisma.socialNotification.count({ where: { userId, isRead: false } });
+    const count = await this.prisma.socialNotification.count({
+      where: { userId, isRead: false },
+    });
     return { count };
   }
 
@@ -741,7 +985,15 @@ export class SocialService {
       },
       include: {
         members: {
-          include: { user: { select: { id: true, name: true, socialProfile: { select: { avatarUrl: true } } } } },
+          include: {
+            user: {
+              select: {
+                id: true,
+                name: true,
+                socialProfile: { select: { avatarUrl: true } },
+              },
+            },
+          },
         },
       },
     });
@@ -755,7 +1007,15 @@ export class SocialService {
         thread: {
           include: {
             members: {
-              include: { user: { select: { id: true, name: true, socialProfile: { select: { avatarUrl: true } } } } },
+              include: {
+                user: {
+                  select: {
+                    id: true,
+                    name: true,
+                    socialProfile: { select: { avatarUrl: true } },
+                  },
+                },
+              },
             },
             messages: { orderBy: { createdAt: 'desc' }, take: 1 },
             _count: { select: { messages: true } },
@@ -765,7 +1025,7 @@ export class SocialService {
       orderBy: { thread: { updatedAt: 'desc' } },
     });
 
-    return memberships.map(m => ({
+    return memberships.map((m) => ({
       ...m.thread,
       lastMessage: m.thread.messages[0] || null,
       unreadCount: 0,
@@ -779,17 +1039,25 @@ export class SocialService {
     let threadId = data.threadId;
 
     if (!threadId && data.recipientId) {
-      const existingThread = await this.findDirectMessageThread(tenantId, senderId, data.recipientId);
+      const existingThread = await this.findDirectMessageThread(
+        tenantId,
+        senderId,
+        data.recipientId,
+      );
       if (existingThread) {
         threadId = existingThread.id;
       } else {
-        const thread = await this.createThread(tenantId, senderId, { memberIds: [senderId, data.recipientId] });
+        const thread = await this.createThread(tenantId, senderId, {
+          memberIds: [senderId, data.recipientId],
+        });
         threadId = thread.id;
       }
     }
 
     if (!threadId) {
-      throw new BadRequestException('Debes especificar un threadId o recipientId');
+      throw new BadRequestException(
+        'Debes especificar un threadId o recipientId',
+      );
     }
 
     const message = await this.prisma.socialMessage.create({
@@ -801,22 +1069,47 @@ export class SocialService {
         images: data.images || [],
       },
       include: {
-        sender: { select: { id: true, name: true, socialProfile: { select: { avatarUrl: true } } } },
+        sender: {
+          select: {
+            id: true,
+            name: true,
+            socialProfile: { select: { avatarUrl: true } },
+          },
+        },
       },
     });
 
-    await this.prisma.socialThread.update({ where: { id: threadId }, data: { updatedAt: new Date() } });
+    await this.prisma.socialThread.update({
+      where: { id: threadId },
+      data: { updatedAt: new Date() },
+    });
 
-    const members = await this.prisma.socialThreadMember.findMany({ where: { threadId, userId: { not: senderId } } });
+    const members = await this.prisma.socialThreadMember.findMany({
+      where: { threadId, userId: { not: senderId } },
+    });
     for (const member of members) {
-      const user = await this.prisma.user.findUnique({ where: { id: senderId } });
-      await this.createNotification(tenantId, member.userId, senderId, 'message', 'Nuevo mensaje', `${user?.name || 'Alguien'} te envió un mensaje`, '/social/messages');
+      const user = await this.prisma.user.findUnique({
+        where: { id: senderId },
+      });
+      await this.createNotification(
+        tenantId,
+        member.userId,
+        senderId,
+        'message',
+        'Nuevo mensaje',
+        `${user?.name || 'Alguien'} te envió un mensaje`,
+        '/social/messages',
+      );
     }
 
     return message;
   }
 
-  private async findDirectMessageThread(tenantId: string, userId1: string, userId2: string) {
+  private async findDirectMessageThread(
+    tenantId: string,
+    userId1: string,
+    userId2: string,
+  ) {
     const threads1 = await this.prisma.socialThreadMember.findMany({
       where: { userId: userId1 },
       select: { threadId: true },
@@ -826,8 +1119,10 @@ export class SocialService {
       select: { threadId: true },
     });
 
-    const threadIds1 = new Set(threads1.map(t => t.threadId));
-    const common = threads2.filter(t => threadIds1.has(t.threadId)).map(t => t.threadId);
+    const threadIds1 = new Set(threads1.map((t) => t.threadId));
+    const common = threads2
+      .filter((t) => threadIds1.has(t.threadId))
+      .map((t) => t.threadId);
 
     if (common.length === 0) return null;
 
@@ -843,7 +1138,13 @@ export class SocialService {
     return null;
   }
 
-  async getThreadMessages(threadId: string, userId: string, tenantId: string, page = 1, limit = 50) {
+  async getThreadMessages(
+    threadId: string,
+    userId: string,
+    tenantId: string,
+    page = 1,
+    limit = 50,
+  ) {
     const member = await this.prisma.socialThreadMember.findFirst({
       where: { threadId, userId },
     });
@@ -857,7 +1158,13 @@ export class SocialService {
         skip,
         take: limit,
         include: {
-          sender: { select: { id: true, name: true, socialProfile: { select: { avatarUrl: true } } } },
+          sender: {
+            select: {
+              id: true,
+              name: true,
+              socialProfile: { select: { avatarUrl: true } },
+            },
+          },
         },
       }),
       this.prisma.socialMessage.count({ where: { threadId } }),
@@ -868,7 +1175,12 @@ export class SocialService {
       data: { lastReadAt: new Date() },
     });
 
-    return { messages: messages.reverse(), total, page, totalPages: Math.ceil(total / limit) };
+    return {
+      messages: messages.reverse(),
+      total,
+      page,
+      totalPages: Math.ceil(total / limit),
+    };
   }
 
   async markThreadAsRead(threadId: string, userId: string) {
@@ -903,7 +1215,12 @@ export class SocialService {
       if (lastMsg && lastMsg.senderId !== userId && !lastMsg.isRead) {
         unreadCount++;
       }
-      if (lastMsg && lastMsg.senderId !== userId && m.lastReadAt && lastMsg.createdAt > m.lastReadAt) {
+      if (
+        lastMsg &&
+        lastMsg.senderId !== userId &&
+        m.lastReadAt &&
+        lastMsg.createdAt > m.lastReadAt
+      ) {
         unreadCount++;
       }
     }
@@ -915,10 +1232,16 @@ export class SocialService {
 
   async getUserStats(userId: string, tenantId: string) {
     const [posts, catalogs, followers, following] = await Promise.all([
-      this.prisma.socialPost.count({ where: { userId, tenantId, isActive: true } }),
+      this.prisma.socialPost.count({
+        where: { userId, tenantId, isActive: true },
+      }),
       this.prisma.socialCatalog.count({ where: { userId, tenantId } }),
-      this.prisma.socialFollow.count({ where: { followedUserId: userId, tenantId } }),
-      this.prisma.socialFollow.count({ where: { followerUserId: userId, tenantId } }),
+      this.prisma.socialFollow.count({
+        where: { followedUserId: userId, tenantId },
+      }),
+      this.prisma.socialFollow.count({
+        where: { followerUserId: userId, tenantId },
+      }),
     ]);
     return { posts, catalogs, followers, following };
   }

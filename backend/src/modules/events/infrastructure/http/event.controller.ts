@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  Body,
+  Param,
+  Query,
+} from '@nestjs/common';
 import { Roles } from '@shared/infrastructure/decorators/roles.decorator';
 import { CurrentUser } from '@shared/infrastructure/decorators/current-user.decorator';
 import { AuthenticatedUser } from '@shared/infrastructure/types/authenticated-user';
@@ -18,7 +27,11 @@ export class EventController {
     @Query('end') end?: string,
   ) {
     if (start && end) {
-      return this.repo.findByDateRange(user.tenantId, new Date(start), new Date(end));
+      return this.repo.findByDateRange(
+        user.tenantId,
+        new Date(start),
+        new Date(end),
+      );
     }
     return this.repo.findAll(user.tenantId);
   }
@@ -46,7 +59,11 @@ export class EventController {
 
   @Put(':id')
   @Roles('admin', 'gerente')
-  update(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser, @Body() body: UpdateEventDto) {
+  update(
+    @Param('id') id: string,
+    @CurrentUser() user: AuthenticatedUser,
+    @Body() body: UpdateEventDto,
+  ) {
     return this.repo.update(id, user.tenantId, {
       ...body,
       startDate: body.startDate ? new Date(body.startDate) : undefined,

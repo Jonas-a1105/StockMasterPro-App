@@ -15,7 +15,10 @@ export class OpenCashSessionUseCase {
   ) {}
 
   async execute(data: OpenSessionData): Promise<CashSession> {
-    const existing = await this.repo.findOpenSession(data.userId, data.tenantId);
+    const existing = await this.repo.findOpenSession(
+      data.userId,
+      data.tenantId,
+    );
     if (existing) throw new SessionAlreadyOpenException();
     return this.repo.openSession(data);
   }

@@ -22,7 +22,10 @@ export class SalesController {
 
   @Post()
   @Roles('admin', 'gerente', 'cajero')
-  async processSale(@Body() dto: ProcessSaleDto, @CurrentUser() user: AuthenticatedUser) {
+  async processSale(
+    @Body() dto: ProcessSaleDto,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
     return this.processSaleUseCase.execute({
       tenantId: user.tenantId,
       userId: user.id,
@@ -50,7 +53,11 @@ export class SalesController {
     @Query('page') page?: string,
     @Query('limit') limit?: string,
   ) {
-    return this.findAllSalesUseCase.execute(user.tenantId, Number(page) || 1, Number(limit) || 50);
+    return this.findAllSalesUseCase.execute(
+      user.tenantId,
+      Number(page) || 1,
+      Number(limit) || 50,
+    );
   }
 
   @Get('daily-summary')
@@ -60,7 +67,10 @@ export class SalesController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser) {
+  async findOne(
+    @Param('id') id: string,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
     return this.findSaleByIdUseCase.execute(id, user.tenantId);
   }
 }

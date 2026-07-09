@@ -27,11 +27,18 @@ export class AccountsReceivableController {
     @Query('page') page?: string,
     @Query('limit') limit?: string,
   ) {
-    return this.listUseCase.execute(user.tenantId, Number(page) || 1, Number(limit) || 50);
+    return this.listUseCase.execute(
+      user.tenantId,
+      Number(page) || 1,
+      Number(limit) || 50,
+    );
   }
 
   @Get(':id')
-  async findById(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser) {
+  async findById(
+    @Param('id') id: string,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
     return this.findByIdUseCase.execute(id, user.tenantId);
   }
 
@@ -44,7 +51,10 @@ export class AccountsReceivableController {
   }
 
   @Post()
-  async create(@Body() dto: CreateReceivableDto, @CurrentUser() user: AuthenticatedUser) {
+  async create(
+    @Body() dto: CreateReceivableDto,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
     return this.createUseCase.execute({
       tenantId: user.tenantId,
       customerId: dto.customerId,
@@ -72,7 +82,10 @@ export class AccountsReceivableController {
   }
 
   @Get(':id/payments')
-  async getPayments(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser) {
+  async getPayments(
+    @Param('id') id: string,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
     return this.getPaymentsUseCase.execute(id, user.tenantId);
   }
 }

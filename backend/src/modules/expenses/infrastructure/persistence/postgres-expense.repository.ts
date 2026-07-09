@@ -31,7 +31,10 @@ export class PostgresExpenseRepo {
       if (filter.startDate) where.expenseDate.gte = new Date(filter.startDate);
       if (filter.endDate) where.expenseDate.lte = new Date(filter.endDate);
     }
-    return this.prisma.expense.findMany({ where, orderBy: { expenseDate: 'desc' } });
+    return this.prisma.expense.findMany({
+      where,
+      orderBy: { expenseDate: 'desc' },
+    });
   }
 
   async findById(id: string, tenantId: string) {
@@ -57,7 +60,11 @@ export class PostgresExpenseRepo {
     await this.prisma.expense.deleteMany({ where: { id, tenantId } });
   }
 
-  async getTotalByCategory(tenantId: string, startDate?: string, endDate?: string): Promise<{ category: string; total: number }[]> {
+  async getTotalByCategory(
+    tenantId: string,
+    startDate?: string,
+    endDate?: string,
+  ): Promise<{ category: string; total: number }[]> {
     const where: any = { tenantId };
     if (startDate || endDate) {
       where.expenseDate = {};
@@ -69,6 +76,9 @@ export class PostgresExpenseRepo {
       where,
       _sum: { amount: true },
     });
-    return rows.map(r => ({ category: r.category, total: Number(r._sum.amount) }));
+    return rows.map((r) => ({
+      category: r.category,
+      total: Number(r._sum.amount),
+    }));
   }
 }

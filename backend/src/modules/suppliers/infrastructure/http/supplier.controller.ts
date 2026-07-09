@@ -25,17 +25,27 @@ export class SupplierController {
     @Query('page') page?: string,
     @Query('limit') limit?: string,
   ) {
-    return this.supplierService.findAll(user.tenantId, Number(page) || 1, Number(limit) || 50);
+    return this.supplierService.findAll(
+      user.tenantId,
+      Number(page) || 1,
+      Number(limit) || 50,
+    );
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser) {
+  async findOne(
+    @Param('id') id: string,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
     return this.supplierService.findById(id, user.tenantId);
   }
 
   @Post()
   @Roles('admin', 'gerente')
-  async create(@Body() dto: CreateSupplierDto, @CurrentUser() user: AuthenticatedUser) {
+  async create(
+    @Body() dto: CreateSupplierDto,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
     return this.supplierService.create(user.tenantId, dto);
   }
 
@@ -51,7 +61,10 @@ export class SupplierController {
 
   @Delete(':id')
   @Roles('admin')
-  async delete(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser) {
+  async delete(
+    @Param('id') id: string,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
     return this.supplierService.delete(id, user.tenantId);
   }
 }

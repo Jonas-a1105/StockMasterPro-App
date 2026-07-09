@@ -1,5 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { CustomerRepository, CUSTOMER_REPOSITORY } from '../ports/customer.repository.interface';
+import {
+  CustomerRepository,
+  CUSTOMER_REPOSITORY,
+} from '../ports/customer.repository.interface';
 import { FindCustomerByIdUseCase } from './find-customer-by-id.use-case';
 
 @Injectable()

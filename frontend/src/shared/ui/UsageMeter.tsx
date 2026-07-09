@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { api } from '@shared/lib/http/client';
 import { getPlanLimits, type PlanTier } from '@shared/lib/plan-features';
 import { Skeleton } from './Skeleton';
+import { useAuth } from '@contexts/AuthContext';
 import styles from './UsageMeter.module.css';
 
 interface UsageData {
@@ -37,12 +38,14 @@ function UsageBar({ label, current, limit, unit }: { label: string; current: num
 }
 
 export function UsageMeter() {
+  const { isAuthenticated, isLoading: authLoading } = useAuth();
   const [data, setData] = useState<UsageData | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!isAuthenticated || authLoading) return;
     api.getLicenseUsage().then(setData).catch(() => {}).finally(() => setLoading(false));
-  }, []);
+  }, [isAuthenticated, authLoading]);
 
   if (loading) {
     return (

@@ -13,7 +13,10 @@ import { GetPayablePaymentsUseCase } from '../application/use-cases/get-payable-
   imports: [PrismaModule],
   controllers: [AccountsPayableController],
   providers: [
-    { provide: ACCOUNTS_PAYABLE_REPOSITORY, useClass: PostgresAccountsPayableRepo },
+    {
+      provide: ACCOUNTS_PAYABLE_REPOSITORY,
+      useClass: PostgresAccountsPayableRepo,
+    },
     CreateAccountsPayableUseCase,
     PayAccountsPayableUseCase,
     ListAccountsPayableUseCase,

@@ -7,7 +7,7 @@ import { useExchangeRate } from '@contexts/ExchangeRateContext';
 import { getPurchaseOrders, createPurchaseOrder } from '../api/purchaseOrders.api';
 import { PurchaseOrderForm } from '../components/PurchaseOrderForm';
 import { PurchaseOrdersList } from '../components/PurchaseOrdersList';
-import { getSuppliers } from '@features/suppliers/api/suppliers.api';
+import { getSuppliers } from '@features/suppliers';
 import type { PurchaseOrder, Supplier } from '@types';
 import styles from '@features/inventory/pages/InventoryPage.module.css';
 

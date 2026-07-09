@@ -33,13 +33,17 @@ export class CashSession {
    * @param transactionSum - Net sum of all transactions in the session
    *   (income/sale positive, expense/refund negative)
    */
-  close(actualBalance: number, transactionSum: number): {
+  close(
+    actualBalance: number,
+    transactionSum: number,
+  ): {
     closingBalance: number;
     actualBalance: number;
     difference: number;
   } {
     this.validateOpen();
-    const closingBalance = Math.round((this.openingBalance + transactionSum) * 100) / 100;
+    const closingBalance =
+      Math.round((this.openingBalance + transactionSum) * 100) / 100;
     const difference = Math.round((actualBalance - closingBalance) * 100) / 100;
     return { closingBalance, actualBalance, difference };
   }

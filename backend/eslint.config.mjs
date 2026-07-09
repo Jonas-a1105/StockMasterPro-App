@@ -30,12 +30,46 @@ export default tseslint.config(
       '@typescript-eslint/no-floating-promises': 'warn',
       '@typescript-eslint/no-unsafe-argument': 'warn',
       "prettier/prettier": ["error", { endOfLine: "auto" }],
-      // Layer boundaries: domain must not import infrastructure or NestJS
+    },
+  },
+  // ── Layer boundaries: domain ──────────────────────────────────────────
+  {
+    files: ['src/modules/**/domain/**/*.ts'],
+    rules: {
+      'no-restricted-imports': ['error', {
+        patterns: [
+          { group: ['**/infrastructure/**'], message: 'Domain must not import infrastructure' },
+          { group: ['@nestjs/*'], message: 'Domain must not import NestJS decorators' },
+          { group: ['@prisma/*'], message: 'Domain must not import Prisma' },
+        ],
+      }],
+    },
+  },
+  // ── Layer boundaries: application ─────────────────────────────────────
+  {
+    files: ['src/modules/**/application/**/*.ts'],
+    rules: {
+      'no-restricted-imports': ['error', {
+        patterns: [
+          { group: ['**/infrastructure/**'], message: 'Application must not import infrastructure' },
+          { group: ['@nestjs/common'], message: 'Application must not import NestJS decorators directly (use @Injectable from @nestjs/common only when needed)' },
+        ],
+      }],
+    },
+  },
+  // ── Cross-module boundary: block internal imports ─────────────────────
+  {
+    files: ['src/modules/**/*.ts'],
+    rules: {
       'no-restricted-imports': ['error', {
         patterns: [
           {
-            group: ['**/infrastructure/**', '@nestjs/*', '@prisma/*'],
-            message: 'Domain/Application layer must not import infrastructure or NestJS directly',
+            group: [
+              '@modules/*/domain/**/!(*.errors|*.entity|*.vo)',
+              '@modules/*/application/**',
+              '@modules/*/infrastructure/**',
+            ],
+            message: 'Modules must only import barrels (index.ts) from other modules, not internal paths',
           },
         ],
       }],

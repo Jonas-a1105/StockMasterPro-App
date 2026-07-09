@@ -11,6 +11,7 @@ import { LoadingDots } from '@shared/ui/LoadingDots';
 import { SkeletonReports } from '@shared/ui/Skeleton';
 import { TabNav } from '@shared/ui/TabNav';
 import { useTheme } from '@contexts/ThemeContext';
+import { formatUsd } from '@shared/lib/format/currency';
 import styles from './ReportsPage.module.css';
 
 export const COLORS = ['#ea580c', '#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899'];
@@ -28,8 +29,6 @@ export const TAB_ITEMS = [
   { key: 'operaciones', label: 'Operaciones', icon: <ShoppingCart size={16} /> },
   { key: 'analitica', label: 'Analítica', icon: <TrendingUp size={16} /> }
 ];
-
-export const formatUSD = (v: number) => `$${v.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
 function groupSalesByDate(sales: any[], days = 30) {
   const map: Record<string, number> = {};
@@ -222,7 +221,7 @@ export const renderTooltip = (props: any) => {
     <div style={{ backgroundColor: 'var(--bg-card, #1e1e1e)', border: '1px solid var(--border-color, #2d2d2d)', padding: '8px 12px', fontSize: '12px', color: 'var(--text-dark, #e5e5e5)' }}>
       <div style={{ fontWeight: 700, marginBottom: 4, fontSize: 11, color: 'var(--text-muted, #888)', textTransform: "none", letterSpacing: '0.5px' }}>{label}</div>
       {payload.map((p: any, i: number) => (
-        <div key={i} style={{ color: p.color, marginTop: 2 }}>{p.name}: {typeof p.value === 'number' ? `$${p.value.toLocaleString('de-DE', { minimumFractionDigits: 2 })}` : p.value}</div>
+        <div key={i} style={{ color: p.color, marginTop: 2 }}>{p.name}: {typeof p.value === 'number' ? formatUsd(p.value) : p.value}</div>
       ))}
     </div>
   );
@@ -376,11 +375,11 @@ export function ReportsPage() {
                   {profitData.map(m => (
                     <tr key={m.month}>
                       <td><span className="lista-name-text">{m.month}</span></td>
-                      <td style={{textAlign:'right'}}><span className="lista-number-value">{formatUSD(m.revenue)}</span></td>
-                      <td style={{textAlign:'right'}}><span className="lista-number-value">{formatUSD(m.cost)}</span></td>
+                      <td style={{textAlign:'right'}}><span className="lista-number-value">{formatUsd(m.revenue)}</span></td>
+                      <td style={{textAlign:'right'}}><span className="lista-number-value">{formatUsd(m.cost)}</span></td>
                       <td style={{textAlign:'right'}}>
                         <span className="lista-number-value" style={{color: m.profit >= 0 ? 'var(--color-success)' : 'var(--color-danger)'}}>
-                          {formatUSD(m.profit)}
+                          {formatUsd(m.profit)}
                         </span>
                       </td>
                     </tr>
@@ -390,14 +389,14 @@ export function ReportsPage() {
                       Total Anual
                     </td>
                     <td style={{textAlign:'right', fontWeight: 700, padding: 'var(--list-cell-padding, 12px)'}}>
-                      {formatUSD(profitTotals.revenue)}
+                      {formatUsd(profitTotals.revenue)}
                     </td>
                     <td style={{textAlign:'right', fontWeight: 700, padding: 'var(--list-cell-padding, 12px)'}}>
-                      {formatUSD(profitTotals.cost)}
+                      {formatUsd(profitTotals.cost)}
                     </td>
                     <td style={{textAlign:'right', padding: 'var(--list-cell-padding, 12px)'}}>
                       <span style={{fontWeight: 800, fontSize: 'calc(var(--list-body-font-size, 12px) + 2px)', color: profitTotals.profit >= 0 ? 'var(--color-success)' : 'var(--color-danger)'}}>
-                        {formatUSD(profitTotals.profit)}
+                        {formatUsd(profitTotals.profit)}
                       </span>
                     </td>
                   </tr>

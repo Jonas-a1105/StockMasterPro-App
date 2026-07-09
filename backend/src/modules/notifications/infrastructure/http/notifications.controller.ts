@@ -22,7 +22,7 @@ export class NotificationsController {
       where: { tenantId, isActive: true, stock: { lte: 0 } },
       take: 5,
     });
-    lowStock.forEach(p => {
+    lowStock.forEach((p) => {
       notifications.push({
         id: `low-stock-${p.id}`,
         type: 'critical',
@@ -38,7 +38,7 @@ export class NotificationsController {
       where: { tenantId, isActive: true, stock: { gt: 0, lte: 5 } },
       take: 5,
     });
-    nearLow.forEach(p => {
+    nearLow.forEach((p) => {
       notifications.push({
         id: `near-low-${p.id}`,
         type: 'critical',
@@ -56,10 +56,15 @@ export class NotificationsController {
       orderBy: { createdAt: 'desc' },
       take: 3,
     });
-    recentSales.forEach(s => {
+    recentSales.forEach((s) => {
       const diff = Date.now() - new Date(s.createdAt).getTime();
       const mins = Math.floor(diff / 60000);
-      const time = mins < 60 ? `Hace ${mins} min` : mins < 1440 ? `Hace ${Math.floor(mins / 60)} hr` : `Hace ${Math.floor(mins / 1440)} día${Math.floor(mins / 1440) > 1 ? 's' : ''}`;
+      const time =
+        mins < 60
+          ? `Hace ${mins} min`
+          : mins < 1440
+            ? `Hace ${Math.floor(mins / 60)} hr`
+            : `Hace ${Math.floor(mins / 1440)} día${Math.floor(mins / 1440) > 1 ? 's' : ''}`;
       notifications.push({
         id: `sale-${s.id}`,
         type: 'success',
@@ -77,8 +82,10 @@ export class NotificationsController {
       orderBy: { dueDate: 'asc' },
       take: 3,
     });
-    pendingAP.forEach(ap => {
-      const daysLeft = Math.ceil((new Date(ap.dueDate).getTime() - Date.now()) / 86400000);
+    pendingAP.forEach((ap) => {
+      const daysLeft = Math.ceil(
+        (new Date(ap.dueDate).getTime() - Date.now()) / 86400000,
+      );
       notifications.push({
         id: `ap-${ap.id}`,
         type: 'info',

@@ -12,7 +12,10 @@ export class GetSessionTransactionsUseCase {
     private readonly repo: CashRegisterRepository,
   ) {}
 
-  async execute(sessionId: string, tenantId: string): Promise<CashTransaction[]> {
+  async execute(
+    sessionId: string,
+    tenantId: string,
+  ): Promise<CashTransaction[]> {
     return this.repo.getTransactions(sessionId, tenantId);
   }
 }

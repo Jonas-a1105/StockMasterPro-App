@@ -1,7 +1,9 @@
 import { AccountsReceivable } from '../../domain/accounts-receivable.entity';
 import { ReceivablePayment } from '../../domain/receivable-payment.entity';
 
-export const ACCOUNTS_RECEIVABLE_REPOSITORY = Symbol('ACCOUNTS_RECEIVABLE_REPOSITORY');
+export const ACCOUNTS_RECEIVABLE_REPOSITORY = Symbol(
+  'ACCOUNTS_RECEIVABLE_REPOSITORY',
+);
 
 export interface CreateReceivableData {
   tenantId: string;
@@ -22,12 +24,27 @@ export interface ReceivablePaymentData {
 }
 
 export interface AccountsReceivableRepository {
-  findAll(tenantId: string, limit?: number, offset?: number): Promise<AccountsReceivable[]>;
+  findAll(
+    tenantId: string,
+    limit?: number,
+    offset?: number,
+  ): Promise<AccountsReceivable[]>;
   count(tenantId: string): Promise<number>;
   findById(id: string, tenantId: string): Promise<AccountsReceivable | null>;
-  findByCustomer(customerId: string, tenantId: string): Promise<AccountsReceivable[]>;
+  findByCustomer(
+    customerId: string,
+    tenantId: string,
+  ): Promise<AccountsReceivable[]>;
   create(data: CreateReceivableData): Promise<AccountsReceivable>;
-  updateStatus(id: string, tenantId: string, pendingAmount: number, status: string): Promise<void>;
+  updateStatus(
+    id: string,
+    tenantId: string,
+    pendingAmount: number,
+    status: string,
+  ): Promise<void>;
   addPayment(data: ReceivablePaymentData): Promise<ReceivablePayment>;
-  getPayments(accountReceivableId: string, tenantId: string): Promise<ReceivablePayment[]>;
+  getPayments(
+    accountReceivableId: string,
+    tenantId: string,
+  ): Promise<ReceivablePayment[]>;
 }

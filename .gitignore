@@ -57,3 +57,9 @@ Done.json
 *.txt
 
 Plantillas/
+
+# Planning/documentation markdown files
+*.md
+!backend/**/*.md
+!frontend/**/*.md
+!frontend/public/**/*.md

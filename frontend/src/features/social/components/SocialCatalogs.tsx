@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Plus, Send, Trash2, X } from 'lucide-react';
 import { Skeleton } from '@shared/ui/Skeleton';
 import { api } from '@shared/lib/http/client';
+import { formatUsd } from '@shared/lib/format/currency';
 import type { SocialCatalog, SocialCatalogItem } from '@types';
 
 function CatalogGridSkeleton() {
@@ -166,7 +167,7 @@ export function SocialCatalogs() {
                       {item.imageUrl && <img src={item.imageUrl} alt="" />}
                       <div>
                         <strong>{item.name}</strong>
-                        {item.price > 0 && <span>${Number(item.price).toFixed(2)}</span>}
+                        {item.price > 0 && <span>{formatUsd(item.price)}</span>}
                       </div>
                     </div>
                   ))}

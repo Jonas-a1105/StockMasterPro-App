@@ -7,13 +7,20 @@ import {
 } from '../../application/ports/accounts-receivable.repository.interface';
 import { AccountsReceivable } from '../../domain/accounts-receivable.entity';
 import { ReceivablePayment } from '../../domain/receivable-payment.entity';
-import { AccountsReceivable as PrismaReceivable, ReceivablePayment as PrismaPayment } from '@prisma/client';
+import {
+  AccountsReceivable as PrismaReceivable,
+  ReceivablePayment as PrismaPayment,
+} from '@prisma/client';
 
 @Injectable()
 export class PostgresAccountsReceivableRepo implements AccountsReceivableRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async findAll(tenantId: string, limit = 50, offset = 0): Promise<AccountsReceivable[]> {
+  async findAll(
+    tenantId: string,
+    limit = 50,
+    offset = 0,
+  ): Promise<AccountsReceivable[]> {
     const records = await this.prisma.accountsReceivable.findMany({
       where: { tenantId },
       orderBy: { createdAt: 'desc' },
@@ -27,14 +34,20 @@ export class PostgresAccountsReceivableRepo implements AccountsReceivableReposit
     return this.prisma.accountsReceivable.count({ where: { tenantId } });
   }
 
-  async findById(id: string, tenantId: string): Promise<AccountsReceivable | null> {
+  async findById(
+    id: string,
+    tenantId: string,
+  ): Promise<AccountsReceivable | null> {
     const record = await this.prisma.accountsReceivable.findFirst({
       where: { id, tenantId },
     });
     return record ? this.toDomain(record) : null;
   }
 
-  async findByCustomer(customerId: string, tenantId: string): Promise<AccountsReceivable[]> {
+  async findByCustomer(
+    customerId: string,
+    tenantId: string,
+  ): Promise<AccountsReceivable[]> {
     const records = await this.prisma.accountsReceivable.findMany({
       where: { customerId, tenantId },
       orderBy: { createdAt: 'desc' },
@@ -57,13 +70,20 @@ export class PostgresAccountsReceivableRepo implements AccountsReceivableReposit
     return this.toDomain(record);
   }
 
-  async updateStatus(id: string, tenantId: string, pendingAmount: number, status: string): Promise<void> {
+  async updateStatus(
+    id: string,
+    tenantId: string,
+    pendingAmount: number,
+    status: string,
+  ): Promise<void> {
     const { count } = await this.prisma.accountsReceivable.updateMany({
       where: { id, tenantId },
       data: { pendingAmount, status },
     });
     if (count === 0) {
-      throw new Error(`AccountsReceivable ${id} not found for tenant ${tenantId}`);
+      throw new Error(
+        `AccountsReceivable ${id} not found for tenant ${tenantId}`,
+      );
     }
   }
 
@@ -81,7 +101,10 @@ export class PostgresAccountsReceivableRepo implements AccountsReceivableReposit
     return this.toPaymentDomain(record);
   }
 
-  async getPayments(accountReceivableId: string, tenantId: string): Promise<ReceivablePayment[]> {
+  async getPayments(
+    accountReceivableId: string,
+    tenantId: string,
+  ): Promise<ReceivablePayment[]> {
     const records = await this.prisma.receivablePayment.findMany({
       where: { accountReceivableId, tenantId },
       orderBy: { paidAt: 'desc' },

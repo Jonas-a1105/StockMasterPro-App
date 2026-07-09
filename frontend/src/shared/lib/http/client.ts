@@ -78,7 +78,8 @@ class ApiClient {
           return null;
         }
 
-        const data = await response.json();
+        const json = await response.json();
+        const data = json.data ?? json;
         this.token = data.accessToken;
         this.refreshToken = data.refreshToken;
         if (typeof window !== 'undefined') {
@@ -144,16 +145,37 @@ class ApiClient {
       throw new Error(error.message || `Error ${response.status}`);
     }
 
-    return response.json();
+    const json = await response.json();
+    return (json.data ?? json) as T;
   }
-
-  // Auth
   register(data: { tenantName: string; email: string; password: string; name: string }) {
-    return this.request<{ accessToken: string; refreshToken: string; user: any }>('/auth/register', { method: 'POST', body: JSON.stringify(data) });
+    return this.requestAuth<{ accessToken: string; refreshToken: string; user: any }>('/auth/register', { method: 'POST', body: JSON.stringify(data) });
   }
 
   login(data: { email: string; password: string }) {
-    return this.request<{ accessToken: string; refreshToken: string; user: any }>('/auth/login', { method: 'POST', body: JSON.stringify(data) });
+    return this.requestAuth<{ accessToken: string; refreshToken: string; user: any }>('/auth/login', { method: 'POST', body: JSON.stringify(data) });
+  }
+
+  private async requestAuth<T>(path: string, options: RequestInit = {}): Promise<T> {
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+      ...(options.headers as Record<string, string>),
+    };
+
+    // Auth endpoints never send Authorization header
+    const response = await fetch(`${BASE_URL}${path}`, { ...options, headers });
+
+    if (response.status === 401) {
+      throw new Error('Credenciales inválidas');
+    }
+
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({ message: 'Error de conexión' }));
+      throw new Error(error.message || `Error ${response.status}`);
+    }
+
+    const json = await response.json();
+    return (json.data ?? json) as T;
   }
 
   // Inventory

@@ -50,14 +50,18 @@ export class PostgresEventRepo {
     });
   }
 
-  async update(id: string, tenantId: string, data: {
-    title?: string;
-    description?: string;
-    startDate?: Date;
-    endDate?: Date;
-    allDay?: boolean;
-    color?: string;
-  }) {
+  async update(
+    id: string,
+    tenantId: string,
+    data: {
+      title?: string;
+      description?: string;
+      startDate?: Date;
+      endDate?: Date;
+      allDay?: boolean;
+      color?: string;
+    },
+  ) {
     const { count } = await this.prisma.calendarEvent.updateMany({
       where: { id, tenantId },
       data,

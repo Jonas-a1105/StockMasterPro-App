@@ -19,7 +19,10 @@ export interface CreateTransactionData {
 }
 
 export interface CashRegisterRepository {
-  findOpenSession(userId: string, tenantId: string): Promise<CashSession | null>;
+  findOpenSession(
+    userId: string,
+    tenantId: string,
+  ): Promise<CashSession | null>;
   findById(id: string, tenantId: string): Promise<CashSession | null>;
   findAll(tenantId: string): Promise<CashSession[]>;
   openSession(data: OpenSessionData): Promise<CashSession>;
@@ -31,6 +34,9 @@ export interface CashRegisterRepository {
     difference: number,
   ): Promise<void>;
   addTransaction(data: CreateTransactionData): Promise<CashTransaction>;
-  getTransactions(sessionId: string, tenantId: string): Promise<CashTransaction[]>;
+  getTransactions(
+    sessionId: string,
+    tenantId: string,
+  ): Promise<CashTransaction[]>;
   sumTransactions(sessionId: string, tenantId: string): Promise<number>;
 }

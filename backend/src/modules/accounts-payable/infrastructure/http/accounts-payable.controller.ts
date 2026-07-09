@@ -27,7 +27,11 @@ export class AccountsPayableController {
     @Query('page') page?: string,
     @Query('limit') limit?: string,
   ) {
-    return this.listPayables.execute(user.tenantId, Number(page) || 1, Number(limit) || 50);
+    return this.listPayables.execute(
+      user.tenantId,
+      Number(page) || 1,
+      Number(limit) || 50,
+    );
   }
 
   @Get(':id')
@@ -38,7 +42,10 @@ export class AccountsPayableController {
 
   @Post()
   @Roles('admin', 'gerente')
-  create(@Body() dto: CreatePayableDto, @CurrentUser() user: AuthenticatedUser) {
+  create(
+    @Body() dto: CreatePayableDto,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
     return this.createPayable.execute({ ...dto, tenantId: user.tenantId });
   }
 
@@ -48,7 +55,8 @@ export class AccountsPayableController {
     return this.payPayable.execute({
       accountPayableId: dto.accountPayableId,
       amount: dto.amount,
-      paymentMethod: (dto.paymentMethod as 'cash' | 'card' | 'transfer') ?? 'cash',
+      paymentMethod:
+        (dto.paymentMethod as 'cash' | 'card' | 'transfer') ?? 'cash',
       notes: dto.notes,
       tenantId: user.tenantId,
       paidAt: new Date().toISOString(),

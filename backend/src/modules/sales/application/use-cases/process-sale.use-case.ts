@@ -1,5 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { SaleRepository, SALES_REPOSITORY } from '../ports/sale.repository.interface';
+import {
+  SaleRepository,
+  SALES_REPOSITORY,
+} from '../ports/sale.repository.interface';
 import { ProductRepository, PRODUCT_REPOSITORY } from '@modules/inventory';
 import {
   AccountsReceivableRepository,
@@ -16,7 +19,6 @@ import {
   InvalidSaleOperationException,
 } from '../../domain/sales.errors';
 import * as crypto from 'crypto';
-
 
 interface ProcessSaleItem {
   productId: string;
@@ -45,22 +47,27 @@ export class ProcessSaleUseCase {
     private readonly receivableRepo: AccountsReceivableRepository,
     @Inject(CASH_REGISTER_REPOSITORY)
     private readonly cashRepo: CashRegisterRepository,
-  ) { }
+  ) {}
 
   async execute(input: ProcessSaleInput): Promise<Sale> {
     const productIds = input.items.map((i) => i.productId);
-    const products = await this.productRepo.findByIds(productIds, input.tenantId);
-
-    const productMap = new Map(
-      products.filter(Boolean).map((p) => [p!.id, p!]),
+    const products = await this.productRepo.findByIds(
+      productIds,
+      input.tenantId,
     );
+
+    const productMap = new Map(products.filter(Boolean).map((p) => [p.id, p]));
     const saleItems: SaleItem[] = [];
 
     for (const item of input.items) {
       const product = productMap.get(item.productId);
       if (!product) throw new ProductNotFoundException(item.productId);
       if (product.stock < item.quantity)
-        throw new InsufficientStockException(product.name, product.stock, item.quantity);
+        throw new InsufficientStockException(
+          product.name,
+          product.stock,
+          item.quantity,
+        );
       saleItems.push(
         SaleItem.create(product.id, item.quantity, product.price, product.cost),
       );
@@ -92,7 +99,9 @@ export class ProcessSaleUseCase {
     // Post-sale financial integration (within same RLS transaction)
     if (input.paymentMethod === 'credit') {
       if (!input.customerId) {
-        throw new InvalidSaleOperationException('Debe seleccionar un cliente para ventas a crédito.');
+        throw new InvalidSaleOperationException(
+          'Debe seleccionar un cliente para ventas a crédito.',
+        );
       }
 
       const dueDate = new Date();
@@ -106,8 +115,15 @@ export class ProcessSaleUseCase {
         dueDate: dueDate.toISOString().split('T')[0],
         notes: `Venta #${createdSale.id.slice(0, 8)}`,
       });
-    } else if (input.paymentMethod === 'cash' || input.paymentMethod === 'card' || input.paymentMethod === 'transfer') {
-      const openSession = await this.cashRepo.findOpenSession(input.userId, input.tenantId);
+    } else if (
+      input.paymentMethod === 'cash' ||
+      input.paymentMethod === 'card' ||
+      input.paymentMethod === 'transfer'
+    ) {
+      const openSession = await this.cashRepo.findOpenSession(
+        input.userId,
+        input.tenantId,
+      );
       if (openSession) {
         await this.cashRepo.addTransaction({
           tenantId: input.tenantId,

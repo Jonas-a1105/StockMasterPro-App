@@ -52,7 +52,7 @@ function readStorage(key: string, fallback: string): string {
 
 export function SettingsPage() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { licenseStatus } = useAuth();
+  const { licenseStatus, isAuthenticated, isLoading: authLoading } = useAuth();
   const { showToast } = useToast();
   const tabParam = searchParams.get('tab') as Tab;
   const defaultTab: Tab = (tabParam && TABS.some(t => t.key === tabParam)) ? tabParam : 'tax-currency';
@@ -1298,7 +1298,7 @@ function BitacoraTab() {
 
 function LicensesTab() {
   const { showToast } = useToast();
-  const { user, licenseBlocked, activateLicense } = useAuth();
+  const { user, licenseBlocked, activateLicense, isAuthenticated, isLoading: authLoading } = useAuth();
   const { config } = useTheme();
   const [licenseStatus, setLicenseStatus] = useState<any>(null);
   const [statusLoading, setStatusLoading] = useState(true);
@@ -1321,8 +1321,9 @@ function LicensesTab() {
   const [managingPortal, setManagingPortal] = useState(false);
 
   useEffect(() => {
+    if (!isAuthenticated || authLoading) return;
     api.getLicenseStatus().then(setLicenseStatus).catch(() => {}).finally(() => setStatusLoading(false));
-  }, []);
+  }, [isAuthenticated, authLoading]);
 
   const handleOpenPortal = async () => {
     setManagingPortal(true);

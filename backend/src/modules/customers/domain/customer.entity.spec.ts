@@ -2,9 +2,16 @@ import { Customer } from './customer.entity';
 
 describe('Customer Entity', () => {
   const baseCustomer = new Customer(
-    'cust-1', 'tenant-1', 'Test Customer', 'test@test.com',
-    '555-0000', '123 Main St', 1000, 200,
-    new Date(), new Date(),
+    'cust-1',
+    'tenant-1',
+    'Test Customer',
+    'test@test.com',
+    '555-0000',
+    '123 Main St',
+    1000,
+    200,
+    new Date(),
+    new Date(),
   );
 
   describe('payCredit', () => {
@@ -41,8 +48,16 @@ describe('Customer Entity', () => {
 
     it('should not enforce limit when creditLimit is 0 (unlimited)', () => {
       const unlimited = new Customer(
-        'cust-2', 'tenant-1', 'Unlimited', null, null, null,
-        0, 5000, new Date(), new Date(),
+        'cust-2',
+        'tenant-1',
+        'Unlimited',
+        null,
+        null,
+        null,
+        0,
+        5000,
+        new Date(),
+        new Date(),
       );
       const result = unlimited.chargeCredit(1000);
       expect(result).toBe(6000);

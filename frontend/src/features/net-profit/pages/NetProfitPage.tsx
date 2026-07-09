@@ -5,6 +5,7 @@ import { LoadingDots } from '@shared/ui/LoadingDots';
 import { TabNav } from '@shared/ui/TabNav';
 import { SkeletonReports } from '@shared/ui/Skeleton';
 import { useTheme } from '@contexts/ThemeContext';
+import { formatUsd } from '@shared/lib/format/currency';
 import { Filter, TrendingUp, TrendingDown, PiggyBank, Percent } from 'lucide-react';
 import { KpiGrid } from '@shared/ui/KpiGrid';
 import { Toolbar } from '@shared/ui/Toolbar';
@@ -18,8 +19,6 @@ function fillAllMonths(data: any[]) {
   data.forEach(m => { map[m.label] = m; });
   return MONTH_LABELS.map(label => map[label] || { label, revenue: 0, cogs: 0, expenses: 0, profit: 0 });
 }
-
-const usdFormatter = (v: number) => '$ ' + v.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
 export function NetProfitPage() {
   const { showToast } = useToast();
@@ -130,11 +129,11 @@ export function NetProfitPage() {
             <LineChart data={chartData}>
               <CartesianGrid stroke="var(--border-color, #2d2d2d)" strokeDasharray="3 3" />
               <XAxis dataKey="label" tick={{ fill: 'var(--text-muted, #888)', fontSize: 11 }} axisLine={false} tickLine={false} />
-              <YAxis tick={{ fill: 'var(--text-muted, #888)', fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={(v: number) => '$ ' + v.toLocaleString('es-ES')} />
+              <YAxis tick={{ fill: 'var(--text-muted, #888)', fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={(v: number) => formatUsd(v)} />
               <Tooltip
                 contentStyle={{ backgroundColor: 'var(--bg-card, #1e1e1e)', border: '1px solid var(--border-color, #2d2d2d)', borderRadius: 0, fontSize: 12 }}
                 labelStyle={{ color: 'var(--text-dark, #f5f5f5)' }}
-                formatter={(val: any) => [usdFormatter(Number(val))]}
+                formatter={(val: any) => [formatUsd(Number(val))]}
               />
               <Legend wrapperStyle={{ fontSize: 11, color: 'var(--text-muted, #888)' }} />
               <Line type="monotone" dataKey="Ingresos" stroke="#3b82f6" strokeWidth={2} dot={{ r: 3, fill: '#3b82f6' }} />

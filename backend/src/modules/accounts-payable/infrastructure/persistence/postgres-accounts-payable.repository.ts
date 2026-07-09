@@ -1,6 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@shared/infrastructure/prisma/prisma.service';
-import { AccountsPayableRepository, CreatePayableData, PayablePaymentData } from '../../application/ports/accounts-payable.repository.interface';
+import {
+  AccountsPayableRepository,
+  CreatePayableData,
+  PayablePaymentData,
+} from '../../application/ports/accounts-payable.repository.interface';
 import { AccountsPayable } from '../../domain/accounts-payable.entity';
 import { PayablePayment } from '../../domain/payable-payment.entity';
 
@@ -8,7 +12,11 @@ import { PayablePayment } from '../../domain/payable-payment.entity';
 export class PostgresAccountsPayableRepo implements AccountsPayableRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async findAll(tenantId: string, limit = 50, offset = 0): Promise<AccountsPayable[]> {
+  async findAll(
+    tenantId: string,
+    limit = 50,
+    offset = 0,
+  ): Promise<AccountsPayable[]> {
     const rows = await this.prisma.accountsPayable.findMany({
       where: { tenantId },
       include: { supplier: true, payments: true },
@@ -16,14 +24,17 @@ export class PostgresAccountsPayableRepo implements AccountsPayableRepository {
       take: limit,
       skip: offset,
     });
-    return rows.map(r => this.toDomain(r, r.payments));
+    return rows.map((r) => this.toDomain(r, r.payments));
   }
 
   async count(tenantId: string): Promise<number> {
     return this.prisma.accountsPayable.count({ where: { tenantId } });
   }
 
-  async findById(id: string, tenantId: string): Promise<AccountsPayable | null> {
+  async findById(
+    id: string,
+    tenantId: string,
+  ): Promise<AccountsPayable | null> {
     const row = await this.prisma.accountsPayable.findFirst({
       where: { id, tenantId },
       include: { supplier: true, payments: true },
@@ -47,7 +58,11 @@ export class PostgresAccountsPayableRepo implements AccountsPayableRepository {
     return this.toDomain(row, row.payments);
   }
 
-  async updatePendingAmount(id: string, tenantId: string, amount: number): Promise<void> {
+  async updatePendingAmount(
+    id: string,
+    tenantId: string,
+    amount: number,
+  ): Promise<void> {
     const { count } = await this.prisma.accountsPayable.updateMany({
       where: { id, tenantId },
       data: { pendingAmount: amount },
@@ -74,7 +89,14 @@ export class PostgresAccountsPayableRepo implements AccountsPayableRepository {
         paidAt: new Date(data.paidAt),
       },
     });
-    return new PayablePayment(row.id, row.accountPayableId, Number(row.amount), row.paymentMethod as any, row.notes, row.paidAt);
+    return new PayablePayment(
+      row.id,
+      row.accountPayableId,
+      Number(row.amount),
+      row.paymentMethod as any,
+      row.notes,
+      row.paidAt,
+    );
   }
 
   async getPayments(accountPayableId: string): Promise<PayablePayment[]> {
@@ -82,7 +104,17 @@ export class PostgresAccountsPayableRepo implements AccountsPayableRepository {
       where: { accountPayableId },
       orderBy: { paidAt: 'desc' },
     });
-    return rows.map(r => new PayablePayment(r.id, r.accountPayableId, Number(r.amount), r.paymentMethod as any, r.notes, r.paidAt));
+    return rows.map(
+      (r) =>
+        new PayablePayment(
+          r.id,
+          r.accountPayableId,
+          Number(r.amount),
+          r.paymentMethod as any,
+          r.notes,
+          r.paidAt,
+        ),
+    );
   }
 
   private toDomain(row: any, payments?: any[]): AccountsPayable {

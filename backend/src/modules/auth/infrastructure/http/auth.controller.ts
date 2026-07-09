@@ -1,4 +1,13 @@
-import { Controller, Post, Get, Body, HttpCode, HttpStatus, Req, Headers } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Get,
+  Body,
+  HttpCode,
+  HttpStatus,
+  Req,
+  Headers,
+} from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
 import { Public } from '@shared/infrastructure/decorators/public.decorator';
 import { CurrentUser } from '@shared/infrastructure/decorators/current-user.decorator';
@@ -37,7 +46,12 @@ export class AuthController {
   async refresh(@Body() dto: RefreshTokenDto, @Req() req: any) {
     const ipAddress = req.ip;
     const userAgent = req.headers['user-agent'];
-    return this.authService.refresh(dto.refreshToken, dto.deviceId, userAgent, ipAddress);
+    return this.authService.refresh(
+      dto.refreshToken,
+      dto.deviceId,
+      userAgent,
+      ipAddress,
+    );
   }
 
   @Public()
@@ -55,7 +69,10 @@ export class AuthController {
 
   @Post('logout/device')
   @HttpCode(HttpStatus.OK)
-  async logoutDevice(@CurrentUser() user: any, @Body() dto: { deviceId: string }) {
+  async logoutDevice(
+    @CurrentUser() user: any,
+    @Body() dto: { deviceId: string },
+  ) {
     return this.authService.logoutDevice(user.id, dto.deviceId);
   }
 
@@ -79,4 +96,3 @@ export class AuthController {
     return this.authService.resetPassword(dto.token, dto.newPassword);
   }
 }
-

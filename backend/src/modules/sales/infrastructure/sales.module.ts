@@ -13,7 +13,12 @@ import { FindSaleByIdUseCase } from '../application/use-cases/find-sale-by-id.us
 import { GetDailySalesSummaryUseCase } from '../application/use-cases/get-daily-sales-summary.use-case';
 
 @Module({
-  imports: [PrismaModule, InventoryModule, AccountsReceivableModule, CashRegisterModule],
+  imports: [
+    PrismaModule,
+    InventoryModule,
+    AccountsReceivableModule,
+    CashRegisterModule,
+  ],
   controllers: [SalesController],
   providers: [
     { provide: SALES_REPOSITORY, useClass: PostgresSaleRepo },

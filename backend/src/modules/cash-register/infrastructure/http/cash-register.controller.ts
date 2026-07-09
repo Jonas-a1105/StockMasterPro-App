@@ -25,7 +25,10 @@ export class CashRegisterController {
   ) {}
 
   @Post('open')
-  async openSession(@Body() dto: OpenSessionDto, @CurrentUser() user: AuthenticatedUser) {
+  async openSession(
+    @Body() dto: OpenSessionDto,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
     return this.openSessionUseCase.execute({
       tenantId: user.tenantId,
       userId: user.id,
@@ -40,7 +43,11 @@ export class CashRegisterController {
     @Body() dto: CloseSessionDto,
     @CurrentUser() user: AuthenticatedUser,
   ) {
-    return this.closeSessionUseCase.execute(id, user.tenantId, dto.actualBalance);
+    return this.closeSessionUseCase.execute(
+      id,
+      user.tenantId,
+      dto.actualBalance,
+    );
   }
 
   @Post(':id/transaction')
@@ -69,12 +76,18 @@ export class CashRegisterController {
   }
 
   @Get(':id')
-  async getSession(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser) {
+  async getSession(
+    @Param('id') id: string,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
     return this.getSessionUseCase.execute(id, user.tenantId);
   }
 
   @Get(':id/transactions')
-  async getTransactions(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser) {
+  async getTransactions(
+    @Param('id') id: string,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
     return this.getTransactionsUseCase.execute(id, user.tenantId);
   }
 }

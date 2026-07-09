@@ -46,14 +46,21 @@ export class LicensesController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin')
   @SkipLicenseCheck()
-  async createSubscription(@Body() body: { planType: string }, @CurrentUser() user: AuthenticatedUser) {
+  async createSubscription(
+    @Body() body: { planType: string },
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
     if (!user?.tenantId) throw new UnauthorizedException();
     const validPlans = ['pro', 'enterprise'];
     if (!validPlans.includes(body.planType)) {
       throw new HttpException('Plan inválido', HttpStatus.BAD_REQUEST);
     }
     const returnUrl = `${process.env.FRONTEND_URL || 'http://localhost:5174'}/settings?tab=licenses`;
-    return this.stripeService.createSubscription(user.tenantId, body.planType, returnUrl);
+    return this.stripeService.createSubscription(
+      user.tenantId,
+      body.planType,
+      returnUrl,
+    );
   }
 
   @Post('customer-portal')
@@ -68,7 +75,10 @@ export class LicensesController {
   @Post('upgrade')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin')
-  async upgradePlan(@Body() body: { planType: string }, @CurrentUser() user: AuthenticatedUser) {
+  async upgradePlan(
+    @Body() body: { planType: string },
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
     if (!user?.tenantId) throw new UnauthorizedException();
     const validPlans = ['free', 'pro', 'enterprise'];
     if (!validPlans.includes(body.planType)) {
@@ -80,7 +90,10 @@ export class LicensesController {
   @Post('generate')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin')
-  async generate(@Body() dto: GenerateLicenseDto, @CurrentUser() user: AuthenticatedUser) {
+  async generate(
+    @Body() dto: GenerateLicenseDto,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
     return this.licensesService.generate({
       days: dto.days,
       tier: dto.tier,
@@ -91,7 +104,10 @@ export class LicensesController {
   @Post('activate')
   @UseGuards(JwtAuthGuard)
   @SkipLicenseCheck()
-  async activate(@Body() dto: ActivateLicenseDto, @CurrentUser() user: AuthenticatedUser) {
+  async activate(
+    @Body() dto: ActivateLicenseDto,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
     if (!user?.tenantId) throw new UnauthorizedException();
     return this.licensesService.activate(dto.code, user.tenantId);
   }

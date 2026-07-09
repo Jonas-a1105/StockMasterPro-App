@@ -23,13 +23,19 @@ export class CreditNoteController {
 
   @Get('by-sale/:saleId')
   @Roles('admin', 'gerente', 'cajero')
-  findBySale(@Param('saleId') saleId: string, @CurrentUser() user: AuthenticatedUser) {
+  findBySale(
+    @Param('saleId') saleId: string,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
     return this.service.findBySale(saleId, user.tenantId);
   }
 
   @Post()
   @Roles('admin', 'gerente')
-  create(@Body() dto: CreateCreditNoteDto, @CurrentUser() user: AuthenticatedUser) {
+  create(
+    @Body() dto: CreateCreditNoteDto,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
     return this.service.create(dto, user.id, user.tenantId);
   }
 }

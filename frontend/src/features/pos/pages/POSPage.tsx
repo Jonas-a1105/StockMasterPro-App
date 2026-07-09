@@ -18,6 +18,7 @@ import { PaymentPanel } from '../components/PaymentPanel';
 import { CheckoutModal } from '../components/CheckoutModal';
 import { CashRegisterModal } from '../components/CashRegisterModal';
 import { ExpenseModal } from '../components/ExpenseModal';
+import { formatUsd } from '@shared/lib/format/currency';
 import { searchProducts, getWarehouses, getCustomers } from '../api/pos.api';
 import { db } from '@shared/db/dexie';
 import type { Product } from '@types';
@@ -125,7 +126,7 @@ export function POSPage() {
     const { difference } = cash.closeCash(cash.declaredAmount);
     if (difference !== 0) {
       showToast(
-        `Diferencia en caja: ${difference > 0 ? 'Sobrante' : 'Faltante'} de $${Math.abs(difference).toFixed(2)}`,
+        `Diferencia en caja: ${difference > 0 ? 'Sobrante' : 'Faltante'} de ${formatUsd(Math.abs(difference))}`,
         difference > 0 ? 'warning' : 'error',
       );
     }

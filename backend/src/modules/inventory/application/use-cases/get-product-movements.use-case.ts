@@ -1,5 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { ProductRepository, PRODUCT_REPOSITORY } from '../ports/product.repository.interface';
+import {
+  ProductRepository,
+  PRODUCT_REPOSITORY,
+} from '../ports/product.repository.interface';
 import { FindProductByIdUseCase } from './find-product-by-id.use-case';
 
 @Injectable()

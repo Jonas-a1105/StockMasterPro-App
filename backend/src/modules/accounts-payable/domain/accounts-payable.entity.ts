@@ -1,4 +1,7 @@
-import { PayableAlreadyPaidException, InvalidPaymentAmountException } from './accounts-payable.errors';
+import {
+  PayableAlreadyPaidException,
+  InvalidPaymentAmountException,
+} from './accounts-payable.errors';
 
 export type PayableStatus = 'pending' | 'paid' | 'overdue';
 
@@ -26,8 +29,14 @@ export class AccountsPayable {
 
   applyPayment(amount: number): number {
     if (this.status === 'paid') throw new PayableAlreadyPaidException();
-    if (amount <= 0) throw new InvalidPaymentAmountException('El monto del abono debe ser mayor a cero');
-    if (amount > this.pendingAmount) throw new InvalidPaymentAmountException('El abono excede el saldo pendiente');
+    if (amount <= 0)
+      throw new InvalidPaymentAmountException(
+        'El monto del abono debe ser mayor a cero',
+      );
+    if (amount > this.pendingAmount)
+      throw new InvalidPaymentAmountException(
+        'El abono excede el saldo pendiente',
+      );
     return this.pendingAmount - amount;
   }
 }

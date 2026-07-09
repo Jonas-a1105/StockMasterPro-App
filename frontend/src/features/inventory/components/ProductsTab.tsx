@@ -12,6 +12,7 @@ import { ProductFilters } from './ProductFilters';
 import { ProductForm, type ProductFormData } from './ProductForm';
 import { ProductDetailPanel } from '../pages/ProductDetailPanel';
 import { Modal } from '@shared/ui/Modal';
+import { ConfirmModal } from '@shared/ui/ConfirmModal';
 import { PremiumLockButton } from '@shared/ui/PremiumLockButton';
 import { SkeletonTable, SkeletonCards } from '@shared/ui/Skeleton';
 import { Skeleton } from '@shared/ui/Skeleton';
@@ -46,6 +47,7 @@ export function ProductsTab() {
   const [showImport, setShowImport] = useState(false);
   const [showNewCategory, setShowNewCategory] = useState(false);
   const [newCategoryName, setNewCategoryName] = useState('');
+  const [deleteConfirm, setDeleteConfirm] = useState<{ id: string; name: string } | null>(null);
   const [viewProduct, setViewProduct] = useState<Product | null>(null);
   const [movements, setMovements] = useState<any[]>([]);
   const [loadingMovements, setLoadingMovements] = useState(false);
@@ -137,8 +139,12 @@ export function ProductsTab() {
   };
 
   const handleDelete = async (id: string, name: string) => {
-    if (!window.confirm(`¿Estás seguro de que deseas eliminar el producto "${name}"?`)) return;
-    try { await deleteInventoryProduct(id); showToast('Producto eliminado exitosamente', 'success'); await loadProducts(); } catch (err: any) { showToast(err.message || 'Error al eliminar el producto', 'error'); }
+    setDeleteConfirm({ id, name });
+  };
+
+  const confirmDelete = async () => {
+    if (!deleteConfirm) return;
+    try { await deleteInventoryProduct(deleteConfirm.id); showToast('Producto eliminado exitosamente', 'success'); await loadProducts(); setDeleteConfirm(null); } catch (err: any) { showToast(err.message || 'Error al eliminar el producto', 'error'); }
   };
 
   const handleViewDetails = async (product: Product) => {
@@ -215,7 +221,7 @@ export function ProductsTab() {
         </div>
       )}
 
-      <ProductForm open={showForm} editingId={editingId} initialData={form} onClose={() => { setShowForm(false); setEditingId(null); }} onSubmit={handleSubmit} loading={loading} isLimitExceeded={isLimitExceeded} nextRequiredPlan={nextRequiredPlan} categories={categories} onShowNewCategory={() => setShowNewCategory(true)} />
+      <ProductForm key={editingId || 'new'} open={showForm} editingId={editingId} initialData={form} onClose={() => { setShowForm(false); setEditingId(null); }} onSubmit={handleSubmit} loading={loading} isLimitExceeded={isLimitExceeded} nextRequiredPlan={nextRequiredPlan} categories={categories} onShowNewCategory={() => setShowNewCategory(true)} />
 
       <Modal open={!!viewProduct} onClose={() => setViewProduct(null)} title="DETALLES DEL PRODUCTO" xwide>
         {viewProduct && <ProductDetailPanel product={viewProduct} movements={movements} loadingMovements={loadingMovements} getCategoryName={getCategoryName} />}
@@ -302,6 +308,17 @@ export function ProductsTab() {
       )}
 
       <ImportModal open={showImport} onClose={() => setShowImport(false)} title="Productos" columns={PRODUCT_COLUMNS} templateFilename="plantilla_productos" onImport={handleImportProducts} />
+
+      <ConfirmModal
+        open={!!deleteConfirm}
+        onClose={() => setDeleteConfirm(null)}
+        onConfirm={confirmDelete}
+        title="Eliminar producto"
+        message={deleteConfirm ? `¿Estás seguro de que deseas eliminar "${deleteConfirm.name}"?` : ''}
+        confirmText="Eliminar"
+        cancelText="Cancelar"
+        type="danger"
+      />
     </>
   );
 }

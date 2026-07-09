@@ -1,5 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { ProductRepository, PRODUCT_REPOSITORY } from '../ports/product.repository.interface';
+import {
+  ProductRepository,
+  PRODUCT_REPOSITORY,
+} from '../ports/product.repository.interface';
 import { Product } from '../../domain/product.entity';
 import { InvalidStockAdjustmentException } from '../../domain/inventory.errors';
 
@@ -21,11 +24,15 @@ export class AdjustStockUseCase {
 
   async execute(input: AdjustStockInput): Promise<Product> {
     if (input.quantity === 0) {
-      throw new InvalidStockAdjustmentException('La cantidad de ajuste no puede ser cero.');
+      throw new InvalidStockAdjustmentException(
+        'La cantidad de ajuste no puede ser cero.',
+      );
     }
     const allowedTypes = ['adjustment', 'loss', 'return', 'physical_inventory'];
     if (!allowedTypes.includes(input.type)) {
-      throw new InvalidStockAdjustmentException(`Tipo de movimiento no válido: ${input.type}`);
+      throw new InvalidStockAdjustmentException(
+        `Tipo de movimiento no válido: ${input.type}`,
+      );
     }
 
     try {
@@ -40,7 +47,9 @@ export class AdjustStockUseCase {
         },
       );
     } catch (err: any) {
-      throw new InvalidStockAdjustmentException(err.message || 'Error al ajustar el inventario');
+      throw new InvalidStockAdjustmentException(
+        err.message || 'Error al ajustar el inventario',
+      );
     }
   }
 }

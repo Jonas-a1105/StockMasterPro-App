@@ -1,4 +1,12 @@
-import { IsString, IsNotEmpty, IsNumber, IsOptional, Min, IsIn, IsDateString } from 'class-validator';
+import {
+  IsString,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  Min,
+  IsIn,
+  IsDateString,
+} from 'class-validator';
 
 export class CreateExpenseDto {
   @IsString()
@@ -11,7 +19,17 @@ export class CreateExpenseDto {
 
   @IsString()
   @IsNotEmpty()
-  @IsIn(['rent', 'utilities', 'salaries', 'supplies', 'maintenance', 'transport', 'marketing', 'food', 'other'])
+  @IsIn([
+    'rent',
+    'utilities',
+    'salaries',
+    'supplies',
+    'maintenance',
+    'transport',
+    'marketing',
+    'food',
+    'other',
+  ])
   category: string;
 
   @IsString()

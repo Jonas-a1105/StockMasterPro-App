@@ -9,10 +9,19 @@ export class PostgresLicenseRepo {
     return this.prisma.tenant.findUnique({ where: { id } });
   }
 
-  async updateLicense(tenantId: string, expiresAt: Date, tier: string): Promise<void> {
+  async updateLicense(
+    tenantId: string,
+    expiresAt: Date,
+    tier: string,
+  ): Promise<void> {
     await this.prisma.tenant.update({
       where: { id: tenantId },
-      data: { planType: tier, subscriptionStatus: 'active', isBlocked: false, licenseExpiresAt: expiresAt },
+      data: {
+        planType: tier,
+        subscriptionStatus: 'active',
+        isBlocked: false,
+        licenseExpiresAt: expiresAt,
+      },
     });
   }
 
@@ -37,7 +46,10 @@ export class PostgresLicenseRepo {
     });
   }
 
-  async updatePlan(tenantId: string, planType: string): Promise<{ message: string; planType: string }> {
+  async updatePlan(
+    tenantId: string,
+    planType: string,
+  ): Promise<{ message: string; planType: string }> {
     await this.prisma.tenant.update({
       where: { id: tenantId },
       data: { planType },

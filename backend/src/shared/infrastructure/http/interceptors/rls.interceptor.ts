@@ -12,10 +12,7 @@ import { rlsStorage } from '../../prisma/rls.context';
 export class RLSInterceptor implements NestInterceptor {
   constructor(private readonly prisma: PrismaService) {}
 
-  intercept(
-    context: ExecutionContext,
-    next: CallHandler,
-  ): Observable<any> {
+  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const req = context.switchToHttp().getRequest();
     // req.user es inyectado por JwtAuthGuard
     const tenantId = req.user?.tenantId;

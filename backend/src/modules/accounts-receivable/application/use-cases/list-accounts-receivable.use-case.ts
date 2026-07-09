@@ -13,7 +13,11 @@ export class ListAccountsReceivableUseCase {
     private readonly repo: AccountsReceivableRepository,
   ) {}
 
-  async execute(tenantId: string, page = 1, limit = 50): Promise<PaginatedResult<AccountsReceivable>> {
+  async execute(
+    tenantId: string,
+    page = 1,
+    limit = 50,
+  ): Promise<PaginatedResult<AccountsReceivable>> {
     const { take, skip } = paginate(page, limit);
     const [data, total] = await Promise.all([
       this.repo.findAll(tenantId, take, skip),

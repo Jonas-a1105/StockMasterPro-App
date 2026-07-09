@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { PrismaService } from '@shared/infrastructure/prisma/prisma.service';
 import { CreateCreditNoteDto } from './dto/create-credit-note.dto';
 
@@ -35,7 +39,9 @@ export class CreditNoteService {
 
   async create(dto: CreateCreditNoteDto, userId: string, tenantId: string) {
     if (!dto.reason.trim()) {
-      throw new BadRequestException('El motivo de la devolución es obligatorio');
+      throw new BadRequestException(
+        'El motivo de la devolución es obligatorio',
+      );
     }
     if (dto.items.length === 0) {
       throw new BadRequestException('Debe incluir al menos un producto');
@@ -78,7 +84,9 @@ export class CreditNoteService {
           where: { id: item.productId, tenantId },
         });
         if (!prod) {
-          throw new NotFoundException(`Producto ${item.productId} no encontrado en tu inventario`);
+          throw new NotFoundException(
+            `Producto ${item.productId} no encontrado en tu inventario`,
+          );
         }
 
         await tx.product.update({
@@ -104,7 +112,9 @@ export class CreditNoteService {
           where: { id: dto.customerId, tenantId },
         });
         if (!cust) {
-          throw new NotFoundException(`Cliente ${dto.customerId} no encontrado`);
+          throw new NotFoundException(
+            `Cliente ${dto.customerId} no encontrado`,
+          );
         }
 
         if (dto.refundMethod === 'credit' || !dto.refundMethod) {

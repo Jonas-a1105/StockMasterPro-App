@@ -12,7 +12,10 @@ export class ListByCustomerUseCase {
     private readonly repo: AccountsReceivableRepository,
   ) {}
 
-  async execute(customerId: string, tenantId: string): Promise<AccountsReceivable[]> {
+  async execute(
+    customerId: string,
+    tenantId: string,
+  ): Promise<AccountsReceivable[]> {
     return this.repo.findByCustomer(customerId, tenantId);
   }
 }

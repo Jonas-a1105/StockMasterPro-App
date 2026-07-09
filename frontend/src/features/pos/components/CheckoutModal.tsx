@@ -1,5 +1,6 @@
 import { createPortal } from 'react-dom';
 import { Printer, Plus } from 'lucide-react';
+import { formatUsd } from '@shared/lib/format/currency';
 import type { LastSale } from '../hooks/useCheckout';
 import styles from '../pages/POSPage.module.css';
 
@@ -49,16 +50,16 @@ export function CheckoutModal({
               <div key={i} className={styles.ticketItem}>
                 <div className={styles.ticketItemInfo}>
                   <span>{item.product.name}</span>
-                  <span className={styles.ticketItemQtyPrice}>{item.quantity} x ${item.product.price.toFixed(2)}</span>
+                  <span className={styles.ticketItemQtyPrice}>{item.quantity} x {formatUsd(item.product.price)}</span>
                 </div>
-                <span>${(item.product.price * item.quantity).toFixed(2)}</span>
+                <span>{formatUsd(item.product.price * item.quantity)}</span>
               </div>
             ))}
             <div className={styles.ticketDivider} />
             <div className={styles.ticketTotals}>
-              <div className={styles.ticketTotalRow}><span>Subtotal</span><span>${lastSale.subtotal.toFixed(2)}</span></div>
-              <div className={styles.ticketTotalRow}><span>IVA (16%)</span><span>${lastSale.tax.toFixed(2)}</span></div>
-              <div className={`${styles.ticketTotalRow} ${styles.ticketGrandTotal}`}><span>TOTAL</span><span>${lastSale.total.toFixed(2)}</span></div>
+              <div className={styles.ticketTotalRow}><span>Subtotal</span><span>{formatUsd(lastSale.subtotal)}</span></div>
+              <div className={styles.ticketTotalRow}><span>IVA (16%)</span><span>{formatUsd(lastSale.tax)}</span></div>
+              <div className={`${styles.ticketTotalRow} ${styles.ticketGrandTotal}`}><span>TOTAL</span><span>{formatUsd(lastSale.total)}</span></div>
             </div>
             <div className={styles.ticketFooter}>¡Gracias por su compra!</div>
           </div>

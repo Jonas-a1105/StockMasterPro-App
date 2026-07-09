@@ -3,8 +3,8 @@ import { Package, Truck, ShoppingCart, AlertTriangle, FileText } from 'lucide-re
 import { ProductsTab } from '../components/ProductsTab';
 import { KardexTab } from '../components/KardexTab';
 import { AdjustmentsTab } from '../components/AdjustmentsTab';
-import { SuppliersTab } from '@features/suppliers/pages/SuppliersTab';
-import { PurchaseOrdersTab } from '@features/purchase-orders/pages/PurchaseOrdersTab';
+import { SuppliersTab } from '@features/suppliers';
+import { PurchaseOrdersTab } from '@features/purchase-orders';
 import styles from './InventoryPage.module.css';
 
 type Tab = 'products' | 'suppliers' | 'purchase-orders' | 'adjustments' | 'kardex';

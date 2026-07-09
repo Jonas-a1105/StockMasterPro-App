@@ -27,7 +27,6 @@ import { SocialModule } from './modules/social';
 import { AccountsReceivableModule } from './modules/accounts-receivable';
 import { CashRegisterModule } from './modules/cash-register';
 
-
 import { JwtAuthGuard } from '@shared/infrastructure/guards/jwt-auth.guard';
 import { RolesGuard } from '@shared/infrastructure/guards/roles.guard';
 import { TenantLicenseGuard } from '@shared/infrastructure/guards/tenant-license.guard';

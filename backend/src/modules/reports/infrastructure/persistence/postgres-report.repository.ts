@@ -16,9 +16,14 @@ export interface NetProfitData {
 export class PostgresReportRepo {
   constructor(private readonly prisma: PrismaService) {}
 
-  async getNetProfit(tenantId: string, startDate?: string, endDate?: string): Promise<NetProfitData> {
+  async getNetProfit(
+    tenantId: string,
+    startDate?: string,
+    endDate?: string,
+  ): Promise<NetProfitData> {
     const dateFilter: any = {};
-    if (startDate && startDate !== 'undefined') dateFilter.gte = new Date(startDate);
+    if (startDate && startDate !== 'undefined')
+      dateFilter.gte = new Date(startDate);
     if (endDate && endDate !== 'undefined') dateFilter.lte = new Date(endDate);
 
     const saleWhere: any = { tenantId, status: 'completed' };
@@ -34,10 +39,14 @@ export class PostgresReportRepo {
       where: { sale: saleWhere },
       select: { quantity: true, cost: true },
     });
-    const cogs = saleItems.reduce((sum, item) => sum + Number(item.cost) * item.quantity, 0);
+    const cogs = saleItems.reduce(
+      (sum, item) => sum + Number(item.cost) * item.quantity,
+      0,
+    );
 
     const expenseWhere: any = { tenantId };
-    if (Object.keys(dateFilter).length > 0) expenseWhere.expenseDate = dateFilter;
+    if (Object.keys(dateFilter).length > 0)
+      expenseWhere.expenseDate = dateFilter;
     const expenseAgg = await this.prisma.expense.aggregate({
       where: expenseWhere,
       _sum: { amount: true },
@@ -46,7 +55,10 @@ export class PostgresReportRepo {
 
     const grossProfit = grossRevenue - cogs;
     const netProfit = grossProfit - totalExpenses;
-    const profitMargin = grossRevenue > 0 ? Math.round((netProfit / grossRevenue) * 10000) / 100 : 0;
+    const profitMargin =
+      grossRevenue > 0
+        ? Math.round((netProfit / grossRevenue) * 10000) / 100
+        : 0;
 
     return {
       grossRevenue,
@@ -60,19 +72,33 @@ export class PostgresReportRepo {
     };
   }
 
-  async getBestSellers(tenantId: string, limit: number = 10, startDate?: string, endDate?: string) {
+  async getBestSellers(
+    tenantId: string,
+    limit: number = 10,
+    startDate?: string,
+    endDate?: string,
+  ) {
     const hasStart = startDate && startDate !== 'undefined';
     const hasEnd = endDate && endDate !== 'undefined';
 
-    const dateFilter = hasStart || hasEnd
-      ? `AND s."created_at" BETWEEN '${hasStart ? startDate : '1970-01-01'}' AND '${hasEnd ? endDate : '9999-12-31'}'`
-      : '';
+    const dateFilter =
+      hasStart || hasEnd
+        ? `AND s."created_at" BETWEEN '${hasStart ? startDate : '1970-01-01'}' AND '${hasEnd ? endDate : '9999-12-31'}'`
+        : '';
 
     const dateFilterSub = dateFilter.replace(/s\./g, 's2.');
 
-    const results = await this.prisma.$queryRawUnsafe<Array<{
-      id: string; name: string; barcode: string | null; totalQty: number; totalRevenue: number; percentage: number;
-    }>>(`
+    const results = await this.prisma.$queryRawUnsafe<
+      Array<{
+        id: string;
+        name: string;
+        barcode: string | null;
+        totalQty: number;
+        totalRevenue: number;
+        percentage: number;
+      }>
+    >(
+      `
       SELECT
         p.id, p.name, p.codigo_barras AS barcode,
         SUM(si.quantity)::int AS "totalQty",
@@ -90,10 +116,15 @@ export class PostgresReportRepo {
       GROUP BY p.id, p.name, p.codigo_barras
       ORDER BY "totalQty" DESC
       LIMIT $2
-    `, tenantId, limit);
+    `,
+      tenantId,
+      limit,
+    );
 
-    return results.map(r => ({
-      id: r.id, name: r.name, barcode: r.barcode,
+    return results.map((r) => ({
+      id: r.id,
+      name: r.name,
+      barcode: r.barcode,
       totalQty: Number(r.totalQty),
       totalRevenue: Number(r.totalRevenue),
       percentage: Number(r.percentage),
@@ -101,9 +132,16 @@ export class PostgresReportRepo {
   }
 
   async getDeadProducts(tenantId: string, days: number = 90) {
-    const results = await this.prisma.$queryRawUnsafe<Array<{
-      id: string; name: string; barcode: string | null; stock: number; lastSale: Date | null;
-    }>>(`
+    const results = await this.prisma.$queryRawUnsafe<
+      Array<{
+        id: string;
+        name: string;
+        barcode: string | null;
+        stock: number;
+        lastSale: Date | null;
+      }>
+    >(
+      `
       SELECT p.id, p.name, p.codigo_barras AS barcode, p.stock,
         (SELECT MAX(s."created_at") FROM sale_items si2 JOIN sales s ON s.id = si2.sale_id WHERE si2.product_id = p.id AND s.tenant_id = p.tenant_id AND s.status = 'completed') AS "lastSale"
       FROM products p
@@ -115,14 +153,22 @@ export class PostgresReportRepo {
         )
         AND p.stock > 0
       ORDER BY "lastSale" ASC NULLS FIRST
-    `, tenantId, days);
+    `,
+      tenantId,
+      days,
+    );
 
-    return results.map(r => ({
-      id: r.id, name: r.name, barcode: r.barcode,
+    return results.map((r) => ({
+      id: r.id,
+      name: r.name,
+      barcode: r.barcode,
       stock: r.stock,
       lastSale: r.lastSale,
       daysWithoutSale: r.lastSale
-        ? Math.floor((Date.now() - new Date(r.lastSale).getTime()) / (1000 * 60 * 60 * 24))
+        ? Math.floor(
+            (Date.now() - new Date(r.lastSale).getTime()) /
+              (1000 * 60 * 60 * 24),
+          )
         : null,
     }));
   }
@@ -132,7 +178,10 @@ export class PostgresReportRepo {
       where: {
         tenantId,
         status: 'completed',
-        createdAt: { gte: new Date(`${year}-01-01`), lt: new Date(`${year + 1}-01-01`) },
+        createdAt: {
+          gte: new Date(`${year}-01-01`),
+          lt: new Date(`${year + 1}-01-01`),
+        },
       },
       include: { items: true },
     });
@@ -140,19 +189,47 @@ export class PostgresReportRepo {
     const expenses = await this.prisma.expense.findMany({
       where: {
         tenantId,
-        expenseDate: { gte: new Date(`${year}-01-01`), lt: new Date(`${year + 1}-01-01`) },
+        expenseDate: {
+          gte: new Date(`${year}-01-01`),
+          lt: new Date(`${year + 1}-01-01`),
+        },
       },
     });
 
     const months = Array.from({ length: 12 }, (_, i) => {
-      const monthSales = sales.filter(s => new Date(s.createdAt).getMonth() === i);
-      const monthExpenses = expenses.filter(e => new Date(e.expenseDate).getMonth() === i);
+      const monthSales = sales.filter(
+        (s) => new Date(s.createdAt).getMonth() === i,
+      );
+      const monthExpenses = expenses.filter(
+        (e) => new Date(e.expenseDate).getMonth() === i,
+      );
       const revenue = monthSales.reduce((sum, s) => sum + Number(s.total), 0);
-      const cogs = monthSales.reduce((sum, s) => sum + s.items.reduce((acc, item) => acc + Number(item.cost) * item.quantity, 0), 0);
+      const cogs = monthSales.reduce(
+        (sum, s) =>
+          sum +
+          s.items.reduce(
+            (acc, item) => acc + Number(item.cost) * item.quantity,
+            0,
+          ),
+        0,
+      );
       const exp = monthExpenses.reduce((sum, e) => sum + Number(e.amount), 0);
       return {
         month: i + 1,
-        label: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'][i],
+        label: [
+          'Ene',
+          'Feb',
+          'Mar',
+          'Abr',
+          'May',
+          'Jun',
+          'Jul',
+          'Ago',
+          'Sep',
+          'Oct',
+          'Nov',
+          'Dic',
+        ][i],
         revenue,
         cogs,
         expenses: exp,

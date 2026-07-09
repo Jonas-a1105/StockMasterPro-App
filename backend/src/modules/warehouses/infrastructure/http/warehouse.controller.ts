@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Put, Delete, Body, Param } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  Body,
+  Param,
+} from '@nestjs/common';
 import { Roles } from '@shared/infrastructure/decorators/roles.decorator';
 import { CurrentUser } from '@shared/infrastructure/decorators/current-user.decorator';
 import { AuthenticatedUser } from '@shared/infrastructure/types/authenticated-user';
@@ -24,7 +32,10 @@ export class WarehouseController {
 
   @Post()
   @Roles('admin')
-  create(@CurrentUser() user: AuthenticatedUser, @Body() body: CreateWarehouseDto) {
+  create(
+    @CurrentUser() user: AuthenticatedUser,
+    @Body() body: CreateWarehouseDto,
+  ) {
     return this.service.create(user.tenantId, body);
   }
 

@@ -1,5 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { SaleRepository, SALES_REPOSITORY } from '../ports/sale.repository.interface';
+import {
+  SaleRepository,
+  SALES_REPOSITORY,
+} from '../ports/sale.repository.interface';
 
 @Injectable()
 export class GetDailySalesSummaryUseCase {

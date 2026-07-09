@@ -9,7 +9,12 @@ export interface PurchaseOrderInput {
   status: string;
   total: number;
   notes?: string | null;
-  items: { productId: string; quantity: number; cost: number; subtotal: number }[];
+  items: {
+    productId: string;
+    quantity: number;
+    cost: number;
+    subtotal: number;
+  }[];
 }
 
 @Injectable()

@@ -1,4 +1,13 @@
-import { IsString, IsNotEmpty, IsOptional, IsArray, IsNumber, Min, IsBoolean, IsDecimal } from 'class-validator';
+import {
+  IsString,
+  IsNotEmpty,
+  IsOptional,
+  IsArray,
+  IsNumber,
+  Min,
+  IsBoolean,
+  IsDecimal,
+} from 'class-validator';
 
 export class CreateCatalogDto {
   @IsString()

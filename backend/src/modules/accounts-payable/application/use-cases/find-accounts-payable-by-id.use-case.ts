@@ -1,5 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { AccountsPayableRepository, ACCOUNTS_PAYABLE_REPOSITORY } from '../ports/accounts-payable.repository.interface';
+import {
+  AccountsPayableRepository,
+  ACCOUNTS_PAYABLE_REPOSITORY,
+} from '../ports/accounts-payable.repository.interface';
 import { AccountsPayable } from '../../domain/accounts-payable.entity';
 import { PayableNotFoundException } from '../../domain/accounts-payable.errors';
 

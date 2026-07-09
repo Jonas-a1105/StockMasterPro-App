@@ -9,14 +9,32 @@ export class PostgresUserRepo {
     return this.prisma.user.findMany({
       where: { tenantId },
       orderBy: { name: 'asc' },
-      select: { id: true, tenantId: true, email: true, name: true, role: true, isActive: true, createdAt: true, updatedAt: true },
+      select: {
+        id: true,
+        tenantId: true,
+        email: true,
+        name: true,
+        role: true,
+        isActive: true,
+        createdAt: true,
+        updatedAt: true,
+      },
     });
   }
 
   async findById(id: string, tenantId: string) {
     return this.prisma.user.findFirst({
       where: { id, tenantId },
-      select: { id: true, tenantId: true, email: true, name: true, role: true, isActive: true, createdAt: true, updatedAt: true },
+      select: {
+        id: true,
+        tenantId: true,
+        email: true,
+        name: true,
+        role: true,
+        isActive: true,
+        createdAt: true,
+        updatedAt: true,
+      },
     });
   }
 

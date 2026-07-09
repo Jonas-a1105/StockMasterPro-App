@@ -61,7 +61,9 @@ export class PostgresProductRepo implements ProductRepository {
       data,
     });
     if (count === 0) throw new Error('Producto no encontrado');
-    const updated = await this.prisma.product.findFirst({ where: { id, tenantId } });
+    const updated = await this.prisma.product.findFirst({
+      where: { id, tenantId },
+    });
     if (!updated) throw new Error('Producto no encontrado');
     return this.toProduct(updated);
   }
@@ -94,7 +96,11 @@ export class PostgresProductRepo implements ProductRepository {
     await this.prisma.inventoryMovement.create({ data });
   }
 
-  async findAllAdjustments(tenantId: string, limit = 50, offset = 0): Promise<any[]> {
+  async findAllAdjustments(
+    tenantId: string,
+    limit = 50,
+    offset = 0,
+  ): Promise<any[]> {
     return this.prisma.inventoryMovement.findMany({
       where: { tenantId, type: { notIn: ['sale', 'purchase'] } },
       orderBy: { createdAt: 'desc' },
@@ -140,7 +146,7 @@ export class PostgresProductRepo implements ProductRepository {
         data: { stock: newStock },
       });
       if (count === 0) throw new Error('Producto no encontrado');
-      
+
       const updatedProduct = await tx.product.findFirst({
         where: { id: productId, tenantId },
       });

@@ -19,7 +19,11 @@ export interface CreateProductData {
 export interface ProductRepository {
   findById(id: string, tenantId: string): Promise<Product | null>;
   findByBarcode(barcode: string, tenantId: string): Promise<Product | null>;
-  findAll(tenantId: string, limit?: number, offset?: number): Promise<Product[]>;
+  findAll(
+    tenantId: string,
+    limit?: number,
+    offset?: number,
+  ): Promise<Product[]>;
   count(tenantId: string): Promise<number>;
   findByIds(ids: string[], tenantId: string): Promise<Product[]>;
   create(data: CreateProductData): Promise<Product>;

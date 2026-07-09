@@ -12,7 +12,10 @@ export class GetReceivablePaymentsUseCase {
     private readonly repo: AccountsReceivableRepository,
   ) {}
 
-  async execute(accountReceivableId: string, tenantId: string): Promise<ReceivablePayment[]> {
+  async execute(
+    accountReceivableId: string,
+    tenantId: string,
+  ): Promise<ReceivablePayment[]> {
     return this.repo.getPayments(accountReceivableId, tenantId);
   }
 }

@@ -1,6 +1,7 @@
 import { DollarSign, CreditCard, Ban, Users, AlertTriangle } from 'lucide-react';
 import { ButtonLoader } from '@shared/ui/ButtonLoader';
 import { useExchangeRate } from '@contexts/ExchangeRateContext';
+import { formatUsd } from '@shared/lib/format/currency';
 import type { PaymentMethod } from '../types';
 import type { Customer } from '@types';
 import styles from '../pages/POSPage.module.css';
@@ -77,14 +78,14 @@ export function PaymentPanel({
             <option value="">-- Seleccionar --</option>
             {customers.map(c => (
               <option key={c.id} value={c.id}>
-                {c.name} — Saldo: ${Number(c.balance).toFixed(2)} / Límite: ${Number(c.creditLimit).toFixed(2)}
+                {c.name} — Saldo: {formatUsd(Number(c.balance))} / Límite: {formatUsd(Number(c.creditLimit))}
               </option>
             ))}
           </select>
           {creditExceeded && selectedCustomer && (
             <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 8, padding: '8px 10px', backgroundColor: 'rgba(220,38,38,0.1)', borderLeft: '3px solid #dc2626', fontSize: 12, color: '#ef4444' }}>
               <AlertTriangle size={14} />
-              <span>Límite de crédito excedido. Saldo actual: ${Number(selectedCustomer.balance).toFixed(2)}</span>
+              <span>Límite de crédito excedido. Saldo actual: {formatUsd(Number(selectedCustomer.balance))}</span>
             </div>
           )}
         </div>

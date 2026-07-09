@@ -28,6 +28,8 @@ export class InvalidTransactionTypeException extends DomainException {
   readonly code = 'INVALID_TRANSACTION_TYPE';
   override readonly status = 400;
   constructor(type: string) {
-    super(`Tipo de transacción inválido: "${type}". Valores válidos: income, expense, sale, refund`);
+    super(
+      `Tipo de transacción inválido: "${type}". Valores válidos: income, expense, sale, refund`,
+    );
   }
 }

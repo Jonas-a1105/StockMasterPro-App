@@ -112,15 +112,6 @@ export function ProductDetailPanel({ product, movements, loadingMovements, getCa
     }));
   }, [movements]);
 
-  const formatterBS = new Intl.NumberFormat('de-DE', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  });
-  const formatterUSD = new Intl.NumberFormat('en-US', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  });
-
   return (
     <div className={styles.panel}>
       <div className={styles.tabbar}>
@@ -227,9 +218,9 @@ export function ProductDetailPanel({ product, movements, loadingMovements, getCa
                 <div className={styles.financialRow}>
                   <span className={styles.financialLabel}>Costo Base:</span>
                   <span className={styles.financialValue}>
-                    $ {formatterUSD.format(costUSD)}{' '}
+                    {formatUsd(costUSD)}{' '}
                     <span className={styles.financialValueSecondary}>
-                      / Bs {formatterBS.format(costUSD * apiRate)}
+                      / {formatBs(costUSD * apiRate)}
                     </span>
                   </span>
                 </div>
@@ -239,9 +230,9 @@ export function ProductDetailPanel({ product, movements, loadingMovements, getCa
                     Precio Venta Estimado:
                   </span>
                   <span className={styles.financialValue}>
-                    $ {formatterUSD.format(refPrice)}{' '}
+                    {formatUsd(refPrice)}{' '}
                     <span className={styles.financialValueSecondary}>
-                      / Bs {formatterBS.format(saleBS)}
+                      / {formatBs(saleBS)}
                     </span>
                   </span>
                 </div>
@@ -258,7 +249,7 @@ export function ProductDetailPanel({ product, movements, loadingMovements, getCa
                           : styles.profitAmountNegative
                       }
                     >
-                      $ {formatterUSD.format(profitUSD)}
+                      {formatUsd(profitUSD)}
                     </span>
                     <span
                       className={
@@ -267,7 +258,7 @@ export function ProductDetailPanel({ product, movements, loadingMovements, getCa
                           : styles.profitBsNegative
                       }
                     >
-                      Bs {formatterBS.format(profitBS)}
+                      {formatBs(profitBS)}
                     </span>
                   </div>
                 </div>

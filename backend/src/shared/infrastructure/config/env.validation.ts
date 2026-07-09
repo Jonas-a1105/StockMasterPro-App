@@ -3,10 +3,7 @@
  * Must be called BEFORE NestFactory.create() to fail fast.
  */
 export function validateRequiredEnvVars(): void {
-  const required = [
-    'JWT_SECRET',
-    'DATABASE_URL',
-  ];
+  const required = ['JWT_SECRET', 'DATABASE_URL'];
 
   const optional = [
     'LICENSE_JWT_SECRET', // Falls back to JWT_SECRET if missing
@@ -17,7 +14,7 @@ export function validateRequiredEnvVars(): void {
   if (missing.length > 0) {
     throw new Error(
       `❌ Missing required environment variables: ${missing.join(', ')}. ` +
-      'Please check your .env file.',
+        'Please check your .env file.',
     );
   }
 

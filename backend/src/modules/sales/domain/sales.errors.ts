@@ -12,7 +12,9 @@ export class InsufficientStockException extends DomainException {
   readonly code = 'INSUFFICIENT_STOCK';
   override readonly status = 400;
   constructor(name: string, available: number, requested: number) {
-    super(`Stock insuficiente para ${name}. Disponible: ${available}, solicitado: ${requested}`);
+    super(
+      `Stock insuficiente para ${name}. Disponible: ${available}, solicitado: ${requested}`,
+    );
   }
 }
 
@@ -28,7 +30,9 @@ export class CreditLimitExceededException extends DomainException {
   readonly code = 'CREDIT_LIMIT_EXCEEDED';
   override readonly status = 400;
   constructor(limit: number, expected: number) {
-    super(`Límite de crédito excedido. Límite: $${limit.toFixed(2)}, Nuevo saldo esperado: $${expected.toFixed(2)}`);
+    super(
+      `Límite de crédito excedido. Límite: $${limit.toFixed(2)}, Nuevo saldo esperado: $${expected.toFixed(2)}`,
+    );
   }
 }
 

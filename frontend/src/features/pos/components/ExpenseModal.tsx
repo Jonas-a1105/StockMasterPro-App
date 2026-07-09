@@ -1,4 +1,5 @@
-import { useState, createPortal } from 'react-dom';
+import { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Receipt } from 'lucide-react';
 import styles from '../pages/POSPage.module.css';
 

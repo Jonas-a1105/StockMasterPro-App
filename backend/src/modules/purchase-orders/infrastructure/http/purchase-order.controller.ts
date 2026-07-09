@@ -17,13 +17,19 @@ export class PurchaseOrderController {
 
   @Get(':id')
   @Roles('admin', 'gerente')
-  async findOne(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser) {
+  async findOne(
+    @Param('id') id: string,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
     return this.purchaseOrderService.findById(id, user.tenantId);
   }
 
   @Post()
   @Roles('admin', 'gerente')
-  async receive(@Body() dto: CreatePurchaseOrderDto, @CurrentUser() user: AuthenticatedUser) {
+  async receive(
+    @Body() dto: CreatePurchaseOrderDto,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
     return this.purchaseOrderService.receive({
       ...dto,
       tenantId: user.tenantId,

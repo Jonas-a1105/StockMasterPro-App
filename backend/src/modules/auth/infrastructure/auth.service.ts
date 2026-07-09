@@ -55,8 +55,11 @@ export class AuthService {
     });
 
     const refreshToken = await this.createRefreshToken(
-      user.id, tenant.id,
-      dto.deviceId, dto.userAgent, dto.ipAddress,
+      user.id,
+      tenant.id,
+      dto.deviceId,
+      dto.userAgent,
+      dto.ipAddress,
     );
 
     return {
@@ -93,8 +96,11 @@ export class AuthService {
     });
 
     const refreshToken = await this.createRefreshToken(
-      user.id, user.tenantId,
-      dto.deviceId, dto.userAgent, dto.ipAddress,
+      user.id,
+      user.tenantId,
+      dto.deviceId,
+      dto.userAgent,
+      dto.ipAddress,
     );
 
     return {
@@ -110,7 +116,12 @@ export class AuthService {
     };
   }
 
-  async refresh(tokenStr: string, deviceId?: string, userAgent?: string, ipAddress?: string) {
+  async refresh(
+    tokenStr: string,
+    deviceId?: string,
+    userAgent?: string,
+    ipAddress?: string,
+  ) {
     const tokenHash = this.hashToken(tokenStr);
     const dbToken = await this.prisma.refreshToken.findUnique({
       where: { token: tokenHash },
@@ -138,8 +149,11 @@ export class AuthService {
     });
 
     const newRefreshToken = await this.createRefreshToken(
-      user.id, user.tenantId,
-      deviceId, userAgent, ipAddress,
+      user.id,
+      user.tenantId,
+      deviceId,
+      userAgent,
+      ipAddress,
     );
 
     return {
@@ -192,7 +206,10 @@ export class AuthService {
   async forgotPassword(email: string) {
     const user = await this.authRepo.findByEmail(email);
     if (!user) {
-      return { message: 'Si el email está registrado, se enviará un enlace de restablecimiento' };
+      return {
+        message:
+          'Si el email está registrado, se enviará un enlace de restablecimiento',
+      };
     }
 
     const resetToken = this.jwtService.sign(
@@ -201,7 +218,8 @@ export class AuthService {
     );
 
     return {
-      message: 'Si el email está registrado, se enviará un enlace de restablecimiento',
+      message:
+        'Si el email está registrado, se enviará un enlace de restablecimiento',
       resetToken,
     };
   }
@@ -233,7 +251,9 @@ export class AuthService {
 
       return { success: true };
     } catch {
-      throw new UnauthorizedException('Token de restablecimiento inválido o expirado');
+      throw new UnauthorizedException(
+        'Token de restablecimiento inválido o expirado',
+      );
     }
   }
 
@@ -303,4 +323,3 @@ export class AuthService {
     return rawToken;
   }
 }
-

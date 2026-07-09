@@ -30,13 +30,19 @@ export class UsersController {
 
   @Get(':id')
   @Roles('admin', 'gerente')
-  async findOne(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser) {
+  async findOne(
+    @Param('id') id: string,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
     return this.usersService.findById(id, user.tenantId);
   }
 
   @Post()
   @Roles('admin')
-  async create(@Body() dto: CreateUserDto, @CurrentUser() user: AuthenticatedUser) {
+  async create(
+    @Body() dto: CreateUserDto,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
     return this.usersService.create({ ...dto, tenantId: user.tenantId });
   }
 
@@ -52,7 +58,10 @@ export class UsersController {
 
   @Delete(':id')
   @Roles('admin')
-  async delete(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser) {
+  async delete(
+    @Param('id') id: string,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
     return this.usersService.delete(id, user.tenantId);
   }
 }

@@ -49,7 +49,11 @@ export class InventoryController {
     @Query('page') page?: string,
     @Query('limit') limit?: string,
   ) {
-    return this.findAllProductsUseCase.execute(user.tenantId, Number(page) || 1, Number(limit) || 50);
+    return this.findAllProductsUseCase.execute(
+      user.tenantId,
+      Number(page) || 1,
+      Number(limit) || 50,
+    );
   }
 
   @Get('adjustments')
@@ -66,14 +70,23 @@ export class InventoryController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser) {
+  async findOne(
+    @Param('id') id: string,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
     return this.findProductByIdUseCase.execute(id, user.tenantId);
   }
 
   @Post()
   @Roles('admin', 'gerente')
-  async create(@Body() dto: CreateProductDto, @CurrentUser() user: AuthenticatedUser) {
-    return this.createProductUseCase.execute({ ...dto, tenantId: user.tenantId });
+  async create(
+    @Body() dto: CreateProductDto,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
+    return this.createProductUseCase.execute({
+      ...dto,
+      tenantId: user.tenantId,
+    });
   }
 
   @Patch(':id')
@@ -88,7 +101,10 @@ export class InventoryController {
 
   @Delete(':id')
   @Roles('admin')
-  async delete(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser) {
+  async delete(
+    @Param('id') id: string,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
     return this.deleteProductUseCase.execute(id, user.tenantId);
   }
 

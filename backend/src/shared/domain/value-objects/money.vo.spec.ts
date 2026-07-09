@@ -64,13 +64,17 @@ describe('Money Value Object', () => {
     it('should throw when subtracting different currencies', () => {
       const a = new Money(100, 'USD');
       const b = new Money(30, 'MXN');
-      expect(() => a.subtract(b)).toThrow('No se pueden restar diferentes monedas');
+      expect(() => a.subtract(b)).toThrow(
+        'No se pueden restar diferentes monedas',
+      );
     });
 
     it('should throw if result would be negative', () => {
       const a = new Money(20);
       const b = new Money(50);
-      expect(() => a.subtract(b)).toThrow('El saldo resultante no puede ser negativo');
+      expect(() => a.subtract(b)).toThrow(
+        'El saldo resultante no puede ser negativo',
+      );
     });
 
     it('should allow result of zero', () => {
