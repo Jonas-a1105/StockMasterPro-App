@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '@shared/infrastructure/prisma/prisma.service';
+import { AuthPrismaService } from '@shared/infrastructure/prisma/auth-prisma.service';
 import { AuthRepository } from '../../application/ports/auth.repository.interface';
 import { User } from '../../domain/user.entity';
 import { Tenant } from '../../domain/tenant.entity';
@@ -7,7 +7,7 @@ import { User as PrismaUser, Tenant as PrismaTenant } from '@prisma/client';
 
 @Injectable()
 export class PostgresAuthRepo implements AuthRepository {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: AuthPrismaService) {}
 
   async findByEmail(email: string): Promise<User | null> {
     const user = await this.prisma.user.findUnique({ where: { email } });
@@ -69,6 +69,7 @@ export class PostgresAuthRepo implements AuthRepository {
       u.name,
       u.role,
       u.isActive,
+      u.isPlatformAdmin || false,
     );
   }
 }

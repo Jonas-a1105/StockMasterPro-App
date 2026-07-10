@@ -7,6 +7,7 @@ export class User {
     public name: string,
     public role: string,
     public isActive: boolean,
+    public readonly isPlatformAdmin: boolean = false,
   ) {}
 
   can(requiredRole: string): boolean {

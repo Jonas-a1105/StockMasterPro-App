@@ -5,6 +5,7 @@ import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { RLSInterceptor } from '@shared/infrastructure/http/interceptors/rls.interceptor';
 import { TransformInterceptor } from '@shared/infrastructure/http/interceptors/transform.interceptor';
 import { PrismaModule } from '@shared/infrastructure/prisma/prisma.module';
+import { AuthPrismaModule } from '@shared/infrastructure/prisma/auth-prisma.module';
 import { AuthModule } from './modules/auth';
 import { InventoryModule } from './modules/inventory';
 import { SalesModule } from './modules/sales';
@@ -43,6 +44,7 @@ import { UploadModule } from './modules/uploads/infrastructure/upload.module';
     ConfigModule.forRoot({ isGlobal: true }),
     ThrottlerModule.forRoot([{ ttl: 60000, limit: 100 }]),
     PrismaModule,
+    AuthPrismaModule,
     ServeStaticModule.forRoot({
       rootPath: join(process.cwd(), 'public'),
       serveRoot: '/',

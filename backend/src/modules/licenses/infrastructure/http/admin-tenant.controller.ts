@@ -1,19 +1,13 @@
-import { Controller, Get, Post, Param, Body, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Param, Body, UseGuards, NotFoundException } from '@nestjs/common';
 import { JwtAuthGuard } from '@shared/infrastructure/guards/jwt-auth.guard';
-import { RolesGuard } from '@shared/infrastructure/guards/roles.guard';
-import { Roles } from '@shared/infrastructure/decorators/roles.decorator';
-import { SkipLicenseCheck } from '@shared/infrastructure/decorators/skip-license-check.decorator';
-import { PrismaService } from '@shared/infrastructure/prisma/prisma.service';
-import { PostgresLicenseRepo } from '../persistence/postgres-license.repository';
+import { PlatformAdminGuard } from '@shared/infrastructure/guards/platform-admin.guard';
+import { AuthPrismaService } from '@shared/infrastructure/prisma/auth-prisma.service';
 
 @Controller('admin/tenants')
-@UseGuards(JwtAuthGuard, RolesGuard)
-@Roles('admin')
-@SkipLicenseCheck()
+@UseGuards(JwtAuthGuard, PlatformAdminGuard)
 export class AdminTenantController {
   constructor(
-    private readonly prisma: PrismaService,
-    private readonly licenseRepo: PostgresLicenseRepo,
+    private readonly prisma: AuthPrismaService,
   ) {}
 
   @Get()
@@ -34,20 +28,30 @@ export class AdminTenantController {
 
   @Post(':id/block')
   async block(@Param('id') id: string) {
-    await this.licenseRepo.markAsBlocked(id);
+    const tenant = await this.prisma.tenant.findUnique({ where: { id } });
+    if (!tenant) throw new NotFoundException('Tenant no encontrado');
+    await this.prisma.tenant.update({
+      where: { id },
+      data: { isBlocked: true },
+    });
     return { message: 'Tenant bloqueado correctamente' };
   }
 
   @Post(':id/unblock')
   async unblock(@Param('id') id: string) {
-    await this.licenseRepo.markAsActive(id);
+    const tenant = await this.prisma.tenant.findUnique({ where: { id } });
+    if (!tenant) throw new NotFoundException('Tenant no encontrado');
+    await this.prisma.tenant.update({
+      where: { id },
+      data: { isBlocked: false, subscriptionStatus: 'active' },
+    });
     return { message: 'Tenant desbloqueado correctamente' };
   }
 
   @Post(':id/extend')
   async extend(@Param('id') id: string, @Body() body: { days: number }) {
-    const tenant = await this.licenseRepo.findTenantById(id);
-    if (!tenant) throw new Error('Tenant no encontrado');
+    const tenant = await this.prisma.tenant.findUnique({ where: { id } });
+    if (!tenant) throw new NotFoundException('Tenant no encontrado');
 
     const currentExpiry = tenant.licenseExpiresAt;
     const baseDate = currentExpiry > new Date() ? currentExpiry : new Date();
@@ -71,6 +75,8 @@ export class AdminTenantController {
     @Param('id') id: string,
     @Body() body: { planType: string },
   ) {
+    const tenant = await this.prisma.tenant.findUnique({ where: { id } });
+    if (!tenant) throw new NotFoundException('Tenant no encontrado');
     await this.prisma.tenant.update({
       where: { id },
       data: { planType: body.planType },

@@ -1,29 +1,58 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# StockMaster PRO — Backend (NestJS)
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Backend multi-tenant con arquitectura hexagonal, RLS (Row Level Security), autenticación JWT propia y sistema de licencias.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Variables de Entorno (.env)
 
-## Description
+```env
+DATABASE_URL=postgresql://postgres:password@host:5432/postgres
+AUTH_DATABASE_URL=postgresql://postgres:password@host:5432/postgres  # Opcional, misma URL si el rol evita RLS
+JWT_SECRET=tu-secreto-jwt
+LICENSE_JWT_SECRET=tu-secreto-licencias
+FRONTEND_URL=http://localhost:5174
+ADMIN_EMAIL=admin@stockmaster.com
+ADMIN_PASSWORD=Admin123!
+ADMIN_NAME=Administrador
+ADMIN_TENANT=StockMaster PRO
+```
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+> **IMPORTANTE**: La app usa su propio JWT (NestJS + Passport), **no** Supabase Auth.
+> Los usuarios se guardan en la tabla `public.users`, no en Authentication → Users.
+
+## Migraciones
+
+```bash
+# En producción SOLO usar:
+npx prisma migrate deploy
+
+# Prohibido en producción:
+#   prisma migrate reset    # Borra TODOS los datos
+#   prisma db push --force-reset  # Borra TODOS los datos
+
+# Para desarrollo:
+npx prisma db push         # Sincroniza schema sin migraciones
+```
+
+## RLS (Row Level Security)
+
+Las políticas RLS están en `prisma/rls.sql`. Ejecutar en Supabase SQL Editor después de migrar:
+
+```bash
+# En desarrollo local con psql:
+psql $DATABASE_URL -f prisma/rls.sql
+```
+
+El `RLSInterceptor` configura `app.tenant_id` automáticamente en cada request autenticado.
+Las rutas públicas (login, register) tienen políticas que permiten SELECT sin tenant context.
+
+## Re-crear Admin
+
+```bash
+# Si la tabla users quedó vacía (ej. tras reset de BD):
+npx ts-node scripts/reset-admin.ts
+```
+
+Esto crea el usuario admin con `isPlatformAdmin: true` (super-admin de plataforma).
 
 ## Project setup
 

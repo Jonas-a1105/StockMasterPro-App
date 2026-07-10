@@ -15,7 +15,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: { uid: string; tenant_id: string; role: string }) {
+  async validate(payload: { uid: string; tenant_id: string; role: string; isPlatformAdmin?: boolean }) {
     const user = await withTenant<PrismaUser | null>(
       this.prisma,
       payload.tenant_id,
@@ -33,6 +33,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       name: user.name,
       role: user.role,
       tenantId: user.tenantId,
+      isPlatformAdmin: payload.isPlatformAdmin || false,
     };
   }
 }

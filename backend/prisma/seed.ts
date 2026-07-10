@@ -58,6 +58,7 @@ async function main() {
       name: process.env.ADMIN_NAME || 'Administrador',
       role: 'admin',
       isActive: true,
+      isPlatformAdmin: true,
     },
   });
 

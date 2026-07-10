@@ -37,32 +37,35 @@ async function reset() {
 
   if (!user) {
     console.log('El usuario admin no existe. Creándolo...');
-    // Buscar o crear un tenant por defecto para el admin
     let tenant = await prisma.tenant.findFirst();
     if (!tenant) {
       const licenseExpiresAt = new Date();
       licenseExpiresAt.setFullYear(licenseExpiresAt.getFullYear() + 10);
       tenant = await prisma.tenant.create({
         data: {
-          name: 'StockMaster PRO',
+          name: process.env.ADMIN_TENANT || 'StockMaster PRO',
           planType: 'enterprise',
           subscriptionStatus: 'active',
           licenseExpiresAt,
           isBlocked: false,
         },
       });
+      console.log(`Tenant creado: ${tenant.name} (${tenant.id})`);
+    } else {
+      console.log(`Usando tenant existente: ${tenant.name} (${tenant.id})`);
     }
 
-    await prisma.user.create({
-      data: {
-        tenantId: tenant.id,
-        email: email!,
-        passwordHash,
-        name: 'Administrador Principal',
-        role: 'admin',
-        isActive: true,
-      },
-    });
+      await prisma.user.create({
+        data: {
+          tenantId: tenant.id,
+          email: email!,
+          passwordHash,
+          name: process.env.ADMIN_NAME || 'Administrador Principal',
+          role: 'admin',
+          isActive: true,
+          isPlatformAdmin: true,
+        },
+      });
     console.log('=== ADMIN CREADO EXITOSAMENTE ===');
   } else {
     console.log('El usuario admin ya existe. Restableciendo contraseña y asegurando rol...');
@@ -72,12 +75,17 @@ async function reset() {
         passwordHash,
         role: 'admin',
         isActive: true,
+        isPlatformAdmin: true,
       },
     });
     console.log('=== CONTRASEÑA Y ROL DE ADMIN ACTUALIZADOS CON ÉXITO ===');
   }
 
+  const updatedUser = await prisma.user.findUnique({ where: { email } });
   console.log(`Email:    ${email}`);
+  console.log(`Nombre:   ${updatedUser?.name || 'N/A'}`);
+  console.log(`Rol:      ${updatedUser?.role || 'N/A'}`);
+  console.log(`Tenant:   ${updatedUser?.tenantId || 'N/A'}`);
   console.log('Password: [set via ADMIN_PASSWORD env var]');
 }
 

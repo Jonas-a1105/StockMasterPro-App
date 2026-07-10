@@ -139,8 +139,16 @@ export class LicensesService {
   async activate(code: string, tenantId: string) {
     try {
       const payload = this.jwtService.verify(code, {
-        secret: process.env.LICENSE_JWT_SECRET!, // validated at bootstrap
-      });
+        secret: process.env.LICENSE_JWT_SECRET!,
+      }) as { targetTenantId?: string; expiresAt: string; tier?: string };
+
+      if (payload.targetTenantId && payload.targetTenantId !== tenantId) {
+        throw new HttpException(
+          'El código de activación no corresponde a este tenant',
+          HttpStatus.FORBIDDEN,
+        );
+      }
+
       await this.licenseRepo.updateLicense(
         tenantId,
         new Date(payload.expiresAt),
@@ -151,6 +159,7 @@ export class LicensesService {
         expiresAt: payload.expiresAt,
       };
     } catch (err: any) {
+      if (err instanceof HttpException) throw err;
       const msg =
         err.name === 'JsonWebTokenError' || err.name === 'TokenExpiredError'
           ? 'El código de activación ingresado es inválido o ha expirado.'

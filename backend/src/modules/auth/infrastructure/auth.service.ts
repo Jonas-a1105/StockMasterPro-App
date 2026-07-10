@@ -4,12 +4,11 @@ import {
   UnauthorizedException,
   Inject,
   NotFoundException,
-  ForbiddenException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import * as crypto from 'crypto';
-import { PrismaService } from '@shared/infrastructure/prisma/prisma.service';
+import { AuthPrismaService } from '@shared/infrastructure/prisma/auth-prisma.service';
 import type { AuthRepository } from '../application/ports/auth.repository.interface';
 import { RegisterTenant } from '../application/use-cases/register-tenant.use-case';
 import { ValidateUser } from '../application/use-cases/validate-user.use-case';
@@ -19,7 +18,7 @@ const MAX_REFRESH_TOKENS_PER_USER = 10;
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly prisma: PrismaService,
+    private readonly prisma: AuthPrismaService,
     private readonly jwtService: JwtService,
     @Inject('AuthRepository')
     private readonly authRepo: AuthRepository,
@@ -48,10 +47,12 @@ export class AuthService {
       dto.name,
     );
 
+    const isPlatformAdmin = user.isPlatformAdmin || false;
     const accessToken = this.jwtService.sign({
       uid: user.id,
       tenant_id: tenant.id,
       role: user.role,
+      isPlatformAdmin,
     });
 
     const refreshToken = await this.createRefreshToken(
@@ -71,6 +72,7 @@ export class AuthService {
         name: user.name,
         role: user.role,
         tenantId: tenant.id,
+        isPlatformAdmin,
       },
     };
   }
@@ -89,10 +91,12 @@ export class AuthService {
       throw new UnauthorizedException('Credenciales inválidas');
     }
 
+    const isPlatformAdmin = user.isPlatformAdmin || false;
     const accessToken = this.jwtService.sign({
       uid: user.id,
       tenant_id: user.tenantId,
       role: user.role,
+      isPlatformAdmin,
     });
 
     const refreshToken = await this.createRefreshToken(
@@ -112,6 +116,7 @@ export class AuthService {
         name: user.name,
         role: user.role,
         tenantId: user.tenantId,
+        isPlatformAdmin,
       },
     };
   }
@@ -146,6 +151,7 @@ export class AuthService {
       uid: user.id,
       tenant_id: user.tenantId,
       role: user.role,
+      isPlatformAdmin: user.isPlatformAdmin || false,
     });
 
     const newRefreshToken = await this.createRefreshToken(

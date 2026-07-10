@@ -14,6 +14,7 @@ import { GenerateLicenseDto } from '../../dto/generate-license.dto';
 import { ActivateLicenseDto } from '../../dto/activate-license.dto';
 import { JwtAuthGuard } from '@shared/infrastructure/guards/jwt-auth.guard';
 import { RolesGuard } from '@shared/infrastructure/guards/roles.guard';
+import { PlatformAdminGuard } from '@shared/infrastructure/guards/platform-admin.guard';
 import { Roles } from '@shared/infrastructure/decorators/roles.decorator';
 import { CurrentUser } from '@shared/infrastructure/decorators/current-user.decorator';
 import { AuthenticatedUser } from '@shared/infrastructure/types/authenticated-user';
@@ -73,26 +74,24 @@ export class LicensesController {
   }
 
   @Post('upgrade')
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('admin')
+  @UseGuards(JwtAuthGuard, PlatformAdminGuard)
   async upgradePlan(
-    @Body() body: { planType: string },
+    @Body() body: { planType: string; tenantId: string },
     @CurrentUser() user: AuthenticatedUser,
   ) {
-    if (!user?.tenantId) throw new UnauthorizedException();
+    const targetTenantId = body.tenantId || user.tenantId;
+    if (!targetTenantId) throw new UnauthorizedException();
     const validPlans = ['free', 'pro', 'enterprise'];
     if (!validPlans.includes(body.planType)) {
       throw new HttpException('Plan inválido', HttpStatus.BAD_REQUEST);
     }
-    return this.licensesService.upgradePlan(user.tenantId, body.planType);
+    return this.licensesService.upgradePlan(targetTenantId, body.planType);
   }
 
   @Post('generate')
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('admin')
+  @UseGuards(JwtAuthGuard, PlatformAdminGuard)
   async generate(
     @Body() dto: GenerateLicenseDto,
-    @CurrentUser() user: AuthenticatedUser,
   ) {
     return this.licensesService.generate({
       days: dto.days,
@@ -121,10 +120,9 @@ export class LicensesController {
   }
 
   @Post('reactivate')
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('admin')
-  async reactivate(@CurrentUser() user: AuthenticatedUser) {
-    if (!user?.tenantId) throw new UnauthorizedException();
-    return this.licensesService.reactivate(user.tenantId);
+  @UseGuards(JwtAuthGuard, PlatformAdminGuard)
+  async reactivate(@Body() body: { tenantId: string }) {
+    if (!body.tenantId) throw new UnauthorizedException();
+    return this.licensesService.reactivate(body.tenantId);
   }
 }
