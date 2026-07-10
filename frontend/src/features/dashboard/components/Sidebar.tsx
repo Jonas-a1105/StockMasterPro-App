@@ -180,7 +180,12 @@ export function Sidebar({ mode, onClose, isMobile }: { mode: SidebarMode; onClos
           {nav('/customers', <Contact size={16} className={styles.menuIcon} />, 'Clientes')}
 
           {user?.role === 'admin' && nav('/users', <Users size={16} className={styles.menuIcon} />, 'Usuarios')}
-          {user?.email === 'admin@stockmaster.com' && nav('/admin/tenants', <Shield size={16} className={styles.menuIcon} />, 'Licencias')}
+          {user?.email === 'admin@stockmaster.com' && (
+            <>
+              {nav('/admin/tenants', <Shield size={16} className={styles.menuIcon} />, 'Licencias')}
+              {nav('/admin/saas-dashboard', <BarChart2 size={16} className={styles.menuIcon} />, 'SaaS Metrics')}
+            </>
+          )}
           {nav('/settings', <Settings size={16} className={styles.menuIcon} />, 'Configuración')}
           {nav('/notifications', <Bell size={16} className={styles.menuIcon} />, 'Notificaciones')}
           {nav('/fiscal', <FileText size={16} className={styles.menuIcon} />, 'Fiscal')}

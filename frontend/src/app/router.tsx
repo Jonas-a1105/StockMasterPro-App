@@ -37,6 +37,7 @@ const WarehousePage = lazy(() => import('@features/warehouses/pages/WarehousePag
 const LicenseToolPage = lazy(() => import('@features/licenses/pages/LicenseToolPage').then(m => ({ default: m.LicenseToolPage })));
 const AgendaDigitalPage = lazy(() => import('@features/agenda/pages/AgendaDigitalPage').then(m => ({ default: m.AgendaDigitalPage })));
 const AdminTenantsPage = lazy(() => import('@features/admin/pages/AdminTenantsPage').then(m => ({ default: m.AdminTenantsPage })));
+const SuperAdminDashboard = lazy(() => import('@features/admin/pages/SuperAdminDashboard').then(m => ({ default: m.SuperAdminDashboard })));
 const LandingPage = lazy(() => import('@features/landing/LandingPage').then(m => ({ default: m.LandingPage })));
 const SocialPage = lazy(() => import('@features/social/SocialPage').then(m => ({ default: m.SocialPage })));
 const NotificationsPage = lazy(() => import('@features/notifications/pages/NotificationsPage').then(m => ({ default: m.NotificationsPage })));
@@ -152,6 +153,7 @@ export function AppRouter() {
           <Route path="/license-tool" element={<AdminRoute><Suspense fallback={<SkeletonForm fields={4} />}><LicenseToolPage /></Suspense></AdminRoute>} />
           <Route path="/agenda" element={<PlanRoute requiredPlan="pro" sectionName="Agenda Digital"><Suspense fallback={<SkeletonCards count={6} />}><AgendaDigitalPage /></Suspense></PlanRoute>} />
           <Route path="/admin/tenants" element={<AdminRoute><Suspense fallback={<SkeletonTablePage tabs={0} kpi={3} />}><AdminTenantsPage /></Suspense></AdminRoute>} />
+          <Route path="/admin/saas-dashboard" element={<AdminRoute><Suspense fallback={<SkeletonTablePage tabs={2} kpi={0} />}><SuperAdminDashboard /></Suspense></AdminRoute>} />
           <Route path="/notifications" element={<Suspense fallback={<SkeletonTablePage tabs={0} kpi={3} />}><NotificationsPage /></Suspense>} />
           <Route path="/categories" element={<Suspense fallback={<SkeletonTablePage tabs={0} kpi={3} />}><CategoriesPage /></Suspense>} />
           <Route path="/returns" element={<Suspense fallback={<SkeletonTablePage tabs={0} kpi={3} />}><ReturnsPage /></Suspense>} />
