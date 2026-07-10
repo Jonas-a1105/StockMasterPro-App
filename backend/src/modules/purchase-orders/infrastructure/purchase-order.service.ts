@@ -40,7 +40,23 @@ export class PurchaseOrderService {
     });
   }
 
-  async receiveOrder(id: string, tenantId: string) {
-    return this.poRepo.receiveOrder(id, tenantId);
+  async approveOrder(id: string, tenantId: string, userId: string) {
+    return this.poRepo.approveOrder(id, tenantId, userId);
+  }
+
+  async rejectOrder(id: string, tenantId: string, userId: string, reason?: string) {
+    return this.poRepo.rejectOrder(id, tenantId, userId, reason);
+  }
+
+  async cancelOrder(id: string, tenantId: string, userId: string, reason?: string) {
+    return this.poRepo.cancelOrder(id, tenantId, userId, reason);
+  }
+
+  async receiveOrder(
+    id: string,
+    tenantId: string,
+    items?: { productId: string; quantity: number }[],
+  ) {
+    return this.poRepo.receiveOrder(id, tenantId, items);
   }
 }

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '@shared/infrastructure/prisma/prisma.service';
 
 export interface PurchaseOrderInput {
@@ -33,65 +33,6 @@ export class PostgresPurchaseOrderRepo {
     return this.prisma.purchaseOrder.findFirst({
       where: { id, tenantId },
       include: { items: true },
-    });
-  }
-
-  async receiveOrder(id: string, tenantId: string) {
-    const order = await this.prisma.purchaseOrder.findFirst({
-      where: { id, tenantId, status: 'pending' },
-      include: { items: true },
-    });
-    if (!order) throw new Error('Orden pendiente no encontrada');
-
-    return this.prisma.$transaction(async (tx) => {
-      await tx.purchaseOrder.update({
-        where: { id },
-        data: { status: 'received' },
-      });
-
-      for (const item of order.items) {
-        const product = await tx.product.findFirst({
-          where: { id: item.productId, tenantId },
-        });
-        if (!product)
-          throw new Error(`Producto ${item.productId} no encontrado`);
-
-        const currentStock = product.stock;
-        const currentCost = Number(product.cost);
-        const purchasedQty = item.quantity;
-        const purchaseCost = Number(item.cost);
-
-        const newStock = currentStock + purchasedQty;
-        const newCost =
-          currentStock + purchasedQty > 0
-            ? (currentStock * currentCost + purchasedQty * purchaseCost) /
-              (currentStock + purchasedQty)
-            : purchaseCost;
-
-        await tx.product.updateMany({
-          where: { id: item.productId, tenantId },
-          data: {
-            stock: newStock,
-            cost: Math.round(newCost * 100) / 100,
-          },
-        });
-
-        await tx.inventoryMovement.create({
-          data: {
-            tenantId,
-            productId: item.productId,
-            type: 'purchase',
-            quantity: item.quantity,
-            reference: `Recepción: ${order.id}`,
-            userId: order.userId,
-          },
-        });
-      }
-
-      return this.prisma.purchaseOrder.findFirst({
-        where: { id },
-        include: { items: true },
-      });
     });
   }
 
@@ -159,6 +100,128 @@ export class PostgresPurchaseOrderRepo {
       }
 
       return po;
+    });
+  }
+
+  async approveOrder(id: string, tenantId: string, userId: string) {
+    const order = await this.prisma.purchaseOrder.findFirst({
+      where: { id, tenantId, status: 'pending' },
+    });
+    if (!order) throw new NotFoundException('Orden pendiente no encontrada');
+
+    return this.prisma.purchaseOrder.update({
+      where: { id },
+      data: { status: 'approved', approvedById: userId, approvedAt: new Date() },
+      include: { items: true },
+    });
+  }
+
+  async rejectOrder(id: string, tenantId: string, userId: string, reason?: string) {
+    const order = await this.prisma.purchaseOrder.findFirst({
+      where: { id, tenantId, status: 'pending' },
+    });
+    if (!order) throw new NotFoundException('Orden pendiente no encontrada');
+
+    return this.prisma.purchaseOrder.update({
+      where: { id },
+      data: { status: 'rejected', rejectedById: userId, rejectedAt: new Date(), rejectionReason: reason },
+      include: { items: true },
+    });
+  }
+
+  async cancelOrder(id: string, tenantId: string, userId: string, reason?: string) {
+    const order = await this.prisma.purchaseOrder.findFirst({
+      where: { id, tenantId, status: { in: ['pending', 'approved', 'partially_received'] } },
+    });
+    if (!order) throw new NotFoundException('Orden no encontrada o ya no puede cancelarse');
+
+    return this.prisma.purchaseOrder.update({
+      where: { id },
+      data: { status: 'cancelled', cancelledById: userId, cancelledAt: new Date(), cancellationReason: reason },
+      include: { items: true },
+    });
+  }
+
+  async receiveOrder(id: string, tenantId: string, items?: { productId: string; quantity: number }[]) {
+    const order = await this.prisma.purchaseOrder.findFirst({
+      where: { id, tenantId, status: { in: ['approved', 'partially_received'] } },
+      include: { items: true },
+    });
+    if (!order) throw new NotFoundException('Orden aprobada no encontrada');
+
+    return this.prisma.$transaction(async (tx) => {
+      for (const item of order.items) {
+        const incomingQty = items
+          ? (items.find((i) => i.productId === item.productId)?.quantity ?? 0)
+          : item.quantity;
+
+        if (incomingQty <= 0) continue;
+
+        const remaining = item.quantity - item.receivedQty;
+        const actualQty = Math.min(incomingQty, remaining);
+        if (actualQty <= 0) continue;
+
+        await tx.purchaseOrderItem.update({
+          where: { id: item.id },
+          data: { receivedQty: item.receivedQty + actualQty },
+        });
+
+        const product = await tx.product.findFirst({
+          where: { id: item.productId, tenantId },
+        });
+        if (!product) throw new Error(`Producto ${item.productId} no encontrado`);
+
+        const currentStock = product.stock;
+        const currentCost = Number(product.cost);
+        const purchaseCost = Number(item.cost);
+
+        const newStock = currentStock + actualQty;
+        const newCost =
+          currentStock + actualQty > 0
+            ? (currentStock * currentCost + actualQty * purchaseCost) /
+              (currentStock + actualQty)
+            : purchaseCost;
+
+        await tx.product.updateMany({
+          where: { id: item.productId, tenantId },
+          data: {
+            stock: newStock,
+            cost: Math.round(newCost * 100) / 100,
+          },
+        });
+
+        await tx.inventoryMovement.create({
+          data: {
+            tenantId,
+            productId: item.productId,
+            type: 'purchase',
+            quantity: actualQty,
+            reference: `Recepción parcial: ${id}`,
+            userId: order.userId,
+          },
+        });
+      }
+
+      const updatedOrder = await tx.purchaseOrder.findFirst({
+        where: { id },
+        include: { items: true },
+      });
+
+      if (!updatedOrder) throw new Error('Orden no encontrada tras recepción');
+
+      const allFullyReceived = updatedOrder.items.every(
+        (i) => i.receivedQty >= i.quantity,
+      );
+
+      await tx.purchaseOrder.update({
+        where: { id },
+        data: { status: allFullyReceived ? 'received' : 'partially_received', updatedAt: new Date() },
+      });
+
+      return this.prisma.purchaseOrder.findFirst({
+        where: { id },
+        include: { items: true },
+      });
     });
   }
 }

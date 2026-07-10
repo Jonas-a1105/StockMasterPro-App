@@ -81,11 +81,16 @@ export interface Supplier {
 export interface PurchaseOrder {
   id: string; tenantId: string; supplierId: string | null; userId: string;
   status: string; total: number; notes: string | null;
+  approvedById: string | null; approvedAt: string | null;
+  rejectedById: string | null; rejectedAt: string | null; rejectionReason: string | null;
+  cancelledById: string | null; cancelledAt: string | null; cancellationReason: string | null;
+  expectedDeliveryDate: string | null;
   items: PurchaseOrderItem[]; createdAt: string;
 }
 
 export interface PurchaseOrderItem {
-  productId: string; quantity: number; cost: number; subtotal: number;
+  id: string; productId: string; quantity: number; receivedQty: number;
+  cost: number; subtotal: number;
 }
 
 export interface InventoryMovement {
