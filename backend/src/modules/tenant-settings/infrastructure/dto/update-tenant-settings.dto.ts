@@ -1,11 +1,4 @@
-import {
-  IsOptional,
-  IsDecimal,
-  Min,
-  Max,
-  IsString,
-  IsIn,
-} from 'class-validator';
+import { IsOptional, IsDecimal, Min, Max, IsString, IsIn, IsNumber } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class UpdateTenantSettingsDto {
@@ -37,4 +30,21 @@ export class UpdateTenantSettingsDto {
   @IsOptional()
   @IsIn(['bs', 'usd', 'both'])
   displayCurrency?: 'bs' | 'usd' | 'both';
+
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber()
+  manualExchangeRate?: number;
+
+  @IsOptional()
+  @IsString()
+  companyTaxId?: string;
+
+  @IsOptional()
+  @IsString()
+  companyFiscalAddress?: string;
+
+  @IsOptional()
+  @IsString()
+  companyPhone?: string;
 }

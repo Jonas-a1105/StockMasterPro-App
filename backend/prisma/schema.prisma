@@ -66,6 +66,9 @@ model TenantSettings {
   manualExchangeRate Decimal? @default(0) @map("manual_exchange_rate") @db.Decimal(12, 4)
   ivaWithholdingRate Decimal? @default(75) @map("iva_withholding_rate") @db.Decimal(5, 2)
   islrWithholdingRate Decimal? @default(5) @map("islr_withholding_rate") @db.Decimal(5, 2)
+  companyTaxId     String? @map("company_tax_id") @db.VarChar(20)
+  companyFiscalAddress String? @map("company_fiscal_address") @db.Text
+  companyPhone     String? @map("company_phone") @db.VarChar(50)
   createdAt     DateTime @default(now()) @map("created_at")
   updatedAt     DateTime @updatedAt @map("updated_at")
 

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { DollarSign, Percent, Coins, Eye, RefreshCw, Store, Download, Upload, RotateCcw, Palette, Square, Sparkles, Save, Trash2, Cloud, History, FileDown, FileUp, FileCode, BellRing, Inbox, Sliders, TriangleAlert, MessageSquare, Monitor, Mail, Globe, Settings, Server, HardDrive, Download as DownloadIcon, X, Pause, Trash2 as Trash, Loader2, CheckCircle, ClipboardList, Search, ShieldCheck, Users, Activity, PieChart, Shield, Edit2, ToggleRight, ToggleLeft, MapPin } from 'lucide-react';
+import { DollarSign, Percent, Coins, Eye, RefreshCw, Store, Download, Upload, RotateCcw, Palette, Square, Sparkles, Save, Trash2, Cloud, History, FileDown, FileUp, FileCode, BellRing, Inbox, Sliders, TriangleAlert, MessageSquare, Monitor, Mail, Globe, Settings, Server, HardDrive, Download as DownloadIcon, X, Pause, Trash2 as Trash, Loader2, CheckCircle, ClipboardList, Search, ShieldCheck, Users, Activity, PieChart, Shield, Edit2, ToggleRight, ToggleLeft, MapPin, Building2 } from 'lucide-react';
 import { api } from '@shared/lib/http/client';
 import { useToast } from '@contexts/ToastContext';
 import { useExchangeRate } from '@contexts/ExchangeRateContext';
@@ -163,6 +163,9 @@ function TaxCurrencyTab() {
   const [currencyPosition, setCurrencyPosition] = useState<'before' | 'after'>('before');
   const [decimalPlaces, setDecimalPlaces] = useState(2);
   const [displayCurrency, setDisplayCurrency] = useState<'bs' | 'usd' | 'both'>('both');
+  const [companyTaxId, setCompanyTaxId] = useState('');
+  const [companyFiscalAddress, setCompanyFiscalAddress] = useState('');
+  const [companyPhone, setCompanyPhone] = useState('');
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
@@ -179,6 +182,9 @@ function TaxCurrencyTab() {
       setCurrencyPosition(settings.currencyPosition ?? 'before');
       setDecimalPlaces(settings.decimalPlaces ?? 2);
       setDisplayCurrency(settings.displayCurrency ?? 'both');
+      setCompanyTaxId(settings.companyTaxId ?? '');
+      setCompanyFiscalAddress(settings.companyFiscalAddress ?? '');
+      setCompanyPhone(settings.companyPhone ?? '');
       updateConfig({
         symbol: settings.currencySymbol ?? 'Bs',
         position: settings.currencyPosition ?? 'before',
@@ -202,6 +208,9 @@ function TaxCurrencyTab() {
         currencyPosition,
         decimalPlaces,
         displayCurrency,
+        companyTaxId,
+        companyFiscalAddress,
+        companyPhone,
       });
       showToast('Configuración guardada', 'success');
       updateConfig({
@@ -318,6 +327,46 @@ function TaxCurrencyTab() {
               <option value="local">Solo moneda local (Bs)</option>
               <option value="usd">Solo dólares ($)</option>
             </select>
+          </div>
+        </div>
+      </div>
+
+      {/* Tarjeta: Datos Fiscales del Negocio */}
+      <div className={styles.bentoCard}>
+        <div className={styles.bentoCardHeader}>
+          <Building2 size={22} />
+          <h2 className={styles.bentoCardTitle}>Datos fiscales del negocio</h2>
+        </div>
+        <div className={styles.formGroupLayout}>
+          <div className={styles.formGroup}>
+            <label className={styles.fieldLabel}>RIF de la empresa</label>
+            <input
+              type="text"
+              className={styles.formControl}
+              value={companyTaxId}
+              onChange={e => setCompanyTaxId(e.target.value)}
+              placeholder="J-12345678-9"
+            />
+          </div>
+          <div className={styles.formGroup}>
+            <label className={styles.fieldLabel}>Teléfono</label>
+            <input
+              type="text"
+              className={styles.formControl}
+              value={companyPhone}
+              onChange={e => setCompanyPhone(e.target.value)}
+              placeholder="+58 4XX XXX XXXX"
+            />
+          </div>
+          <div className={styles.formGroup} style={{ gridColumn: '1 / -1' }}>
+            <label className={styles.fieldLabel}>Dirección fiscal</label>
+            <input
+              type="text"
+              className={styles.formControl}
+              value={companyFiscalAddress}
+              onChange={e => setCompanyFiscalAddress(e.target.value)}
+              placeholder="Av. Principal, Edificio, Oficina, Ciudad"
+            />
           </div>
         </div>
       </div>

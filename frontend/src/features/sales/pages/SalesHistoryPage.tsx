@@ -7,9 +7,11 @@ import { KpiGrid } from '@shared/ui/KpiGrid';
 import { Toolbar } from '@shared/ui/Toolbar';
 import { SkeletonTablePage } from '@shared/ui/Skeleton';
 import { useTheme } from '@contexts/ThemeContext';
-import { DollarSign, ShoppingCart, Eye, Printer, RotateCcw, XCircle } from 'lucide-react';
+import { DollarSign, ShoppingCart, Eye, Printer, RotateCcw, XCircle, FileText } from 'lucide-react';
 import { useExchangeRate } from '@contexts/ExchangeRateContext';
 import { printTicket } from '@shared/lib/print/ticket';
+import { generateFiscalInvoicePdf } from '@shared/lib/print/invoicePdf';
+import { api } from '@shared/lib/http/client';
 import styles from './SalesHistoryPage.module.css';
 
 export function SalesHistoryPage() {
@@ -54,6 +56,44 @@ export function SalesHistoryPage() {
   };
 
   const printSaleTicket = (sale: any) => printTicket(sale);
+
+  const handleInvoicePdf = async (sale: any) => {
+    try {
+      const [companyInfo, detail, settings] = await Promise.all([
+        api.getCompanyInfo(),
+        api.getSale(sale.id),
+        api.getTenantSettings(),
+      ]);
+
+      if (!companyInfo) return;
+
+      const taxRate = settings?.taxRate ?? 16;
+
+      generateFiscalInvoicePdf(
+        {
+          invoiceNumber: detail.invoiceNumber || sale.invoiceNumber || `${detail.id?.slice(0, 8) || ''}`,
+          documentType: detail.documentType || 'factura',
+          createdAt: detail.createdAt || sale.createdAt,
+          customerName: detail.customer?.name || sale.customer?.name || '',
+          customerTaxId: detail.customer?.taxId || sale.customer?.taxId || '',
+          customerFiscalAddress: detail.customer?.fiscalAddress || sale.customer?.fiscalAddress || '',
+          subtotal: Number(detail.subtotal ?? sale.subtotal ?? 0),
+          tax: Number(detail.tax ?? sale.tax ?? 0),
+          discount: Number(detail.discount ?? sale.discount ?? 0),
+          total: Number(detail.total ?? sale.total ?? 0),
+          items: (detail.items || sale.items || []).map((item: any) => ({
+            description: item.product?.name || item.name || 'Producto',
+            quantity: item.quantity,
+            price: Number(item.price),
+            total: Number(item.subtotal || item.total || item.price * item.quantity),
+          })),
+        },
+        companyInfo,
+      );
+    } catch (err: any) {
+      showToast('Error al generar factura PDF', 'error');
+    }
+  };
 
   const handleVoid = async (sale: any) => {
     if (!window.confirm(`¿Anular venta #${String(sale.folio || sale.id).slice(0, 8)} por $${Number(sale.total).toFixed(2)}?`)) return;
@@ -120,6 +160,7 @@ export function SalesHistoryPage() {
                   <div className={styles.rowActions}>
                     <button className={styles.iconBtn} onClick={() => openDetail(sale)} title="Ver detalle"><Eye size={15} /></button>
                     <button className={styles.iconBtn} onClick={() => printSaleTicket(sale)} title="Reimprimir"><Printer size={15} /></button>
+                    <button className={styles.iconBtn} onClick={() => handleInvoicePdf(sale)} title="Factura PDF"><FileText size={15} /></button>
                   </div>
                 </td>
               </tr>
@@ -164,6 +205,7 @@ export function SalesHistoryPage() {
 
             <div className={styles.detailActions}>
               <button className={styles.printBtn} onClick={() => printSaleTicket(selectedSale)}><Printer size={15} /> Reimprimir Ticket</button>
+              <button className={styles.printBtn} onClick={() => handleInvoicePdf(selectedSale)}><FileText size={15} /> Factura PDF</button>
               {selectedSale.status !== 'cancelled' && (
                 <button className={styles.voidBtn} onClick={() => handleVoid(selectedSale)}><XCircle size={15} /> Anular Venta</button>
               )}

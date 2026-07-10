@@ -28,6 +28,10 @@ export class TenantSettingsService {
       currencyPosition?: string;
       decimalPlaces?: number;
       displayCurrency?: string;
+      manualExchangeRate?: number;
+      companyTaxId?: string;
+      companyFiscalAddress?: string;
+      companyPhone?: string;
     },
   ) {
     const settings = await this.prisma.tenantSettings.upsert({

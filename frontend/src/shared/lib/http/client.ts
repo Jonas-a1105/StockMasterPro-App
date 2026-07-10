@@ -471,8 +471,13 @@ class ApiClient {
   async getTenantSettings(): Promise<any> {
     return this.request('/tenant-settings');
   }
-  async updateTenantSettings(data: { taxRate?: number; taxName?: string; currencySymbol?: string; currencyPosition?: string; decimalPlaces?: number; displayCurrency?: string; manualExchangeRate?: number }): Promise<any> {
+  async updateTenantSettings(data: { taxRate?: number; taxName?: string; currencySymbol?: string; currencyPosition?: string; decimalPlaces?: number; displayCurrency?: string; manualExchangeRate?: number; companyTaxId?: string; companyFiscalAddress?: string; companyPhone?: string }): Promise<any> {
     return this.request('/tenant-settings', { method: 'PATCH', body: JSON.stringify(data) });
+  }
+
+  // Fiscal
+  async getCompanyInfo(): Promise<any> {
+    return this.get('/fiscal/company-info');
   }
 
   // Warehouse Transfers

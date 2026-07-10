@@ -2,6 +2,7 @@ import { Controller, Get, Post, Patch, Body, Param, Query } from '@nestjs/common
 import { Roles } from '@shared/infrastructure/decorators/roles.decorator';
 import { CurrentUser } from '@shared/infrastructure/decorators/current-user.decorator';
 import { AuthenticatedUser } from '@shared/infrastructure/types/authenticated-user';
+import { PrismaService } from '@shared/infrastructure/prisma/prisma.service';
 import { InvoiceSequenceService } from '../../application/invoice-sequence.service';
 import { TaxWithholdingService } from '../../application/tax-withholding.service';
 
@@ -10,6 +11,7 @@ export class FiscalController {
   constructor(
     private readonly seqService: InvoiceSequenceService,
     private readonly whService: TaxWithholdingService,
+    private readonly prisma: PrismaService,
   ) {}
 
   @Get('sequence')
@@ -68,5 +70,26 @@ export class FiscalController {
       startDate ? new Date(startDate) : undefined,
       endDate ? new Date(endDate) : undefined,
     );
+  }
+
+  @Get('company-info')
+  @Roles('admin', 'gerente')
+  async getCompanyInfo(@CurrentUser() user: AuthenticatedUser) {
+    const tenant = await this.prisma.tenant.findUnique({
+      where: { id: user.tenantId },
+      select: { name: true },
+    });
+    const settings = await this.prisma.tenantSettings.findUnique({
+      where: { tenantId: user.tenantId },
+    });
+    return {
+      companyName: tenant?.name || '',
+      companyTaxId: settings?.companyTaxId || '',
+      companyFiscalAddress: settings?.companyFiscalAddress || '',
+      companyPhone: settings?.companyPhone || '',
+      taxRate: Number(settings?.taxRate ?? 16),
+      taxName: settings?.taxName || 'IVA',
+      currencySymbol: settings?.currencySymbol || 'Bs',
+    };
   }
 }
