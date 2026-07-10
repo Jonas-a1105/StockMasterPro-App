@@ -60,4 +60,10 @@ export interface ProductRepository {
     userId: string,
     data: { quantity: number; type: string; reason?: string },
   ): Promise<Product>;
+
+  // Inventory Count methods
+  getProductWarehouse(productId: string, warehouseId: string, tenantId: string): Promise<{ id: string; productId: string; warehouseId: string; stock: number } | null>;
+  getProductWarehouseById(id: string, tenantId: string): Promise<{ id: string; productId: string; warehouseId: string; stock: number } | null>;
+  getProductWarehouses(productId: string, tenantId: string): Promise<{ id: string; productId: string; warehouseId: string; stock: number }[]>;
+  getSystemQuantities(productIds: string[], tenantId: string, warehouseId?: string): Promise<Map<string, number>>;
 }

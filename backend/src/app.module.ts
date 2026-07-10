@@ -21,6 +21,7 @@ import { CreditNoteModule } from './modules/credit-notes';
 import { ReportModule } from './modules/reports';
 import { ExchangeRateModule } from './modules/exchange-rate';
 import { WarehouseModule } from './modules/warehouses';
+import { InventoryCountsModule } from './modules/inventory-counts/inventory-counts.module';
 import { CategoryModule } from './modules/categories';
 import { WebhooksModule } from './modules/webhooks';
 import { EventModule } from './modules/events';
@@ -70,6 +71,7 @@ import { UploadModule } from './modules/uploads/infrastructure/upload.module';
     ReportModule,
     ExchangeRateModule,
     WarehouseModule,
+    InventoryCountsModule,
     CategoryModule,
     WebhooksModule,
     EventModule,

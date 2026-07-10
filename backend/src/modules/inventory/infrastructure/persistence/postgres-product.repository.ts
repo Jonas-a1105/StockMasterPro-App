@@ -167,6 +167,60 @@ export class PostgresProductRepo implements ProductRepository {
     return this.toProduct(updated);
   }
 
+  async getProductWarehouse(
+    productId: string,
+    warehouseId: string,
+    tenantId: string,
+  ): Promise<{ id: string; productId: string; warehouseId: string; stock: number } | null> {
+    const pw = await this.prisma.productWarehouse.findFirst({
+      where: { productId, warehouseId, tenantId },
+      select: { id: true, productId: true, warehouseId: true, stock: true },
+    });
+    return pw;
+  }
+
+  async getProductWarehouseById(
+    id: string,
+    tenantId: string,
+  ): Promise<{ id: string; productId: string; warehouseId: string; stock: number } | null> {
+    const pw = await this.prisma.productWarehouse.findFirst({
+      where: { id, tenantId },
+      select: { id: true, productId: true, warehouseId: true, stock: true },
+    });
+    return pw;
+  }
+
+  async getProductWarehouses(
+    productId: string,
+    tenantId: string,
+  ): Promise<{ id: string; productId: string; warehouseId: string; stock: number }[]> {
+    const pws = await this.prisma.productWarehouse.findMany({
+      where: { productId, tenantId },
+      select: { id: true, productId: true, warehouseId: true, stock: true },
+    });
+    return pws;
+  }
+
+  async getSystemQuantities(
+    productIds: string[],
+    tenantId: string,
+    warehouseId?: string,
+  ): Promise<Map<string, number>> {
+    const where: any = { productId: { in: productIds }, tenantId };
+    if (warehouseId) where.warehouseId = warehouseId;
+
+    const pws = await this.prisma.productWarehouse.findMany({
+      where,
+      select: { productId: true, stock: true, warehouseId: true },
+    });
+
+    const map = new Map<string, number>();
+    for (const pw of pws) {
+      map.set(pw.productId, (map.get(pw.productId) ?? 0) + pw.stock);
+    }
+    return map;
+  }
+
   private toProduct(p: PrismaProduct): Product {
     return new Product(
       p.id,
