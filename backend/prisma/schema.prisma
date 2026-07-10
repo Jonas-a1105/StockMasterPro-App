@@ -51,7 +51,15 @@ model Tenant {
   invoiceSequences   InvoiceSequence[]
   taxWithholdings    TaxWithholding[]
   salePayments       SalePayment[]
-  inventoryCounts    InventoryCount[]
+inventoryCounts    InventoryCount[]
+  accounts           Account[]
+  journalEntries     JournalEntry[]
+  journalEntryLines  JournalEntryLine[]
+  fiscalPeriods      FiscalPeriod[]
+  accountBalances    AccountBalance[]
+  costCenters        CostCenter[]
+  projects           Project[]
+  taxRates           TaxRate[]
 
   @@map("tenants")
 }
@@ -123,6 +131,10 @@ model User {
   socialThreadMembers       SocialThreadMember[]
   inventoryCounts           InventoryCount[]        @relation("UserInventoryCounts")
   approvedInventoryCounts   InventoryCount[]        @relation("ApprovedInventoryCounts")
+  createdJournalEntries     JournalEntry[]          @relation("CreatedJournalEntries")
+  postedJournalEntries      JournalEntry[]          @relation("PostedJournalEntries")
+  closedFiscalPeriods       FiscalPeriod[]          @relation("ClosedFiscalPeriods")
+  managedProjects           Project[]               @relation("ManagedProjects")
 
   @@index([tenantId])
   @@index([tenantId, id])
@@ -903,6 +915,27 @@ model CashTransaction {
   @@map("cash_transactions")
 }
 
+model RefreshToken {
+  id        String    @id @default(uuid()) @db.Uuid
+  tenantId  String    @map("tenant_id") @db.Uuid
+  userId    String    @map("user_id") @db.Uuid
+  token     String    @unique @db.VarChar(512)
+  deviceId  String?   @map("device_id") @db.VarChar(255)
+  userAgent String?   @map("user_agent") @db.Text
+  ipAddress String?   @map("ip_address") @db.VarChar(45)
+  expiresAt DateTime  @map("expires_at") @db.Timestamptz
+  revokedAt DateTime? @map("revoked_at") @db.Timestamptz
+  createdAt DateTime  @default(now()) @map("created_at")
+
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([token])
+  @@index([userId])
+  @@index([userId, expiresAt])
+  @@index([userId, deviceId])
+  @@map("refresh_tokens")
+}
+
 model InvoiceSequence {
   id         String   @id @default(uuid()) @db.Uuid
   tenantId   String   @map("tenant_id") @db.Uuid
@@ -939,25 +972,209 @@ model TaxWithholding {
   @@map("tax_withholdings")
 }
 
-model RefreshToken {
-  id        String    @id @default(uuid()) @db.Uuid
-  tenantId  String    @map("tenant_id") @db.Uuid
-  userId    String    @map("user_id") @db.Uuid
-  token     String    @unique @db.VarChar(512)
-  deviceId  String?   @map("device_id") @db.VarChar(255)
-  userAgent String?   @map("user_agent") @db.Text
-  ipAddress String?   @map("ip_address") @db.VarChar(45)
-  expiresAt DateTime  @map("expires_at") @db.Timestamptz
-  revokedAt DateTime? @map("revoked_at") @db.Timestamptz
-  createdAt DateTime  @default(now()) @map("created_at")
+model Account {
+  id              String   @id @default(uuid()) @db.Uuid
+  tenantId        String   @map("tenant_id") @db.Uuid
+  code            String   @db.VarChar(20)
+  name            String   @db.VarChar(255)
+  description     String?  @db.Text
+  type            String   @db.VarChar(20) // asset, liability, equity, revenue, expense
+  subType         String?  @map("sub_type") @db.VarChar(50) // current, fixed, etc.
+  parentId        String?  @map("parent_id") @db.Uuid
+  level           Int      @default(1)
+  isActive        Boolean  @default(true) @map("is_active")
+  isSystem        Boolean  @default(false) @map("is_system") // cuentas predefinidas no eliminables
+  allowPosting    Boolean  @default(true) @map("allow_posting") // permite asiento directo
+  normalBalance   String   @default("debit") @map("normal_balance") @db.VarChar(10) // debit, credit
+  currency        String?  @db.VarChar(3) // moneda si es distinta a la base
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
 
-  tenant    Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  tenant    Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  parent    Account? @relation("AccountHierarchy", fields: [parentId], references: [id], onDelete: SetNull)
+  children  Account[] @relation("AccountHierarchy")
+  lines     JournalEntryLine[]
+  balances    AccountBalance[]
 
-  @@index([token])
-  @@index([userId])
-  @@index([userId, expiresAt])
-  @@index([userId, deviceId])
-  @@map("refresh_tokens")
+  @@unique([tenantId, code])
+  @@index([tenantId, type])
+  @@index([tenantId, parentId])
+  @@map("accounts")
+}
+
+model JournalEntry {
+  id              String   @id @default(uuid()) @db.Uuid
+  tenantId        String   @map("tenant_id") @db.Uuid
+  entryNumber     String   @map("entry_number") @db.VarChar(30)
+  date            DateTime @db.Date
+  description     String   @db.Text
+  reference       String?  @db.VarChar(100)
+  status          String   @default("draft") @db.VarChar(20) // draft, posted, reversed, cancelled
+  totalDebit      Decimal  @default(0) @map("total_debit") @db.Decimal(12, 2)
+  totalCredit     Decimal  @default(0) @map("total_credit") @db.Decimal(12, 2)
+  source          String?  @db.VarChar(50) // manual, sale, purchase, inventory, payroll, tax, adjustment
+  sourceId        String?  @map("source_id") @db.Uuid
+  reversedFromId  String?  @map("reversed_from_id") @db.Uuid
+  fiscalPeriodId  String?  @map("fiscal_period_id") @db.Uuid
+  postedById      String?  @map("posted_by_id") @db.Uuid
+  createdById     String?  @map("created_by_id") @db.Uuid
+  postedAt        DateTime? @map("posted_at") @db.Timestamptz
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  tenant        Tenant           @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  fiscalPeriod  FiscalPeriod?    @relation(fields: [fiscalPeriodId], references: [id], onDelete: SetNull)
+  createdBy     User?            @relation("CreatedJournalEntries", fields: [createdById], references: [id], onDelete: SetNull)
+  postedBy      User?            @relation("PostedJournalEntries", fields: [postedById], references: [id], onDelete: SetNull)
+  lines         JournalEntryLine[]
+  reversedFrom  JournalEntry?    @relation("JournalEntryReversal", fields: [reversedFromId], references: [id], onDelete: SetNull)
+  reversals     JournalEntry[]   @relation("JournalEntryReversal")
+
+  @@unique([tenantId, entryNumber])
+  @@index([tenantId, date])
+  @@index([tenantId, status])
+  @@index([tenantId, fiscalPeriodId])
+  @@map("journal_entries")
+}
+
+model JournalEntryLine {
+  id              String   @id @default(uuid()) @db.Uuid
+  tenantId        String   @map("tenant_id") @db.Uuid
+  journalEntryId  String   @map("journal_entry_id") @db.Uuid
+  accountId       String   @map("account_id") @db.Uuid
+  costCenterId    String?  @map("cost_center_id") @db.Uuid
+  projectId       String?  @map("project_id") @db.Uuid
+  description     String?  @db.Text
+  debit           Decimal  @default(0) @db.Decimal(12, 2)
+  credit          Decimal  @default(0) @db.Decimal(12, 2)
+  currency        String?  @db.VarChar(3)
+  exchangeRate    Decimal? @default(1) @map("exchange_rate") @db.Decimal(12, 4)
+  debitBase       Decimal  @default(0) @map("debit_base") @db.Decimal(12, 2)
+  creditBase      Decimal  @default(0) @map("credit_base") @db.Decimal(12, 2)
+  lineNumber      Int      @map("line_number")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+tenant        Tenant           @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  journalEntry  JournalEntry     @relation(fields: [journalEntryId], references: [id], onDelete: Cascade)
+  account       Account          @relation(fields: [accountId], references: [id], onDelete: Restrict)
+  costCenter    CostCenter?      @relation("CostCenterJournalLines", fields: [costCenterId], references: [id], onDelete: SetNull)
+  project       Project?         @relation("ProjectJournalLines", fields: [projectId], references: [id], onDelete: SetNull)
+
+  @@unique([journalEntryId, lineNumber])
+  @@index([tenantId, accountId])
+  @@index([tenantId, journalEntryId])
+  @@map("journal_entry_lines")
+}
+
+model FiscalPeriod {
+  id              String   @id @default(uuid()) @db.Uuid
+  tenantId        String   @map("tenant_id") @db.Uuid
+  name            String   @db.VarChar(50)
+  code            String   @db.VarChar(20)
+  startDate       DateTime @map("start_date") @db.Date
+  endDate         DateTime @map("end_date") @db.Date
+  status          String   @default("open") @db.VarChar(20) // open, closed, locked
+  isAdjustment    Boolean  @default(false) @map("is_adjustment")
+  closedAt        DateTime? @map("closed_at") @db.Timestamptz
+  closedById      String?  @map("closed_by_id") @db.Uuid
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+tenant     Tenant           @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  closedBy   User?            @relation("ClosedFiscalPeriods", fields: [closedById], references: [id], onDelete: SetNull)
+  entries    JournalEntry[]
+  balances   AccountBalance[]
+
+  @@unique([tenantId, code])
+  @@index([tenantId, startDate, endDate])
+  @@index([tenantId, status])
+  @@map("fiscal_periods")
+}
+
+model AccountBalance {
+  id              String   @id @default(uuid()) @db.Uuid
+  tenantId        String   @map("tenant_id") @db.Uuid
+  accountId       String   @map("account_id") @db.Uuid
+  fiscalPeriodId  String   @map("fiscal_period_id") @db.Uuid
+  openingDebit    Decimal  @default(0) @map("opening_debit") @db.Decimal(12, 2)
+  openingCredit   Decimal  @default(0) @map("opening_credit") @db.Decimal(12, 2)
+  periodDebit     Decimal  @default(0) @map("period_debit") @db.Decimal(12, 2)
+  periodCredit    Decimal  @default(0) @map("period_credit") @db.Decimal(12, 2)
+  closingDebit    Decimal  @default(0) @map("closing_debit") @db.Decimal(12, 2)
+  closingCredit   Decimal  @default(0) @map("closing_credit") @db.Decimal(12, 2)
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  tenant        Tenant       @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  account       Account      @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  fiscalPeriod  FiscalPeriod @relation(fields: [fiscalPeriodId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, accountId, fiscalPeriodId])
+  @@index([tenantId, fiscalPeriodId])
+  @@map("account_balances")
+}
+
+model CostCenter {
+  id          String   @id @default(uuid()) @db.Uuid
+  tenantId    String   @map("tenant_id") @db.Uuid
+  code        String   @db.VarChar(20)
+  name        String   @db.VarChar(255)
+  description String?  @db.Text
+  parentId    String?  @map("parent_id") @db.Uuid
+  isActive    Boolean  @default(true) @map("is_active")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  tenant      Tenant           @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  parent      CostCenter?      @relation("CostCenterHierarchy", fields: [parentId], references: [id], onDelete: SetNull)
+  children    CostCenter[]     @relation("CostCenterHierarchy")
+  journalLines JournalEntryLine[] @relation("CostCenterJournalLines")
+
+  @@unique([tenantId, code])
+  @@index([tenantId, parentId])
+  @@map("cost_centers")
+}
+
+model Project {
+  id          String   @id @default(uuid()) @db.Uuid
+  tenantId    String   @map("tenant_id") @db.Uuid
+  code        String   @db.VarChar(20)
+  name        String   @db.VarChar(255)
+  description String?  @db.Text
+  startDate   DateTime? @map("start_date") @db.Date
+  endDate     DateTime? @map("end_date") @db.Date
+  status      String   @default("active") @db.VarChar(20)
+  budget      Decimal? @db.Decimal(12, 2)
+  managerId   String?  @map("manager_id") @db.Uuid
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  tenant       Tenant              @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  manager      User?               @relation("ManagedProjects", fields: [managerId], references: [id])
+  journalLines JournalEntryLine[]  @relation("ProjectJournalLines")
+
+  @@unique([tenantId, code])
+  @@index([tenantId, status])
+  @@map("projects")
+}
+
+model TaxRate {
+  id          String   @id @default(uuid()) @db.Uuid
+  tenantId    String   @map("tenant_id") @db.Uuid
+  name        String   @db.VarChar(100)
+  rate        Decimal  @db.Decimal(5, 2)
+  type        String   @db.VarChar(20)
+  isActive    Boolean  @default(true) @map("is_active")
+  validFrom   DateTime @map("valid_from") @db.Date
+  validTo     DateTime? @map("valid_to") @db.Date
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, type, isActive])
+  @@map("tax_rates")
 }
 
 model InventoryCount {
