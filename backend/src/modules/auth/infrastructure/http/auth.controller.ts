@@ -24,6 +24,7 @@ export class AuthController {
 
   @Public()
   @Post('register')
+  @Throttle({ default: { limit: 3, ttl: 60000 } })
   async register(@Body() dto: RegisterTenantDto, @Req() req: any) {
     const ipAddress = req.ip;
     const userAgent = req.headers['user-agent'];
@@ -43,6 +44,7 @@ export class AuthController {
   @Public()
   @Post('refresh')
   @HttpCode(HttpStatus.OK)
+  @Throttle({ default: { limit: 10, ttl: 60000 } })
   async refresh(@Body() dto: RefreshTokenDto, @Req() req: any) {
     const ipAddress = req.ip;
     const userAgent = req.headers['user-agent'];
@@ -57,18 +59,21 @@ export class AuthController {
   @Public()
   @Post('logout')
   @HttpCode(HttpStatus.OK)
+  @Throttle({ default: { limit: 20, ttl: 60000 } })
   async logout(@Body() dto: RefreshTokenDto) {
     return this.authService.logout(dto.refreshToken);
   }
 
   @Post('logout/all')
   @HttpCode(HttpStatus.OK)
+  @Throttle({ default: { limit: 5, ttl: 60000 } })
   async logoutAll(@CurrentUser() user: any) {
     return this.authService.logoutAll(user.id);
   }
 
   @Post('logout/device')
   @HttpCode(HttpStatus.OK)
+  @Throttle({ default: { limit: 5, ttl: 60000 } })
   async logoutDevice(
     @CurrentUser() user: any,
     @Body() dto: { deviceId: string },
@@ -78,6 +83,7 @@ export class AuthController {
 
   @Get('sessions')
   @HttpCode(HttpStatus.OK)
+  @Throttle({ default: { limit: 30, ttl: 60000 } })
   async listSessions(@CurrentUser() user: any) {
     return this.authService.listSessions(user.id);
   }
@@ -85,6 +91,7 @@ export class AuthController {
   @Public()
   @Post('forgot-password')
   @HttpCode(HttpStatus.OK)
+  @Throttle({ default: { limit: 3, ttl: 60000 } })
   async forgotPassword(@Body() dto: ForgotPasswordDto) {
     return this.authService.forgotPassword(dto.email);
   }
@@ -92,6 +99,7 @@ export class AuthController {
   @Public()
   @Post('reset-password')
   @HttpCode(HttpStatus.OK)
+  @Throttle({ default: { limit: 5, ttl: 60000 } })
   async resetPassword(@Body() dto: ResetPasswordDto) {
     return this.authService.resetPassword(dto.token, dto.newPassword);
   }

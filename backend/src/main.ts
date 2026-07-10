@@ -11,11 +11,12 @@ async function bootstrap() {
 
   app.setGlobalPrefix('api');
 
+  const frontendUrl = process.env.FRONTEND_URL!;
+  const isProduction = process.env.NODE_ENV === 'production';
   app.enableCors({
-    origin: process.env.FRONTEND_URL || [
-      'http://localhost:5173',
-      'http://localhost:5174',
-    ],
+    origin: isProduction
+      ? frontendUrl // En producción solo el dominio explícito
+      : [frontendUrl, 'http://localhost:5173', 'http://localhost:5174'],
     credentials: true,
   });
 

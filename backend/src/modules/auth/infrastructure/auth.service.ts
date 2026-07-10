@@ -312,7 +312,7 @@ export class AuthService {
     const tokenHash = this.hashToken(rawToken);
 
     const expiresAt = new Date();
-    expiresAt.setDate(expiresAt.getDate() + 7);
+    expiresAt.setDate(expiresAt.getDate() + 30);
 
     await this.prisma.refreshToken.create({
       data: {
