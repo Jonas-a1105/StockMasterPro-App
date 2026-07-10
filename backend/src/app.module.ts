@@ -23,6 +23,7 @@ import { ExchangeRateModule } from './modules/exchange-rate';
 import { WarehouseModule } from './modules/warehouses';
 import { InventoryCountsModule } from './modules/inventory-counts/inventory-counts.module';
 import { SaasMetricsModule } from './modules/saas-metrics';
+import { GlobalSearchModule } from './modules/global-search';
 import { CategoryModule } from './modules/categories';
 import { WebhooksModule } from './modules/webhooks';
 import { EventModule } from './modules/events';
@@ -74,6 +75,7 @@ import { UploadModule } from './modules/uploads/infrastructure/upload.module';
     WarehouseModule,
     InventoryCountsModule,
     SaasMetricsModule,
+    GlobalSearchModule,
     CategoryModule,
     WebhooksModule,
     EventModule,
