@@ -27,6 +27,7 @@ import { EventModule } from './modules/events';
 import { NotificationsModule } from './modules/notifications';
 import { ProductLotModule } from './modules/product-lots/infrastructure/product-lot.module';
 import { SocialModule } from './modules/social';
+import { FiscalModule } from './modules/fiscal';
 import { AccountsReceivableModule } from './modules/accounts-receivable';
 import { CashRegisterModule } from './modules/cash-register';
 import { TenantSettingsModule } from './modules/tenant-settings/infrastructure/tenant-settings.module';
@@ -77,6 +78,7 @@ import { UploadModule } from './modules/uploads/infrastructure/upload.module';
     SocialModule,
     AccountsReceivableModule,
     CashRegisterModule,
+    FiscalModule,
     TenantSettingsModule,
     WarehouseTransferModule,
     UploadModule,

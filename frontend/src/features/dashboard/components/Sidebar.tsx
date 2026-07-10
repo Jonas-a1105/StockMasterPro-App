@@ -1,7 +1,7 @@
 import { useRef, useState, useCallback } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useAuth } from '@contexts/AuthContext';
-import { LayoutDashboard, ShoppingCart, Package, Settings, LogOut, BarChart3, ChevronRight, Users, Contact, Receipt, ReceiptText, RotateCcw, DollarSign, AlertTriangle, Building2, CalendarDays, Shield, Lock, Share2, Wallet, Bell, Tag, RotateCcw as ReturnIcon, ArrowRightLeft, Boxes } from 'lucide-react';
+import { LayoutDashboard, ShoppingCart, Package, Settings, LogOut, BarChart3, ChevronRight, Users, Contact, Receipt, ReceiptText, RotateCcw, DollarSign, AlertTriangle, Building2, CalendarDays, Shield, Lock, Share2, Wallet, Bell, Tag, RotateCcw as ReturnIcon, ArrowRightLeft, Boxes, FileText } from 'lucide-react';
 import type { SidebarMode } from './DashboardLayout';
 import styles from './Sidebar.module.css';
 
@@ -183,6 +183,7 @@ export function Sidebar({ mode, onClose, isMobile }: { mode: SidebarMode; onClos
           {user?.email === 'admin@stockmaster.com' && nav('/admin/tenants', <Shield size={16} className={styles.menuIcon} />, 'Licencias')}
           {nav('/settings', <Settings size={16} className={styles.menuIcon} />, 'Configuración')}
           {nav('/notifications', <Bell size={16} className={styles.menuIcon} />, 'Notificaciones')}
+          {nav('/fiscal', <FileText size={16} className={styles.menuIcon} />, 'Fiscal')}
           <div className={styles.divider} />
           {nav('/social', <Share2 size={16} className={styles.menuIcon} />, 'Social')}
         </nav>

@@ -48,6 +48,8 @@ model Tenant {
   refreshTokens      RefreshToken[]
   settings           TenantSettings?
   exchangeRates      ExchangeRate[]
+  invoiceSequences   InvoiceSequence[]
+  taxWithholdings    TaxWithholding[]
 
   @@map("tenants")
 }
@@ -62,6 +64,8 @@ model TenantSettings {
   decimalPlaces Int      @default(2) @map("decimal_places")
   displayCurrency String @default("both") @map("display_currency") @db.VarChar(20)
   manualExchangeRate Decimal? @default(0) @map("manual_exchange_rate") @db.Decimal(12, 4)
+  ivaWithholdingRate Decimal? @default(75) @map("iva_withholding_rate") @db.Decimal(5, 2)
+  islrWithholdingRate Decimal? @default(5) @map("islr_withholding_rate") @db.Decimal(5, 2)
   createdAt     DateTime @default(now()) @map("created_at")
   updatedAt     DateTime @updatedAt @map("updated_at")
 
@@ -263,16 +267,19 @@ model Product {
 }
 
 model Customer {
-  id        String   @id @default(uuid()) @db.Uuid
-  tenantId  String   @map("tenant_id") @db.Uuid
-  name      String   @db.VarChar(255)
-  email     String?  @db.VarChar(255)
-  phone     String?  @db.VarChar(50)
-  address   String?  @db.Text
-  creditLimit Decimal? @default(0) @map("credit_limit") @db.Decimal(12, 2)
-  balance   Decimal  @default(0) @db.Decimal(12, 2)
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  id             String   @id @default(uuid()) @db.Uuid
+  tenantId       String   @map("tenant_id") @db.Uuid
+  name           String   @db.VarChar(255)
+  email          String?  @db.VarChar(255)
+  phone          String?  @db.VarChar(50)
+  address        String?  @db.Text
+  taxId          String?  @map("tax_id") @db.VarChar(20)
+  documentType   String?  @default("V") @map("document_type") @db.VarChar(5)
+  fiscalAddress  String?  @map("fiscal_address") @db.Text
+  creditLimit    Decimal? @default(0) @map("credit_limit") @db.Decimal(12, 2)
+  balance        Decimal  @default(0) @db.Decimal(12, 2)
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
 
   tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   sales  Sale[]
@@ -285,19 +292,22 @@ model Customer {
 }
 
 model Supplier {
-  id        String   @id @default(uuid()) @db.Uuid
-  tenantId  String   @map("tenant_id") @db.Uuid
-  name      String   @db.VarChar(255)
-  contact   String?  @db.VarChar(255)
-  phone     String?  @db.VarChar(50)
-  email     String?  @db.VarChar(255)
-  address   String?  @db.Text
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  id            String   @id @default(uuid()) @db.Uuid
+  tenantId      String   @map("tenant_id") @db.Uuid
+  name          String   @db.VarChar(255)
+  contact       String?  @db.VarChar(255)
+  phone         String?  @db.VarChar(50)
+  email         String?  @db.VarChar(255)
+  address       String?  @db.Text
+  taxId         String?  @map("tax_id") @db.VarChar(20)
+  fiscalAddress String?  @map("fiscal_address") @db.Text
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
 
   tenant         Tenant          @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   purchaseOrders PurchaseOrder[]
   accountsPayable AccountsPayable[]
+  taxWithholdings TaxWithholding[]
 
   @@index([tenantId])
   @@index([tenantId, id])
@@ -317,6 +327,9 @@ model Sale {
   status         String   @default("completed") @db.VarChar(50)
   isOffline      Boolean  @default(false) @map("is_offline")
   offlineId      String?  @map("offline_id") @db.VarChar(255)
+  invoiceNumber  String?  @map("invoice_number") @db.VarChar(50)
+  invoiceSeries  String?  @default("FACT") @map("invoice_series") @db.VarChar(10)
+  documentType   String?  @default("factura") @map("document_type") @db.VarChar(50)
   createdAt      DateTime @default(now()) @map("created_at")
   updatedAt      DateTime @updatedAt @map("updated_at")
 
@@ -328,6 +341,7 @@ model Sale {
 
   @@index([tenantId])
   @@index([tenantId, createdAt])
+  @@index([tenantId, invoiceNumber])
   @@index([offlineId])
   @@map("sales")
 }
@@ -857,6 +871,42 @@ model CashTransaction {
   @@index([tenantId])
   @@index([sessionId])
   @@map("cash_transactions")
+}
+
+model InvoiceSequence {
+  id         String   @id @default(uuid()) @db.Uuid
+  tenantId   String   @map("tenant_id") @db.Uuid
+  series     String   @default("FACT") @db.VarChar(10)
+  nextNumber Int      @default(1)
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, series])
+  @@map("invoice_sequences")
+}
+
+model TaxWithholding {
+  id              String    @id @default(uuid()) @db.Uuid
+  tenantId        String    @map("tenant_id") @db.Uuid
+  supplierId      String?   @map("supplier_id") @db.Uuid
+  purchaseOrderId String?   @map("purchase_order_id") @db.Uuid
+  type            String    @db.VarChar(20)
+  baseAmount      Decimal   @map("base_amount") @db.Decimal(12, 2)
+  rate            Decimal   @db.Decimal(5, 2)
+  amount          Decimal   @db.Decimal(12, 2)
+  invoiceNumber   String?   @map("invoice_number") @db.VarChar(50)
+  invoiceDate     DateTime? @map("invoice_date") @db.Date
+  status          String    @default("pending") @db.VarChar(20)
+  notes           String?   @db.Text
+  createdAt       DateTime  @default(now()) @map("created_at")
+
+  tenant   Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  supplier Supplier? @relation(fields: [supplierId], references: [id], onDelete: SetNull)
+
+  @@index([tenantId, type])
+  @@map("tax_withholdings")
 }
 
 model RefreshToken {

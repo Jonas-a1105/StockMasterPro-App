@@ -302,6 +302,9 @@ export class PostgresSaleRepo implements SaleRepository {
           ),
       ) ?? [],
       s.createdAt,
+      s.invoiceNumber,
+      s.invoiceSeries,
+      s.documentType,
     );
   }
 }

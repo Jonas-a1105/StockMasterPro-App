@@ -53,6 +53,9 @@ export interface Sale {
   total: number;
   paymentMethod: string;
   status: string;
+  invoiceNumber: string | null;
+  invoiceSeries: string | null;
+  documentType: string | null;
   items: SaleItemResponse[];
   createdAt: string;
 }
@@ -75,6 +78,7 @@ export interface CartItem {
 export interface Supplier {
   id: string; tenantId: string; name: string; contact: string | null;
   phone: string | null; email: string | null; address: string | null;
+  taxId: string | null; fiscalAddress: string | null;
   createdAt: string; updatedAt: string;
 }
 
@@ -126,6 +130,9 @@ export interface Customer {
   email: string | null;
   phone: string | null;
   address: string | null;
+  taxId: string | null;
+  documentType: string | null;
+  fiscalAddress: string | null;
   creditLimit: number;
   balance: number;
   createdAt: string;

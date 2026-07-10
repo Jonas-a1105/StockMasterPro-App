@@ -17,6 +17,9 @@ export class Sale {
     public status: SaleStatus,
     public readonly items: SaleItem[],
     public readonly createdAt: Date,
+    public invoiceNumber?: string | null,
+    public invoiceSeries?: string | null,
+    public documentType?: string | null,
   ) {}
 
   static calculateTotal(

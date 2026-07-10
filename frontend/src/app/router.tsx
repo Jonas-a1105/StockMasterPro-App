@@ -44,6 +44,7 @@ const CategoriesPage = lazy(() => import('@features/categories/pages/CategoriesP
 const ReturnsPage = lazy(() => import('@features/returns/pages/ReturnsPage').then(m => ({ default: m.ReturnsPage })));
 const WarehouseTransfersPage = lazy(() => import('@features/warehouse-transfers/pages/WarehouseTransfersPage').then(m => ({ default: m.WarehouseTransfersPage })));
 const ProductLotsPage = lazy(() => import('@features/product-lots/pages/ProductLotsPage').then(m => ({ default: m.ProductLotsPage })));
+const FiscalPage = lazy(() => import('@features/fiscal/pages/FiscalPage').then(m => ({ default: m.FiscalPage })));
 const ForgotPasswordPage = lazy(() => import('@features/auth/pages/ForgotPasswordPage').then(m => ({ default: m.ForgotPasswordPage })));
 const ResetPasswordPage = lazy(() => import('@features/auth/pages/ResetPasswordPage').then(m => ({ default: m.ResetPasswordPage })));
 
@@ -156,6 +157,7 @@ export function AppRouter() {
           <Route path="/returns" element={<Suspense fallback={<SkeletonTablePage tabs={0} kpi={3} />}><ReturnsPage /></Suspense>} />
           <Route path="/warehouse-transfers" element={<Suspense fallback={<SkeletonTablePage tabs={0} kpi={3} />}><WarehouseTransfersPage /></Suspense>} />
           <Route path="/product-lots" element={<Suspense fallback={<SkeletonTablePage tabs={0} kpi={3} />}><ProductLotsPage /></Suspense>} />
+          <Route path="/fiscal" element={<Suspense fallback={<SkeletonTablePage tabs={2} kpi={0} />}><FiscalPage /></Suspense>} />
         </Route>
 
         <Route path="/social" element={<ProtectedRoute><Suspense fallback={<SkeletonCards count={6} />}><SocialPage /></Suspense></ProtectedRoute>} />

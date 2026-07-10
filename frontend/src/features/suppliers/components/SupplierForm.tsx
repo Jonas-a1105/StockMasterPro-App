@@ -4,8 +4,9 @@ import { ButtonLoader } from '@shared/ui/ButtonLoader';
 import { PremiumLockButton } from '@shared/ui/PremiumLockButton';
 import styles from '@features/inventory/pages/InventoryPage.module.css';
 
-interface SupplierFormData {
+export interface SupplierFormData {
   name: string; contact: string; phone: string; email: string; address: string;
+  taxId: string; fiscalAddress: string;
 }
 
 export function SupplierForm({
@@ -42,9 +43,17 @@ export function SupplierForm({
             <label>Email</label>
             <input type="email" value={form.email} onChange={e => setForm(p => ({ ...p, email: e.target.value }))} placeholder="correo@gmail.com" />
           </div>
-          <div className={styles.fieldFull}>
+          <div className={styles.field}>
+            <label>RIF</label>
+            <input type="text" value={form.taxId} onChange={e => setForm(p => ({ ...p, taxId: e.target.value }))} placeholder="J-12345678-9" />
+          </div>
+          <div className={styles.field}>
             <label>Dirección</label>
             <input type="text" value={form.address} onChange={e => setForm(p => ({ ...p, address: e.target.value }))} placeholder="Dirección del proveedor" />
+          </div>
+          <div className={styles.fieldFull}>
+            <label>Dirección Fiscal</label>
+            <input type="text" value={form.fiscalAddress} onChange={e => setForm(p => ({ ...p, fiscalAddress: e.target.value }))} placeholder="Dirección fiscal" />
           </div>
         </div>
         <div className={styles.formActions}>

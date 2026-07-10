@@ -4,7 +4,7 @@ import { useToast } from '@contexts/ToastContext';
 import { useAuth } from '@contexts/AuthContext';
 import { getSuppliers, createSupplier, updateSupplier, deleteSupplier } from '../api/suppliers.api';
 import { SuppliersList } from '../components/SuppliersList';
-import { SupplierForm } from '../components/SupplierForm';
+import { SupplierForm, type SupplierFormData } from '../components/SupplierForm';
 import { ImportModal } from '@shared/ui/ImportModal';
 import { exportToExcel, type ColumnMapping } from '@shared/lib/excelHelper';
 import type { Supplier } from '@types';
@@ -24,7 +24,7 @@ export function SuppliersTab() {
   const [suppliers, setSuppliers] = useState<Supplier[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
-  const [form, setForm] = useState({ name: '', contact: '', phone: '', email: '', address: '' });
+  const [form, setForm] = useState<SupplierFormData>({ name: '', contact: '', phone: '', email: '', address: '', taxId: '', fiscalAddress: '' });
   const [loading, setLoading] = useState(false);
   const [showImport, setShowImport] = useState(false);
 
@@ -61,7 +61,7 @@ export function SuppliersTab() {
     return { successCount, errorCount, details };
   };
 
-  const handleSubmit = async (data: { name: string; contact: string; phone: string; email: string; address: string }) => {
+  const handleSubmit = async (data: SupplierFormData) => {
     setLoading(true);
     try {
       const emailPayload = data.email.trim() && !data.email.includes('@') ? `${data.email.trim()}@gmail.com` : data.email.trim();
@@ -72,16 +72,18 @@ export function SuppliersTab() {
       if (phonePayload) payload.phone = phonePayload;
       if (emailPayload) payload.email = emailPayload;
       if (data.address) payload.address = data.address;
+      if (data.taxId) payload.taxId = data.taxId;
+      if (data.fiscalAddress) payload.fiscalAddress = data.fiscalAddress;
       if (editingId) { await updateSupplier(editingId, payload); } else { await createSupplier(payload); }
       setShowForm(false);
       setEditingId(null);
-      setForm({ name: '', contact: '', phone: '', email: '', address: '' });
+      setForm({ name: '', contact: '', phone: '', email: '', address: '', taxId: '', fiscalAddress: '' });
       await loadSuppliers();
     } catch (err: any) { showToast(err.message, 'error'); } finally { setLoading(false); }
   };
 
   const startEdit = (supplier: Supplier) => {
-    setForm({ name: supplier.name, contact: supplier.contact || '', phone: supplier.phone || '', email: supplier.email || '', address: supplier.address || '' });
+    setForm({ name: supplier.name, contact: supplier.contact || '', phone: supplier.phone || '', email: supplier.email || '', address: supplier.address || '', taxId: supplier.taxId || '', fiscalAddress: supplier.fiscalAddress || '' });
     setEditingId(supplier.id);
     setShowForm(true);
   };
@@ -116,7 +118,7 @@ export function SuppliersTab() {
           <div style={{ display: 'flex', gap: 8 }}>
             <button className={styles.exportBtn} onClick={handleExport}><Download size={16} /> Exportar</button>
             <button className={styles.importBtn} onClick={() => setShowImport(true)}><Upload size={16} /> Importar</button>
-            <button className={styles.addBtn} onClick={() => { setShowForm(true); setEditingId(null); setForm({ name: '', contact: '', phone: '', email: '', address: '' }); }}>
+            <button className={styles.addBtn} onClick={() => { setShowForm(true); setEditingId(null); setForm({ name: '', contact: '', phone: '', email: '', address: '', taxId: '', fiscalAddress: '' }); }}>
               <Plus size={18} /> Nuevo Proveedor
             </button>
           </div>

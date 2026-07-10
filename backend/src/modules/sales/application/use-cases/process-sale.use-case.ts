@@ -12,6 +12,8 @@ import {
   CashRegisterRepository,
   CASH_REGISTER_REPOSITORY,
 } from '@modules/cash-register';
+import { InvoiceSequenceService } from '@modules/fiscal/application/invoice-sequence.service';
+import { PrismaService } from '@shared/infrastructure/prisma/prisma.service';
 import { Sale, PaymentMethod, SaleItem } from '../../domain';
 import {
   ProductNotFoundException,
@@ -49,6 +51,8 @@ export class ProcessSaleUseCase {
     private readonly receivableRepo: AccountsReceivableRepository,
     @Inject(CASH_REGISTER_REPOSITORY)
     private readonly cashRepo: CashRegisterRepository,
+    private readonly invoiceSeqService: InvoiceSequenceService,
+    private readonly prisma: PrismaService,
   ) {}
 
   async execute(input: ProcessSaleInput): Promise<Sale> {
@@ -109,6 +113,21 @@ export class ProcessSaleUseCase {
     );
 
     const createdSale = await this.saleRepo.create(sale, input.offlineId);
+
+    // Generate fiscal invoice number
+    try {
+      const { invoiceNumber } = await this.invoiceSeqService.getNextInvoiceNumber(
+        input.tenantId,
+        'FACT',
+      );
+      await this.prisma.sale.update({
+        where: { id: createdSale.id },
+        data: { invoiceNumber, invoiceSeries: 'FACT', documentType: 'factura' },
+      });
+      createdSale.invoiceNumber = invoiceNumber;
+    } catch {
+      // Non-critical: if invoice sequence fails, sale still works
+    }
 
     // Post-sale financial integration (within same RLS transaction)
     if (input.paymentMethod === 'credit') {

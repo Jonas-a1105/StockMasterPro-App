@@ -3,6 +3,8 @@ import type { SaleRepository } from '@modules/sales/application/ports/sale.repos
 import type { ProductRepository } from '@modules/inventory';
 import type { AccountsReceivableRepository } from '@modules/accounts-receivable';
 import type { CashRegisterRepository } from '@modules/cash-register';
+import { InvoiceSequenceService } from '@modules/fiscal/application/invoice-sequence.service';
+import type { PrismaService } from '@shared/infrastructure/prisma/prisma.service';
 
 describe('Tenant Isolation — IDOR Prevention', () => {
   let useCase: ProcessSaleUseCase;
@@ -10,6 +12,8 @@ describe('Tenant Isolation — IDOR Prevention', () => {
   let productRepo: jest.Mocked<ProductRepository>;
   let receivableRepo: jest.Mocked<AccountsReceivableRepository>;
   let cashRepo: jest.Mocked<CashRegisterRepository>;
+  let invoiceSeqService: jest.Mocked<InvoiceSequenceService>;
+  let prisma: jest.Mocked<PrismaService>;
 
   const tenantAProduct = {
     id: 'prod-a',
@@ -99,11 +103,23 @@ describe('Tenant Isolation — IDOR Prevention', () => {
       getTransactions: jest.fn(),
     } as unknown as jest.Mocked<CashRegisterRepository>;
 
+    invoiceSeqService = {
+      getNextInvoiceNumber: jest.fn().mockResolvedValue({ invoiceNumber: 'FACT-000001', sequenceNumber: 1, series: 'FACT' }),
+      getOrCreateSequence: jest.fn(),
+      resetSequence: jest.fn(),
+    } as unknown as jest.Mocked<InvoiceSequenceService>;
+
+    prisma = {
+      sale: { update: jest.fn() },
+    } as unknown as jest.Mocked<PrismaService>;
+
     useCase = new ProcessSaleUseCase(
       saleRepo,
       productRepo,
       receivableRepo,
       cashRepo,
+      invoiceSeqService,
+      prisma,
     );
   });
 

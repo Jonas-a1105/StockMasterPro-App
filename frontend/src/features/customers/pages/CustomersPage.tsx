@@ -40,7 +40,7 @@ export function CustomersPage() {
   const [payingCustomer, setPayingCustomer] = useState<Customer | null>(null);
   const [payAmount, setPayAmount] = useState(0);
   const [editingCustomer, setEditingCustomer] = useState<Customer | null>(null);
-  const [form, setForm] = useState({ name: '', email: '', phone: '', address: '', creditLimit: 0 });
+  const [form, setForm] = useState({ name: '', email: '', phone: '', address: '', taxId: '', documentType: 'V', fiscalAddress: '', creditLimit: 0 });
   const [error, setError] = useState('');
   const [saving, setSaving] = useState(false);
   const [showImport, setShowImport] = useState(false);
@@ -107,14 +107,14 @@ export function CustomersPage() {
 
   const openCreate = () => {
     setEditingCustomer(null);
-    setForm({ name: '', email: '', phone: '', address: '', creditLimit: 0 });
+    setForm({ name: '', email: '', phone: '', address: '', taxId: '', documentType: 'V', fiscalAddress: '', creditLimit: 0 });
     setError('');
     setShowModal(true);
   };
 
   const openEdit = (c: Customer) => {
     setEditingCustomer(c);
-    setForm({ name: c.name, email: c.email || '', phone: c.phone || '', address: c.address || '', creditLimit: c.creditLimit });
+    setForm({ name: c.name, email: c.email || '', phone: c.phone || '', address: c.address || '', taxId: c.taxId || '', documentType: c.documentType || 'V', fiscalAddress: c.fiscalAddress || '', creditLimit: c.creditLimit });
     setError('');
     setShowModal(true);
   };
@@ -358,6 +358,24 @@ export function CustomersPage() {
               <div className={styles.field}>
                 <label>Dirección</label>
                 <input value={form.address} onChange={e => setForm(p => ({ ...p, address: e.target.value }))} placeholder="Dirección del cliente" />
+              </div>
+              <div className={styles.field}>
+                <label>RIF / CI / J</label>
+                <input value={form.taxId} onChange={e => setForm(p => ({ ...p, taxId: e.target.value }))} placeholder="J-12345678-9 / V-12345678" />
+              </div>
+              <div className={styles.field}>
+                <label>Tipo Doc.</label>
+                <select value={form.documentType} onChange={e => setForm(p => ({ ...p, documentType: e.target.value }))}>
+                  <option value="V">V - Venezolano</option>
+                  <option value="E">E - Extranjero</option>
+                  <option value="J">J - Jurídico</option>
+                  <option value="G">G - Gobierno</option>
+                  <option value="P">P - Pasaporte</option>
+                </select>
+              </div>
+              <div className={styles.fieldFull}>
+                <label>Dirección Fiscal</label>
+                <input value={form.fiscalAddress} onChange={e => setForm(p => ({ ...p, fiscalAddress: e.target.value }))} placeholder="Dirección fiscal del cliente" />
               </div>
               <div className={styles.field}>
                 <label>Límite de crédito ($)</label>
