@@ -1,6 +1,7 @@
 import { SaleItem } from './sale-item.entity';
+import { SalePayment } from './sale-payment.entity';
 
-export type PaymentMethod = 'cash' | 'card' | 'credit' | 'transfer';
+export type PaymentMethod = 'cash' | 'card' | 'credit' | 'transfer' | 'mobile';
 export type SaleStatus = 'completed' | 'cancelled';
 
 export class Sale {
@@ -20,6 +21,7 @@ export class Sale {
     public invoiceNumber?: string | null,
     public invoiceSeries?: string | null,
     public documentType?: string | null,
+    public readonly payments?: SalePayment[],
   ) {}
 
   static calculateTotal(

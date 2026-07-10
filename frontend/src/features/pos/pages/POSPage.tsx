@@ -16,6 +16,7 @@ import { ProductGrid } from '../components/ProductGrid';
 import { Cart } from '../components/Cart';
 import { PaymentPanel } from '../components/PaymentPanel';
 import { CheckoutModal } from '../components/CheckoutModal';
+import { MixedPaymentModal } from '../components/MixedPaymentModal';
 import { CashRegisterModal } from '../components/CashRegisterModal';
 import { ExpenseModal } from '../components/ExpenseModal';
 import { printTicket } from '@shared/lib/print/ticket';
@@ -45,6 +46,10 @@ export function POSPage() {
   const [selectedCustomerId, setSelectedCustomerId] = useState('');
   const [cartOpen, setCartOpen] = useState(false);
   const [carts, setCarts] = useState<PausedCart[]>([]);
+  const [showMixedPayment, setShowMixedPayment] = useState(false);
+  const [mixedPaymentPending, setMixedPaymentPending] = useState<{
+    items: any[]; subtotal: number; tax: number; total: number; selectedCustomerId: string; isOnline: boolean;
+  } | null>(null);
 
   useEffect(() => {
     const handleOnline = () => setIsOnline(true);
@@ -104,6 +109,18 @@ export function POSPage() {
       cash.setShowCashModal(true);
       return;
     }
+    if (paymentMethod === 'mixed') {
+      setMixedPaymentPending({
+        items: cart.items,
+        subtotal: cart.subtotal,
+        tax: cart.tax,
+        total: cart.total,
+        selectedCustomerId,
+        isOnline,
+      });
+      setShowMixedPayment(true);
+      return;
+    }
     await checkout(cart.items, paymentMethod, cart.subtotal, cart.tax, cart.total, selectedCustomerId, customers, isOnline);
     if (paymentMethod === 'cash') {
       cash.setCashSalesTotal(cash.cashSalesTotal + cart.total);
@@ -113,6 +130,41 @@ export function POSPage() {
     }
     cart.clear();
   }, [cart, paymentMethod, selectedCustomerId, customers, isOnline, checkout, cash, showToast]);
+
+  const handleMixedPaymentSubmit = useCallback(async (
+    payments: { paymentMethod: PaymentMethod; amount: number; exchangeRate?: number; reference?: string }[]
+  ) => {
+    const pending = mixedPaymentPending;
+    if (!pending) return;
+
+    const hasCash = payments.some(p => p.paymentMethod === 'cash');
+    if (hasCash && !cash.isTodayOpen) {
+      showToast('Debe abrir caja antes de cobrar en efectivo', 'error');
+      cash.setShowCashModal(true);
+      return;
+    }
+
+    // Validate total matches
+    const paymentsTotal = payments.reduce((sum, p) => sum + p.amount, 0);
+    if (Math.abs(paymentsTotal - pending.total) > 0.01) {
+      showToast('La suma de los pagos no coincide con el total', 'error');
+      return;
+    }
+
+    await checkout(pending.items, 'mixed', pending.subtotal, pending.tax, pending.total, pending.selectedCustomerId, customers, pending.isOnline, payments);
+    
+    if (payments.some(p => p.paymentMethod === 'cash')) {
+      const cashAmount = payments.filter(p => p.paymentMethod === 'cash').reduce((sum, p) => sum + p.amount, 0);
+      cash.setCashSalesTotal(cash.cashSalesTotal + cashAmount);
+    }
+    if (pending.isOnline && payments.some(p => p.paymentMethod === 'credit')) {
+      getCustomers().then(setCustomers).catch(() => {});
+    }
+
+    setShowMixedPayment(false);
+    setMixedPaymentPending(null);
+    cart.clear();
+  }, [mixedPaymentPending, checkout, customers, cash, showToast, isOnline]);
 
   const searchInputRef = useBarcodeScanner(cart.add, products, search, setSearch, filteredProducts);
 
@@ -195,6 +247,15 @@ export function POSPage() {
       <ExpenseModal
         show={cash.showExpenseModal}
         onClose={() => cash.setShowExpenseModal(false)}
+      />
+
+      <MixedPaymentModal
+        open={showMixedPayment}
+        onClose={() => { setShowMixedPayment(false); setMixedPaymentPending(null); }}
+        onSubmit={handleMixedPaymentSubmit}
+        total={mixedPaymentPending?.total || 0}
+        loading={isProcessing}
+        paymentMethod="mixed"
       />
 
       {showSuccess && lastSale && <CheckoutModal lastSale={lastSale} onNewSale={() => { reset(); setSelectedCustomerId(''); setPaymentMethod('cash'); loadProducts(); }} onPrintTicket={() => printTicket({

@@ -22,6 +22,13 @@ import {
 } from '../../domain/sales.errors';
 import * as crypto from 'crypto';
 
+export interface SalePaymentInput {
+  paymentMethod: PaymentMethod;
+  amount: number;
+  exchangeRate?: number;
+  reference?: string;
+}
+
 interface ProcessSaleItem {
   productId: string;
   quantity: number;
@@ -35,6 +42,7 @@ interface ProcessSaleInput {
   customerId?: string;
   items: ProcessSaleItem[];
   paymentMethod: PaymentMethod;
+  payments?: SalePaymentInput[];
   discount?: number;
   taxRate?: number;
   offlineId?: string;
@@ -97,6 +105,18 @@ export class ProcessSaleUseCase {
       input.taxRate ?? 0,
     );
 
+    // Validate payments if provided
+    const payments = input.payments && input.payments.length > 0
+      ? input.payments
+      : [{ paymentMethod: input.paymentMethod, amount: total }];
+
+    const paymentsTotal = payments.reduce((sum, p) => sum + p.amount, 0);
+    if (Math.abs(paymentsTotal - total) > 0.01) {
+      throw new InvalidSaleOperationException(
+        `La suma de los pagos (${paymentsTotal.toFixed(2)}) no coincide con el total (${total.toFixed(2)})`,
+      );
+    }
+
     const sale = new Sale(
       crypto.randomUUID(),
       input.tenantId,
@@ -112,7 +132,7 @@ export class ProcessSaleUseCase {
       new Date(),
     );
 
-    const createdSale = await this.saleRepo.create(sale, input.offlineId);
+    const createdSale = await this.saleRepo.create(sale, input.offlineId, payments);
 
     // Generate fiscal invoice number
     try {
@@ -129,13 +149,18 @@ export class ProcessSaleUseCase {
       // Non-critical: if invoice sequence fails, sale still works
     }
 
-    // Post-sale financial integration (within same RLS transaction)
-    if (input.paymentMethod === 'credit') {
+    // Post-sale financial integration
+    const hasCreditPayment = payments.some(p => p.paymentMethod === 'credit');
+    if (hasCreditPayment) {
       if (!input.customerId) {
         throw new InvalidSaleOperationException(
-          'Debe seleccionar un cliente para ventas a crédito.',
+          'Debe seleccionar un cliente para pagos a crédito.',
         );
       }
+
+      const creditAmount = payments
+        .filter(p => p.paymentMethod === 'credit')
+        .reduce((sum, p) => sum + p.amount, 0);
 
       const dueDate = new Date();
       dueDate.setDate(dueDate.getDate() + 30);
@@ -144,27 +169,28 @@ export class ProcessSaleUseCase {
         tenantId: input.tenantId,
         customerId: input.customerId,
         saleId: createdSale.id,
-        totalAmount: total,
+        totalAmount: creditAmount,
         dueDate: dueDate.toISOString().split('T')[0],
-        notes: `Venta #${createdSale.id.slice(0, 8)}`,
+        notes: `Venta #${createdSale.id.slice(0, 8)} (pago parcial crédito)`,
       });
-    } else if (
-      input.paymentMethod === 'cash' ||
-      input.paymentMethod === 'card' ||
-      input.paymentMethod === 'transfer'
-    ) {
-      const openSession = await this.cashRepo.findOpenSession(
-        input.userId,
-        input.tenantId,
-      );
-      if (openSession) {
-        await this.cashRepo.addTransaction({
-          tenantId: input.tenantId,
-          sessionId: openSession.id,
-          amount: total,
-          type: 'sale',
-          description: `Venta #${createdSale.id.slice(0, 8)}`,
-        });
+    }
+
+    // Handle cash register transactions for non-credit payments
+    for (const payment of payments) {
+      if (['cash', 'card', 'transfer', 'mobile'].includes(payment.paymentMethod)) {
+        const openSession = await this.cashRepo.findOpenSession(
+          input.userId,
+          input.tenantId,
+        );
+        if (openSession) {
+          await this.cashRepo.addTransaction({
+            tenantId: input.tenantId,
+            sessionId: openSession.id,
+            amount: payment.amount,
+            type: 'sale',
+            description: `Venta #${createdSale.id.slice(0, 8)} (${payment.paymentMethod})`,
+          });
+        }
       }
     }
 

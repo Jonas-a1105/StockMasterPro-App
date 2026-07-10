@@ -6,12 +6,20 @@ import { db } from '@shared/db/dexie';
 import { syncOfflineSales } from '@shared/lib/sync/sync';
 import type { CartItem } from '@types';
 
+export interface SalePayment {
+  paymentMethod: 'cash' | 'card' | 'transfer' | 'mobile' | 'credit';
+  amount: number;
+  exchangeRate?: number;
+  reference?: string;
+}
+
 export interface LastSale {
   items: CartItem[];
   subtotal: number;
   tax: number;
   total: number;
   paymentMethod: string;
+  payments?: SalePayment[];
   date: Date;
   customerName?: string;
 }
@@ -32,13 +40,19 @@ export function useCheckout() {
     selectedCustomerId: string,
     customers: { id: string; name: string }[],
     isOnline: boolean,
+    payments?: SalePayment[],
   ) => {
     if (items.length === 0) return;
     setIsProcessing(true);
 
+    const salePayments = payments && payments.length > 0
+      ? payments
+      : [{ paymentMethod: paymentMethod as any, amount: total }];
+
     const saleData: any = {
       items: items.map(item => ({ productId: item.product.id, quantity: item.quantity })),
       paymentMethod,
+      payments: salePayments,
       taxRate: 16,
     };
     if (paymentMethod === 'credit' && selectedCustomerId) {
@@ -60,6 +74,7 @@ export function useCheckout() {
           items: JSON.stringify(items.map(item => ({ productId: item.product.id, quantity: item.quantity }))),
           total,
           paymentMethod,
+          payments: JSON.stringify(salePayments),
           createdAt: new Date().toISOString(),
           synced: false,
           idempotencyKey,
@@ -67,7 +82,7 @@ export function useCheckout() {
         });
       }
 
-      setLastSale({ items: [...items], subtotal, tax, total, paymentMethod, date: new Date(), customerName });
+      setLastSale({ items: [...items], subtotal, tax, total, paymentMethod, payments: salePayments, date: new Date(), customerName });
       setShowSuccess(true);
 
       if (isOnline) {

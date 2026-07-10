@@ -4,16 +4,19 @@ import {
   SaleRepository,
   SaleFilters,
 } from '../../application/ports/sale.repository.interface';
-import { Sale, SaleItem } from '../../domain';
+import { Sale, SaleItem, SalePayment } from '../../domain';
 import {
   ProductNotFoundException,
   InsufficientStockException,
   CreditLimitExceededException,
   InvalidSaleOperationException,
 } from '../../domain/sales.errors';
-import { Sale as PrismaSale, SaleItem as PrismaSaleItem } from '@prisma/client';
+import { Sale as PrismaSale, SaleItem as PrismaSaleItem, SalePayment as PrismaSalePayment } from '@prisma/client';
 
-type PrismaSaleWithItems = PrismaSale & { items?: PrismaSaleItem[] };
+type PrismaSaleWithItems = PrismaSale & {
+  items?: PrismaSaleItem[];
+  payments?: PrismaSalePayment[];
+};
 
 @Injectable()
 export class PostgresSaleRepo implements SaleRepository {
@@ -116,9 +119,10 @@ export class PostgresSaleRepo implements SaleRepository {
     return this.prisma.sale.count({ where });
   }
 
-  async create(sale: Sale, offlineId?: string): Promise<Sale> {
+  async create(sale: Sale, offlineId?: string, payments?: { paymentMethod: string; amount: number; exchangeRate?: number; reference?: string }[]): Promise<Sale> {
+    const paymentList = payments ?? [{ paymentMethod: sale.paymentMethod, amount: sale.total }];
     const created = await this.prisma.$transaction(async (tx) => {
-      if (sale.paymentMethod === 'credit') {
+      if (sale.paymentMethod === 'credit' || paymentList.some(p => p.paymentMethod === 'credit')) {
         if (!sale.customerId) {
           throw new InvalidSaleOperationException(
             'Debe seleccionar un cliente para ventas a crédito.',
@@ -133,9 +137,13 @@ export class PostgresSaleRepo implements SaleRepository {
           throw new InvalidSaleOperationException('Cliente no encontrado.');
         }
 
+        const creditAmount = paymentList
+          .filter(p => p.paymentMethod === 'credit')
+          .reduce((sum, p) => sum + p.amount, 0);
+
         const currentBalance = Number(customer.balance);
         const creditLimit = Number(customer.creditLimit ?? 0);
-        const newBalance = currentBalance + sale.total;
+        const newBalance = currentBalance + creditAmount;
 
         if (creditLimit > 0 && newBalance > creditLimit) {
           throw new CreditLimitExceededException(creditLimit, newBalance);
@@ -175,8 +183,17 @@ export class PostgresSaleRepo implements SaleRepository {
               subtotal: i.subtotal,
             })),
           },
+          payments: {
+            create: paymentList.map((p) => ({
+              tenantId: sale.tenantId,
+              paymentMethod: p.paymentMethod,
+              amount: p.amount,
+              exchangeRate: p.exchangeRate ?? null,
+              reference: p.reference ?? null,
+            })),
+          },
         },
-        include: { items: true },
+        include: { items: true, payments: true },
       });
 
       // === AUTHORITATIVE STOCK CHECK (pessimistic lock) ===
@@ -305,6 +322,19 @@ export class PostgresSaleRepo implements SaleRepository {
       s.invoiceNumber,
       s.invoiceSeries,
       s.documentType,
+      s.payments?.map(
+        (p) =>
+          new SalePayment(
+            p.id,
+            s.tenantId,
+            s.id,
+            p.paymentMethod as any,
+            Number(p.amount),
+            p.exchangeRate ? Number(p.exchangeRate) : null,
+            p.reference,
+            p.createdAt,
+          ),
+      ) ?? [],
     );
   }
 }

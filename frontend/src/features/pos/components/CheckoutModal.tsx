@@ -14,9 +14,11 @@ export function CheckoutModal({
   onPrintTicket: () => void;
 }) {
   const paymentLabel = (method: string) => {
-    const labels: Record<string, string> = { cash: 'Efectivo', card: 'Tarjeta', transfer: 'Transferencia', credit: 'Crédito' };
+    const labels: Record<string, string> = { cash: 'Efectivo', card: 'Tarjeta', transfer: 'Transferencia', mobile: 'Pago Móvil', mixed: 'Pago Mixto', credit: 'Crédito' };
     return labels[method] || method;
   };
+
+  const showMixed = lastSale.paymentMethod === 'mixed' && lastSale.payments && lastSale.payments.length > 1;
 
   return createPortal(
     <div className={styles.modalOverlay} onClick={() => {}}>
@@ -30,7 +32,7 @@ export function CheckoutModal({
           </div>
           <div className={styles.successText}>¡Venta Completada!</div>
           <div className={styles.successSubtext}>
-            Pago: {paymentLabel(lastSale.paymentMethod)}
+            Pago: {showMixed ? 'Pago Mixto' : paymentLabel(lastSale.paymentMethod)}
             {lastSale.customerName && ` — ${lastSale.customerName}`}
           </div>
 
@@ -42,7 +44,18 @@ export function CheckoutModal({
             <div className={styles.ticketDivider} />
             <div className={styles.ticketDetails}>
               <div>Fecha: {lastSale.date.toLocaleDateString()} {lastSale.date.toLocaleTimeString()}</div>
-              <div>Método: {paymentLabel(lastSale.paymentMethod)}</div>
+              {showMixed ? (
+                <div style={{ fontSize: 11, color: '#6b7280', marginTop: 4 }}>
+                  {lastSale.payments?.map((p, i) => (
+                    <div key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '2px 0', borderBottom: '1px dashed #e5e7eb' }}>
+                      <span>{paymentLabel(p.paymentMethod)}</span>
+                      <span>${p.amount.toFixed(2)}</span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div>Método: {paymentLabel(lastSale.paymentMethod)}</div>
+              )}
               {lastSale.customerName && <div>Cliente: {lastSale.customerName}</div>}
             </div>
             <div className={styles.ticketDivider} />
@@ -73,8 +86,7 @@ export function CheckoutModal({
             </button>
           </div>
         </div>
-      </div>
-    </div>,
+      </div>,
     document.body
   );
 }

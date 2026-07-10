@@ -1,4 +1,4 @@
-import { DollarSign, CreditCard, Ban, Users, AlertTriangle } from 'lucide-react';
+import { DollarSign, CreditCard, Ban, Users, AlertTriangle, Smartphone, RotateCcw } from 'lucide-react';
 import { ButtonLoader } from '@shared/ui/ButtonLoader';
 import { useExchangeRate } from '@contexts/ExchangeRateContext';
 import { formatUsd } from '@shared/lib/format/currency';
@@ -55,9 +55,9 @@ export function PaymentPanel({
       </div>
 
       <div className={styles.paymentMethods}>
-        {(['cash', 'card', 'transfer', 'credit'] as PaymentMethod[]).map(method => {
-          const icons = { cash: DollarSign, card: CreditCard, transfer: Ban, credit: Users };
-          const labels = { cash: 'Efectivo', card: 'Tarjeta', transfer: 'Transferencia', credit: 'Crédito' };
+        {(['cash', 'card', 'transfer', 'mobile', 'mixed', 'credit'] as PaymentMethod[]).map(method => {
+          const icons = { cash: DollarSign, card: CreditCard, transfer: Ban, mobile: Smartphone, mixed: RotateCcw, credit: Users };
+          const labels = { cash: 'Efectivo', card: 'Tarjeta', transfer: 'Transferencia', mobile: 'Pago Móvil', mixed: 'Pago Mixto', credit: 'Crédito' };
           const Icon = icons[method];
           return (
             <button

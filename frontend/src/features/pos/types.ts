@@ -16,4 +16,4 @@ export interface LastSale {
   customerName?: string;
 }
 
-export type PaymentMethod = 'cash' | 'card' | 'transfer' | 'credit';
+export type PaymentMethod = 'cash' | 'card' | 'transfer' | 'mobile' | 'credit' | 'mixed';

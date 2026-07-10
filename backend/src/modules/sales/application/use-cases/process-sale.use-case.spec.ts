@@ -240,7 +240,7 @@ describe('ProcessSaleUseCase', () => {
     productRepo.findByIds.mockResolvedValue([mockProduct]);
     const createMock = jest
       .fn()
-      .mockImplementation(async (sale, offlineId) => sale);
+      .mockImplementation(async (sale, offlineId, payments) => sale);
     saleRepo.create = createMock;
     cashRepo.findOpenSession.mockResolvedValue({ id: 'session-1' } as any);
 
@@ -249,6 +249,7 @@ describe('ProcessSaleUseCase', () => {
     expect(createMock).toHaveBeenCalledWith(
       expect.objectContaining({ id: expect.any(String) }),
       'offline-123',
+      expect.any(Array),
     );
   });
 
