@@ -197,8 +197,21 @@
   color: var(--text-dark);
 }
 
-.footNumberMuted {
-  text-align: right;
-  font-family: 'Courier New', monospace;
+.exportBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background: var(--bg-card);
   color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.exportBtn:hover {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: white;
 }

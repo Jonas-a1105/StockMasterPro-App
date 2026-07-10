@@ -204,8 +204,23 @@ class ApiClient {
     return this.request<any>('/sales', { method: 'POST', body: JSON.stringify(data) });
   }
 
-  getSales(limit = 100) {
-    return this.request<any[]>(`/sales?limit=${limit}`);
+  getSales(params?: {
+    page?: number; limit?: number; search?: string;
+    startDate?: string; endDate?: string; customerId?: string;
+    paymentMethod?: string; status?: string;
+  }) {
+    const q = new URLSearchParams();
+    if (params) {
+      if (params.page) q.set('page', String(params.page));
+      if (params.limit) q.set('limit', String(params.limit));
+      if (params.search) q.set('search', params.search);
+      if (params.startDate) q.set('startDate', params.startDate);
+      if (params.endDate) q.set('endDate', params.endDate);
+      if (params.customerId) q.set('customerId', params.customerId);
+      if (params.paymentMethod) q.set('paymentMethod', params.paymentMethod);
+    }
+    const query = q.toString();
+    return this.request<any[]>(`/sales${query ? `?${query}` : ''}`);
   }
 
   getDailySummary() {
@@ -214,6 +229,10 @@ class ApiClient {
 
   getSale(id: string) {
     return this.request<any>(`/sales/${id}`);
+  }
+
+  voidSale(id: string) {
+    return this.patch(`/sales/${id}/void`, {});
   }
 
   // Suppliers
@@ -312,6 +331,26 @@ class ApiClient {
     return this.request<any[]>(`/accounts-payable/${id}/payments`);
   }
 
+  // Accounts Receivable
+  async getAccountsReceivable(): Promise<any> {
+    return this.request<any[]>('/accounts-receivable');
+  }
+  async getAccountsReceivableById(id: string): Promise<any> {
+    return this.request<any>(`/accounts-receivable/${id}`);
+  }
+  async getReceivablesByCustomer(customerId: string): Promise<any> {
+    return this.request<any[]>(`/accounts-receivable/customer/${customerId}`);
+  }
+  async createAccountsReceivable(data: any): Promise<any> {
+    return this.request<any>('/accounts-receivable', { method: 'POST', body: JSON.stringify(data) });
+  }
+  async payAccountsReceivable(id: string, data: any): Promise<any> {
+    return this.request<any>(`/accounts-receivable/${id}/pay`, { method: 'POST', body: JSON.stringify(data) });
+  }
+  async getReceivablePayments(id: string): Promise<any> {
+    return this.request<any[]>(`/accounts-receivable/${id}/payments`);
+  }
+
   // Expenses
   async getExpenses(params?: { category?: string; startDate?: string; endDate?: string }): Promise<any> {
     const query = params ? '?' + new URLSearchParams(params as any).toString() : '';
@@ -333,6 +372,29 @@ class ApiClient {
   }
   async createCreditNote(data: any): Promise<any> {
     return this.request('/credit-notes', { method: 'POST', body: JSON.stringify(data) });
+  }
+
+  // Cash Register
+  async openCashSession(data: { openingBalance: number; notes?: string }): Promise<any> {
+    return this.post('/cash-register/open', data);
+  }
+  async closeCashSession(id: string, data: { actualBalance: number; notes?: string }): Promise<any> {
+    return this.post(`/cash-register/${id}/close`, data);
+  }
+  async addCashTransaction(id: string, data: { amount: number; type: 'income' | 'expense' | 'sale' | 'refund'; description: string }): Promise<any> {
+    return this.post(`/cash-register/${id}/transaction`, data);
+  }
+  async getCurrentCashSession(): Promise<any> {
+    return this.get('/cash-register/current');
+  }
+  async getCashSessions(): Promise<any> {
+    return this.get('/cash-register');
+  }
+  async getCashSession(id: string): Promise<any> {
+    return this.get(`/cash-register/${id}`);
+  }
+  async getCashSessionTransactions(id: string): Promise<any> {
+    return this.get(`/cash-register/${id}/transactions`);
   }
 
   // Warehouses
@@ -403,6 +465,45 @@ class ApiClient {
   }
   async changeTenantPlan(id: string, planType: string): Promise<any> {
     return this.post(`/admin/tenants/${id}/plan`, { planType });
+  }
+
+  // Tenant Settings
+  async getTenantSettings(): Promise<any> {
+    return this.request('/tenant-settings');
+  }
+  async updateTenantSettings(data: { taxRate?: number; taxName?: string; currencySymbol?: string; currencyPosition?: string; decimalPlaces?: number; displayCurrency?: string; manualExchangeRate?: number }): Promise<any> {
+    return this.request('/tenant-settings', { method: 'PATCH', body: JSON.stringify(data) });
+  }
+
+  // Warehouse Transfers
+  async getWarehouseTransfers(): Promise<any[]> {
+    return this.get('/warehouse-transfers');
+  }
+  async getWarehouseTransfer(id: string): Promise<any> {
+    return this.get(`/warehouse-transfers/${id}`);
+  }
+  async createWarehouseTransfer(data: { fromWarehouseId: string; toWarehouseId: string; notes?: string; items: { productId: string; quantity: number }[] }): Promise<any> {
+    return this.post('/warehouse-transfers', data);
+  }
+  async updateWarehouseTransferStatus(id: string, status: string, notes?: string): Promise<any> {
+    return this.patch(`/warehouse-transfers/${id}/status`, { status, notes });
+  }
+
+  // Product Lots
+  async getProductLots(): Promise<any[]> {
+    return this.get('/product-lots');
+  }
+  async getProductLot(id: string): Promise<any> {
+    return this.get(`/product-lots/${id}`);
+  }
+  async createProductLot(data: { productId: string; lotNumber: string; quantity: number; expiryDate?: string; manufactureDate?: string }): Promise<any> {
+    return this.post('/product-lots', data);
+  }
+  async updateProductLot(id: string, data: { quantity?: number; expiryDate?: string; manufactureDate?: string }): Promise<any> {
+    return this.patch(`/product-lots/${id}`, data);
+  }
+  async deleteProductLot(id: string): Promise<any> {
+    return this.delete(`/product-lots/${id}`);
   }
 
   // Events
@@ -523,6 +624,13 @@ class ApiClient {
   }
   async markThreadAsRead(threadId: string): Promise<any> { return this.post(`/social/threads/${threadId}/read`, {}); }
   async getUnreadMessageCount(): Promise<any> { return this.get('/social/messages/unread-count'); }
+
+  // Upload
+  async uploadImage(file: File): Promise<{ url: string }> {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.request('/upload/image', { method: 'POST', body: formData });
+  }
 }
 
 export const api = new ApiClient();

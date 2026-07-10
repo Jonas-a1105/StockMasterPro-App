@@ -12,6 +12,8 @@ import { FindAllSalesUseCase } from '../application/use-cases/find-all-sales.use
 import { FindSaleByIdUseCase } from '../application/use-cases/find-sale-by-id.use-case';
 import { GetDailySalesSummaryUseCase } from '../application/use-cases/get-daily-sales-summary.use-case';
 
+import { VoidSaleUseCase } from '../application/use-cases/void-sale.use-case';
+
 @Module({
   imports: [
     PrismaModule,
@@ -27,6 +29,7 @@ import { GetDailySalesSummaryUseCase } from '../application/use-cases/get-daily-
     FindAllSalesUseCase,
     FindSaleByIdUseCase,
     GetDailySalesSummaryUseCase,
+    VoidSaleUseCase,
   ],
 })
 export class SalesModule {}

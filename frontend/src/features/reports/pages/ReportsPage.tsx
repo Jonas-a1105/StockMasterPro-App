@@ -5,13 +5,15 @@ import {
   Radar, ComposedChart, ScatterChart, Scatter, Cell, PieChart, Pie,
   AreaChart, Area
 } from 'recharts';
-import { Activity, DollarSign, TrendingUp, AlertTriangle, BarChart3, Package, ShoppingCart } from 'lucide-react';
+import { Activity, DollarSign, TrendingUp, AlertTriangle, BarChart3, Package, ShoppingCart, Download } from 'lucide-react';
 import { api } from '@shared/lib/http/client';
 import { LoadingDots } from '@shared/ui/LoadingDots';
 import { SkeletonReports } from '@shared/ui/Skeleton';
 import { TabNav } from '@shared/ui/TabNav';
 import { useTheme } from '@contexts/ThemeContext';
 import { formatUsd } from '@shared/lib/format/currency';
+import { exportToExcel } from '@shared/lib/excelHelper';
+import { useToast } from '@contexts/ToastContext';
 import styles from './ReportsPage.module.css';
 
 export const COLORS = ['#ea580c', '#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899'];
@@ -264,6 +266,33 @@ export function ReportsPage() {
     ]).finally(() => setLoading(false));
   }, []);
 
+  const handleExportNetProfit = () => {
+    const columns = [
+      { header: 'Mes', key: 'month' },
+      { header: 'Ingresos', key: 'revenue' },
+      { header: 'Costos', key: 'cost' },
+      { header: 'Utilidad Neta', key: 'profit' },
+      { header: 'Margen %', key: 'margin', type: 'number' },
+    ];
+    const data = profitDataWithTotal.map(m => ({
+      ...m,
+      margin: m.revenue > 0 ? Math.round((m.profit / m.revenue) * 10000) / 100 : 0,
+    }));
+    exportToExcel(data, columns, 'reporte_utilidad_neta', 'xlsx');
+  };
+
+  const handleExportLowStock = () => {
+    const columns = [
+      { header: 'Producto', key: 'name' },
+      { header: 'Código', key: 'barcode' },
+      { header: 'Stock Actual', key: 'stock' },
+      { header: 'Stock Mínimo', key: 'minStock' },
+      { header: 'Precio', key: 'price' },
+      { header: 'Categoría', key: 'category' },
+    ];
+    exportToExcel(lowStockProducts, columns, 'reporte_stock_bajo', 'xlsx');
+  };
+
   if (loading) return config.skeletonEnabled ? <SkeletonReports chartCount={6} /> : <LoadingDots text="Cargando reportes..." />;
 
   return (
@@ -359,7 +388,10 @@ export function ReportsPage() {
           </div>
 
           <div className={styles.card}>
-            <div className={styles.cardTitle}><TrendingUp size={14} /> Detalle de utilidad neta mensual</div>
+            <div className={styles.cardTitle}>
+            <TrendingUp size={14} /> Detalle de utilidad neta mensual
+            <button className={styles.exportBtn} onClick={handleExportNetProfit} title="Exportar a Excel"><Download size={14} /></button>
+          </div>
             <div className={styles.cardSub}>Métrica detallada del rendimiento financiero consolidado por mes.</div>
             <div className="lista-container" style={{ marginTop: 16 }}>
               <table className="lista-table">
@@ -405,10 +437,11 @@ export function ReportsPage() {
             </div>
           </div>
           <div className={styles.card}>
-            <div className={styles.cardTitle}>
-              <AlertTriangle size={14} />
-              Productos con stock bajo
-            </div>
+<div className={styles.cardTitle}>
+            <AlertTriangle size={14} />
+            Productos con stock bajo
+            <button className={styles.exportBtn} onClick={handleExportLowStock} title="Exportar a Excel"><Download size={14} /></button>
+          </div>
             <div className={styles.cardBody}>
               {lowStockProducts.length === 0 ? (
                 <p className={styles.muted}>No hay productos con stock bajo.</p>

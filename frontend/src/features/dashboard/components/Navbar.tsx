@@ -1,35 +1,34 @@
 import { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@contexts/AuthContext';
 import { useExchangeRate } from '@contexts/ExchangeRateContext';
 import { Menu, Bell, TriangleAlert, CheckCircle, MessageSquare, BellRing } from 'lucide-react';
 import { ExchangeRateWidget } from './ExchangeRateWidget';
 import { AnalyticsModal } from './AnalyticsModal';
 import { Skeleton } from '@shared/ui/Skeleton';
+import { getNotifications, markAsRead, markAllAsRead } from '@shared/lib/http/notifications.api';
 import styles from './Navbar.module.css';
 
 interface Notification {
-  id: number;
+  id: string;
   type: 'critical' | 'success' | 'info';
   title: string;
   message: string;
   time: string;
   category: string;
   unread: boolean;
+  link?: string;
 }
 
-const mockNotifications: Notification[] = [
-  { id: 1, type: 'critical', title: 'Fallo de replicación en clúster', message: 'La sincronización con la base de datos redundante ha fallado.', time: 'Hace 3 min', category: 'Seguridad', unread: true },
-  { id: 2, type: 'success', title: 'Actualización de Core lista', message: 'El paquete estable v2.4.0 se compiló con éxito y espera despliegue.', time: 'Hace 25 min', category: 'Sistema', unread: true },
-  { id: 3, type: 'info', title: 'Ticket asignado a Jonas', message: 'Se te ha asignado el ticket de soporte técnico #SGEN-4082.', time: 'Hace 2 horas', category: 'Soporte', unread: false },
-];
-
 export function Navbar({ onToggleSidebar }: { onToggleSidebar: () => void }) {
+  const navigate = useNavigate();
   const { user } = useAuth();
   const { rate, loading, config } = useExchangeRate();
   const [showWidget, setShowWidget] = useState(false);
   const [showAnalytics, setShowAnalytics] = useState(false);
   const [showNotifModal, setShowNotifModal] = useState(false);
-  const [notifications, setNotifications] = useState<Notification[]>(mockNotifications);
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [loadingNotifs, setLoadingNotifs] = useState(false);
   const notifModalRef = useRef<HTMLDivElement>(null);
   const bellBtnRef = useRef<HTMLButtonElement>(null);
 
@@ -49,12 +48,28 @@ export function Navbar({ onToggleSidebar }: { onToggleSidebar: () => void }) {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [showNotifModal]);
 
-  const markAsRead = (id: number) => {
-    setNotifications(prev => prev.map(n => n.id === id ? { ...n, unread: false } : n));
+  useEffect(() => {
+    if (showNotifModal) {
+      setLoadingNotifs(true);
+      getNotifications()
+        .then(setNotifications)
+        .catch(() => {})
+        .finally(() => setLoadingNotifs(false));
+    }
+  }, [showNotifModal]);
+
+  const handleMarkAsRead = async (id: string) => {
+    try { await markAsRead(id); setNotifications(prev => prev.map(n => n.id === id ? { ...n, unread: false } : n)); } catch {}
   };
 
-  const markAllAsRead = () => {
-    setNotifications(prev => prev.map(n => ({ ...n, unread: false })));
+  const handleMarkAllAsRead = async () => {
+    try { await markAllAsRead(); setNotifications(prev => prev.map(n => ({ ...n, unread: false }))); } catch {}
+  };
+
+  const handleNotificationClick = (n: Notification) => {
+    setShowNotifModal(false);
+    if (n.unread) handleMarkAsRead(n.id);
+    if (n.link) navigate(n.link);
   };
 
   const notifIconMap: Record<string, any> = {
@@ -104,26 +119,30 @@ export function Navbar({ onToggleSidebar }: { onToggleSidebar: () => void }) {
                   Notificaciones
                 </div>
                 {unreadCount > 0 && (
-                  <button className={styles.notifModalClearAll} onClick={markAllAsRead}>
+                  <button className={styles.notifModalClearAll} onClick={handleMarkAllAsRead}>
                     Marcar todo como leído
                   </button>
                 )}
               </div>
 
               <div className={styles.notifModalFeed}>
-                {notifications.length === 0 ? (
+                {loadingNotifs ? (
+                  <div className={styles.notifModalEmpty}>
+                    <span>Cargando...</span>
+                  </div>
+                ) : notifications.length === 0 ? (
                   <div className={styles.notifModalEmpty}>
                     <Bell size={24} style={{ color: 'var(--text-muted)' }} />
                     <span>No tienes notificaciones</span>
                   </div>
                 ) : (
-                  notifications.map(n => {
-                    const Icon = notifIconMap[n.type];
+                  notifications.slice(0, 10).map(n => {
+                    const Icon = notifIconMap[n.type] || MessageSquare;
                     return (
                       <button
                         key={n.id}
                         className={`${styles.notifModalItem} ${styles[`notifModal${n.type.charAt(0).toUpperCase() + n.type.slice(1)}`]} ${n.unread ? styles.notifModalUnread : ''}`}
-                        onClick={() => n.unread && markAsRead(n.id)}
+                        onClick={() => handleNotificationClick(n)}
                         role="menuitem"
                       >
                         <div className={styles.notifModalIconBox}>
@@ -141,7 +160,7 @@ export function Navbar({ onToggleSidebar }: { onToggleSidebar: () => void }) {
               </div>
 
               <div className={styles.notifModalFooter}>
-                <button className={styles.notifModalViewAll} onClick={() => { /* navigate to settings notifications */ }}>
+                <button className={styles.notifModalViewAll} onClick={() => { setShowNotifModal(false); navigate('/notifications'); }}>
                   Ver todas las alertas
                 </button>
               </div>

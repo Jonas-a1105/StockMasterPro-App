@@ -16,8 +16,9 @@ import { SkeletonTablePage } from '@shared/ui/Skeleton';
 import { StripeCheckoutModal } from '@shared/ui/StripeCheckoutModal';
 import { CreditCard as CardIcon } from 'lucide-react';
 import styles from './SettingsPage.module.css';
+import { SessionsTab } from '../components/SessionsTab';
 
-type Tab = 'tax-currency' | 'personalization' | 'branches' | 'backup' | 'notifications' | 'downloads' | 'bitacora' | 'licenses';
+type Tab = 'tax-currency' | 'personalization' | 'branches' | 'backup' | 'notifications' | 'downloads' | 'bitacora' | 'licenses' | 'sessions';
 
 const TABS: { key: Tab; label: string; icon: any }[] = [
   { key: 'tax-currency', label: 'Impuestos y moneda', icon: DollarSign },
@@ -28,6 +29,7 @@ const TABS: { key: Tab; label: string; icon: any }[] = [
   { key: 'downloads', label: 'Gestor de descargas', icon: HardDrive },
   { key: 'bitacora', label: 'Bitácora', icon: ClipboardList },
   { key: 'licenses', label: 'Licencias', icon: ShieldCheck },
+  { key: 'sessions', label: 'Sesiones', icon: Monitor },
 ];
 
 const LS_KEYS = {
@@ -138,6 +140,7 @@ export function SettingsPage() {
         {activeTab === 'downloads' && <DownloadsTab />}
         {activeTab === 'bitacora' && <BitacoraTab />}
         {activeTab === 'licenses' && <LicensesTab />}
+        {activeTab === 'sessions' && <SessionsTab />}
       </div>
 
       <div className={styles.stickyActionBar}>
@@ -152,22 +155,78 @@ export function SettingsPage() {
 
 function TaxCurrencyTab() {
   const { config, updateConfig } = useExchangeRate();
-  const [taxRate, setTaxRate] = useState(() => readStorage(LS_KEYS.taxRate, DEFAULTS.taxRate));
-  const [taxName, setTaxName] = useState(() => readStorage(LS_KEYS.taxName, DEFAULTS.taxName));
+  const { showToast } = useToast();
+  const [loading, setLoading] = useState(true);
+  const [taxRate, setTaxRate] = useState('');
+  const [taxName, setTaxName] = useState('');
+  const [currencySymbol, setCurrencySymbol] = useState('');
+  const [currencyPosition, setCurrencyPosition] = useState<'before' | 'after'>('before');
+  const [decimalPlaces, setDecimalPlaces] = useState(2);
+  const [displayCurrency, setDisplayCurrency] = useState<'bs' | 'usd' | 'both'>('both');
+  const [saving, setSaving] = useState(false);
 
-  useEffect(() => { localStorage.setItem(LS_KEYS.taxRate, taxRate); }, [taxRate]);
-  useEffect(() => { localStorage.setItem(LS_KEYS.taxName, taxName); }, [taxName]);
+  useEffect(() => {
+    loadSettings();
+  }, []);
+
+  const loadSettings = async () => {
+    setLoading(true);
+    try {
+      const settings = await api.getTenantSettings();
+      setTaxRate(String(settings.taxRate ?? 16));
+      setTaxName(settings.taxName ?? 'IVA');
+      setCurrencySymbol(settings.currencySymbol ?? 'Bs');
+      setCurrencyPosition(settings.currencyPosition ?? 'before');
+      setDecimalPlaces(settings.decimalPlaces ?? 2);
+      setDisplayCurrency(settings.displayCurrency ?? 'both');
+      updateConfig({
+        symbol: settings.currencySymbol ?? 'Bs',
+        position: settings.currencyPosition ?? 'before',
+        decimals: settings.decimalPlaces ?? 2,
+        displayCurrency: settings.displayCurrency ?? 'both',
+      });
+    } catch (err: any) {
+      showToast(err.message || 'Error al cargar configuración', 'error');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const saveSettings = async () => {
+    setSaving(true);
+    try {
+      await api.updateTenantSettings({
+        taxRate: Number(taxRate),
+        taxName,
+        currencySymbol,
+        currencyPosition,
+        decimalPlaces,
+        displayCurrency,
+      });
+      showToast('Configuración guardada', 'success');
+      updateConfig({
+        symbol: currencySymbol,
+        position: currencyPosition,
+        decimals: decimalPlaces,
+        displayCurrency,
+      });
+    } catch (err: any) {
+      showToast(err.message || 'Error al guardar', 'error');
+    } finally {
+      setSaving(false);
+    }
+  };
 
   const resetDefaults = () => {
-    setTaxRate(DEFAULTS.taxRate);
-    setTaxName(DEFAULTS.taxName);
-    updateConfig({
-      symbol: 'Bs',
-      position: 'before',
-      decimals: 2,
-      displayCurrency: 'both'
-    });
+    setTaxRate('16');
+    setTaxName('IVA');
+    setCurrencySymbol('Bs');
+    setCurrencyPosition('before');
+    setDecimalPlaces(2);
+    setDisplayCurrency('both');
   };
+
+  if (loading) return <LoadingDots text="Cargando configuración..." />;
 
   return (
     <div className={styles.bentoGrid}>
@@ -180,26 +239,26 @@ function TaxCurrencyTab() {
         <div className={styles.formGroupLayout}>
           <div className={styles.formGroup}>
             <label className={styles.fieldLabel}>Nombre del impuesto</label>
-            <input 
-              type="text" 
-              className={styles.formControl} 
-              value={taxName} 
-              onChange={e => setTaxName(e.target.value)} 
-              placeholder="IVA" 
+            <input
+              type="text"
+              className={styles.formControl}
+              value={taxName}
+              onChange={e => setTaxName(e.target.value)}
+              placeholder="IVA"
             />
           </div>
           <div className={styles.formGroup}>
             <label className={styles.fieldLabel}>Tasa de impuesto</label>
             <div className={styles.inputWrapper}>
-              <input 
-                type="number" 
-                min="0" 
-                max="100" 
-                step="0.01" 
-                className={styles.formControl} 
-                value={taxRate} 
-                onChange={e => setTaxRate(e.target.value)} 
-                placeholder="16" 
+              <input
+                type="number"
+                min="0"
+                max="100"
+                step="0.01"
+                className={styles.formControl}
+                value={taxRate}
+                onChange={e => setTaxRate(e.target.value)}
+                placeholder="16"
                 style={{ paddingRight: '42px' }}
               />
               <div className={styles.inputAddon}>%</div>
@@ -217,20 +276,20 @@ function TaxCurrencyTab() {
         <div className={styles.formGroupLayout}>
           <div className={styles.formGroup}>
             <label className={styles.fieldLabel}>Símbolo de moneda</label>
-            <input 
-              type="text" 
-              className={styles.formControl} 
-              value={config.symbol} 
-              onChange={e => updateConfig({ symbol: e.target.value })} 
-              placeholder="Bs" 
+            <input
+              type="text"
+              className={styles.formControl}
+              value={currencySymbol}
+              onChange={e => setCurrencySymbol(e.target.value)}
+              placeholder="Bs"
             />
           </div>
           <div className={styles.formGroup}>
             <label className={styles.fieldLabel}>Posición del símbolo</label>
-            <select 
-              className={styles.formControl} 
-              value={config.position} 
-              onChange={e => updateConfig({ position: e.target.value as any })}
+            <select
+              className={styles.formControl}
+              value={currencyPosition}
+              onChange={e => setCurrencyPosition(e.target.value as 'before' | 'after')}
             >
               <option value="before">Antes del monto (Bs 100)</option>
               <option value="after">Después del monto (100 Bs)</option>
@@ -238,10 +297,10 @@ function TaxCurrencyTab() {
           </div>
           <div className={styles.formGroup}>
             <label className={styles.fieldLabel}>Decimales</label>
-            <select 
-              className={styles.formControl} 
-              value={config.decimals} 
-              onChange={e => updateConfig({ decimals: Number(e.target.value) })}
+            <select
+              className={styles.formControl}
+              value={decimalPlaces}
+              onChange={e => setDecimalPlaces(Number(e.target.value))}
             >
               <option value="0">0 (100)</option>
               <option value="2">2 (100.00)</option>
@@ -250,10 +309,10 @@ function TaxCurrencyTab() {
           </div>
           <div className={styles.formGroup}>
             <label className={styles.fieldLabel}>Moneda a mostrar</label>
-            <select 
-              className={styles.formControl} 
-              value={config.displayCurrency} 
-              onChange={e => updateConfig({ displayCurrency: e.target.value as any })}
+            <select
+              className={styles.formControl}
+              value={displayCurrency}
+              onChange={e => setDisplayCurrency(e.target.value as 'bs' | 'usd' | 'both')}
             >
               <option value="both">Ambas monedas ($ y Bs)</option>
               <option value="local">Solo moneda local (Bs)</option>
@@ -273,15 +332,18 @@ function TaxCurrencyTab() {
           <label className={styles.fieldLabel} style={{ marginBottom: '8px' }}>Vista previa (Bolívares)</label>
           <div>
             <div className={styles.previewBox}>
-              {config.position === 'before'
-                ? `${config.symbol} 1,234${config.decimals !== 0 ? ',' + '0'.repeat(config.decimals) : ''}`
-                : `1,234${config.decimals !== 0 ? ',' + '0'.repeat(config.decimals) : ''} ${config.symbol}`}
+              {currencyPosition === 'before'
+                ? `${currencySymbol} 1,234${decimalPlaces !== 0 ? ',' + '0'.repeat(decimalPlaces) : ''}`
+                : `1,234${decimalPlaces !== 0 ? ',' + '0'.repeat(decimalPlaces) : ''} ${currencySymbol}`}
             </div>
           </div>
         </div>
         <div className={styles.cardFooterActions}>
           <button className={styles.btnLink} onClick={resetDefaults}>
             <RefreshCw size={13} /> Restablecer valores
+          </button>
+          <button className={styles.btnFlatPrimary} onClick={saveSettings} disabled={saving}>
+            {saving ? 'Guardando...' : <><Save size={14} /> Guardar cambios</>}
           </button>
         </div>
       </div>

@@ -68,6 +68,8 @@ export interface SaleItemResponse {
 export interface CartItem {
   product: Product;
   quantity: number;
+  discount?: number;
+  taxRate?: number;
 }
 
 export interface Supplier {

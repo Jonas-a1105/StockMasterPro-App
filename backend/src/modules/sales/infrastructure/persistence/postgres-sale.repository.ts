@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@shared/infrastructure/prisma/prisma.service';
-import { SaleRepository } from '../../application/ports/sale.repository.interface';
+import {
+  SaleRepository,
+  SaleFilters,
+} from '../../application/ports/sale.repository.interface';
 import { Sale, SaleItem } from '../../domain';
 import {
   ProductNotFoundException,
@@ -19,20 +22,98 @@ export class PostgresSaleRepo implements SaleRepository {
   async findById(id: string, tenantId: string): Promise<Sale | null> {
     const s = await this.prisma.sale.findFirst({
       where: { id, tenantId },
-      include: { items: true },
+      include: { items: true, customer: true },
     });
     return s ? this.toSale(s) : null;
   }
 
-  async findAll(tenantId: string, limit = 50, offset = 0): Promise<Sale[]> {
+  async findAll(
+    tenantId: string,
+    filters?: SaleFilters,
+    limit = 50,
+    offset = 0,
+  ): Promise<Sale[]> {
+    const where: any = { tenantId };
+
+    if (filters) {
+      if (filters.search) {
+        where.OR = [
+          {
+            customer: {
+              name: { contains: filters.search, mode: 'insensitive' },
+            },
+          },
+          {
+            items: {
+              some: {
+                product: {
+                  name: { contains: filters.search, mode: 'insensitive' },
+                },
+              },
+            },
+          },
+        ];
+      }
+      if (filters.startDate) {
+        where.createdAt = {
+          ...where.createdAt,
+          gte: new Date(filters.startDate),
+        };
+      }
+      if (filters.endDate) {
+        const end = new Date(filters.endDate);
+        end.setHours(23, 59, 59, 999);
+        where.createdAt = { ...where.createdAt, lte: end };
+      }
+      if (filters.customerId) {
+        where.customerId = filters.customerId;
+      }
+      if (filters.paymentMethod) {
+        where.paymentMethod = filters.paymentMethod;
+      }
+      if (filters.status) {
+        where.status = filters.status;
+      }
+    }
+
     const sales = await this.prisma.sale.findMany({
-      where: { tenantId },
-      include: { items: true },
+      where,
+      include: { items: { include: { product: true } }, customer: true },
       orderBy: { createdAt: 'desc' },
       take: limit,
       skip: offset,
     });
     return sales.map((s) => this.toSale(s));
+  }
+
+  async count(tenantId: string, filters?: SaleFilters): Promise<number> {
+    const where: any = { tenantId };
+    if (filters) {
+      if (filters.search) {
+        where.OR = [
+          {
+            customer: {
+              name: { contains: filters.search, mode: 'insensitive' },
+            },
+          },
+        ];
+      }
+      if (filters.startDate) {
+        where.createdAt = {
+          ...where.createdAt,
+          gte: new Date(filters.startDate),
+        };
+      }
+      if (filters.endDate) {
+        const end = new Date(filters.endDate);
+        end.setHours(23, 59, 59, 999);
+        where.createdAt = { ...where.createdAt, lte: end };
+      }
+      if (filters.customerId) where.customerId = filters.customerId;
+      if (filters.paymentMethod) where.paymentMethod = filters.paymentMethod;
+      if (filters.status) where.status = filters.status;
+    }
+    return this.prisma.sale.count({ where });
   }
 
   async create(sale: Sale, offlineId?: string): Promise<Sale> {
@@ -89,6 +170,8 @@ export class PostgresSaleRepo implements SaleRepository {
               quantity: i.quantity,
               price: i.price,
               cost: i.cost,
+              taxRate: i.taxRate ?? 0,
+              discount: i.discount ?? 0,
               subtotal: i.subtotal,
             })),
           },
@@ -97,8 +180,6 @@ export class PostgresSaleRepo implements SaleRepository {
       });
 
       // === AUTHORITATIVE STOCK CHECK (pessimistic lock) ===
-      // Lock products with FOR UPDATE to prevent concurrent overselling.
-      // This is the ONLY place where stock is validated and decremented.
       for (const item of sale.items) {
         const locked = await tx.$queryRaw<
           { id: string; stock: number; name: string }[]
@@ -139,8 +220,48 @@ export class PostgresSaleRepo implements SaleRepository {
     return this.toSale(created);
   }
 
-  async count(tenantId: string): Promise<number> {
-    return this.prisma.sale.count({ where: { tenantId } });
+  async voidSale(id: string, tenantId: string): Promise<void> {
+    await this.prisma.$transaction(async (tx) => {
+      const sale = await tx.sale.findFirst({
+        where: { id, tenantId },
+        include: { items: true },
+      });
+
+      if (!sale) throw new InvalidSaleOperationException('Venta no encontrada');
+      if (sale.status === 'cancelled')
+        throw new InvalidSaleOperationException('La venta ya está anulada');
+
+      await tx.sale.update({
+        where: { id },
+        data: { status: 'cancelled' },
+      });
+
+      // Restore stock
+      for (const item of sale.items) {
+        await tx.product.updateMany({
+          where: { id: item.productId, tenantId },
+          data: { stock: { increment: item.quantity } },
+        });
+        await tx.inventoryMovement.create({
+          data: {
+            tenantId,
+            productId: item.productId,
+            type: 'void',
+            quantity: item.quantity,
+            reference: `Anulación venta: ${id}`,
+            userId: '',
+          },
+        });
+      }
+
+      // Reverse credit if applicable
+      if (sale.paymentMethod === 'credit' && sale.customerId) {
+        await tx.customer.updateMany({
+          where: { id: sale.customerId, tenantId },
+          data: { balance: { decrement: Number(sale.total) } },
+        });
+      }
+    });
   }
 
   async getDailySummary(
@@ -175,6 +296,8 @@ export class PostgresSaleRepo implements SaleRepository {
             i.quantity,
             Number(i.price),
             Number(i.cost),
+            Number(i.taxRate ?? 0),
+            Number(i.discount ?? 0),
             Number(i.subtotal),
           ),
       ) ?? [],

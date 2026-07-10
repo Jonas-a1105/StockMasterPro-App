@@ -18,6 +18,7 @@ import { PaymentPanel } from '../components/PaymentPanel';
 import { CheckoutModal } from '../components/CheckoutModal';
 import { CashRegisterModal } from '../components/CashRegisterModal';
 import { ExpenseModal } from '../components/ExpenseModal';
+import { printTicket } from '@shared/lib/print/ticket';
 import { formatUsd } from '@shared/lib/format/currency';
 import { searchProducts, getWarehouses, getCustomers } from '../api/pos.api';
 import { db } from '@shared/db/dexie';
@@ -98,6 +99,11 @@ export function POSPage() {
       showToast('Selecciona un cliente para venta a crédito', 'error');
       return;
     }
+    if (paymentMethod === 'cash' && !cash.isTodayOpen) {
+      showToast('Debe abrir caja antes de cobrar en efectivo', 'error');
+      cash.setShowCashModal(true);
+      return;
+    }
     await checkout(cart.items, paymentMethod, cart.subtotal, cart.tax, cart.total, selectedCustomerId, customers, isOnline);
     if (paymentMethod === 'cash') {
       cash.setCashSalesTotal(cash.cashSalesTotal + cart.total);
@@ -122,8 +128,8 @@ export function POSPage() {
   if (initialLoading) return config.skeletonEnabled ? <SkeletonPOSLayout /> : <LoadingDots text="Cargando POS..." />;
 
   const handleOpenCash = () => cash.openCash(cash.cashOpening);
-  const handleCloseCash = () => {
-    const { difference } = cash.closeCash(cash.declaredAmount);
+  const handleCloseCash = async () => {
+    const { difference } = await cash.closeCash(cash.declaredAmount);
     if (difference !== 0) {
       showToast(
         `Diferencia en caja: ${difference > 0 ? 'Sobrante' : 'Faltante'} de ${formatUsd(Math.abs(difference))}`,
@@ -191,15 +197,20 @@ export function POSPage() {
         onClose={() => cash.setShowExpenseModal(false)}
       />
 
-      {showSuccess && lastSale && <CheckoutModal lastSale={lastSale} onNewSale={() => { reset(); setSelectedCustomerId(''); setPaymentMethod('cash'); loadProducts(); }} onPrintTicket={() => {
-        const ticketEl = document.getElementById('sale-ticket');
-        if (!ticketEl) return;
-        const printWindow = window.open('', '_blank', 'width=420,height=620');
-        if (!printWindow) return;
-        printWindow.document.write(`<html><head><title>Comprobante de Venta - StockMaster Pro</title><style>body{font-family:'Courier New',Courier,monospace;padding:25px;background:#f1f5f9;display:flex;flex-direction:column;align-items:center;margin:0}.actions-bar{margin-bottom:20px;display:flex;gap:10px;width:100%;max-width:340px}.btn{flex:1;padding:10px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;text-align:center;border:none;font-family:system-ui,sans-serif}.btn-print{background:#16a34a;color:#fff}.btn-close{background:#cbd5e1;color:#333}.ticket-box{background:#fff!important;border:1px dashed #aaa!important;padding:20px;width:100%;max-width:340px;box-shadow:0 4px 12px rgba(0,0,0,0.05);border-radius:8px;box-sizing:border-box;color:#000!important}.ticket-box *{color:#000!important}@media print{.actions-bar{display:none}body{background:#fff;padding:0}.ticket-box{border:none;box-shadow:none;padding:0;max-width:100%;background:#fff}}</style></head><body><div class="actions-bar"><button class="btn btn-print" onclick="window.print()">Imprimir</button><button class="btn btn-close" onclick="window.close()">Cerrar</button></div><div class="ticket-box">${ticketEl.innerHTML}</div></body></html>`);
-        printWindow.document.close();
-        printWindow.focus();
-      }} />}
+      {showSuccess && lastSale && <CheckoutModal lastSale={lastSale} onNewSale={() => { reset(); setSelectedCustomerId(''); setPaymentMethod('cash'); loadProducts(); }} onPrintTicket={() => printTicket({
+        id: 'POS-' + Date.now(),
+        createdAt: lastSale.date,
+        total: lastSale.total,
+        paymentMethod: lastSale.paymentMethod,
+        items: lastSale.items.map(i => ({
+          product: { name: i.product.name },
+          quantity: i.quantity,
+          price: i.product.price,
+          subtotal: i.product.price * i.quantity,
+        })),
+        customer: lastSale.customerName ? { name: lastSale.customerName } : undefined,
+        discount: lastSale.subtotal + lastSale.tax - lastSale.total > 0 ? lastSale.subtotal + lastSale.tax - lastSale.total : undefined,
+      })} />}
     </>
   );
 }

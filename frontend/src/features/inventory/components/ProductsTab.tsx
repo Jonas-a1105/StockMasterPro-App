@@ -173,9 +173,7 @@ export function ProductsTab() {
   return (
     <>
       <ProductKpiBar products={products} />
-      <ProductFilters search={search} onSearchChange={setSearch} warehouseFilter={warehouseFilter} onWarehouseChange={setWarehouseFilter} warehouses={warehouses} sortField={sortField} sortDirection={sortDirection} onSort={handleSort} showSortMenu={showSortMenu} setShowSortMenu={setShowSortMenu} sortRef={sortRef} />
-
-      <div className={styles.toolbarActions} style={{ padding: '0 0 12px', display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
+      <ProductFilters search={search} onSearchChange={setSearch} warehouseFilter={warehouseFilter} onWarehouseChange={setWarehouseFilter} warehouses={warehouses} sortField={sortField} sortDirection={sortDirection} onSort={handleSort} showSortMenu={showSortMenu} setShowSortMenu={setShowSortMenu} sortRef={sortRef}>
         <div className={styles.viewToggle}>
           <button className={`${styles.viewToggleBtn} ${currentViewMode === 'table' ? styles.viewToggleBtnActive : ''}`} onClick={() => toggleViewMode('table')} title="Vista de Tabla"><LayoutList size={15} /></button>
           <button className={`${styles.viewToggleBtn} ${currentViewMode === 'cards' ? styles.viewToggleBtnActive : ''}`} onClick={() => toggleViewMode('cards')} title="Vista de Tarjetas"><LayoutGrid size={15} /></button>
@@ -210,18 +208,9 @@ export function ProductsTab() {
             <Plus size={18} /> Nuevo Producto
           </button>
         )}
-      </div>
+      </ProductFilters>
 
-      {/* Category creator inline */}
-      {showNewCategory && (
-        <div className={styles.newCategoryInline} style={{ marginBottom: 12 }}>
-          <input type="text" value={newCategoryName} onChange={e => setNewCategoryName(e.target.value)} placeholder="Nombre de la categoría" onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); handleCreateCategory(); } }} />
-          <button type="button" className={`${styles.smallBtn} ${styles.smallBtnPrimary}`} onClick={handleCreateCategory}>Crear</button>
-          <button type="button" className={`${styles.smallBtn} ${styles.smallBtnSecondary}`} onClick={() => { setShowNewCategory(false); setNewCategoryName(''); }}><X size={12} /></button>
-        </div>
-      )}
-
-      <ProductForm key={editingId || 'new'} open={showForm} editingId={editingId} initialData={form} onClose={() => { setShowForm(false); setEditingId(null); }} onSubmit={handleSubmit} loading={loading} isLimitExceeded={isLimitExceeded} nextRequiredPlan={nextRequiredPlan} categories={categories} onShowNewCategory={() => setShowNewCategory(true)} />
+      <ProductForm key={editingId || 'new'} open={showForm} editingId={editingId} initialData={form} onClose={() => { setShowForm(false); setEditingId(null); setForm({ name: '', barcode: '', price: 0, cost: 0, stock: 0, minStock: 0, description: '', brand: '', imageUrl: '', categoryId: '' }); }} onSubmit={handleSubmit} loading={loading} isLimitExceeded={isLimitExceeded} nextRequiredPlan={nextRequiredPlan} categories={categories} onShowNewCategory={() => setShowNewCategory(!showNewCategory)} showNewCategory={showNewCategory} newCategoryName={newCategoryName} onNewCategoryNameChange={setNewCategoryName} onCreateCategory={handleCreateCategory} />
 
       <Modal open={!!viewProduct} onClose={() => setViewProduct(null)} title="DETALLES DEL PRODUCTO" xwide>
         {viewProduct && <ProductDetailPanel product={viewProduct} movements={movements} loadingMovements={loadingMovements} getCategoryName={getCategoryName} />}

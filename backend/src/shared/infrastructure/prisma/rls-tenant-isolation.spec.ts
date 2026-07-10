@@ -60,6 +60,7 @@ describe('Tenant Isolation — IDOR Prevention', () => {
       findAll: jest.fn(),
       getDailySummary: jest.fn(),
       count: jest.fn(),
+      voidSale: jest.fn(),
     };
 
     productRepo = {

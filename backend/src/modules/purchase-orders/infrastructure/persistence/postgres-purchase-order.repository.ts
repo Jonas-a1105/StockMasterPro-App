@@ -36,6 +36,65 @@ export class PostgresPurchaseOrderRepo {
     });
   }
 
+  async receiveOrder(id: string, tenantId: string) {
+    const order = await this.prisma.purchaseOrder.findFirst({
+      where: { id, tenantId, status: 'pending' },
+      include: { items: true },
+    });
+    if (!order) throw new Error('Orden pendiente no encontrada');
+
+    return this.prisma.$transaction(async (tx) => {
+      await tx.purchaseOrder.update({
+        where: { id },
+        data: { status: 'received' },
+      });
+
+      for (const item of order.items) {
+        const product = await tx.product.findFirst({
+          where: { id: item.productId, tenantId },
+        });
+        if (!product)
+          throw new Error(`Producto ${item.productId} no encontrado`);
+
+        const currentStock = product.stock;
+        const currentCost = Number(product.cost);
+        const purchasedQty = item.quantity;
+        const purchaseCost = Number(item.cost);
+
+        const newStock = currentStock + purchasedQty;
+        const newCost =
+          currentStock + purchasedQty > 0
+            ? (currentStock * currentCost + purchasedQty * purchaseCost) /
+              (currentStock + purchasedQty)
+            : purchaseCost;
+
+        await tx.product.updateMany({
+          where: { id: item.productId, tenantId },
+          data: {
+            stock: newStock,
+            cost: Math.round(newCost * 100) / 100,
+          },
+        });
+
+        await tx.inventoryMovement.create({
+          data: {
+            tenantId,
+            productId: item.productId,
+            type: 'purchase',
+            quantity: item.quantity,
+            reference: `Recepción: ${order.id}`,
+            userId: order.userId,
+          },
+        });
+      }
+
+      return this.prisma.purchaseOrder.findFirst({
+        where: { id },
+        include: { items: true },
+      });
+    });
+  }
+
   async create(order: PurchaseOrderInput) {
     return this.prisma.$transaction(async (tx) => {
       const po = await tx.purchaseOrder.create({

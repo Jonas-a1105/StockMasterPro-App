@@ -95,16 +95,12 @@ export function LoginPage() {
           <div className={styles.field}>
             <div className={styles.fieldHeader}>
               <label>Clave Criptográfica</label>
-              <a
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  alert('Enlace de recuperación enviado al administrador.');
-                }}
+              <Link
+                to="/forgot-password"
                 className={styles.forgotLink}
               >
                 ¿olvidó su clave?
-              </a>
+              </Link>
             </div>
             <div className={styles.inputWrap}>
               <input

@@ -14,3 +14,21 @@
 .emptyIcon { font-size: 48px; margin-bottom: 15px; }
 .emptyState p { color: var(--text-muted); }
 .actionBtn { padding: 6px 14px; background: var(--color-primary, #f05a28); color: white; border: none; border-radius: var(--btn-radius, var(--card-radius)); font-size: 12px; font-weight: 600; cursor: pointer; }
+.exportBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background: var(--bg-card);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.exportBtn:hover {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: white;
+}

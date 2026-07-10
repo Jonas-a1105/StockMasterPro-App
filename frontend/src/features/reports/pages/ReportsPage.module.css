@@ -35,6 +35,26 @@
   display: flex;
   align-items: center;
   gap: 6px;
+  justify-content: space-between;
+}
+
+.cardTitle .exportBtn {
+  padding: 6px 10px;
+  border: 1px solid var(--border-color, #ddd);
+  border-radius: 6px;
+  background: var(--bg-main, #f5f5f5);
+  color: var(--text-dark, #333);
+  font-size: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.cardTitle .exportBtn:hover {
+  background: var(--color-orange-red, #f05a28);
+  color: white;
+  border-color: var(--color-orange-red, #f05a28);
 }
 
 .cardSub {

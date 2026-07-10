@@ -23,19 +23,34 @@ import { CategoryModule } from './modules/categories';
 import { WebhooksModule } from './modules/webhooks';
 import { EventModule } from './modules/events';
 import { NotificationsModule } from './modules/notifications';
+import { ProductLotModule } from './modules/product-lots/infrastructure/product-lot.module';
 import { SocialModule } from './modules/social';
 import { AccountsReceivableModule } from './modules/accounts-receivable';
 import { CashRegisterModule } from './modules/cash-register';
+import { TenantSettingsModule } from './modules/tenant-settings/infrastructure/tenant-settings.module';
+import { WarehouseTransferModule } from './modules/warehouse-transfers/infrastructure/warehouse-transfer.module';
 
 import { JwtAuthGuard } from '@shared/infrastructure/guards/jwt-auth.guard';
 import { RolesGuard } from '@shared/infrastructure/guards/roles.guard';
 import { TenantLicenseGuard } from '@shared/infrastructure/guards/tenant-license.guard';
+
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
+import { UploadModule } from './modules/uploads/infrastructure/upload.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     ThrottlerModule.forRoot([{ ttl: 60000, limit: 100 }]),
     PrismaModule,
+    ServeStaticModule.forRoot({
+      rootPath: join(process.cwd(), 'public'),
+      serveRoot: '/',
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(process.cwd(), 'uploads'),
+      serveRoot: '/uploads',
+    }),
     AuthModule,
     InventoryModule,
     SalesModule,
@@ -54,9 +69,13 @@ import { TenantLicenseGuard } from '@shared/infrastructure/guards/tenant-license
     WebhooksModule,
     EventModule,
     NotificationsModule,
+    ProductLotModule,
     SocialModule,
     AccountsReceivableModule,
     CashRegisterModule,
+    TenantSettingsModule,
+    WarehouseTransferModule,
+    UploadModule,
   ],
   providers: [
     // Order matters: Throttle → Auth → Roles → License

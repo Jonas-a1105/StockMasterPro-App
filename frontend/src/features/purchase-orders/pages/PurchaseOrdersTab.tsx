@@ -4,7 +4,7 @@ import { useToast } from '@contexts/ToastContext';
 import { useAuth } from '@contexts/AuthContext';
 import { useTheme } from '@contexts/ThemeContext';
 import { useExchangeRate } from '@contexts/ExchangeRateContext';
-import { getPurchaseOrders, createPurchaseOrder } from '../api/purchaseOrders.api';
+import { getPurchaseOrders, createPurchaseOrder, receivePurchaseOrder } from '../api/purchaseOrders.api';
 import { PurchaseOrderForm } from '../components/PurchaseOrderForm';
 import { PurchaseOrdersList } from '../components/PurchaseOrdersList';
 import { getSuppliers } from '@features/suppliers';
@@ -32,6 +32,11 @@ export function PurchaseOrdersTab() {
   const handleSubmit = async (payload: any) => {
     setLoading(true);
     try { await createPurchaseOrder(payload); setShowForm(false); await loadOrders(); } catch (err: any) { showToast(err.message, 'error'); } finally { setLoading(false); }
+  };
+
+  const handleReceive = async (id: string) => {
+    if (!window.confirm('¿Recibir esta orden de compra? Se actualizará el inventario.')) return;
+    try { await receivePurchaseOrder(id); showToast('Orden recibida exitosamente', 'success'); await loadOrders(); } catch (err: any) { showToast(err.message, 'error'); }
   };
 
   const totalOrders = orders.length;
@@ -68,7 +73,7 @@ export function PurchaseOrdersTab() {
           <button className={styles.addBtn} onClick={() => setShowForm(true)}><Plus size={18} /> Nueva Orden de Compra</button>
         )}
       </div>
-      <PurchaseOrdersList orders={orders} suppliers={suppliers} loading={loadingOrders} skeletonEnabled={config.skeletonEnabled} />
+      <PurchaseOrdersList orders={orders} suppliers={suppliers} loading={loadingOrders} skeletonEnabled={config.skeletonEnabled} onReceive={handleReceive} userRole={user?.role} />
       <PurchaseOrderForm open={showForm} onClose={() => setShowForm(false)} onSubmit={handleSubmit} loading={loading} />
     </>
   );

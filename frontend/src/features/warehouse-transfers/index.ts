@@ -1,0 +1,1 @@
+export { WarehouseTransfersPage } from './pages/WarehouseTransfersPage';

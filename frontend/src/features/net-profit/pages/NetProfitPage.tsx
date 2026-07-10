@@ -6,10 +6,11 @@ import { TabNav } from '@shared/ui/TabNav';
 import { SkeletonReports } from '@shared/ui/Skeleton';
 import { useTheme } from '@contexts/ThemeContext';
 import { formatUsd } from '@shared/lib/format/currency';
-import { Filter, TrendingUp, TrendingDown, PiggyBank, Percent } from 'lucide-react';
+import { Filter, TrendingUp, TrendingDown, PiggyBank, Percent, Download } from 'lucide-react';
 import { KpiGrid } from '@shared/ui/KpiGrid';
 import { Toolbar } from '@shared/ui/Toolbar';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Tooltip, Legend } from 'recharts';
+import { exportToExcel } from '@shared/lib/excelHelper';
 import styles from './NetProfitPage.module.css';
 
 const MONTH_LABELS = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
@@ -73,6 +74,34 @@ export function NetProfitPage() {
   }), [filledMonthly]);
 
   const marginNet = totals.revenue > 0 ? (totals.profit / totals.revenue) * 100 : 0;
+
+  const handleExport = () => {
+    const columns = [
+      { header: 'Mes', key: 'Mes' },
+      { header: 'Ingresos', key: 'Ingresos' },
+      { header: 'COGS', key: 'COGS' },
+      { header: 'Gastos Operativos', key: 'Gastos' },
+      { header: 'Utilidad Neta', key: 'Utilidad' },
+      { header: 'Margen %', key: 'Margen' },
+    ];
+    const data = filledMonthly.map(m => ({
+      Mes: m.label,
+      Ingresos: m.revenue,
+      COGS: m.cogs,
+      Gastos: m.expenses,
+      Utilidad: m.profit,
+      Margen: m.revenue > 0 ? Math.round((m.profit / m.revenue) * 10000) / 100 : 0,
+    }));
+    data.push({
+      Mes: 'Total Anual',
+      Ingresos: totals.revenue,
+      COGS: totals.cogs,
+      Gastos: totals.expenses,
+      Utilidad: totals.profit,
+      Margen: marginNet.toFixed(1),
+    });
+    exportToExcel(data, columns, 'reporte_utilidad_neta_mensual', 'xlsx');
+  };
 
   if (loading) return config.skeletonEnabled ? <SkeletonReports chartCount={2} /> : <LoadingDots text="Calculando utilidad..." />;
 
@@ -146,6 +175,10 @@ export function NetProfitPage() {
 
       <div className={styles.chartCard}>
         <div className={styles.tableWrapper}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+            <span style={{ fontWeight: 600, fontSize: 14 }}>Detalle Mensual</span>
+            <button className={styles.exportBtn} onClick={handleExport} title="Exportar a Excel"><Download size={14} /></button>
+          </div>
           <table className={styles.table}>
             <thead>
               <tr>

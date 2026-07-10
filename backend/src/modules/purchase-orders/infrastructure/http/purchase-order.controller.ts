@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Body, Param } from '@nestjs/common';
 import { PurchaseOrderService } from '../purchase-order.service';
 import { CreatePurchaseOrderDto } from '../dto/create-purchase-order.dto';
 import { Roles } from '@shared/infrastructure/decorators/roles.decorator';
@@ -26,14 +26,23 @@ export class PurchaseOrderController {
 
   @Post()
   @Roles('admin', 'gerente')
-  async receive(
+  async create(
     @Body() dto: CreatePurchaseOrderDto,
     @CurrentUser() user: AuthenticatedUser,
   ) {
-    return this.purchaseOrderService.receive({
+    return this.purchaseOrderService.create({
       ...dto,
       tenantId: user.tenantId,
       userId: user.id,
     });
+  }
+
+  @Patch(':id/receive')
+  @Roles('admin', 'gerente')
+  async receive(
+    @Param('id') id: string,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
+    return this.purchaseOrderService.receiveOrder(id, user.tenantId);
   }
 }

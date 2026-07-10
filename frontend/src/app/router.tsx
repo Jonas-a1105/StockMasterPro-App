@@ -12,6 +12,8 @@ import { useState, useCallback } from 'react';
 import type { ReactNode } from 'react';
 import { SplashScreen } from '@shared/ui/SplashScreen';
 import { PremiumLockScreen } from '@shared/ui/PremiumLockScreen';
+import { ErrorBoundary } from '@shared/ui/ErrorBoundary';
+import { NotFoundPage } from '@pages/NotFoundPage';
 
 const LoginPage = lazy(() => import('@features/auth/pages/LoginPage').then(m => ({ default: m.LoginPage })));
 const RegisterPage = lazy(() => import('@features/auth/pages/RegisterPage').then(m => ({ default: m.RegisterPage })));
@@ -23,6 +25,9 @@ const SettingsPage = lazy(() => import('@features/settings/pages/SettingsPage').
 const UsersPage = lazy(() => import('@features/users/pages/UsersPage').then(m => ({ default: m.UsersPage })));
 const CustomersPage = lazy(() => import('@features/customers/pages/CustomersPage').then(m => ({ default: m.CustomersPage })));
 const AccountsPayablePage = lazy(() => import('@features/accounts-payable/pages/AccountsPayablePage').then(m => ({ default: m.AccountsPayablePage })));
+const AccountsReceivablePage = lazy(() => import('@features/accounts-receivable/pages/AccountsReceivablePage').then(m => ({ default: m.AccountsReceivablePage })));
+const CashRegisterPage = lazy(() => import('@features/cash-register/pages/CashRegisterPage').then(m => ({ default: m.CashRegisterPage })));
+const SalesHistoryPage = lazy(() => import('@features/sales/pages/SalesHistoryPage').then(m => ({ default: m.SalesHistoryPage })));
 const ExpensesPage = lazy(() => import('@features/expenses/pages/ExpensesPage').then(m => ({ default: m.ExpensesPage })));
 const CreditNotesPage = lazy(() => import('@features/credit-notes/pages/CreditNotesPage').then(m => ({ default: m.CreditNotesPage })));
 const NetProfitPage = lazy(() => import('@features/net-profit/pages/NetProfitPage').then(m => ({ default: m.NetProfitPage })));
@@ -34,6 +39,13 @@ const AgendaDigitalPage = lazy(() => import('@features/agenda/pages/AgendaDigita
 const AdminTenantsPage = lazy(() => import('@features/admin/pages/AdminTenantsPage').then(m => ({ default: m.AdminTenantsPage })));
 const LandingPage = lazy(() => import('@features/landing/LandingPage').then(m => ({ default: m.LandingPage })));
 const SocialPage = lazy(() => import('@features/social/SocialPage').then(m => ({ default: m.SocialPage })));
+const NotificationsPage = lazy(() => import('@features/notifications/pages/NotificationsPage').then(m => ({ default: m.NotificationsPage })));
+const CategoriesPage = lazy(() => import('@features/categories/pages/CategoriesPage').then(m => ({ default: m.CategoriesPage })));
+const ReturnsPage = lazy(() => import('@features/returns/pages/ReturnsPage').then(m => ({ default: m.ReturnsPage })));
+const WarehouseTransfersPage = lazy(() => import('@features/warehouse-transfers/pages/WarehouseTransfersPage').then(m => ({ default: m.WarehouseTransfersPage })));
+const ProductLotsPage = lazy(() => import('@features/product-lots/pages/ProductLotsPage').then(m => ({ default: m.ProductLotsPage })));
+const ForgotPasswordPage = lazy(() => import('@features/auth/pages/ForgotPasswordPage').then(m => ({ default: m.ForgotPasswordPage })));
+const ResetPasswordPage = lazy(() => import('@features/auth/pages/ResetPasswordPage').then(m => ({ default: m.ResetPasswordPage })));
 
 function ProtectedRoute({ children }: { children: ReactNode }) {
   const { isAuthenticated, isLoading } = useAuth();
@@ -73,7 +85,7 @@ function PlanRoute({ requiredPlan, sectionName, children }: { requiredPlan: 'int
 function AdminRoute({ children }: { children: ReactNode }) {
   const { user, isAuthenticated, isLoading } = useAuth();
   if (isLoading) return <LoadingDots text="Verificando permisos..." />;
-  if (!isAuthenticated || user?.email !== 'admin@stockmaster.com') {
+  if (!isAuthenticated || user?.role !== 'admin') {
     return <Navigate to="/dashboard" replace />;
   }
   return <>{children}</>;
@@ -108,12 +120,15 @@ export function AppRouter() {
   }, []);
 
   return (
+    <ErrorBoundary>
     <LicenseCheck>
       <Routes>
         <Route path="/" element={<Suspense fallback={<LoadingDots text="Cargando" />}><LandingPage /></Suspense>} />
         <Route path="/pricing" element={<Suspense fallback={<LoadingDots text="Cargando" />}><LandingPage /></Suspense>} />
         <Route path="/login" element={<PublicRoute><LazySuspense><LoginPage /></LazySuspense></PublicRoute>} />
         <Route path="/register" element={<PublicRoute><LazySuspense><RegisterPage /></LazySuspense></PublicRoute>} />
+        <Route path="/forgot-password" element={<PublicRoute><LazySuspense><ForgotPasswordPage /></LazySuspense></PublicRoute>} />
+        <Route path="/reset-password" element={<PublicRoute><LazySuspense><ResetPasswordPage /></LazySuspense></PublicRoute>} />
 
         <Route element={<ProtectedRoute><DashboardLayout /></ProtectedRoute>}>
           <Route path="/dashboard" element={<Suspense fallback={<><SkeletonKPI count={6} /><SkeletonChart height={250} /></>}><DashboardPage /></Suspense>} />
@@ -124,6 +139,9 @@ export function AppRouter() {
           <Route path="/users" element={<Suspense fallback={<SkeletonTablePage tabs={0} kpi={3} />}><UsersPage /></Suspense>} />
           <Route path="/customers" element={<PlanRoute requiredPlan="pro" sectionName="Gestión de Clientes"><Suspense fallback={<SkeletonTablePage tabs={0} kpi={3} />}><CustomersPage /></Suspense></PlanRoute>} />
           <Route path="/accounts-payable" element={<PlanRoute requiredPlan="pro" sectionName="Cuentas por Pagar"><Suspense fallback={<SkeletonTablePage tabs={0} kpi={3} />}><AccountsPayablePage /></Suspense></PlanRoute>} />
+          <Route path="/accounts-receivable" element={<PlanRoute requiredPlan="pro" sectionName="Cuentas por Cobrar"><Suspense fallback={<SkeletonTablePage tabs={0} kpi={3} />}><AccountsReceivablePage /></Suspense></PlanRoute>} />
+          <Route path="/cash-register" element={<PlanRoute requiredPlan="pro" sectionName="Caja"><Suspense fallback={<SkeletonTablePage tabs={0} kpi={3} />}><CashRegisterPage /></Suspense></PlanRoute>} />
+          <Route path="/sales" element={<PlanRoute requiredPlan="intermedio" sectionName="Historial de Ventas"><Suspense fallback={<SkeletonTablePage tabs={0} kpi={3} />}><SalesHistoryPage /></Suspense></PlanRoute>} />
           <Route path="/expenses" element={<PlanRoute requiredPlan="pro" sectionName="Gastos"><Suspense fallback={<SkeletonTablePage tabs={0} kpi={3} />}><ExpensesPage /></Suspense></PlanRoute>} />
           <Route path="/credit-notes" element={<PlanRoute requiredPlan="pro" sectionName="Notas de Crédito"><Suspense fallback={<SkeletonTablePage tabs={0} kpi={3} />}><CreditNotesPage /></Suspense></PlanRoute>} />
           <Route path="/net-profit" element={<PlanRoute requiredPlan="intermedio" sectionName="Utilidad Neta"><Suspense fallback={<SkeletonReports chartCount={2} />}><NetProfitPage /></Suspense></PlanRoute>} />
@@ -133,12 +151,18 @@ export function AppRouter() {
           <Route path="/license-tool" element={<AdminRoute><Suspense fallback={<SkeletonForm fields={4} />}><LicenseToolPage /></Suspense></AdminRoute>} />
           <Route path="/agenda" element={<PlanRoute requiredPlan="pro" sectionName="Agenda Digital"><Suspense fallback={<SkeletonCards count={6} />}><AgendaDigitalPage /></Suspense></PlanRoute>} />
           <Route path="/admin/tenants" element={<AdminRoute><Suspense fallback={<SkeletonTablePage tabs={0} kpi={3} />}><AdminTenantsPage /></Suspense></AdminRoute>} />
+          <Route path="/notifications" element={<Suspense fallback={<SkeletonTablePage tabs={0} kpi={3} />}><NotificationsPage /></Suspense>} />
+          <Route path="/categories" element={<Suspense fallback={<SkeletonTablePage tabs={0} kpi={3} />}><CategoriesPage /></Suspense>} />
+          <Route path="/returns" element={<Suspense fallback={<SkeletonTablePage tabs={0} kpi={3} />}><ReturnsPage /></Suspense>} />
+          <Route path="/warehouse-transfers" element={<Suspense fallback={<SkeletonTablePage tabs={0} kpi={3} />}><WarehouseTransfersPage /></Suspense>} />
+          <Route path="/product-lots" element={<Suspense fallback={<SkeletonTablePage tabs={0} kpi={3} />}><ProductLotsPage /></Suspense>} />
         </Route>
 
         <Route path="/social" element={<ProtectedRoute><Suspense fallback={<SkeletonCards count={6} />}><SocialPage /></Suspense></ProtectedRoute>} />
 
-        <Route path="*" element={<Navigate to="/dashboard" replace />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </LicenseCheck>
+    </ErrorBoundary>
   );
 }

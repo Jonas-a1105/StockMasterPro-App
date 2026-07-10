@@ -5,9 +5,12 @@ import {
   IsNumber,
   IsOptional,
   Min,
+  Max,
   ArrayMinSize,
   IsIn,
+  ValidateNested,
 } from 'class-validator';
+import { Type } from 'class-transformer';
 
 class SaleItemDto {
   @IsString()
@@ -17,11 +20,24 @@ class SaleItemDto {
   @IsNumber()
   @Min(1)
   quantity: number;
+
+  @IsNumber()
+  @Min(0)
+  @IsOptional()
+  discount?: number;
+
+  @IsNumber()
+  @Min(0)
+  @IsOptional()
+  @Max(100)
+  taxRate?: number;
 }
 
 export class ProcessSaleDto {
   @IsArray()
   @ArrayMinSize(1)
+  @ValidateNested({ each: true })
+  @Type(() => SaleItemDto)
   items: SaleItemDto[];
 
   @IsString()

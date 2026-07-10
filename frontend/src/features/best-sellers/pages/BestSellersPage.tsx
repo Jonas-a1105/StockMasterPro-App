@@ -4,11 +4,12 @@ import { useToast } from '@contexts/ToastContext';
 import { useExchangeRate } from '@contexts/ExchangeRateContext';
 import { LoadingDots } from '@shared/ui/LoadingDots';
 import { TabNav } from '@shared/ui/TabNav';
-import { TrendingUp, PackageX, DollarSign, ShoppingCart, TrendingDown, Filter, Eye } from 'lucide-react';
+import { TrendingUp, PackageX, DollarSign, ShoppingCart, TrendingDown, Filter, Eye, Download } from 'lucide-react';
 import { useTheme } from '@contexts/ThemeContext';
 import { SkeletonTablePage } from '@shared/ui/Skeleton';
 import { KpiGrid } from '@shared/ui/KpiGrid';
 import { Toolbar } from '@shared/ui/Toolbar';
+import { exportToExcel } from '@shared/lib/excelHelper';
 import styles from './BestSellersPage.module.css';
 function formatDate(d: string | null) {
   if (!d) return '\u2014';
@@ -72,6 +73,44 @@ export function BestSellersPage() {
   const bestTotalRevenue = bestSellers.reduce((sum, p) => sum + (p.totalRevenue || 0), 0);
   const bestTotalSold = bestSellers.reduce((sum, p) => sum + (p.totalSold || 0), 0);
   const deadCount = deadProducts.length;
+
+  const handleExportBest = () => {
+    const columns = [
+      { header: '#', key: 'pos' },
+      { header: 'Producto', key: 'name' },
+      { header: 'Código', key: 'barcode' },
+      { header: 'Cant. Vendida', key: 'totalQty' },
+      { header: 'Ingreso Total', key: 'totalRevenue' },
+      { header: '% del Total', key: 'percentage' },
+    ];
+    const data = filteredBest.map((p, i) => ({
+      pos: i + 1,
+      name: p.name,
+      barcode: p.barcode || '—',
+      totalQty: p.totalQty,
+      totalRevenue: p.totalRevenue,
+      percentage: p.percentage.toFixed(1),
+    }));
+    exportToExcel(data, columns, 'reporte_mas_vendidos', 'xlsx');
+  };
+
+  const handleExportDead = () => {
+    const columns = [
+      { header: 'Producto', key: 'name' },
+      { header: 'Código', key: 'barcode' },
+      { header: 'Stock Actual', key: 'stock' },
+      { header: 'Última Venta', key: 'lastSale' },
+      { header: 'Días Sin Vender', key: 'daysWithoutSale' },
+    ];
+    const data = filteredDead.map(p => ({
+      name: p.name,
+      barcode: p.barcode || '—',
+      stock: p.stock,
+      lastSale: formatDate(p.lastSale),
+      daysWithoutSale: p.daysWithoutSale !== null ? `${p.daysWithoutSale} días` : 'Nunca vendido',
+    }));
+    exportToExcel(data, columns, 'reporte_productos_muertos', 'xlsx');
+  };
 
   return (
     <div className={styles.container}>
@@ -139,7 +178,7 @@ export function BestSellersPage() {
                     <th>Código</th>
                     <th style={{textAlign:'right'}}>Cant. Vendida</th>
                     <th style={{textAlign:'right'}}>Ingreso Total</th>
-                    <th>% del Total</th>
+                    <th>% del Total <button className={styles.exportBtn} onClick={handleExportBest} title="Exportar a Excel"><Download size={14} /></button></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -177,7 +216,7 @@ export function BestSellersPage() {
                   <table className="lista-table">
                     <thead>
                       <tr>
-                        <th>Producto</th>
+                        <th>Producto <button className={styles.exportBtn} onClick={handleExportDead} title="Exportar a Excel"><Download size={14} /></button></th>
                         <th>Código</th>
                         <th style={{textAlign:'right'}}>Stock Actual</th>
                         <th>Última Venta</th>

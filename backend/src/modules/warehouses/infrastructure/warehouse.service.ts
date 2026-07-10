@@ -45,9 +45,8 @@ export class WarehouseService {
   }
 
   async delete(id: string, tenantId: string) {
-    await this.prisma.product.updateMany({
+    await this.prisma.productWarehouse.deleteMany({
       where: { warehouseId: id, tenantId },
-      data: { warehouseId: null },
     });
     const { count } = await this.prisma.warehouse.deleteMany({
       where: { id, tenantId },

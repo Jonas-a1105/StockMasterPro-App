@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Plus, X } from 'lucide-react';
 import { Modal } from '@shared/ui/Modal';
 import { ButtonLoader } from '@shared/ui/ButtonLoader';
 import { PremiumLockButton } from '@shared/ui/PremiumLockButton';
 import { SearchableSelect } from '@shared/ui/SearchableSelect';
 import { formatUsd } from '@shared/lib/format/currency';
+import { api } from '@shared/lib/http/client';
+import { useToast } from '@contexts/ToastContext';
 import styles from '../pages/InventoryPage.module.css';
 
 export interface ProductFormData {
@@ -15,14 +17,42 @@ export interface ProductFormData {
 export function ProductForm({
   open, editingId, initialData, onClose, onSubmit, loading,
   isLimitExceeded, nextRequiredPlan, categories, onShowNewCategory,
+  showNewCategory, newCategoryName, onNewCategoryNameChange, onCreateCategory,
 }: {
   open: boolean; editingId: string | null; initialData: ProductFormData;
   onClose: () => void; onSubmit: (data: ProductFormData) => Promise<void>;
   loading: boolean; isLimitExceeded: boolean; nextRequiredPlan: string;
   categories: { id: string; name: string }[]; onShowNewCategory: () => void;
+  showNewCategory: boolean; newCategoryName: string;
+  onNewCategoryNameChange: (value: string) => void;
+  onCreateCategory: () => void;
 }) {
   const [form, setForm] = useState<ProductFormData>(initialData);
+  const [uploading, setUploading] = useState(false);
+  const { showToast } = useToast();
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const categoryOptions = [{ value: '', label: 'Sin categoría' }, ...categories.map(c => ({ value: c.id, label: c.name }))];
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!file.type.match(/^image\/(jpeg|png|webp|gif)$/)) {
+      showToast('Solo se permiten imágenes (jpg, png, webp, gif)', 'error');
+      return;
+    }
+    setUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      const res = await api.post('/uploads/image', formData);
+      setForm(p => ({ ...p, imageUrl: res.url }));
+      showToast('Imagen subida correctamente', 'success');
+    } catch (err: any) {
+      showToast(err.message || 'Error al subir imagen', 'error');
+    } finally {
+      setUploading(false);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,7 +63,8 @@ export function ProductForm({
   };
 
   return (
-    <Modal open={open} onClose={onClose} title={editingId ? 'Editar Producto' : 'Nuevo Producto'}>
+    <>
+      <Modal open={open && !showNewCategory} onClose={onClose} title={editingId ? 'Editar Producto' : 'Nuevo Producto'}>
       <form onSubmit={handleSubmit}>
         <div className={styles.formGrid}>
           <div className={styles.field}>
@@ -74,8 +105,28 @@ export function ProductForm({
           </div>
           <div className={styles.fieldFull}>
             <label>Imagen del Producto</label>
-            <input type="text" value={form.imageUrl} onChange={e => setForm(p => ({ ...p, imageUrl: e.target.value }))} placeholder="URL de imagen" />
-            {form.imageUrl && <img src={form.imageUrl} alt="Preview" className={styles.imagePreview} style={{ marginTop: 8 }} />}
+            <input
+              type="file"
+              accept="image/jpeg,image/png,image/webp,image/gif"
+              onChange={handleImageUpload}
+              disabled={uploading}
+              style={{ display: 'none' }}
+              ref={fileInputRef}
+            />
+            <button
+              type="button"
+              className={styles.uploadBtn}
+              onClick={() => fileInputRef.current?.click()}
+              disabled={uploading}
+            >
+              {uploading ? 'Subiendo...' : form.imageUrl ? 'Cambiar imagen' : 'Subir imagen'}
+            </button>
+            {form.imageUrl && (
+              <div className={styles.imageWrapper}>
+                <img src={form.imageUrl} alt="Preview" className={styles.imagePreview} />
+                <button type="button" className={styles.removeImageBtn} onClick={() => setForm(p => ({ ...p, imageUrl: '' }))} title="Eliminar imagen">×</button>
+              </div>
+            )}
           </div>
           <div className={styles.fieldFull}>
             <label>Descripción</label>
@@ -92,5 +143,24 @@ export function ProductForm({
         </div>
       </form>
     </Modal>
+
+      <Modal open={showNewCategory} onClose={onShowNewCategory} title="Nueva Categoría" small>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 12, padding: '8px 0' }}>
+          <input
+            type="text"
+            value={newCategoryName}
+            onChange={e => onNewCategoryNameChange(e.target.value)}
+            placeholder="Nombre de la categoría"
+            autoFocus
+            onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); onCreateCategory(); } }}
+            style={{ padding: '8px 12px', borderRadius: 6, border: '1px solid var(--border-color)', background: 'var(--bg-card)', color: 'var(--text-primary)', fontSize: 14 }}
+          />
+          <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end' }}>
+            <button type="button" onClick={onShowNewCategory} style={{ padding: '6px 16px', borderRadius: 6, border: '1px solid var(--border-color)', background: 'transparent', color: 'var(--text-primary)', cursor: 'pointer' }}>Cancelar</button>
+            <button type="button" onClick={onCreateCategory} disabled={!newCategoryName.trim()} style={{ padding: '6px 16px', borderRadius: 6, border: 'none', background: 'var(--color-primary)', color: '#fff', cursor: 'pointer', opacity: !newCategoryName.trim() ? 0.5 : 1 }}>Crear</button>
+          </div>
+        </div>
+      </Modal>
+    </>
   );
 }

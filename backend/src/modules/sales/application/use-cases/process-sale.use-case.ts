@@ -23,6 +23,8 @@ import * as crypto from 'crypto';
 interface ProcessSaleItem {
   productId: string;
   quantity: number;
+  discount?: number;
+  taxRate?: number;
 }
 
 interface ProcessSaleInput {
@@ -69,12 +71,24 @@ export class ProcessSaleUseCase {
           item.quantity,
         );
       saleItems.push(
-        SaleItem.create(product.id, item.quantity, product.price, product.cost),
+        SaleItem.create(
+          product.id,
+          item.quantity,
+          product.price,
+          product.cost,
+          item.discount ?? 0,
+          item.taxRate ?? 0,
+        ),
       );
     }
 
     const { subtotal, tax, discount, total } = Sale.calculateTotal(
-      saleItems.map((i) => ({ price: i.price, quantity: i.quantity })),
+      saleItems.map((i) => ({
+        price: i.price,
+        quantity: i.quantity,
+        discount: i.discount,
+        taxRate: i.taxRate,
+      })),
       input.discount ?? 0,
       input.taxRate ?? 0,
     );

@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { Search, X, ArrowUpDown, ChevronDown } from 'lucide-react';
 import type { SortField, SortDirection } from '../types';
 import styles from '../pages/InventoryPage.module.css';
@@ -5,11 +6,13 @@ import styles from '../pages/InventoryPage.module.css';
 export function ProductFilters({
   search, onSearchChange, warehouseFilter, onWarehouseChange, warehouses,
   sortField, sortDirection, onSort, showSortMenu, setShowSortMenu, sortRef,
+  children,
 }: {
   search: string; onSearchChange: (s: string) => void;
   warehouseFilter: string; onWarehouseChange: (w: string) => void; warehouses: any[];
   sortField: SortField; sortDirection: SortDirection; onSort: (field: SortField) => void;
   showSortMenu: boolean; setShowSortMenu: (v: boolean) => void; sortRef: React.RefObject<HTMLDivElement | null>;
+  children?: ReactNode;
 }) {
   const getSortLabel = () => {
     const labels: Record<SortField, string> = { none: 'Ordenar', name: `Nombre ${sortDirection === 'asc' ? 'A-Z' : 'Z-A'}`, price: `Precio ${sortDirection === 'asc' ? '↑' : '↓'}`, stock: `Stock ${sortDirection === 'asc' ? '↑' : '↓'}`, status: 'Stock Bajo primero' };
@@ -34,6 +37,7 @@ export function ProductFilters({
           </div>
         </div>
         <div className={styles.toolbarActions}>
+          {children}
           <div className={styles.sortDropdown} ref={sortRef}>
             <button className={styles.sortDropdownBtn} onClick={() => setShowSortMenu(!showSortMenu)}>
               <ArrowUpDown size={14} /> <span>{getSortLabel()}</span>

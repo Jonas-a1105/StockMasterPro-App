@@ -1,17 +1,16 @@
-import { useState, useEffect } from 'react';
-
-const STORAGE_KEY_CLOSINGS = 'stockmaster-cash';
-const STORAGE_KEY_OPENING = 'stockmaster-cash-opening';
-const STORAGE_KEY_SALES = 'stockmaster-cash-sales';
-const STORAGE_KEY_EXPENSES = 'stockmaster-expenses';
+import { useState, useEffect, useCallback } from 'react';
+import { api } from '@shared/lib/http/client';
+import { useToast } from '@contexts/ToastContext';
 
 interface CashClosing {
   opening: number;
   sales: number;
+  expenses: number;
   expected: number;
   declared: number;
   difference: number;
   date: string;
+  id?: string;
 }
 
 interface UseCashRegisterReturn {
@@ -24,89 +23,151 @@ interface UseCashRegisterReturn {
   declaredAmount: number;
   setDeclaredAmount: (v: number) => void;
   isTodayOpen: boolean;
+  currentSessionId: string | null;
   cashClosings: CashClosing[];
   addClosing: (closing: CashClosing) => void;
-  openCash: (amount: number) => void;
-  closeCash: (declared: number) => { difference: number };
+  openCash: (amount: number) => Promise<void>;
+  closeCash: (declared: number) => Promise<{ difference: number }>;
   showExpenseModal: boolean;
   setShowExpenseModal: (v: boolean) => void;
-  addExpense: (amount: number, reason: string) => void;
+  addExpense: (amount: number, reason: string) => Promise<void>;
 }
 
 export function useCashRegister(): UseCashRegisterReturn {
+  const { showToast } = useToast();
   const [showCashModal, setShowCashModal] = useState(false);
   const [cashOpening, setCashOpening] = useState(0);
-  const [cashOpeningDate, setCashOpeningDate] = useState<string | null>(null);
+  const [currentSessionId, setCurrentSessionId] = useState<string | null>(null);
   const [cashSalesTotal, setCashSalesTotal] = useState(0);
+  const [cashExpensesTotal, setCashExpensesTotal] = useState(0);
   const [declaredAmount, setDeclaredAmount] = useState(0);
   const [cashClosings, setCashClosings] = useState<CashClosing[]>([]);
   const [showExpenseModal, setShowExpenseModal] = useState(false);
 
   useEffect(() => {
-    const savedClosings = localStorage.getItem(STORAGE_KEY_CLOSINGS);
-    if (savedClosings) setCashClosings(JSON.parse(savedClosings));
+    (async () => {
+      try {
+        const session = await api.getCurrentCashSession();
+        if (session && session.status === 'open') {
+          setCurrentSessionId(session.id);
+          setCashOpening(Number(session.openingBalance));
 
-    const savedOpening = localStorage.getItem(STORAGE_KEY_OPENING);
-    if (savedOpening) {
-      const data = JSON.parse(savedOpening);
-      if (new Date(data.date).toDateString() === new Date().toDateString()) {
-        setCashOpening(data.amount);
-        setCashOpeningDate(data.date);
+          const txns = await api.getCashSessionTransactions(session.id);
+          const sales = txns.filter((t: any) => t.type === 'sale').reduce((s: number, t: any) => s + Number(t.amount), 0);
+          const expenses = txns.filter((t: any) => t.type === 'expense').reduce((s: number, t: any) => s + Number(t.amount), 0);
+          setCashSalesTotal(sales);
+          setCashExpensesTotal(expenses);
+        }
+      } catch {
+        // No open session - normal
       }
-    }
+    })();
 
-    const savedCashSales = localStorage.getItem(STORAGE_KEY_SALES);
-    if (savedCashSales) setCashSalesTotal(parseFloat(savedCashSales));
+    (async () => {
+      try {
+        const sessions = await api.getCashSessions();
+        setCashClosings(
+          (sessions || [])
+            .filter((s: any) => s.status === 'closed')
+            .map((s: any) => ({
+              opening: Number(s.openingBalance),
+              sales: 0,
+              expenses: 0,
+              expected: Number(s.closingBalance),
+              declared: Number(s.actualBalance),
+              difference: Number(s.difference),
+              date: s.closedAt || s.createdAt,
+              id: s.id,
+            }))
+        );
+      } catch {
+        // Silent
+      }
+    })();
   }, []);
 
-  const isTodayOpen = cashOpeningDate != null && new Date(cashOpeningDate).toDateString() === new Date().toDateString();
+  const isTodayOpen = currentSessionId != null;
 
-  const openCash = (amount: number) => {
-    const data = { amount, date: new Date().toISOString() };
-    localStorage.setItem(STORAGE_KEY_OPENING, JSON.stringify(data));
-    setCashOpeningDate(data.date);
-    setCashSalesTotal(0);
-    localStorage.setItem(STORAGE_KEY_SALES, '0');
-    setShowCashModal(false);
+  const refreshSession = useCallback(async () => {
+    try {
+      const session = await api.getCurrentCashSession();
+      if (session && session.status === 'open') {
+        setCurrentSessionId(session.id);
+        setCashOpening(Number(session.openingBalance));
+        const txns = await api.getCashSessionTransactions(session.id);
+        const sales = txns.filter((t: any) => t.type === 'sale').reduce((s: number, t: any) => s + Number(t.amount), 0);
+        const expenses = txns.filter((t: any) => t.type === 'expense').reduce((s: number, t: any) => s + Number(t.amount), 0);
+        setCashSalesTotal(sales);
+        setCashExpensesTotal(expenses);
+      }
+    } catch {
+      // No open session
+    }
+  }, []);
+
+  const openCash = async (amount: number) => {
+    try {
+      const session = await api.openCashSession({ openingBalance: amount });
+      setCurrentSessionId(session.id);
+      setCashOpening(amount);
+      setCashSalesTotal(0);
+      setCashExpensesTotal(0);
+      setShowCashModal(false);
+      showToast('Caja abierta correctamente', 'success');
+    } catch (err: any) {
+      showToast(err.message || 'Error al abrir caja', 'error');
+    }
   };
 
-  const closeCash = (declared: number) => {
-    const expected = cashOpening + cashSalesTotal;
-    const diff = declared - expected;
-    const closing: CashClosing = {
-      opening: cashOpening, sales: cashSalesTotal, expected,
-      declared, difference: diff, date: new Date().toISOString(),
-    };
-    const updated = [...cashClosings, closing];
-    setCashClosings(updated);
-    localStorage.setItem(STORAGE_KEY_CLOSINGS, JSON.stringify(updated));
-    localStorage.removeItem(STORAGE_KEY_OPENING);
-    setCashOpening(0);
-    setCashOpeningDate(null);
-    setDeclaredAmount(0);
-    setShowCashModal(false);
-    return { difference: diff };
+  const closeCash = async (declared: number) => {
+    if (!currentSessionId) return { difference: 0 };
+    try {
+      await api.closeCashSession(currentSessionId, { actualBalance: declared });
+      const expected = cashOpening + cashSalesTotal - cashExpensesTotal;
+      const diff = declared - expected;
+      const closing: CashClosing = {
+        opening: cashOpening, sales: cashSalesTotal, expenses: cashExpensesTotal,
+        expected, declared, difference: diff, date: new Date().toISOString(),
+      };
+      setCashClosings(prev => [...prev, closing]);
+      setCurrentSessionId(null);
+      setCashOpening(0);
+      setCashSalesTotal(0);
+      setCashExpensesTotal(0);
+      setDeclaredAmount(0);
+      setShowCashModal(false);
+      showToast('Caja cerrada correctamente', 'success');
+      return { difference: diff };
+    } catch (err: any) {
+      showToast(err.message || 'Error al cerrar caja', 'error');
+      return { difference: 0 };
+    }
   };
 
   const addClosing = (closing: CashClosing) => {
-    const updated = [...cashClosings, closing];
-    setCashClosings(updated);
-    localStorage.setItem(STORAGE_KEY_CLOSINGS, JSON.stringify(updated));
+    setCashClosings(prev => [...prev, closing]);
   };
 
-  const addExpense = (amount: number, reason: string) => {
-    const expenses = JSON.parse(localStorage.getItem(STORAGE_KEY_EXPENSES) || '[]');
-    expenses.push({ amount, reason, date: new Date().toISOString() });
-    localStorage.setItem(STORAGE_KEY_EXPENSES, JSON.stringify(expenses));
-    setShowExpenseModal(false);
+  const addExpense = async (amount: number, reason: string) => {
+    if (!currentSessionId) return;
+    try {
+      await api.addCashTransaction(currentSessionId, { amount, type: 'expense', description: reason });
+      setCashExpensesTotal(prev => prev + amount);
+      setShowExpenseModal(false);
+      showToast('Gasto registrado', 'success');
+    } catch (err: any) {
+      showToast(err.message || 'Error al registrar gasto', 'error');
+    }
   };
 
   return {
     showCashModal, setShowCashModal,
     cashOpening, setCashOpening,
-    cashSalesTotal, setCashSalesTotal,
+    cashSalesTotal: cashSalesTotal - cashExpensesTotal,
+    setCashSalesTotal,
     declaredAmount, setDeclaredAmount,
     isTodayOpen,
+    currentSessionId,
     cashClosings, addClosing,
     openCash, closeCash,
     showExpenseModal, setShowExpenseModal,

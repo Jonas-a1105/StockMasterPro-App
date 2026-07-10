@@ -1,7 +1,7 @@
 import { useRef, useState, useCallback } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useAuth } from '@contexts/AuthContext';
-import { LayoutDashboard, ShoppingCart, Package, Settings, LogOut, BarChart3, ChevronRight, Users, Contact, Receipt, ReceiptText, RotateCcw, DollarSign, AlertTriangle, Building2, CalendarDays, Shield, Lock, Share2 } from 'lucide-react';
+import { LayoutDashboard, ShoppingCart, Package, Settings, LogOut, BarChart3, ChevronRight, Users, Contact, Receipt, ReceiptText, RotateCcw, DollarSign, AlertTriangle, Building2, CalendarDays, Shield, Lock, Share2, Wallet, Bell, Tag, RotateCcw as ReturnIcon, ArrowRightLeft, Boxes } from 'lucide-react';
 import type { SidebarMode } from './DashboardLayout';
 import styles from './Sidebar.module.css';
 
@@ -28,12 +28,15 @@ export function Sidebar({ mode, onClose, isMobile }: { mode: SidebarMode; onClos
         '/agenda',
         '/warehouses',
         '/accounts-payable',
+        '/accounts-receivable',
+        '/cash-register',
         '/expenses',
         '/customers',
         '/credit-notes',
         '/reports',
         '/net-profit',
-        '/best-sellers'
+        '/best-sellers',
+        '/sales'
       ];
       return freeBlocks.includes(to);
     }
@@ -153,6 +156,7 @@ export function Sidebar({ mode, onClose, isMobile }: { mode: SidebarMode; onClos
           {nav('/dashboard', <LayoutDashboard size={16} className={styles.menuIcon} />, 'Panel de Control')}
 
           {nav('/pos', <ShoppingCart size={16} className={styles.menuIcon} />, 'Punto de Venta')}
+          {nav('/sales', <ReceiptText size={16} className={styles.menuIcon} />, 'Historial Ventas')}
           {nav('/reports', <BarChart3 size={16} className={styles.menuIcon} />, 'Reportes')}
           {nav('/best-sellers', <BarChart3 size={16} className={styles.menuIcon} />, 'Best-Sellers')}
           {nav('/net-profit', <DollarSign size={16} className={styles.menuIcon} />, 'Utilidad Neta')}
@@ -162,9 +166,15 @@ export function Sidebar({ mode, onClose, isMobile }: { mode: SidebarMode; onClos
           {nav('/inventory', <Package size={16} className={styles.menuIcon} />, 'Inventario')}
           {nav('/warehouses', <Building2 size={16} className={styles.menuIcon} />, 'Almacenes')}
           {nav('/low-stock', <AlertTriangle size={16} className={styles.menuIcon} />, 'Alertas Stock')}
+          {nav('/categories', <Tag size={16} className={styles.menuIcon} />, 'Categorías')}
           {nav('/credit-notes', <RotateCcw size={16} className={styles.menuIcon} />, 'Notas de Crédito')}
+          {nav('/returns', <ReturnIcon size={16} className={styles.menuIcon} />, 'Devoluciones')}
+          {nav('/warehouse-transfers', <ArrowRightLeft size={16} className={styles.menuIcon} />, 'Transferencias')}
+          {nav('/product-lots', <Boxes size={16} className={styles.menuIcon} />, 'Lotes y Vencimientos')}
 
           {nav('/accounts-payable', <Receipt size={16} className={styles.menuIcon} />, 'Cuentas por Pagar')}
+          {nav('/accounts-receivable', <DollarSign size={16} className={styles.menuIcon} />, 'Cuentas por Cobrar')}
+          {nav('/cash-register', <Wallet size={16} className={styles.menuIcon} />, 'Caja')}
           {nav('/expenses', <ReceiptText size={16} className={styles.menuIcon} />, 'Gastos')}
 
           {nav('/customers', <Contact size={16} className={styles.menuIcon} />, 'Clientes')}
@@ -172,6 +182,7 @@ export function Sidebar({ mode, onClose, isMobile }: { mode: SidebarMode; onClos
           {user?.role === 'admin' && nav('/users', <Users size={16} className={styles.menuIcon} />, 'Usuarios')}
           {user?.email === 'admin@stockmaster.com' && nav('/admin/tenants', <Shield size={16} className={styles.menuIcon} />, 'Licencias')}
           {nav('/settings', <Settings size={16} className={styles.menuIcon} />, 'Configuración')}
+          {nav('/notifications', <Bell size={16} className={styles.menuIcon} />, 'Notificaciones')}
           <div className={styles.divider} />
           {nav('/social', <Share2 size={16} className={styles.menuIcon} />, 'Social')}
         </nav>

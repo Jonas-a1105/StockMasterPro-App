@@ -15,7 +15,7 @@ export class PurchaseOrderService {
     return order;
   }
 
-  async receive(input: {
+  async create(input: {
     tenantId: string;
     supplierId?: string;
     userId: string;
@@ -28,7 +28,7 @@ export class PurchaseOrderService {
       tenantId: input.tenantId,
       supplierId: input.supplierId ?? '',
       userId: input.userId,
-      status: 'received',
+      status: 'pending',
       total,
       notes: input.notes,
       items: input.items.map((i) => ({
@@ -38,5 +38,9 @@ export class PurchaseOrderService {
         subtotal: i.quantity * i.cost,
       })),
     });
+  }
+
+  async receiveOrder(id: string, tenantId: string) {
+    return this.poRepo.receiveOrder(id, tenantId);
   }
 }

@@ -1,13 +1,15 @@
 import { Skeleton } from '@shared/ui/Skeleton';
 import { LoadingDots } from '@shared/ui/LoadingDots';
 import { useExchangeRate } from '@contexts/ExchangeRateContext';
+import { Package } from 'lucide-react';
 import type { PurchaseOrder } from '@types';
 import styles from '@features/inventory/pages/InventoryPage.module.css';
 
 export function PurchaseOrdersList({
-  orders, suppliers, loading, skeletonEnabled,
+  orders, suppliers, loading, skeletonEnabled, onReceive, userRole,
 }: {
   orders: PurchaseOrder[]; suppliers: any[]; loading: boolean; skeletonEnabled: boolean;
+  onReceive?: (id: string) => void; userRole?: string;
 }) {
   const { formatPrice } = useExchangeRate();
 
@@ -33,6 +35,7 @@ export function PurchaseOrdersList({
             <th style={{ textAlign: 'center' }}>Estado</th>
             <th style={{ textAlign: 'right' }}>Total</th>
             <th>Fecha</th>
+            <th style={{ textAlign: 'center' }}>Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -45,10 +48,11 @@ export function PurchaseOrdersList({
                   <td><Skeleton height={14} width="80px" /></td>
                   <td><div style={{ display: 'flex', justifyContent: 'flex-end' }}><Skeleton height={14} width="60px" /></div></td>
                   <td><Skeleton height={14} width="100px" /></td>
+                  <td></td>
                 </tr>
               ))
             ) : (
-              <tr><td colSpan={5} style={{ textAlign: 'center', padding: 40 }}><LoadingDots text="Cargando órdenes..." /></td></tr>
+              <tr><td colSpan={6} style={{ textAlign: 'center', padding: 40 }}><LoadingDots text="Cargando órdenes..." /></td></tr>
             )
           ) : (
             orders.map(order => (
@@ -58,6 +62,15 @@ export function PurchaseOrdersList({
                 <td style={{ textAlign: 'center' }}>{statusBadge(order.status)}</td>
                 <td style={{ textAlign: 'right' }}><span className="lista-number-value">{formatPrice(order.total)}</span></td>
                 <td>{new Date(order.createdAt).toLocaleDateString()}</td>
+                <td style={{ textAlign: 'center' }}>
+                  {order.status === 'pending' && userRole !== 'cajero' && onReceive && (
+                    <button onClick={() => onReceive(order.id)} title="Recibir orden" style={{
+                      padding: '4px 10px', border: 'none', borderRadius: 6,
+                      background: '#16a34a', color: 'white', cursor: 'pointer', fontSize: 12,
+                      display: 'inline-flex', alignItems: 'center', gap: 4,
+                    }}><Package size={14} /> Recibir</button>
+                  )}
+                </td>
               </tr>
             ))
           )}

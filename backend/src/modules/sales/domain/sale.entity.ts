@@ -20,22 +20,37 @@ export class Sale {
   ) {}
 
   static calculateTotal(
-    items: { price: number; quantity: number }[],
+    items: {
+      price: number;
+      quantity: number;
+      discount?: number;
+      taxRate?: number;
+    }[],
     discount: number = 0,
     taxRate: number = 0,
   ): { subtotal: number; tax: number; discount: number; total: number } {
-    const subtotal = items.reduce(
-      (sum, item) => sum + item.price * item.quantity,
-      0,
-    );
-    const discountAmount = subtotal * (discount / 100);
-    const taxableAmount = subtotal - discountAmount;
-    const tax = taxableAmount * (taxRate / 100);
-    const total = taxableAmount + tax;
+    let subtotal = 0;
+    let totalDiscount = 0;
+
+    for (const item of items) {
+      const itemSubtotal = item.price * item.quantity;
+      const itemDiscount = itemSubtotal * ((item.discount ?? 0) / 100);
+
+      subtotal += itemSubtotal;
+      totalDiscount += itemDiscount;
+    }
+
+    const globalDiscountAmount = subtotal * (discount / 100);
+    totalDiscount += globalDiscountAmount;
+
+    const taxableAfterDiscount = subtotal - totalDiscount;
+    const tax = taxableAfterDiscount * (taxRate / 100);
+    const total = taxableAfterDiscount + tax;
+
     return {
-      subtotal,
+      subtotal: Math.round(subtotal * 100) / 100,
       tax: Math.round(tax * 100) / 100,
-      discount: Math.round(discountAmount * 100) / 100,
+      discount: Math.round(totalDiscount * 100) / 100,
       total: Math.round(total * 100) / 100,
     };
   }

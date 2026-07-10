@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Param, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Patch,
+  Body,
+  Param,
+  Query,
+} from '@nestjs/common';
 import { ProcessSaleDto } from '../dto/process-sale.dto';
 import { Roles } from '@shared/infrastructure/decorators/roles.decorator';
 import { CurrentUser } from '@shared/infrastructure/decorators/current-user.decorator';
@@ -8,6 +16,7 @@ import { ProcessBulkSalesUseCase } from '../../application/use-cases/process-bul
 import { FindAllSalesUseCase } from '../../application/use-cases/find-all-sales.use-case';
 import { FindSaleByIdUseCase } from '../../application/use-cases/find-sale-by-id.use-case';
 import { GetDailySalesSummaryUseCase } from '../../application/use-cases/get-daily-sales-summary.use-case';
+import { VoidSaleUseCase } from '../../application/use-cases/void-sale.use-case';
 import { PaymentMethod } from '../../domain/sale.entity';
 
 @Controller('sales')
@@ -18,6 +27,7 @@ export class SalesController {
     private readonly findAllSalesUseCase: FindAllSalesUseCase,
     private readonly findSaleByIdUseCase: FindSaleByIdUseCase,
     private readonly getDailySalesSummaryUseCase: GetDailySalesSummaryUseCase,
+    private readonly voidSaleUseCase: VoidSaleUseCase,
   ) {}
 
   @Post()
@@ -52,11 +62,18 @@ export class SalesController {
     @CurrentUser() user: AuthenticatedUser,
     @Query('page') page?: string,
     @Query('limit') limit?: string,
+    @Query('search') search?: string,
+    @Query('startDate') startDate?: string,
+    @Query('endDate') endDate?: string,
+    @Query('customerId') customerId?: string,
+    @Query('paymentMethod') paymentMethod?: string,
+    @Query('status') status?: string,
   ) {
     return this.findAllSalesUseCase.execute(
       user.tenantId,
       Number(page) || 1,
       Number(limit) || 50,
+      { search, startDate, endDate, customerId, paymentMethod, status },
     );
   }
 
@@ -72,5 +89,14 @@ export class SalesController {
     @CurrentUser() user: AuthenticatedUser,
   ) {
     return this.findSaleByIdUseCase.execute(id, user.tenantId);
+  }
+
+  @Patch(':id/void')
+  @Roles('admin', 'gerente')
+  async voidSale(
+    @Param('id') id: string,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
+    return this.voidSaleUseCase.execute(id, user.tenantId);
   }
 }
