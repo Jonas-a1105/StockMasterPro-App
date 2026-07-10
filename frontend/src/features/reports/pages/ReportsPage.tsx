@@ -13,6 +13,7 @@ import { TabNav } from '@shared/ui/TabNav';
 import { useTheme } from '@contexts/ThemeContext';
 import { formatUsd } from '@shared/lib/format/currency';
 import { exportToExcel } from '@shared/lib/excelHelper';
+import { exportToPdf } from '@shared/lib/print/pdfHelper';
 import { useToast } from '@contexts/ToastContext';
 import styles from './ReportsPage.module.css';
 
@@ -293,6 +294,33 @@ export function ReportsPage() {
     exportToExcel(lowStockProducts, columns, 'reporte_stock_bajo', 'xlsx');
   };
 
+  const handleExportNetProfitPdf = () => {
+    const columns = [
+      { header: 'Mes', key: 'month' },
+      { header: 'Ingresos', key: 'revenue' },
+      { header: 'Costos', key: 'cost' },
+      { header: 'Utilidad Neta', key: 'profit' },
+      { header: 'Margen %', key: 'margin' },
+    ];
+    const data = profitDataWithTotal.map(m => ({
+      ...m,
+      margin: m.revenue > 0 ? Math.round((m.profit / m.revenue) * 10000) / 100 : 0,
+    }));
+    exportToPdf(data, columns, 'Reporte - Utilidad Neta', 'reporte_utilidad_neta');
+  };
+
+  const handleExportLowStockPdf = () => {
+    const columns = [
+      { header: 'Producto', key: 'name' },
+      { header: 'Código', key: 'barcode' },
+      { header: 'Stock Actual', key: 'stock' },
+      { header: 'Stock Mínimo', key: 'minStock' },
+      { header: 'Precio', key: 'price' },
+      { header: 'Categoría', key: 'category' },
+    ];
+    exportToPdf(lowStockProducts, columns, 'Reporte - Stock Bajo', 'reporte_stock_bajo');
+  };
+
   if (loading) return config.skeletonEnabled ? <SkeletonReports chartCount={6} /> : <LoadingDots text="Cargando reportes..." />;
 
   return (
@@ -391,6 +419,7 @@ export function ReportsPage() {
             <div className={styles.cardTitle}>
             <TrendingUp size={14} /> Detalle de utilidad neta mensual
             <button className={styles.exportBtn} onClick={handleExportNetProfit} title="Exportar a Excel"><Download size={14} /></button>
+            <button className={styles.exportBtn} onClick={handleExportNetProfitPdf} title="Exportar a PDF"><Download size={14} /></button>
           </div>
             <div className={styles.cardSub}>Métrica detallada del rendimiento financiero consolidado por mes.</div>
             <div className="lista-container" style={{ marginTop: 16 }}>
@@ -441,6 +470,7 @@ export function ReportsPage() {
             <AlertTriangle size={14} />
             Productos con stock bajo
             <button className={styles.exportBtn} onClick={handleExportLowStock} title="Exportar a Excel"><Download size={14} /></button>
+            <button className={styles.exportBtn} onClick={handleExportLowStockPdf} title="Exportar a PDF"><Download size={14} /></button>
           </div>
             <div className={styles.cardBody}>
               {lowStockProducts.length === 0 ? (

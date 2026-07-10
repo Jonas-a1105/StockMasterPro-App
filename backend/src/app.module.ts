@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
+import { ScheduleModule } from '@nestjs/schedule';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { RLSInterceptor } from '@shared/infrastructure/http/interceptors/rls.interceptor';
 import { TransformInterceptor } from '@shared/infrastructure/http/interceptors/transform.interceptor';
@@ -42,6 +43,7 @@ import { UploadModule } from './modules/uploads/infrastructure/upload.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
+    ScheduleModule.forRoot(),
     ThrottlerModule.forRoot([{ ttl: 60000, limit: 100 }]),
     PrismaModule,
     AuthPrismaModule,

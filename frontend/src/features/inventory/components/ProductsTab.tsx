@@ -18,6 +18,7 @@ import { SkeletonTable, SkeletonCards } from '@shared/ui/Skeleton';
 import { Skeleton } from '@shared/ui/Skeleton';
 import { ImportModal } from '@shared/ui/ImportModal';
 import { exportToExcel, type ColumnMapping } from '@shared/lib/excelHelper';
+import { exportToPdf } from '@shared/lib/print/pdfHelper';
 import type { Product } from '@types';
 import type { SortField, SortDirection, ViewMode } from '../types';
 import styles from '../pages/InventoryPage.module.css';
@@ -189,6 +190,9 @@ export function ProductsTab() {
                 </button>
               ) : (
                 <button className={styles.toolsMenuItem} onClick={() => { handleExportProducts(); setShowToolsMenu(false); }}><Download size={14} className={styles.toolsMenuIcon} /> <span>Exportar Excel</span></button>
+              )}
+              {licenseStatus?.tier !== 'free' && (
+                <button className={styles.toolsMenuItem} onClick={() => { exportToPdf(products, PRODUCT_COLUMNS, 'Inventario - Productos', 'inventario_productos'); setShowToolsMenu(false); }}><Download size={14} className={styles.toolsMenuIcon} /> <span>Exportar PDF</span></button>
               )}
               {licenseStatus?.tier === 'free' ? (
                 <button className={styles.toolsMenuItem} onClick={() => { setShowToolsMenu(false); showToast('Esta función requiere Plan Intermedio o superior', 'info'); navigate('/settings?tab=licenses&upgrade=intermedio'); }} style={{ opacity: 0.65, display: 'flex', alignItems: 'center' }}>
