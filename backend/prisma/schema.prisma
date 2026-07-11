@@ -60,6 +60,7 @@ inventoryCounts    InventoryCount[]
   costCenters        CostCenter[]
   projects           Project[]
   taxRates           TaxRate[]
+  licenses           License[]
 
   @@map("tenants")
 }
@@ -135,6 +136,7 @@ model User {
   postedJournalEntries      JournalEntry[]          @relation("PostedJournalEntries")
   closedFiscalPeriods       FiscalPeriod[]          @relation("ClosedFiscalPeriods")
   managedProjects           Project[]               @relation("ManagedProjects")
+  issuedLicenses           License[]               @relation("LicenseIssuedBy")
 
   @@index([tenantId])
   @@index([tenantId, id])
@@ -1173,8 +1175,8 @@ model TaxRate {
 
   tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
 
-  @@index([tenantId, type, isActive])
-  @@map("tax_rates")
+@@index([tenantId, type, isActive])
+@@map("tax_rates")
 }
 
 model InventoryCount {
@@ -1223,5 +1225,32 @@ model InventoryCountItem {
   @@index([inventoryCountId])
   @@index([tenantId, productId])
   @@map("inventory_count_items")
+}
+
+model License {
+  id              String   @id @default(uuid()) @db.Uuid
+  tenantId        String   @map("tenant_id") @db.Uuid
+  jti             String   @unique @db.VarChar(255)
+  tier            String   @db.VarChar(50)
+  issuedAt        DateTime @default(now()) @map("issued_at")
+  expiresAt       DateTime @map("expires_at")
+  activatedAt     DateTime? @map("activated_at")
+  status          String   @default("issued") @db.VarChar(20) // issued, activated, revoked, expired
+  issuedBy        String?  @map("issued_by") @db.Uuid
+  revokedAt       DateTime? @map("revoked_at")
+  revokedBy       String?  @map("revoked_by") @db.Uuid
+  revokedReason   String?  @map("revoked_reason") @db.Text
+  payload         Json     @db.JsonB
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  tenant     Tenant     @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  issuer     User?      @relation("LicenseIssuedBy", fields: [issuedBy], references: [id], onDelete: SetNull)
+
+  @@index([tenantId])
+  @@index([jti])
+  @@index([status])
+  @@index([expiresAt])
+  @@map("licenses")
 }
 

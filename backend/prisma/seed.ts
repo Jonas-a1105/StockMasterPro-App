@@ -75,20 +75,29 @@ async function main() {
   });
 
   const productsData = [
-    { name: 'Coca Cola 2L', barcode: '7501055300110', price: 2.5, cost: 1.8, stock: 150, minStock: 20, categoryId: categories[0].id, warehouseId: warehouse.id },
-    { name: 'Leche Entera 1L', barcode: '7501085512345', price: 1.8, cost: 1.2, stock: 80, minStock: 15, categoryId: categories[1].id, warehouseId: warehouse.id },
-    { name: 'Jabón Líquido 500ml', barcode: '7501025698741', price: 3.2, cost: 2.1, stock: 45, minStock: 10, categoryId: categories[2].id, warehouseId: warehouse.id },
-    { name: 'Arroz 1kg', barcode: '7501096302587', price: 1.5, cost: 0.9, stock: 200, minStock: 30, categoryId: categories[3].id, warehouseId: warehouse.id },
-    { name: 'Pan Molde Blanco', barcode: '7501047123654', price: 2.0, cost: 1.3, stock: 60, minStock: 12, categoryId: categories[3].id, warehouseId: warehouse.id },
-    { name: 'Yogur Natural 1kg', barcode: '7501063258741', price: 3.5, cost: 2.4, stock: 3, minStock: 10, categoryId: categories[1].id, warehouseId: warehouse.id },
-    { name: 'Detergente 1kg', barcode: '7501014785236', price: 4.0, cost: 2.8, stock: 35, minStock: 8, categoryId: categories[2].id, warehouseId: warehouse.id },
-    { name: 'Galletas Integrales', barcode: '7501036987452', price: 1.2, cost: 0.7, stock: 120, minStock: 20, categoryId: categories[3].id, warehouseId: warehouse.id },
-    { name: 'Agua Mineral 1.5L', barcode: '7501074123658', price: 1.0, cost: 0.5, stock: 0, minStock: 25, categoryId: categories[0].id, warehouseId: warehouse.id },
-    { name: 'Queso Fresco 500g', barcode: '7501098741256', price: 4.5, cost: 3.2, stock: 25, minStock: 5, categoryId: categories[1].id, warehouseId: warehouse.id },
+    { name: 'Coca Cola 2L', barcode: '7501055300110', price: 2.5, cost: 1.8, minStock: 20, categoryId: categories[0].id },
+    { name: 'Leche Entera 1L', barcode: '7501085512345', price: 1.8, cost: 1.2, minStock: 15, categoryId: categories[1].id },
+    { name: 'Jabón Líquido 500ml', barcode: '7501025698741', price: 3.2, cost: 2.1, minStock: 10, categoryId: categories[2].id },
+    { name: 'Arroz 1kg', barcode: '7501096302587', price: 1.5, cost: 0.9, minStock: 30, categoryId: categories[3].id },
+    { name: 'Pan Molde Blanco', barcode: '7501047123654', price: 2.0, cost: 1.3, minStock: 12, categoryId: categories[3].id },
+    { name: 'Yogur Natural 1kg', barcode: '7501063258741', price: 3.5, cost: 2.4, minStock: 10, categoryId: categories[1].id },
+    { name: 'Detergente 1kg', barcode: '7501014785236', price: 4.0, cost: 2.8, minStock: 8, categoryId: categories[2].id },
+    { name: 'Galletas Integrales', barcode: '7501036987452', price: 1.2, cost: 0.7, minStock: 20, categoryId: categories[3].id },
+    { name: 'Agua Mineral 1.5L', barcode: '7501074123658', price: 1.0, cost: 0.5, minStock: 25, categoryId: categories[0].id },
+    { name: 'Queso Fresco 500g', barcode: '7501098741256', price: 4.5, cost: 3.2, minStock: 5, categoryId: categories[1].id },
   ];
 
   for (const p of productsData) {
-    await prisma.product.create({ data: { tenantId: tenant.id, ...p } });
+    const product = await prisma.product.create({ data: { tenantId: tenant.id, ...p } });
+    await prisma.productWarehouse.create({
+      data: {
+        tenantId: tenant.id,
+        productId: product.id,
+        warehouseId: warehouse.id,
+        stock: 100,
+        minStock: p.minStock || 10,
+      },
+    });
   }
 
   await prisma.customer.create({
