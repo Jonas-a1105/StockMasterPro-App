@@ -46,6 +46,7 @@ const ReturnsPage = lazy(() => import('@features/returns/pages/ReturnsPage').the
 const WarehouseTransfersPage = lazy(() => import('@features/warehouse-transfers/pages/WarehouseTransfersPage').then(m => ({ default: m.WarehouseTransfersPage })));
 const ProductLotsPage = lazy(() => import('@features/product-lots/pages/ProductLotsPage').then(m => ({ default: m.ProductLotsPage })));
 const FiscalPage = lazy(() => import('@features/fiscal/pages/FiscalPage').then(m => ({ default: m.FiscalPage })));
+const DeadProductsPage = lazy(() => import('@features/reports/pages/DeadProductsPage').then(m => ({ default: m.DeadProductsPage })));
 const ForgotPasswordPage = lazy(() => import('@features/auth/pages/ForgotPasswordPage').then(m => ({ default: m.ForgotPasswordPage })));
 const ResetPasswordPage = lazy(() => import('@features/auth/pages/ResetPasswordPage').then(m => ({ default: m.ResetPasswordPage })));
 
@@ -160,6 +161,7 @@ export function AppRouter() {
           <Route path="/warehouse-transfers" element={<Suspense fallback={<SkeletonTablePage tabs={0} kpi={3} />}><WarehouseTransfersPage /></Suspense>} />
           <Route path="/product-lots" element={<Suspense fallback={<SkeletonTablePage tabs={0} kpi={3} />}><ProductLotsPage /></Suspense>} />
           <Route path="/fiscal" element={<Suspense fallback={<SkeletonTablePage tabs={2} kpi={0} />}><FiscalPage /></Suspense>} />
+          <Route path="/dead-products" element={<PlanRoute requiredPlan="intermedio" sectionName="Productos Muertos"><Suspense fallback={<SkeletonTablePage tabs={0} kpi={3} />}><DeadProductsPage /></Suspense></PlanRoute>} />
         </Route>
 
         <Route path="/social" element={<ProtectedRoute><Suspense fallback={<SkeletonCards count={6} />}><SocialPage /></Suspense></ProtectedRoute>} />

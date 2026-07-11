@@ -158,6 +158,7 @@ export function Sidebar({ mode, onClose, isMobile }: { mode: SidebarMode; onClos
           {nav('/pos', <ShoppingCart size={16} className={styles.menuIcon} />, 'Punto de Venta')}
           {nav('/sales', <ReceiptText size={16} className={styles.menuIcon} />, 'Historial Ventas')}
           {nav('/reports', <BarChart3 size={16} className={styles.menuIcon} />, 'Reportes')}
+          {nav('/dead-products', <AlertTriangle size={16} className={styles.menuIcon} />, 'Productos Muertos')}
           {nav('/best-sellers', <BarChart3 size={16} className={styles.menuIcon} />, 'Best-Sellers')}
           {nav('/net-profit', <DollarSign size={16} className={styles.menuIcon} />, 'Utilidad Neta')}
 
