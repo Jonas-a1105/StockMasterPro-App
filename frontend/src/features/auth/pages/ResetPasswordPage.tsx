@@ -43,10 +43,14 @@ export function ResetPasswordPage() {
         </div>
         <div className={styles.authCard}>
           <h2 className={styles.title}>Enlace inválido</h2>
-          <p className={`${styles.colorTextMuted} ${styles.fontSize14} ${styles.mt8} ${styles.mb8}`}>
+          <p
+            className={`${styles.colorTextMuted} ${styles.fontSize14} ${styles.mt8} ${styles.mb8}`}
+          >
             El enlace de restablecimiento no es válido o ha expirado.
           </p>
-          <Link to="/forgot-password" className={styles.footerLinkAccent}>Solicitar nuevo enlace</Link>
+          <Link to="/forgot-password" className={styles.footerLinkAccent}>
+            Solicitar nuevo enlace
+          </Link>
         </div>
       </div>
     );
@@ -61,10 +65,14 @@ export function ResetPasswordPage() {
         </div>
         <div className={styles.authCard}>
           <h2 className={styles.title}>Contraseña actualizada</h2>
-          <p className={`${styles.colorTextMuted} ${styles.fontSize14} ${styles.mt8} ${styles.mb8}`}>
+          <p
+            className={`${styles.colorTextMuted} ${styles.fontSize14} ${styles.mt8} ${styles.mb8}`}
+          >
             Tu contraseña se ha restablecido correctamente.
           </p>
-          <Link to="/login" className={styles.footerLinkAccent}>Iniciar sesión</Link>
+          <Link to="/login" className={styles.footerLinkAccent}>
+            Iniciar sesión
+          </Link>
         </div>
       </div>
     );
@@ -89,16 +97,40 @@ export function ResetPasswordPage() {
           {error && <div className={styles.error}>{error}</div>}
           <div className={styles.field}>
             <label>Nueva contraseña</label>
-            <input type="password" value={password} onChange={e => setPassword(e.target.value)} className={styles.input} placeholder="Mínimo 6 caracteres" required minLength={6} />
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className={styles.input}
+              placeholder="Mínimo 6 caracteres"
+              required
+              minLength={6}
+            />
           </div>
           <div className={styles.field}>
             <label>Confirmar contraseña</label>
-            <input type="password" value={confirm} onChange={e => setConfirm(e.target.value)} className={styles.input} placeholder="Repite la contraseña" required />
+            <input
+              type="password"
+              value={confirm}
+              onChange={(e) => setConfirm(e.target.value)}
+              className={styles.input}
+              placeholder="Repite la contraseña"
+              required
+            />
           </div>
-          <button type="submit" className={`${styles.submitBtn} ${styles.btnShimmer}`} disabled={loading || !password || !confirm}>
+          <button
+            type="submit"
+            className={`${styles.submitBtn} ${styles.btnShimmer}`}
+            disabled={loading || !password || !confirm}
+          >
             {loading ? 'Guardando...' : 'Restablecer contraseña'}
           </button>
-          <Link to="/login" className={`${styles.footerLinkAccent} ${styles.textCenter} ${styles.block} ${styles.mt16}`}>Volver al inicio de sesión</Link>
+          <Link
+            to="/login"
+            className={`${styles.footerLinkAccent} ${styles.textCenter} ${styles.block} ${styles.mt16}`}
+          >
+            Volver al inicio de sesión
+          </Link>
         </form>
       </div>
     </div>

@@ -1,4 +1,5 @@
-export type InventoryCountStatus = 'draft' | 'in_progress' | 'completed' | 'approved' | 'cancelled';
+export type InventoryCountStatus =
+  'draft' | 'in_progress' | 'completed' | 'approved' | 'cancelled';
 
 export class InventoryCountItem {
   constructor(
@@ -31,7 +32,8 @@ export class InventoryCount {
     public readonly tenantId: string,
     public warehouseId: string | null,
     public readonly userId: string,
-    public status: 'draft' | 'in_progress' | 'completed' | 'approved' | 'cancelled',
+    public status:
+      'draft' | 'in_progress' | 'completed' | 'approved' | 'cancelled',
     public name: string | null,
     public notes: string | null,
     public readonly createdAt: Date,
@@ -107,7 +109,7 @@ export class InventoryCount {
   }
 
   hasVariance(): boolean {
-    return this.items.some(item => item.difference !== 0);
+    return this.items.some((item) => item.difference !== 0);
   }
 }
 

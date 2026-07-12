@@ -9,16 +9,42 @@ import { formatUsd as usdFormatter } from '@shared/lib/format/currency';
 import { Filter, TrendingUp, TrendingDown, PiggyBank, Percent, Download } from 'lucide-react';
 import { KpiGrid } from '@shared/ui/KpiGrid';
 import { Toolbar } from '@shared/ui/Toolbar';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Tooltip, Legend } from 'recharts';
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  ResponsiveContainer,
+  Tooltip,
+  Legend,
+} from 'recharts';
 import { exportToExcel } from '@shared/lib/excelHelper';
 import styles from './NetProfitPage.module.css';
 
-const MONTH_LABELS = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+const MONTH_LABELS = [
+  'Ene',
+  'Feb',
+  'Mar',
+  'Abr',
+  'May',
+  'Jun',
+  'Jul',
+  'Ago',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dic',
+];
 
 function fillAllMonths(data: any[]) {
   const map: Record<string, any> = {};
-  data.forEach(m => { map[m.label] = m; });
-  return MONTH_LABELS.map(label => map[label] || { label, revenue: 0, cogs: 0, expenses: 0, profit: 0 });
+  data.forEach((m) => {
+    map[m.label] = m;
+  });
+  return MONTH_LABELS.map(
+    (label) => map[label] || { label, revenue: 0, cogs: 0, expenses: 0, profit: 0 }
+  );
 }
 
 export function NetProfitPage() {
@@ -32,7 +58,9 @@ export function NetProfitPage() {
   const [endDate, setEndDate] = useState('');
   const [hideInactive, setHideInactive] = useState(false);
 
-  useEffect(() => { loadData(); }, []);
+  useEffect(() => {
+    loadData();
+  }, []);
 
   async function loadData(s?: string, e?: string) {
     setLoading(true);
@@ -59,19 +87,22 @@ export function NetProfitPage() {
 
   const filledMonthly = useMemo(() => fillAllMonths(monthly), [monthly]);
 
-  const chartData = filledMonthly.map(m => ({
+  const chartData = filledMonthly.map((m) => ({
     label: m.label,
     Ingresos: m.revenue,
     'Egresos Totales': m.cogs + m.expenses,
     'Utilidad Neta': m.profit,
   }));
 
-  const totals = useMemo(() => ({
-    revenue: filledMonthly.reduce((s, m) => s + m.revenue, 0),
-    cogs: filledMonthly.reduce((s, m) => s + m.cogs, 0),
-    expenses: filledMonthly.reduce((s, m) => s + m.expenses, 0),
-    profit: filledMonthly.reduce((s, m) => s + m.profit, 0),
-  }), [filledMonthly]);
+  const totals = useMemo(
+    () => ({
+      revenue: filledMonthly.reduce((s, m) => s + m.revenue, 0),
+      cogs: filledMonthly.reduce((s, m) => s + m.cogs, 0),
+      expenses: filledMonthly.reduce((s, m) => s + m.expenses, 0),
+      profit: filledMonthly.reduce((s, m) => s + m.profit, 0),
+    }),
+    [filledMonthly]
+  );
 
   const marginNet = totals.revenue > 0 ? (totals.profit / totals.revenue) * 100 : 0;
 
@@ -84,7 +115,7 @@ export function NetProfitPage() {
       { header: 'Utilidad Neta', key: 'Utilidad' },
       { header: 'Margen %', key: 'Margen' },
     ];
-    const data = filledMonthly.map(m => ({
+    const data = filledMonthly.map((m) => ({
       Mes: m.label,
       Ingresos: m.revenue,
       COGS: m.cogs,
@@ -103,26 +134,49 @@ export function NetProfitPage() {
     exportToExcel(data, columns, 'reporte_utilidad_neta_mensual', 'xlsx');
   };
 
-  if (loading) return config.skeletonEnabled ? <SkeletonReports chartCount={2} /> : <LoadingDots text="Calculando utilidad..." />;
+  if (loading)
+    return config.skeletonEnabled ? (
+      <SkeletonReports chartCount={2} />
+    ) : (
+      <LoadingDots text="Calculando utilidad..." />
+    );
 
   if (!data) return null;
 
   return (
     <div className={styles.container}>
       <TabNav
-        tabs={[
-          { key: 'net-profit', label: 'Utilidad Neta', icon: <PiggyBank size={16} /> },
-        ]}
+        tabs={[{ key: 'net-profit', label: 'Utilidad Neta', icon: <PiggyBank size={16} /> }]}
         activeTab={activeTab}
         onTabChange={setActiveTab}
       />
 
       <KpiGrid
         items={[
-          { icon: <TrendingUp size={18} />, value: usdFormatter(totals.revenue), label: 'Ingresos Totales', color: '#3b82f6' },
-          { icon: <TrendingDown size={18} />, value: usdFormatter(totals.cogs + totals.expenses), label: 'Egresos Totales (COGS+Gastos)', color: '#6b7280' },
-          { icon: <PiggyBank size={18} />, value: usdFormatter(totals.profit), label: 'Utilidad Neta Anual', color: totals.profit >= 0 ? '#10b981' : '#dc2626' },
-          { icon: <Percent size={18} />, value: marginNet.toFixed(1) + '%', label: 'Margen Neto Promedio', color: '#f05a28' },
+          {
+            icon: <TrendingUp size={18} />,
+            value: usdFormatter(totals.revenue),
+            label: 'Ingresos Totales',
+            color: '#3b82f6',
+          },
+          {
+            icon: <TrendingDown size={18} />,
+            value: usdFormatter(totals.cogs + totals.expenses),
+            label: 'Egresos Totales (COGS+Gastos)',
+            color: 'var(--color-text-muted)',
+          },
+          {
+            icon: <PiggyBank size={18} />,
+            value: usdFormatter(totals.profit),
+            label: 'Utilidad Neta Anual',
+            color: totals.profit >= 0 ? 'var(--color-success)' : 'var(--color-danger)',
+          },
+          {
+            icon: <Percent size={18} />,
+            value: marginNet.toFixed(1) + '%',
+            label: 'Margen Neto Promedio',
+            color: 'var(--color-primary)',
+          },
         ]}
       />
 
@@ -130,19 +184,36 @@ export function NetProfitPage() {
         <div className={styles.toolbarInner}>
           <div className={styles.filterGroup}>
             <span className={styles.filterLabel}>Año:</span>
-            <select className={styles.yearSelect} value={new Date().getFullYear()} onChange={() => {}}>
+            <select
+              className={styles.yearSelect}
+              value={new Date().getFullYear()}
+              onChange={() => {}}
+            >
               <option value={2026}>2026</option>
               <option value={2025}>2025</option>
             </select>
           </div>
           <span className={styles.filterLabel}>Desde:</span>
-          <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} className={styles.dateInput} />
+          <input
+            type="date"
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+            className={styles.dateInput}
+          />
           <span className={styles.filterLabel}>Hasta:</span>
-          <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} className={styles.dateInput} />
+          <input
+            type="date"
+            value={endDate}
+            onChange={(e) => setEndDate(e.target.value)}
+            className={styles.dateInput}
+          />
           <button onClick={handleFilter} className={styles.filterBtn}>
             <Filter size={14} /> Filtrar
           </button>
-          <button onClick={() => setHideInactive(v => !v)} className={hideInactive ? styles.toggleBtnActive : styles.toggleBtn}>
+          <button
+            onClick={() => setHideInactive((v) => !v)}
+            className={hideInactive ? styles.toggleBtnActive : styles.toggleBtn}
+          >
             {hideInactive ? 'Mostrar Todos' : 'Filtrar Activos'}
           </button>
         </div>
@@ -151,23 +222,59 @@ export function NetProfitPage() {
       <div className={styles.chartCard}>
         <div className={styles.chartHeader}>
           <span className={styles.chartTitle}>Curva Analítica de Márgenes Operativos</span>
-          <p className={styles.chartSub}>Comparativa de flujos de caja y rentabilidad real por mes.</p>
+          <p className={styles.chartSub}>
+            Comparativa de flujos de caja y rentabilidad real por mes.
+          </p>
         </div>
         <div className={styles.chartBox}>
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={chartData}>
               <CartesianGrid stroke="var(--border-color, #2d2d2d)" strokeDasharray="3 3" />
-              <XAxis dataKey="label" tick={{ fill: 'var(--text-muted, #888)', fontSize: 11 }} axisLine={false} tickLine={false} />
-              <YAxis tick={{ fill: 'var(--text-muted, #888)', fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={(v: number) => usdFormatter(v)} />
+              <XAxis
+                dataKey="label"
+                tick={{ fill: 'var(--text-muted, #888)', fontSize: 11 }}
+                axisLine={false}
+                tickLine={false}
+              />
+              <YAxis
+                tick={{ fill: 'var(--text-muted, #888)', fontSize: 11 }}
+                axisLine={false}
+                tickLine={false}
+                tickFormatter={(v: number) => usdFormatter(v)}
+              />
               <Tooltip
-                contentStyle={{ backgroundColor: 'var(--bg-card, #1e1e1e)', border: '1px solid var(--border-color, #2d2d2d)', borderRadius: 0, fontSize: 12 }}
+                contentStyle={{
+                  backgroundColor: 'var(--bg-card, #1e1e1e)',
+                  border: '1px solid var(--border-color, #2d2d2d)',
+                  borderRadius: 0,
+                  fontSize: 12,
+                }}
                 labelStyle={{ color: 'var(--text-dark, #f5f5f5)' }}
                 formatter={(val: any) => [usdFormatter(Number(val))]}
               />
               <Legend wrapperStyle={{ fontSize: 11, color: 'var(--text-muted, #888)' }} />
-              <Line type="monotone" dataKey="Ingresos" stroke="#3b82f6" strokeWidth={2} dot={{ r: 3, fill: '#3b82f6' }} />
-              <Line type="monotone" dataKey="Egresos Totales" stroke="#6b7280" strokeWidth={1.5} strokeDasharray="4 4" dot={{ r: 2, fill: '#6b7280' }} />
-              <Line type="monotone" dataKey="Utilidad Neta" stroke="#10b981" strokeWidth={2.5} dot={{ r: 4, fill: '#fff', strokeWidth: 2 }} />
+              <Line
+                type="monotone"
+                dataKey="Ingresos"
+                stroke="#3b82f6"
+                strokeWidth={2}
+                dot={{ r: 3, fill: '#3b82f6' }}
+              />
+              <Line
+                type="monotone"
+                dataKey="Egresos Totales"
+                stroke="#6b7280"
+                strokeWidth={1.5}
+                strokeDasharray="4 4"
+                dot={{ r: 2, fill: '#6b7280' }}
+              />
+              <Line
+                type="monotone"
+                dataKey="Utilidad Neta"
+                stroke="#10b981"
+                strokeWidth={2.5}
+                dot={{ r: 4, fill: '#fff', strokeWidth: 2 }}
+              />
             </LineChart>
           </ResponsiveContainer>
         </div>
@@ -177,7 +284,9 @@ export function NetProfitPage() {
         <div className={styles.tableWrapper}>
           <div className={styles.headerRow}>
             <span className={styles.detailTitle}>Detalle Mensual</span>
-            <button className={styles.exportBtn} onClick={handleExport} title="Exportar a Excel"><Download size={14} /></button>
+            <button className={styles.exportBtn} onClick={handleExport} title="Exportar a Excel">
+              <Download size={14} />
+            </button>
           </div>
           <table className={styles.table}>
             <thead>
@@ -191,7 +300,7 @@ export function NetProfitPage() {
               </tr>
             </thead>
             <tbody>
-              {filledMonthly.map(m => {
+              {filledMonthly.map((m) => {
                 const hasData = m.revenue > 0 || m.cogs > 0 || m.expenses > 0 || m.profit !== 0;
                 if (hideInactive && !hasData) return null;
                 const marginPct = m.revenue > 0 ? (m.profit / m.revenue) * 100 : 0;
@@ -203,12 +312,29 @@ export function NetProfitPage() {
                     <td className={styles.cellNumberMuted}>{usdFormatter(m.cogs)}</td>
                     <td className={styles.cellNumberMuted}>{usdFormatter(m.expenses)}</td>
                     <td className={styles.cellNumber}>
-                      <span className={styles.profitValue} style={{ '--profit-color': m.profit >= 0 ? 'var(--color-success, #10b981)' : 'var(--color-danger, #dc2626)' } as React.CSSProperties}>
+                      <span
+                        className={styles.profitValue}
+                        style={
+                          {
+                            '--profit-color':
+                              m.profit >= 0
+                                ? 'var(--color-success, #10b981)'
+                                : 'var(--color-danger, #dc2626)',
+                          } as React.CSSProperties
+                        }
+                      >
                         {usdFormatter(m.profit)}
                       </span>
                     </td>
                     <td className={styles.cellNumber}>
-                      <span className={styles.marginValue} style={{ '--margin-color': marginPct >= 0 ? '#34d399' : '#f87171' } as React.CSSProperties}>
+                      <span
+                        className={styles.marginValue}
+                        style={
+                          {
+                            '--margin-color': marginPct >= 0 ? '#34d399' : '#f87171',
+                          } as React.CSSProperties
+                        }
+                      >
                         {marginPct.toFixed(1)}%
                       </span>
                     </td>
@@ -223,11 +349,23 @@ export function NetProfitPage() {
                 <td className={styles.footNumberMuted}>{usdFormatter(totals.cogs)}</td>
                 <td className={styles.footNumberMuted}>{usdFormatter(totals.expenses)}</td>
                 <td className={styles.footNumber}>
-                  <span className={styles.totalProfitValue} style={{ '--total-profit-color': totals.profit >= 0 ? 'var(--color-success, #10b981)' : 'var(--color-danger, #dc2626)' } as React.CSSProperties}>
+                  <span
+                    className={styles.totalProfitValue}
+                    style={
+                      {
+                        '--total-profit-color':
+                          totals.profit >= 0
+                            ? 'var(--color-success, #10b981)'
+                            : 'var(--color-danger, #dc2626)',
+                      } as React.CSSProperties
+                    }
+                  >
                     {usdFormatter(totals.profit)}
                   </span>
                 </td>
-                <td className={`${styles.footNumber} ${styles.footTotalColor}`}>{marginNet.toFixed(1)}%</td>
+                <td className={`${styles.footNumber} ${styles.footTotalColor}`}>
+                  {marginNet.toFixed(1)}%
+                </td>
               </tr>
             </tfoot>
           </table>

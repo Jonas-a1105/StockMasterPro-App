@@ -11,8 +11,21 @@ import { api } from '@shared/lib/http/client';
 import type { CalendarEvent } from '@types';
 import styles from './AgendaDigitalPage.module.css';
 
-const MONTHS = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
-const WEEKDAYS = ['D','L','M','M','J','V','S'];
+const MONTHS = [
+  'Enero',
+  'Febrero',
+  'Marzo',
+  'Abril',
+  'Mayo',
+  'Junio',
+  'Julio',
+  'Agosto',
+  'Septiembre',
+  'Octubre',
+  'Noviembre',
+  'Diciembre',
+];
+const WEEKDAYS = ['D', 'L', 'M', 'M', 'J', 'V', 'S'];
 
 const EVENT_COLORS = ['#f97316', '#16a34a', '#dc2626', '#3b82f6', '#8b5cf6', '#ec4899'];
 
@@ -22,7 +35,7 @@ function formatDateKey(year: number, month: number, day: number) {
 
 function buildEventMap(events: CalendarEvent[]): Record<string, CalendarEvent[]> {
   const map: Record<string, CalendarEvent[]> = {};
-  events.forEach(ev => {
+  events.forEach((ev) => {
     const key = ev.startDate.split('T')[0];
     if (!map[key]) map[key] = [];
     map[key].push(ev);
@@ -35,7 +48,9 @@ export function AgendaDigitalPage() {
   const today = new Date();
   const [currentYear, setCurrentYear] = useState(today.getFullYear());
   const [currentMonth, setCurrentMonth] = useState(today.getMonth());
-  const [selectedDateStr, setSelectedDateStr] = useState(formatDateKey(today.getFullYear(), today.getMonth(), today.getDate()));
+  const [selectedDateStr, setSelectedDateStr] = useState(
+    formatDateKey(today.getFullYear(), today.getMonth(), today.getDate())
+  );
   const [activeTab, setActiveTab] = useState('agenda');
   const [events, setEvents] = useState<CalendarEvent[]>([]);
   const [loading, setLoading] = useState(true);
@@ -80,7 +95,12 @@ export function AgendaDigitalPage() {
       cells.push({ day: prevTotalDays - i + 1, isCurrent: false, isPrev: true, dateStr: '' });
     }
     for (let day = 1; day <= totalDays; day++) {
-      cells.push({ day, isCurrent: true, isPrev: false, dateStr: formatDateKey(currentYear, currentMonth, day) });
+      cells.push({
+        day,
+        isCurrent: true,
+        isPrev: false,
+        dateStr: formatDateKey(currentYear, currentMonth, day),
+      });
     }
     const remaining = 42 - cells.length;
     for (let j = 1; j <= remaining; j++) {
@@ -94,8 +114,9 @@ export function AgendaDigitalPage() {
   }, [eventMap, selectedDateStr]);
 
   const monthStats = useMemo(() => {
-    let alerts = 0, audits = 0;
-    events.forEach(ev => {
+    let alerts = 0,
+      audits = 0;
+    events.forEach((ev) => {
       if (ev.color === '#f97316') alerts++;
       if (ev.color === '#16a34a' || !ev.color) audits++;
     });
@@ -109,15 +130,21 @@ export function AgendaDigitalPage() {
   }, [selectedDateStr]);
 
   const navigatePrev = () => {
-    setCurrentMonth(p => {
-      if (p === 0) { setCurrentYear(y => y - 1); return 11; }
+    setCurrentMonth((p) => {
+      if (p === 0) {
+        setCurrentYear((y) => y - 1);
+        return 11;
+      }
       return p - 1;
     });
   };
 
   const navigateNext = () => {
-    setCurrentMonth(p => {
-      if (p === 11) { setCurrentYear(y => y + 1); return 0; }
+    setCurrentMonth((p) => {
+      if (p === 11) {
+        setCurrentYear((y) => y + 1);
+        return 0;
+      }
       return p + 1;
     });
   };
@@ -166,9 +193,7 @@ export function AgendaDigitalPage() {
   return (
     <div className={`${styles.container} animate-entrance`}>
       <TabNav
-        tabs={[
-          { key: 'agenda', label: 'Agenda Digital', icon: <CalendarDays size={16} /> },
-        ]}
+        tabs={[{ key: 'agenda', label: 'Agenda Digital', icon: <CalendarDays size={16} /> }]}
         activeTab={activeTab}
         onTabChange={setActiveTab}
       />
@@ -178,14 +203,26 @@ export function AgendaDigitalPage() {
           <LottieIcon src={calendarAnim} size={28} hoverPlay />
           <div>
             <h2 className={styles.headerTitle}>Planificador operativo y logs</h2>
-            <p className={styles.headerSub}>Monitoreo de hitos comerciales, auditorías de inventario y alertas del sistema.</p>
+            <p className={styles.headerSub}>
+              Monitoreo de hitos comerciales, auditorías de inventario y alertas del sistema.
+            </p>
           </div>
         </div>
         <div className={styles.headerControls}>
-          <button className={styles.navBtn} onClick={navigatePrev}><ChevronLeft size={14} /></button>
-          <div className={styles.monthLabel}>{MONTHS[currentMonth].charAt(0).toUpperCase() + MONTHS[currentMonth].slice(1).toLowerCase()} {currentYear}</div>
-          <button className={styles.navBtn} onClick={navigateNext}><ChevronRight size={14} /></button>
-          <button className={styles.todayBtn} onClick={goToToday}>Hoy</button>
+          <button className={styles.navBtn} onClick={navigatePrev}>
+            <ChevronLeft size={14} />
+          </button>
+          <div className={styles.monthLabel}>
+            {MONTHS[currentMonth].charAt(0).toUpperCase() +
+              MONTHS[currentMonth].slice(1).toLowerCase()}{' '}
+            {currentYear}
+          </div>
+          <button className={styles.navBtn} onClick={navigateNext}>
+            <ChevronRight size={14} />
+          </button>
+          <button className={styles.todayBtn} onClick={goToToday}>
+            Hoy
+          </button>
           <button className={styles.createBtn} onClick={() => setShowCreateModal(true)}>
             <Plus size={14} /> Nuevo Evento
           </button>
@@ -197,27 +234,41 @@ export function AgendaDigitalPage() {
           <div className={styles.accentBar} />
           <div className={styles.weekdayRow}>
             {WEEKDAYS.map((d, i) => (
-              <div key={i} className={`${styles.weekday} ${i === 0 ? styles.weekdaySun : ''}`}>{d}</div>
+              <div key={i} className={`${styles.weekday} ${i === 0 ? styles.weekdaySun : ''}`}>
+                {d}
+              </div>
             ))}
           </div>
           <div className={styles.daysGrid}>
             {daysGrid.map((cell, i) => {
               const dayEvents = cell.dateStr ? eventMap[cell.dateStr] || [] : [];
               const isSelected = cell.dateStr === selectedDateStr;
-              const isToday = cell.dateStr === formatDateKey(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+              const isToday =
+                cell.dateStr ===
+                formatDateKey(
+                  new Date().getFullYear(),
+                  new Date().getMonth(),
+                  new Date().getDate()
+                );
               return (
                 <div
                   key={i}
                   className={`${styles.dayCell} ${!cell.isCurrent ? styles.dayCellMuted : ''} ${isSelected ? styles.dayCellSelected : ''} ${isToday && cell.isCurrent ? styles.dayCellToday : ''}`}
                   onClick={() => cell.dateStr && setSelectedDateStr(cell.dateStr)}
                 >
-                  <span className={`${styles.dayNum} ${!cell.isCurrent ? styles.dayNumMuted : ''} ${cell.dateStr && new Date(cell.dateStr).getDay() === 0 && cell.isCurrent ? styles.dayNumSun : ''} ${isSelected ? styles.dayNumSelected : ''}`}>
+                  <span
+                    className={`${styles.dayNum} ${!cell.isCurrent ? styles.dayNumMuted : ''} ${cell.dateStr && new Date(cell.dateStr).getDay() === 0 && cell.isCurrent ? styles.dayNumSun : ''} ${isSelected ? styles.dayNumSelected : ''}`}
+                  >
                     {cell.day}
                   </span>
                   {dayEvents.length > 0 && (
                     <div className={styles.dayDots}>
                       {dayEvents.map((ev, j) => (
-                        <span key={j} className={styles.dayDot} style={{ '--dot-color': ev.color || '#888' }} />
+                        <span
+                          key={j}
+                          className={styles.dayDot}
+                          style={{ '--dot-color': ev.color || '#888' }}
+                        />
                       ))}
                     </div>
                   )}
@@ -232,7 +283,9 @@ export function AgendaDigitalPage() {
             <LottieIcon src={bellAnim} size={20} hoverPlay />
             <span className={styles.sidebarTitle}>{selectedDateDisplay}</span>
           </div>
-          <p className={styles.sidebarSub}>Historial logístico e incidencias registradas en esta fecha.</p>
+          <p className={styles.sidebarSub}>
+            Historial logístico e incidencias registradas en esta fecha.
+          </p>
 
           <div className={styles.eventsList}>
             {loading ? (
@@ -257,10 +310,12 @@ export function AgendaDigitalPage() {
                 <div
                   key={i}
                   className={styles.eventCard}
-                  style={{
-                    '--event-color': ev.color || 'var(--text-muted)',
-                    '--event-bg': ev.color ? `${ev.color}15` : 'rgba(136,136,136,0.1)'
-                  } as React.CSSProperties}
+                  style={
+                    {
+                      '--event-color': ev.color || 'var(--text-muted)',
+                      '--event-bg': ev.color ? `${ev.color}15` : 'rgba(136,136,136,0.1)',
+                    } as React.CSSProperties
+                  }
                 >
                   <div className={styles.eventCardFlex}>
                     <span className={styles.eventLabel}>{ev.title}</span>
@@ -274,8 +329,13 @@ export function AgendaDigitalPage() {
                   </div>
                   {ev.description && <p className={styles.eventDesc}>{ev.description}</p>}
                   <span className={styles.eventType}>
-                    {new Date(ev.startDate).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}
-                    {ev.endDate ? ` — ${new Date(ev.endDate).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}` : ''}
+                    {new Date(ev.startDate).toLocaleTimeString('es-ES', {
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    })}
+                    {ev.endDate
+                      ? ` — ${new Date(ev.endDate).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}`
+                      : ''}
                   </span>
                 </div>
               ))
@@ -286,11 +346,15 @@ export function AgendaDigitalPage() {
             <span className={styles.statsTitle}>Resumen del Período</span>
             <div className={styles.statRow}>
               <span>Alertas Técnicas</span>
-              <span className={`${styles.statValue} ${styles.statValueOrange}`}>{monthStats.alerts}</span>
+              <span className={`${styles.statValue} ${styles.statValueOrange}`}>
+                {monthStats.alerts}
+              </span>
             </div>
             <div className={styles.statRow}>
               <span>Auditorías Completadas</span>
-              <span className={`${styles.statValue} ${styles.statValueGreen}`}>{monthStats.audits}</span>
+              <span className={`${styles.statValue} ${styles.statValueGreen}`}>
+                {monthStats.audits}
+              </span>
             </div>
           </div>
         </div>
@@ -302,7 +366,7 @@ export function AgendaDigitalPage() {
             <label className={styles.formLabel}>Título</label>
             <input
               value={formTitle}
-              onChange={e => setFormTitle(e.target.value)}
+              onChange={(e) => setFormTitle(e.target.value)}
               className={styles.formInput}
               placeholder="Ej: Reunión con proveedores"
             />
@@ -311,7 +375,7 @@ export function AgendaDigitalPage() {
             <label className={styles.formLabel}>Descripción</label>
             <textarea
               value={formDesc}
-              onChange={e => setFormDesc(e.target.value)}
+              onChange={(e) => setFormDesc(e.target.value)}
               rows={3}
               className={styles.formTextarea}
               placeholder="Descripción opcional"
@@ -323,7 +387,7 @@ export function AgendaDigitalPage() {
               <input
                 type="datetime-local"
                 value={formStart}
-                onChange={e => setFormStart(e.target.value)}
+                onChange={(e) => setFormStart(e.target.value)}
                 className={styles.formInput}
               />
             </div>
@@ -332,7 +396,7 @@ export function AgendaDigitalPage() {
               <input
                 type="datetime-local"
                 value={formEnd}
-                onChange={e => setFormEnd(e.target.value)}
+                onChange={(e) => setFormEnd(e.target.value)}
                 className={styles.formInput}
               />
             </div>
@@ -340,7 +404,7 @@ export function AgendaDigitalPage() {
           <div>
             <label className={styles.formLabel}>Color</label>
             <div className={styles.colorPicker}>
-              {EVENT_COLORS.map(c => (
+              {EVENT_COLORS.map((c) => (
                 <div
                   key={c}
                   onClick={() => setFormColor(c)}
@@ -351,13 +415,17 @@ export function AgendaDigitalPage() {
             </div>
           </div>
           <div className={styles.checkboxRow}>
-            <input type="checkbox" id="allDay" checked={formAllDay} onChange={e => setFormAllDay(e.target.checked)} />
-            <label htmlFor="allDay" className={styles.checkboxLabel}>Todo el día</label>
+            <input
+              type="checkbox"
+              id="allDay"
+              checked={formAllDay}
+              onChange={(e) => setFormAllDay(e.target.checked)}
+            />
+            <label htmlFor="allDay" className={styles.checkboxLabel}>
+              Todo el día
+            </label>
           </div>
-          <button
-            onClick={handleCreate}
-            className={styles.submitBtn}
-          >
+          <button onClick={handleCreate} className={styles.submitBtn}>
             Crear Evento
           </button>
         </div>

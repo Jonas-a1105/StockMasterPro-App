@@ -23,5 +23,11 @@ export function Spinner({ size = 18 }: SpinnerProps) {
     return () => anim.destroy();
   }, []);
 
-  return <div ref={ref} className={styles.spinner} style={{ '--spinner-size': size } as React.CSSProperties} />;
+  return (
+    <div
+      ref={ref}
+      className={styles.spinner}
+      style={{ '--spinner-size': size } as React.CSSProperties}
+    />
+  );
 }

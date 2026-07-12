@@ -1,5 +1,14 @@
 import { useState, useEffect, useCallback } from 'react';
-import { AlertTriangle, RotateCcw, DollarSign, TrendingUp, TrendingDown, Users, BarChart2, Activity } from 'lucide-react';
+import {
+  AlertTriangle,
+  RotateCcw,
+  DollarSign,
+  TrendingUp,
+  TrendingDown,
+  Users,
+  BarChart2,
+  Activity,
+} from 'lucide-react';
 import { api } from '@shared/lib/http/client';
 import { useTheme } from '@contexts/ThemeContext';
 import { useExchangeRate } from '@contexts/ExchangeRateContext';
@@ -68,13 +77,24 @@ export function SuperAdminDashboard() {
     }
   }, []);
 
-  useEffect(() => { fetchMetrics(); }, [fetchMetrics]);
+  useEffect(() => {
+    fetchMetrics();
+  }, [fetchMetrics]);
 
   if (loading) {
-    return config.skeletonEnabled ? <SkeletonDashboard /> : <LoadingDots text="Cargando métricas SaaS..." />;
+    return config.skeletonEnabled ? (
+      <SkeletonDashboard />
+    ) : (
+      <LoadingDots text="Cargando métricas SaaS..." />
+    );
   }
 
-  if (error) return <div className={styles.error}><AlertTriangle size={24} /> {error}</div>;
+  if (error)
+    return (
+      <div className={styles.error}>
+        <AlertTriangle size={24} /> {error}
+      </div>
+    );
 
   const planColors = { free: '#6b7280', pro: '#3b82f6', enterprise: '#8b5cf6' };
   const plans = ['free', 'pro', 'enterprise'] as const;
@@ -83,7 +103,9 @@ export function SuperAdminDashboard() {
   return (
     <div className={styles.container}>
       <header className={styles.header}>
-        <h1><BarChart2 size={24} /> Super-Admin SaaS Metrics</h1>
+        <h1>
+          <BarChart2 size={24} /> Super-Admin SaaS Metrics
+        </h1>
         <button className={styles.refreshBtn} onClick={fetchMetrics} disabled={loading}>
           <RotateCcw size={16} className={loading ? 'animate-spin' : ''} /> Actualizar
         </button>
@@ -94,47 +116,54 @@ export function SuperAdminDashboard() {
           icon={<DollarSign size={24} />}
           label="MRR"
           value={formatPrice(mrr?.mrr || 0)}
-          color="#3b82f6"
+          color="info"
           trend={mrr?.growth?.growthRate}
         />
         <KPICard
           icon={<Activity size={24} />}
           label="ARR"
           value={formatPrice(mrr?.arr || 0)}
-          color="#8b5cf6"
+          color="primary"
         />
         <KPICard
           icon={<Users size={24} />}
           label="Suscripciones"
           value={mrr?.activeSubscriptions || 0}
-          color="#10b981"
+          color="success"
         />
         <KPICard
           icon={<RotateCcw size={24} />}
           label="Churn"
           value={`${(churn?.churnRate || 0).toFixed(2)}%`}
-          color="#ef4444"
+          color="danger"
           trend={-churn?.churnRate}
         />
         <KPICard
           icon={<TrendingUp size={24} />}
           label="LTV"
           value={formatPrice(ltv?.ltv || 0)}
-          color="#f59e0b"
+          color="warning"
         />
         <KPICard
           icon={<BarChart2 size={24} />}
           label="ARPU"
           value={formatPrice(ltv?.averageRevenuePerUser || 0)}
-          color="#06b6d4"
+          color="info"
         />
       </div>
 
       <div className={styles.chartsGrid}>
-        <Card title={<><BarChart2 size={18} /> MRR por Plan</>} fullWidth={false}>
+        <Card
+          title={
+            <>
+              <BarChart2 size={18} /> MRR por Plan
+            </>
+          }
+          fullWidth={false}
+        >
           <CardContent>
             <ChartContainer>
-              {plans.map(plan => (
+              {plans.map((plan) => (
                 <PlanBarRow
                   key={plan}
                   label={planLabels[plan]}
@@ -147,15 +176,22 @@ export function SuperAdminDashboard() {
           </CardContent>
         </Card>
 
-        <Card title={<><TrendingDown size={18} /> Churn por Plan</>} fullWidth={false}>
+        <Card
+          title={
+            <>
+              <TrendingDown size={18} /> Churn por Plan
+            </>
+          }
+          fullWidth={false}
+        >
           <CardContent>
             <ChartContainer>
-              {plans.map(plan => (
+              {plans.map((plan) => (
                 <PlanBarRow
                   key={plan}
                   label={planLabels[plan]}
                   value={churn?.byPlan?.[plan]?.rate || 0}
-                  max={Math.max(...Object.values(churn?.byPlan || {}).map(p => p.rate), 10)}
+                  max={Math.max(...Object.values(churn?.byPlan || {}).map((p) => p.rate), 10)}
                   color={planColors[plan]}
                   suffix="%"
                 />
@@ -164,15 +200,22 @@ export function SuperAdminDashboard() {
           </CardContent>
         </Card>
 
-        <Card title={<><Activity size={18} /> LTV por Plan</>} fullWidth={false}>
+        <Card
+          title={
+            <>
+              <Activity size={18} /> LTV por Plan
+            </>
+          }
+          fullWidth={false}
+        >
           <CardContent>
             <ChartContainer>
-              {plans.map(plan => (
+              {plans.map((plan) => (
                 <PlanBarRow
                   key={plan}
                   label={planLabels[plan]}
                   value={ltv?.byPlan?.[plan]?.ltv || 0}
-                  max={Math.max(...Object.values(ltv?.byPlan || {}).map(p => p.ltv), 1)}
+                  max={Math.max(...Object.values(ltv?.byPlan || {}).map((p) => p.ltv), 1)}
                   color={planColors[plan]}
                 />
               ))}
@@ -180,7 +223,14 @@ export function SuperAdminDashboard() {
           </CardContent>
         </Card>
 
-        <Card title={<><BarChart2 size={18} /> Cohortes de Retención</>} fullWidth>
+        <Card
+          title={
+            <>
+              <BarChart2 size={18} /> Cohortes de Retención
+            </>
+          }
+          fullWidth
+        >
           <CardContent>
             <TableResponsive>
               <CohortTable cohorts={cohorts} />
@@ -193,22 +243,43 @@ export function SuperAdminDashboard() {
 }
 
 function KPICard({ icon, label, value, color, trend }: any) {
-  const trendColor = trend > 0 ? '#16a34a' : trend < 0 ? '#ef4444' : '#6b7280';
-  const borderClass = color.includes('16a34a') ? styles.borderLeftSuccess : 
-                      color.includes('ef4444') ? styles.borderLeftDanger :
-                      color.includes('f59e0b') ? styles.borderLeftWarning :
-                      color.includes('3b82f6') ? styles.borderLeftInfo :
-                      styles.borderLeftPrimary;
+  const borderClass =
+    color === 'success'
+      ? styles.borderLeftSuccess
+      : color === 'danger'
+        ? styles.borderLeftDanger
+        : color === 'warning'
+          ? styles.borderLeftWarning
+          : color === 'info'
+            ? styles.borderLeftInfo
+            : styles.borderLeftPrimary;
+
+  const valueClass =
+    color === 'success'
+      ? styles.textSuccess
+      : color === 'danger'
+        ? styles.textDanger
+        : color === 'warning'
+          ? styles.textWarning
+          : color === 'info'
+            ? styles.textInfo
+            : styles.textPrimary;
+
   return (
     <div className={`${styles.kpiCard} ${borderClass}`}>
       <div className={styles.kpiHeader}>
         <span className={styles.kpiLabel}>{label}</span>
       </div>
-      <div className={`${styles.kpiValue} ${color.includes('16a34a') ? styles.textSuccess : color.includes('ef4444') ? styles.textDanger : color.includes('f59e0b') ? styles.textWarning : color.includes('3b82f6') ? styles.textInfo : styles.textPrimary}`}>{value}</div>
+      <div className={`${styles.kpiValue} ${valueClass}`}>{value}</div>
       {trend !== undefined && (
-        <div className={`${styles.kpiTrend} ${trend > 0 ? styles.trendPositive : trend < 0 ? styles.trendNegative : styles.trendNeutral}`}>
+        <div
+          className={`${styles.kpiTrend} ${trend > 0 ? styles.trendPositive : trend < 0 ? styles.trendNegative : styles.trendNeutral}`}
+        >
           {trend >= 0 ? <TrendingUp size={12} /> : <TrendingDown size={12} />}
-          <span>{trend >= 0 ? '+' : ''}{trend.toFixed(1)}%</span>
+          <span>
+            {trend >= 0 ? '+' : ''}
+            {trend.toFixed(1)}%
+          </span>
         </div>
       )}
     </div>
@@ -234,18 +305,28 @@ function ChartContainer({ children }: any) {
 
 function PlanBarRow({ label, value, max, color, suffix = '' }: any) {
   const percentage = max > 0 ? Math.min((value / max) * 100, 100) : 0;
-  const colorClass = color.includes('16a34a') ? styles.textSuccess : 
-                     color.includes('ef4444') ? styles.textDanger :
-                     color.includes('f59e0b') ? styles.textWarning :
-                     color.includes('3b82f6') ? styles.textInfo :
-                     styles.textPrimary;
+  const colorClass = color.includes('16a34a')
+    ? styles.textSuccess
+    : color.includes('ef4444')
+      ? styles.textDanger
+      : color.includes('f59e0b')
+        ? styles.textWarning
+        : color.includes('3b82f6')
+          ? styles.textInfo
+          : styles.textPrimary;
   return (
     <div className={styles.planBarRow}>
       <span className={`${styles.planLabel} ${colorClass}`}>▸ {label}</span>
       <div className={styles.barContainer}>
-        <div className={styles.barFill} style={{ '--bar-width': `${percentage}%`, '--bar-bg': color } as React.CSSProperties}></div>
+        <div
+          className={styles.barFill}
+          style={{ '--bar-width': `${percentage}%`, '--bar-bg': color } as React.CSSProperties}
+        ></div>
       </div>
-      <span className={styles.planValue}>{value.toLocaleString()}{suffix}</span>
+      <span className={styles.planValue}>
+        {value.toLocaleString()}
+        {suffix}
+      </span>
     </div>
   );
 }
@@ -256,7 +337,9 @@ function TableResponsive({ children }: any) {
 
 function CohortTable({ cohorts }: any) {
   if (!cohorts?.length) return <EmptyState />;
-  const maxMonths = Math.max(...cohorts.map(c => Math.max(...Object.keys(c.retention).map(Number))));
+  const maxMonths = Math.max(
+    ...cohorts.map((c) => Math.max(...Object.keys(c.retention).map(Number)))
+  );
   return (
     <table className={styles.cohortTable}>
       <thead>
@@ -274,8 +357,15 @@ function CohortTable({ cohorts }: any) {
             <td className={styles.cohortMonth}>{cohort.month}</td>
             <td className={styles.cohortInitial}>{cohort.initialSubscribers}</td>
             {Array.from({ length: maxMonths + 1 }, (_, i) => (
-              <td key={i} className={cohort.retention[i] !== undefined ? styles.cohortCell : styles.empty}>
-                {cohort.retention[i] !== undefined ? `${cohort.retention[i]}%` : <span className={styles.empty}>—</span>}
+              <td
+                key={i}
+                className={cohort.retention[i] !== undefined ? styles.cohortCell : styles.empty}
+              >
+                {cohort.retention[i] !== undefined ? (
+                  `${cohort.retention[i]}%`
+                ) : (
+                  <span className={styles.empty}>—</span>
+                )}
               </td>
             ))}
           </tr>
@@ -297,7 +387,9 @@ function SkeletonDashboard() {
         <Skeleton />
       </div>
       <div className={styles.kpiGrid}>
-        {[...Array(6)].map((_, i) => <Skeleton key={i} height={100} width="100%" />)}
+        {[...Array(6)].map((_, i) => (
+          <Skeleton key={i} height={100} width="100%" />
+        ))}
       </div>
       <div className={styles.chartsGrid}>
         {[...Array(3)].map((_, i) => (
@@ -314,4 +406,3 @@ function SkeletonDashboard() {
     </div>
   );
 }
-

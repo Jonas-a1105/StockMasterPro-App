@@ -9,9 +9,7 @@ export class AuthPrismaService
   implements OnModuleInit, OnModuleDestroy
 {
   constructor() {
-    const url =
-      process.env.AUTH_DATABASE_URL ||
-      process.env.DATABASE_URL;
+    const url = process.env.AUTH_DATABASE_URL || process.env.DATABASE_URL;
     if (!url) {
       throw new Error(
         'AUTH_DATABASE_URL o DATABASE_URL no definida. Asegúrate de que backend/.env existe.',

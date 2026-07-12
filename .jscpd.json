@@ -1,0 +1,15 @@
+{
+  "threshold": 5,
+  "reporters": ["html", "console"],
+  "ignore": [
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/build/**",
+    "**/.git/**",
+    "**/.agent/**",
+    "package-lock.json",
+    "*.min.js",
+    "*.min.css"
+  ],
+  "absolute": true
+}

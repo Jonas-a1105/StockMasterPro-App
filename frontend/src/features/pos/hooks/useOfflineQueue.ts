@@ -34,21 +34,24 @@ export function useOfflineQueue() {
     }
   }, []);
 
-  const addToQueue = useCallback(async (sale: Omit<OfflineSale, 'id' | 'synced' | 'retryCount'>) => {
-    const offlineSale: OfflineSale = {
-      ...sale,
-      id: crypto.randomUUID(),
-      synced: false,
-      retryCount: 0,
-    };
-    await db.offlineSales.add(offlineSale);
-    setQueue(prev => [...prev, offlineSale]);
-  }, []);
+  const addToQueue = useCallback(
+    async (sale: Omit<OfflineSale, 'id' | 'synced' | 'retryCount'>) => {
+      const offlineSale: OfflineSale = {
+        ...sale,
+        id: crypto.randomUUID(),
+        synced: false,
+        retryCount: 0,
+      };
+      await db.offlineSales.add(offlineSale);
+      setQueue((prev) => [...prev, offlineSale]);
+    },
+    []
+  );
 
   const syncQueue = useCallback(async () => {
     if (syncing || processingRef.current) return;
-    
-    const pending = queue.filter(s => !s.synced);
+
+    const pending = queue.filter((s) => !s.synced);
     if (pending.length === 0) return;
 
     processingRef.current = true;
@@ -58,12 +61,12 @@ export function useOfflineQueue() {
       try {
         // Try to sync the sale
         await api.post('/sales', {
-          items: sale.items.map(i => ({ productId: i.productId, quantity: i.quantity })),
+          items: sale.items.map((i) => ({ productId: i.productId, quantity: i.quantity })),
           paymentMethod: sale.paymentMethod,
           customerId: sale.customerId,
           offlineId: sale.id,
         });
-        
+
         await db.offlineSales.update(sale.id, { synced: true });
       } catch (err) {
         console.error('Failed to sync sale:', err);
@@ -84,7 +87,7 @@ export function useOfflineQueue() {
   }, [queue, syncing]);
 
   const retryFailed = useCallback(async () => {
-    const failed = queue.filter(s => !s.synced && s.retryCount > 0);
+    const failed = queue.filter((s) => !s.synced && s.retryCount > 0);
     for (const sale of failed) {
       await db.offlineSales.update(sale.id, { retryCount: 0 });
     }
@@ -99,6 +102,6 @@ export function useOfflineQueue() {
     addToQueue,
     syncQueue,
     retryFailed,
-    pendingCount: queue.filter(s => !s.synced).length,
+    pendingCount: queue.filter((s) => !s.synced).length,
   };
 }

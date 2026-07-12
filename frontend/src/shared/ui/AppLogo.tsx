@@ -2,12 +2,7 @@ import styles from './AppLogo.module.css';
 
 export function AppLogo({ size = 32 }: { size?: number }) {
   return (
-    <svg
-      className={styles.logo}
-      viewBox="0 0 240 240"
-      width={size}
-      height={size}
-    >
+    <svg className={styles.logo} viewBox="0 0 240 240" width={size} height={size}>
       <defs>
         <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="0%">
           <stop offset="0%" stopColor="#F07F19" />
@@ -22,7 +17,9 @@ export function AppLogo({ size = 32 }: { size?: number }) {
         className={styles.crown}
         d="M 145 110 L 140 97 L 151 102 L 160 88 L 169 102 L 180 97 L 175 110 Z"
       />
-      <text x="144" y="141" className={styles.proText}>PRO</text>
+      <text x="144" y="141" className={styles.proText}>
+        PRO
+      </text>
     </svg>
   );
 }

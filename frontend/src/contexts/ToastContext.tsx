@@ -27,25 +27,38 @@ const typeToSileo: Record<FlashType, 'success' | 'error' | 'info'> = {
 };
 
 export function ToastProvider({ children }: { children: ReactNode }) {
-  const showFlash = useCallback((type: FlashType, title: string, message: string, duration = 5000) => {
-    const method = typeToSileo[type];
-    setTimeout(() => sileo[method]({ title, description: message, duration }), 0);
-  }, []);
+  const showFlash = useCallback(
+    (type: FlashType, title: string, message: string, duration = 5000) => {
+      const method = typeToSileo[type];
+      setTimeout(() => sileo[method]({ title, description: message, duration }), 0);
+    },
+    []
+  );
 
   const dismissFlash = useCallback((_id: number) => {
     // sileo manages dismissals automatically; kept for API compatibility
   }, []);
 
-  const showToast = useCallback((message: string, type: 'success' | 'error' | 'info' | 'warning') => {
-    const flashType: FlashType = type === 'error' ? 'alert' : type === 'warning' ? 'alert' : type === 'success' ? 'success' : 'info';
-    const titleMap: Record<string, string> = {
-      success: 'Éxito',
-      error: 'Error',
-      info: 'Información',
-      warning: 'Advertencia',
-    };
-    showFlash(flashType, titleMap[type] || 'Notificación', message);
-  }, [showFlash]);
+  const showToast = useCallback(
+    (message: string, type: 'success' | 'error' | 'info' | 'warning') => {
+      const flashType: FlashType =
+        type === 'error'
+          ? 'alert'
+          : type === 'warning'
+            ? 'alert'
+            : type === 'success'
+              ? 'success'
+              : 'info';
+      const titleMap: Record<string, string> = {
+        success: 'Éxito',
+        error: 'Error',
+        info: 'Información',
+        warning: 'Advertencia',
+      };
+      showFlash(flashType, titleMap[type] || 'Notificación', message);
+    },
+    [showFlash]
+  );
 
   return (
     <ToastContext.Provider value={{ notifications: [], showFlash, dismissFlash, showToast }}>

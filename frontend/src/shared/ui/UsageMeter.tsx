@@ -15,7 +15,17 @@ interface UsageData {
   storageUsage: { estimateMB: number };
 }
 
-function UsageBar({ label, current, limit, unit }: { label: string; current: number; limit: number | null; unit?: string }) {
+function UsageBar({
+  label,
+  current,
+  limit,
+  unit,
+}: {
+  label: string;
+  current: number;
+  limit: number | null;
+  unit?: string;
+}) {
   const pct = limit ? Math.min((current / limit) * 100, 100) : Math.min(current * 2, 95);
   const isNearLimit = limit && current >= limit * 0.8;
   const isAtLimit = limit && current >= limit;
@@ -24,7 +34,8 @@ function UsageBar({ label, current, limit, unit }: { label: string; current: num
       <div className={styles.barLabel}>
         <span>{label}</span>
         <span className={styles.barCount}>
-          {current}{limit ? ` / ${limit}` : ''} {unit || ''}
+          {current}
+          {limit ? ` / ${limit}` : ''} {unit || ''}
         </span>
       </div>
       <div className={styles.barTrack}>
@@ -44,7 +55,11 @@ export function UsageMeter() {
 
   useEffect(() => {
     if (!isAuthenticated || authLoading) return;
-    api.getLicenseUsage().then(setData).catch(() => {}).finally(() => setLoading(false));
+    api
+      .getLicenseUsage()
+      .then(setData)
+      .catch(() => {})
+      .finally(() => setLoading(false));
   }, [isAuthenticated, authLoading]);
 
   if (loading) {
@@ -77,15 +92,43 @@ export function UsageMeter() {
     <div className={styles.card}>
       <div className={styles.header}>
         <span className={styles.title}>Medidor de uso</span>
-        <span className={styles.badge}>{data.planType.charAt(0).toUpperCase() + data.planType.slice(1).toLowerCase()}</span>
+        <span className={styles.badge}>
+          {data.planType.charAt(0).toUpperCase() + data.planType.slice(1).toLowerCase()}
+        </span>
       </div>
       <div className={styles.bars}>
-        <UsageBar label="Productos" current={data.products.current} limit={limits.maxProducts ?? data.products.limit ?? undefined as any} />
-        <UsageBar label="Usuarios" current={data.users.current} limit={limits.maxUsers ?? data.users.limit ?? undefined as any} />
-        <UsageBar label="Almacenes" current={data.warehouses.current} limit={limits.maxWarehouses ?? data.warehouses.limit ?? undefined as any} />
-        <UsageBar label="Ventas este mes" current={data.salesThisMonth} limit={null} unit="ventas" />
-        <UsageBar label="Clientes registrados" current={typeof data.customers === 'object' ? data.customers.current : data.customers} limit={typeof data.customers === 'object' ? data.customers.limit : null} />
-        <UsageBar label="Almacenamiento" current={data.storageUsage.estimateMB} limit={data.planType === 'free' ? 10 : data.planType === 'pro' ? 50 : 200} unit="MB" />
+        <UsageBar
+          label="Productos"
+          current={data.products.current}
+          limit={limits.maxProducts ?? data.products.limit ?? (undefined as any)}
+        />
+        <UsageBar
+          label="Usuarios"
+          current={data.users.current}
+          limit={limits.maxUsers ?? data.users.limit ?? (undefined as any)}
+        />
+        <UsageBar
+          label="Almacenes"
+          current={data.warehouses.current}
+          limit={limits.maxWarehouses ?? data.warehouses.limit ?? (undefined as any)}
+        />
+        <UsageBar
+          label="Ventas este mes"
+          current={data.salesThisMonth}
+          limit={null}
+          unit="ventas"
+        />
+        <UsageBar
+          label="Clientes registrados"
+          current={typeof data.customers === 'object' ? data.customers.current : data.customers}
+          limit={typeof data.customers === 'object' ? data.customers.limit : null}
+        />
+        <UsageBar
+          label="Almacenamiento"
+          current={data.storageUsage.estimateMB}
+          limit={data.planType === 'free' ? 10 : data.planType === 'pro' ? 50 : 200}
+          unit="MB"
+        />
       </div>
     </div>
   );

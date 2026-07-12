@@ -11,8 +11,8 @@
 }
 
 .modal {
-  background-color: var(--bg-card, #fff);
-  border: var(--card-border-width, 1px) solid var(--border-color, #eee);
+  background-color: var(--color-surface);
+  border: var(--card-border-width, 1px) solid var(--color-border);
   border-radius: var(--card-radius, 8px);
   width: 100%;
   max-width: 540px;
@@ -25,8 +25,14 @@
 }
 
 @keyframes modalEnter {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .header {
@@ -34,7 +40,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 14px 18px;
-  border-bottom: var(--card-border-width, 1px) solid var(--border-color, #eee);
+  border-bottom: var(--card-border-width, 1px) solid var(--color-border);
   background-color: var(--bg-main, #f8f9fa);
 }
 
@@ -49,7 +55,7 @@
 .closeBtn {
   background: none;
   border: none;
-  color: var(--text-muted, #888);
+  color: var(--color-text-muted);
   cursor: pointer;
   padding: 4px;
   display: flex;
@@ -60,7 +66,7 @@
 }
 
 .closeBtn:hover {
-  background-color: var(--border-color, #eee);
+  background-color: var(--color-border);
   color: var(--text-dark, #333);
 }
 
@@ -78,14 +84,14 @@
 
 .description {
   font-size: var(--font-size-caption);
-  color: var(--text-muted, #666);
+  color: var(--color-text-muted);
   line-height: 1.5;
   margin: 0;
 }
 
 .templateSection {
   background-color: var(--bg-main, #f8f9fa);
-  border: var(--card-border-width, 1px) solid var(--border-color, #eee);
+  border: var(--card-border-width, 1px) solid var(--color-border);
   border-radius: var(--card-radius, 6px);
   padding: 12px;
   display: flex;
@@ -103,7 +109,7 @@
 .textBtn {
   background: none;
   border: none;
-  color: var(--color-primary, #f05a28);
+  color: var(--color-primary);
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);
   cursor: pointer;
@@ -120,7 +126,7 @@
 }
 
 .dropzone {
-  border: 2px dashed var(--border-color, #ccc);
+  border: 2px dashed var(--color-border);
   border-radius: var(--card-radius, 8px);
   padding: 30px 20px;
   display: flex;
@@ -132,12 +138,12 @@
 }
 
 .dropzone:hover {
-  border-color: var(--color-primary, #f05a28);
+  border-color: var(--color-primary);
   background-color: rgb(240, 90, 40, 0.02);
 }
 
 .uploadIcon {
-  color: var(--text-muted, #999);
+  color: var(--color-text-muted);
   margin-bottom: 12px;
 }
 
@@ -150,7 +156,7 @@
 
 .dropSub {
   font-size: var(--font-size-xs);
-  color: var(--text-muted, #888);
+  color: var(--color-text-muted);
 }
 
 .errorAlert {
@@ -161,7 +167,7 @@
   display: flex;
   gap: 10px;
   align-items: flex-start;
-  color: var(--color-danger, #dc2626);
+  color: var(--color-danger);
   font-size: var(--font-size-xs);
   line-height: 1.4;
 }
@@ -184,7 +190,7 @@
 }
 
 .excelIcon {
-  color: var(--color-primary, #f05a28);
+  color: var(--color-primary);
 }
 
 .filename {
@@ -195,12 +201,12 @@
 
 .filesize {
   font-size: var(--font-size-xs);
-  color: var(--text-muted, #777);
+  color: var(--color-text-muted);
   margin-top: 2px;
 }
 
 .tablePreviewContainer {
-  border: var(--card-border-width, 1px) solid var(--border-color, #eee);
+  border: var(--card-border-width, 1px) solid var(--color-border);
   border-radius: var(--card-radius);
   overflow: hidden;
 }
@@ -217,12 +223,12 @@
   padding: 8px 12px;
   font-weight: var(--font-weight-semibold);
   color: var(--text-dark, #333);
-  border-bottom: var(--card-border-width, 1px) solid var(--border-color, #eee);
+  border-bottom: var(--card-border-width, 1px) solid var(--color-border);
 }
 
 .previewTable td {
   padding: 8px 12px;
-  border-bottom: var(--card-border-width, 1px) solid var(--border-color, #eee);
+  border-bottom: var(--card-border-width, 1px) solid var(--color-border);
   color: var(--text-dark, #444);
 }
 
@@ -233,11 +239,11 @@
 .moreRows {
   padding: 8px 12px;
   font-size: var(--font-size-2xs);
-  color: var(--text-muted, #888);
+  color: var(--color-text-muted);
   font-style: italic;
   text-align: center;
   background-color: var(--bg-main, #f8f9fa);
-  border-top: var(--card-border-width, 1px) solid var(--border-color, #eee);
+  border-top: var(--card-border-width, 1px) solid var(--color-border);
 }
 
 .footerActions {
@@ -260,11 +266,11 @@
 }
 
 .cancelBtn:hover {
-  background-color: var(--border-color, #ddd);
+  background-color: var(--color-border);
 }
 
 .confirmBtn {
-  background-color: var(--color-primary, #f05a28);
+  background-color: var(--color-primary);
   color: var(--text-on-primary, #fff);
   border: none;
   padding: 8px 16px;
@@ -290,12 +296,14 @@
 }
 
 .spinner {
-  color: var(--color-primary, #f05a28);
+  color: var(--color-primary);
   animation: spin 1s linear infinite;
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .progressTitle {
@@ -306,14 +314,14 @@
 
 .progressText {
   font-size: var(--font-size-xs);
-  color: var(--text-muted, #777);
+  color: var(--color-text-muted);
 }
 
 .progressBarBg {
   width: 100%;
   max-width: 320px;
   height: 8px;
-  background-color: var(--border-color, #eee);
+  background-color: var(--color-border);
   border-radius: var(--card-radius);
   overflow: hidden;
 }
@@ -321,7 +329,7 @@
 .progressBarFill {
   height: 100%;
   width: var(--import-progress, 0%);
-  background-color: var(--color-primary, #f05a28);
+  background-color: var(--color-primary);
   transition: width 0.2s ease;
 }
 
@@ -339,7 +347,7 @@
 }
 
 .successIcon {
-  color: var(--color-success, #16a34a);
+  color: var(--color-success);
 }
 
 .summaryTitle {
@@ -357,7 +365,7 @@
 }
 
 .summaryCard {
-  border: var(--card-border-width, 1px) solid var(--border-color, #eee);
+  border: var(--card-border-width, 1px) solid var(--color-border);
   border-radius: var(--card-radius);
   padding: 12px;
   text-align: center;
@@ -367,7 +375,7 @@
 .summaryLabel {
   font-size: var(--font-size-2xs);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-muted, #888);
+  color: var(--color-text-muted);
   text-transform: none;
   margin-bottom: 4px;
 }
@@ -375,18 +383,18 @@
 .summaryValSuccess {
   font-size: var(--font-size-2xl);
   font-weight: var(--font-weight-bold);
-  color: var(--color-success, #16a34a);
+  color: var(--color-success);
 }
 
 .summaryValDanger {
   font-size: var(--font-size-2xl);
   font-weight: var(--font-weight-bold);
-  color: var(--color-danger, #dc2626);
+  color: var(--color-danger);
 }
 
 .detailsSection {
   width: 100%;
-  border: var(--card-border-width, 1px) solid var(--border-color, #eee);
+  border: var(--card-border-width, 1px) solid var(--color-border);
   border-radius: var(--card-radius);
   overflow: hidden;
 }
@@ -396,7 +404,7 @@
   font-weight: var(--font-weight-semibold);
   background-color: var(--bg-main, #f8f9fa);
   padding: 8px 12px;
-  border-bottom: var(--card-border-width, 1px) solid var(--border-color, #eee);
+  border-bottom: var(--card-border-width, 1px) solid var(--color-border);
   color: var(--text-dark, #444);
 }
 
@@ -411,7 +419,7 @@
 }
 
 .detailError {
-  color: var(--color-danger, #dc2626);
+  color: var(--color-danger);
 }
 
 .detailInfo {
@@ -419,7 +427,7 @@
 }
 
 .finishBtn {
-  background-color: var(--color-primary, #f05a28);
+  background-color: var(--color-primary);
   color: var(--text-on-primary, #fff);
   border: none;
   padding: 10px 24px;

@@ -9,7 +9,8 @@ import { useTheme } from '@contexts/ThemeContext';
 import styles from './StripeCheckoutModal.module.css';
 
 // Cargar la clave pública de Stripe
-const STRIPE_PK = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || 'pk_test_51PhgRkRqGjG4Fp1k93kPkTestKeyPlaceholder';
+const STRIPE_PK =
+  import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || 'pk_test_51PhgRkRqGjG4Fp1k93kPkTestKeyPlaceholder';
 const stripePromise = loadStripe(STRIPE_PK);
 
 interface CheckoutFormProps {
@@ -22,7 +23,7 @@ function CheckoutForm({ planType, onClose, onSuccess }: CheckoutFormProps) {
   const stripe = useStripe();
   const elements = useElements();
   const { config } = useTheme();
-  
+
   const [cardholderName, setCardholderName] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [processing, setProcessing] = useState(false);
@@ -65,7 +66,10 @@ function CheckoutForm({ planType, onClose, onSuccess }: CheckoutFormProps) {
         setError(result.error.message || 'Ocurrió un error al procesar el pago.');
         setProcessing(false);
       } else {
-        if (result.paymentIntent?.status === 'succeeded' || result.paymentIntent?.status === 'requires_capture') {
+        if (
+          result.paymentIntent?.status === 'succeeded' ||
+          result.paymentIntent?.status === 'requires_capture'
+        ) {
           setStep('polling');
         } else {
           setError('El pago requiere acciones adicionales o no ha sido completado.');
@@ -95,10 +99,13 @@ function CheckoutForm({ planType, onClose, onSuccess }: CheckoutFormProps) {
             }, 2000);
           }
         } else {
-          setPollCount(prev => prev + 1);
-          if (pollCount > 15) { // Límite de 30 segundos
+          setPollCount((prev) => prev + 1);
+          if (pollCount > 15) {
+            // Límite de 30 segundos
             clearInterval(interval);
-            setError('El pago fue exitoso, pero la activación automática está tardando. Por favor recarga el sistema en unos momentos.');
+            setError(
+              'El pago fue exitoso, pero la activación automática está tardando. Por favor recarga el sistema en unos momentos.'
+            );
             setStep('form');
             setProcessing(false);
           }
@@ -131,7 +138,11 @@ function CheckoutForm({ planType, onClose, onSuccess }: CheckoutFormProps) {
           <ShieldCheck size={48} className={styles.successIcon} />
         </div>
         <h4>¡Suscripción Activada!</h4>
-        <p>Tu plan <strong>{planType.charAt(0).toUpperCase() + planType.slice(1).toLowerCase()}</strong> está activo. Disfruta de las características premium.</p>
+        <p>
+          Tu plan{' '}
+          <strong>{planType.charAt(0).toUpperCase() + planType.slice(1).toLowerCase()}</strong> está
+          activo. Disfruta de las características premium.
+        </p>
       </div>
     );
   }
@@ -143,7 +154,7 @@ function CheckoutForm({ planType, onClose, onSuccess }: CheckoutFormProps) {
         <input
           type="text"
           value={cardholderName}
-          onChange={e => setCardholderName(e.target.value)}
+          onChange={(e) => setCardholderName(e.target.value)}
           placeholder="Nombre como figura en la tarjeta"
           required
           className={styles.input}
@@ -207,14 +218,21 @@ interface StripeCheckoutModalProps {
   onSuccess: () => void;
 }
 
-export function StripeCheckoutModal({ open, planType, onClose, onSuccess }: StripeCheckoutModalProps) {
+export function StripeCheckoutModal({
+  open,
+  planType,
+  onClose,
+  onSuccess,
+}: StripeCheckoutModalProps) {
   return (
     <Modal open={open} onClose={onClose} title="Pasarela de Pago (Stripe)">
       {open && planType ? (
         <div className={styles.body}>
           <div className={styles.summary}>
             <span className={styles.planLabel}>Plan seleccionado:</span>
-            <span className={styles.planValue}>StockMaster {planType.charAt(0).toUpperCase() + planType.slice(1).toLowerCase()}</span>
+            <span className={styles.planValue}>
+              StockMaster {planType.charAt(0).toUpperCase() + planType.slice(1).toLowerCase()}
+            </span>
           </div>
           <Elements stripe={stripePromise}>
             <CheckoutForm planType={planType} onClose={onClose} onSuccess={onSuccess} />

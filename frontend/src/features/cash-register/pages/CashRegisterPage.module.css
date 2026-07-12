@@ -51,7 +51,9 @@
   flex-wrap: wrap;
 }
 
-.actionBtn, .actionBtnDanger, .actionBtnClose {
+.actionBtn,
+.actionBtnDanger,
+.actionBtnClose {
   padding: 8px 16px;
   border: none;
   border-radius: var(--border-radius-md);
@@ -61,10 +63,23 @@
   transition: opacity 0.15s;
 }
 
-.actionBtn { background: var(--bg-success-light, #d1fae5); color: var(--color-green-800, #065f46); }
-.actionBtnDanger { background: var(--bg-danger-light, #fee2e2); color: var(--color-red-800, #991b1b); }
-.actionBtnClose { background: var(--color-primary); color: var(--text-on-primary, #fff); }
-.actionBtn:hover, .actionBtnDanger:hover, .actionBtnClose:hover { opacity: 0.85; }
+.actionBtn {
+  background: var(--bg-success-light, #d1fae5);
+  color: var(--color-green-800, #065f46);
+}
+.actionBtnDanger {
+  background: var(--bg-danger-light, #fee2e2);
+  color: var(--color-red-800, #991b1b);
+}
+.actionBtnClose {
+  background: var(--color-primary);
+  color: var(--text-on-primary, #fff);
+}
+.actionBtn:hover,
+.actionBtnDanger:hover,
+.actionBtnClose:hover {
+  opacity: 0.85;
+}
 
 .txnTable h4 {
   margin-bottom: 8px;
@@ -102,14 +117,32 @@
   text-transform: capitalize;
 }
 
-.txnIncome { background: var(--bg-success-light, #d1fae5); color: var(--color-green-800, #065f46); }
-.txnExpense { background: var(--bg-danger-light, #fee2e2); color: var(--color-red-800, #991b1b); }
-.txnSale { background: var(--bg-primary-light, #dbeafe); color: var(--color-blue-800, #1e40af); }
+.txnIncome {
+  background: var(--bg-success-light, #d1fae5);
+  color: var(--color-green-800, #065f46);
+}
+.txnExpense {
+  background: var(--bg-danger-light, #fee2e2);
+  color: var(--color-red-800, #991b1b);
+}
+.txnSale {
+  background: var(--bg-primary-light, #dbeafe);
+  color: var(--color-blue-800, #1e40af);
+}
 
-.amountPositive { color: var(--color-success, #059669); font-weight: var(--font-weight-semibold); }
-.amountNegative { color: var(--color-danger); font-weight: var(--font-weight-semibold); }
+.amountPositive {
+  color: var(--color-success, #059669);
+  font-weight: var(--font-weight-semibold);
+}
+.amountNegative {
+  color: var(--color-danger);
+  font-weight: var(--font-weight-semibold);
+}
 
-.txnTime { color: var(--text-muted); font-size: var(--font-size-caption); }
+.txnTime {
+  color: var(--text-muted);
+  font-size: var(--font-size-caption);
+}
 
 .emptyState {
   display: flex;
@@ -165,8 +198,14 @@
   flex-wrap: wrap;
 }
 
-.diffPositive { color: var(--color-success, #059669); font-weight: var(--font-weight-medium); }
-.diffNegative { color: var(--color-danger); font-weight: var(--font-weight-medium); }
+.diffPositive {
+  color: var(--color-success, #059669);
+  font-weight: var(--font-weight-medium);
+}
+.diffNegative {
+  color: var(--color-danger);
+  font-weight: var(--font-weight-medium);
+}
 
 .formFields {
   display: flex;

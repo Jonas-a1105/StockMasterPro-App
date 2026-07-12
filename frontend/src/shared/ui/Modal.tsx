@@ -14,7 +14,9 @@ interface ModalProps {
 export function Modal({ open, onClose, title, children, wide, xwide }: ModalProps) {
   useEffect(() => {
     if (!open) return;
-    const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
   }, [open, onClose]);
@@ -23,7 +25,10 @@ export function Modal({ open, onClose, title, children, wide, xwide }: ModalProp
 
   return (
     <div className={styles.overlay} onClick={onClose}>
-        <div className={`${styles.modal} ${wide ? styles.modalWide : ''} ${xwide ? styles.modalXWide : ''}`} onClick={e => e.stopPropagation()}>
+      <div
+        className={`${styles.modal} ${wide ? styles.modalWide : ''} ${xwide ? styles.modalXWide : ''}`}
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className={styles.header}>
           <h2 className={styles.title}>{title}</h2>
           <button className={styles.closeBtn} onClick={onClose} aria-label="Cerrar">

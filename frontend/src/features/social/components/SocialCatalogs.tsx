@@ -9,7 +9,7 @@ import styles from './SocialCatalogs.module.css';
 function CatalogGridSkeleton() {
   return (
     <div className="ig-catalog-grid">
-      {[1, 2, 3].map(i => (
+      {[1, 2, 3].map((i) => (
         <div key={i} className={`ig-catalog-card ${styles.skeletonCard}`}>
           <Skeleton height={200} width="100%" borderRadius={0} />
           <div className={styles.skeletonBody}>
@@ -32,7 +32,9 @@ export function SocialCatalogs() {
   const [form, setForm] = useState({ title: '', description: '', coverImage: '', category: '' });
   const [newItem, setNewItem] = useState({ name: '', price: 0, imageUrl: '' });
 
-  useEffect(() => { loadCatalogs(); }, [view]);
+  useEffect(() => {
+    loadCatalogs();
+  }, [view]);
 
   const loadCatalogs = async () => {
     setLoading(true);
@@ -44,13 +46,16 @@ export function SocialCatalogs() {
         const data = await api.getPublicCatalogs();
         setCatalogs(data.catalogs || []);
       }
-    } catch {} finally { setLoading(false); }
+    } catch {
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleCreate = async () => {
     try {
       const catalog = await api.createSocialCatalog(form);
-      setCatalogs(prev => [catalog, ...prev]);
+      setCatalogs((prev) => [catalog, ...prev]);
       setShowCreate(false);
       setForm({ title: '', description: '', coverImage: '', category: '' });
     } catch {}
@@ -59,14 +64,14 @@ export function SocialCatalogs() {
   const handlePublish = async (id: string) => {
     try {
       const updated = await api.publishSocialCatalog(id);
-      setCatalogs(prev => prev.map(c => c.id === id ? updated : c));
+      setCatalogs((prev) => prev.map((c) => (c.id === id ? updated : c)));
     } catch {}
   };
 
   const handleDelete = async (id: string) => {
     try {
       await api.deleteSocialCatalog(id);
-      setCatalogs(prev => prev.filter(c => c.id !== id));
+      setCatalogs((prev) => prev.filter((c) => c.id !== id));
     } catch {}
   };
 
@@ -74,9 +79,9 @@ export function SocialCatalogs() {
     if (!newItem.name) return;
     try {
       const item = await api.addCatalogItem(catalogId, newItem);
-      setCatalogs(prev => prev.map(c =>
-        c.id === catalogId ? { ...c, items: [...(c.items || []), item] } : c
-      ));
+      setCatalogs((prev) =>
+        prev.map((c) => (c.id === catalogId ? { ...c, items: [...(c.items || []), item] } : c))
+      );
       setNewItem({ name: '', price: 0, imageUrl: '' });
     } catch {}
   };
@@ -90,8 +95,18 @@ export function SocialCatalogs() {
     <div className="ig-catalogs">
       <div className="ig-catalog-top">
         <div className="ig-catalog-tabs">
-          <button className={`ig-catalog-tab ${view === 'my' ? 'active' : ''}`} onClick={() => setView('my')}>Mis Catálogos</button>
-          <button className={`ig-catalog-tab ${view === 'explore' ? 'active' : ''}`} onClick={() => setView('explore')}>Explorar</button>
+          <button
+            className={`ig-catalog-tab ${view === 'my' ? 'active' : ''}`}
+            onClick={() => setView('my')}
+          >
+            Mis Catálogos
+          </button>
+          <button
+            className={`ig-catalog-tab ${view === 'explore' ? 'active' : ''}`}
+            onClick={() => setView('explore')}
+          >
+            Explorar
+          </button>
         </div>
         <button className="ig-btn-primary" onClick={() => setShowCreate(true)}>
           <Plus size={18} /> Nuevo
@@ -100,28 +115,58 @@ export function SocialCatalogs() {
 
       {showCreate && (
         <div className="ig-modal-overlay" onClick={() => setShowCreate(false)}>
-          <div className={`ig-modal-content ${styles.modalContent}`} onClick={e => e.stopPropagation()}>
+          <div
+            className={`ig-modal-content ${styles.modalContent}`}
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="ig-modal-header">
               <h2>Crear Nuevo Catálogo</h2>
-              <button className="ig-modal-close-btn" onClick={() => setShowCreate(false)}>×</button>
+              <button className="ig-modal-close-btn" onClick={() => setShowCreate(false)}>
+                ×
+              </button>
             </div>
             <div className="ig-modal-body">
               <div className="ig-catalog-create-form">
-                <input placeholder="Título del catálogo" value={form.title} onChange={e => setForm(p => ({ ...p, title: e.target.value }))} />
-                <textarea placeholder="Descripción" value={form.description} onChange={e => setForm(p => ({ ...p, description: e.target.value }))} />
-                <input placeholder="URL de imagen de portada" value={form.coverImage} onChange={e => setForm(p => ({ ...p, coverImage: e.target.value }))} />
-                <button className="ig-btn-primary" onClick={handleCreate}>Crear Catálogo</button>
+                <input
+                  placeholder="Título del catálogo"
+                  value={form.title}
+                  onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))}
+                />
+                <textarea
+                  placeholder="Descripción"
+                  value={form.description}
+                  onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))}
+                />
+                <input
+                  placeholder="URL de imagen de portada"
+                  value={form.coverImage}
+                  onChange={(e) => setForm((p) => ({ ...p, coverImage: e.target.value }))}
+                />
+                <button className="ig-btn-primary" onClick={handleCreate}>
+                  Crear Catálogo
+                </button>
               </div>
             </div>
           </div>
         </div>
       )}
 
-      {loading ? <CatalogGridSkeleton /> : (
+      {loading ? (
+        <CatalogGridSkeleton />
+      ) : (
         <div className="ig-catalog-grid">
-          {catalogs.map(catalog => (
+          {catalogs.map((catalog) => (
             <div key={catalog.id} className="ig-catalog-card" onClick={() => openDetail(catalog)}>
-              <div className={`ig-catalog-cover ${styles.coverBg}`} style={{ '--cover-bg': catalog.coverImage ? `url(${catalog.coverImage}) center/cover` : 'linear-gradient(135deg, var(--color-primary), var(--color-secondary, #667eea))' } as React.CSSProperties}>
+              <div
+                className={`ig-catalog-cover ${styles.coverBg}`}
+                style={
+                  {
+                    '--cover-bg': catalog.coverImage
+                      ? `url(${catalog.coverImage}) center/cover`
+                      : 'linear-gradient(135deg, var(--color-primary), var(--color-secondary, #667eea))',
+                  } as React.CSSProperties
+                }
+              >
                 <span className={`ig-catalog-badge ${catalog.status}`}>
                   {catalog.status === 'published' ? 'Publicado' : 'Borrador'}
                 </span>
@@ -131,13 +176,21 @@ export function SocialCatalogs() {
                 <span>{catalog._count?.items || catalog.items?.length || 0} productos</span>
               </div>
               {view === 'my' && (
-                <div className="ig-catalog-actions" onClick={e => e.stopPropagation()}>
+                <div className="ig-catalog-actions" onClick={(e) => e.stopPropagation()}>
                   {catalog.status === 'draft' && (
-                    <button className="ig-action-sm primary" title="Publicar" onClick={() => handlePublish(catalog.id)}>
+                    <button
+                      className="ig-action-sm primary"
+                      title="Publicar"
+                      onClick={() => handlePublish(catalog.id)}
+                    >
                       <Send size={14} />
                     </button>
                   )}
-                  <button className="ig-action-sm" title="Eliminar" onClick={() => handleDelete(catalog.id)}>
+                  <button
+                    className="ig-action-sm"
+                    title="Eliminar"
+                    onClick={() => handleDelete(catalog.id)}
+                  >
                     <Trash2 size={14} />
                   </button>
                 </div>
@@ -149,8 +202,10 @@ export function SocialCatalogs() {
 
       {showDetail && selectedCatalog && (
         <div className="ig-modal-overlay" onClick={() => setShowDetail(false)}>
-          <div className="ig-modal-content ig-catalog-detail" onClick={e => e.stopPropagation()}>
-            <button className="ig-modal-close" onClick={() => setShowDetail(false)}>×</button>
+          <div className="ig-modal-content ig-catalog-detail" onClick={(e) => e.stopPropagation()}>
+            <button className="ig-modal-close" onClick={() => setShowDetail(false)}>
+              ×
+            </button>
             <div className="ig-catalog-detail-layout">
               <div className="ig-catalog-detail-left">
                 <img src={selectedCatalog.coverImage || 'https://via.placeholder.com/400'} alt="" />
@@ -159,7 +214,7 @@ export function SocialCatalogs() {
                 <h2>{selectedCatalog.title}</h2>
                 {selectedCatalog.description && <p>{selectedCatalog.description}</p>}
                 <div className="ig-catalog-detail-items">
-                  {(selectedCatalog.items || []).map(item => (
+                  {(selectedCatalog.items || []).map((item) => (
                     <div key={item.id} className="ig-catalog-detail-item">
                       {item.imageUrl && <img src={item.imageUrl} alt="" />}
                       <div>
@@ -171,10 +226,28 @@ export function SocialCatalogs() {
                 </div>
                 {view === 'my' && selectedCatalog.status === 'draft' && (
                   <div className="ig-catalog-add-item">
-                    <input placeholder="Nombre" value={newItem.name} onChange={e => setNewItem(p => ({ ...p, name: e.target.value }))} />
-                    <input placeholder="Precio" type="number" value={newItem.price} onChange={e => setNewItem(p => ({ ...p, price: Number(e.target.value) }))} />
-                    <input placeholder="URL imagen" value={newItem.imageUrl} onChange={e => setNewItem(p => ({ ...p, imageUrl: e.target.value }))} />
-                    <button className="ig-btn-primary" onClick={() => handleAddItem(selectedCatalog.id)}>Agregar</button>
+                    <input
+                      placeholder="Nombre"
+                      value={newItem.name}
+                      onChange={(e) => setNewItem((p) => ({ ...p, name: e.target.value }))}
+                    />
+                    <input
+                      placeholder="Precio"
+                      type="number"
+                      value={newItem.price}
+                      onChange={(e) => setNewItem((p) => ({ ...p, price: Number(e.target.value) }))}
+                    />
+                    <input
+                      placeholder="URL imagen"
+                      value={newItem.imageUrl}
+                      onChange={(e) => setNewItem((p) => ({ ...p, imageUrl: e.target.value }))}
+                    />
+                    <button
+                      className="ig-btn-primary"
+                      onClick={() => handleAddItem(selectedCatalog.id)}
+                    >
+                      Agregar
+                    </button>
                   </div>
                 )}
               </div>

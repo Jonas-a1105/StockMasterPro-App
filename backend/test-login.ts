@@ -16,7 +16,9 @@ async function main() {
   const adapter = new PrismaPg(pool);
   const prisma = new PrismaClient({ adapter });
 
-  const user = await prisma.user.findUnique({ where: { email: 'admin@stockmaster.com' } });
+  const user = await prisma.user.findUnique({
+    where: { email: 'admin@stockmaster.com' },
+  });
   console.log('User:', user ? 'EXISTS' : 'NOT FOUND');
   if (user) {
     const valid = await bcrypt.compare('Admin123!', user.passwordHash);

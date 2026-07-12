@@ -1,4 +1,12 @@
-import { IsOptional, IsString, IsArray, IsUUID, IsNumber, Min, Max } from 'class-validator';
+import {
+  IsOptional,
+  IsString,
+  IsArray,
+  IsUUID,
+  IsNumber,
+  Min,
+  Max,
+} from 'class-validator';
 
 export class CreateInventoryCountDto {
   @IsOptional()

@@ -41,12 +41,25 @@ export function CustomersPage() {
   const [payingCustomer, setPayingCustomer] = useState<Customer | null>(null);
   const [payAmount, setPayAmount] = useState(0);
   const [editingCustomer, setEditingCustomer] = useState<Customer | null>(null);
-  const [form, setForm] = useState({ name: '', email: '', phone: '', address: '', taxId: '', documentType: 'V', fiscalAddress: '', creditLimit: 0 });
+  const [form, setForm] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    address: '',
+    taxId: '',
+    documentType: 'V',
+    fiscalAddress: '',
+    creditLimit: 0,
+  });
   const [error, setError] = useState('');
   const [saving, setSaving] = useState(false);
   const [showImport, setShowImport] = useState(false);
 
-  const isLimitExceeded = !editingCustomer && licenseUsage?.customers && licenseUsage.customers.limit !== null && licenseUsage.customers.current >= licenseUsage.customers.limit;
+  const isLimitExceeded =
+    !editingCustomer &&
+    licenseUsage?.customers &&
+    licenseUsage.customers.limit !== null &&
+    licenseUsage.customers.current >= licenseUsage.customers.limit;
   const nextRequiredPlan = 'pro';
   const [search, setSearch] = useState('');
 
@@ -61,7 +74,9 @@ export function CustomersPage() {
     }
   };
 
-  useEffect(() => { loadCustomers(); }, []);
+  useEffect(() => {
+    loadCustomers();
+  }, []);
 
   const handleExportCustomers = () => {
     exportToExcel(customers, CUSTOMER_COLUMNS, 'clientes', 'xlsx');
@@ -80,7 +95,7 @@ export function CustomersPage() {
       const row = data[i];
       try {
         if (!row.name) throw new Error('El nombre es obligatorio.');
-        const existing = customers.find(c => c.name.toLowerCase() === row.name.toLowerCase());
+        const existing = customers.find((c) => c.name.toLowerCase() === row.name.toLowerCase());
         const payload = {
           name: row.name,
           email: row.email || '',
@@ -108,14 +123,32 @@ export function CustomersPage() {
 
   const openCreate = () => {
     setEditingCustomer(null);
-    setForm({ name: '', email: '', phone: '', address: '', taxId: '', documentType: 'V', fiscalAddress: '', creditLimit: 0 });
+    setForm({
+      name: '',
+      email: '',
+      phone: '',
+      address: '',
+      taxId: '',
+      documentType: 'V',
+      fiscalAddress: '',
+      creditLimit: 0,
+    });
     setError('');
     setShowModal(true);
   };
 
   const openEdit = (c: Customer) => {
     setEditingCustomer(c);
-    setForm({ name: c.name, email: c.email || '', phone: c.phone || '', address: c.address || '', taxId: c.taxId || '', documentType: c.documentType || 'V', fiscalAddress: c.fiscalAddress || '', creditLimit: c.creditLimit });
+    setForm({
+      name: c.name,
+      email: c.email || '',
+      phone: c.phone || '',
+      address: c.address || '',
+      taxId: c.taxId || '',
+      documentType: c.documentType || 'V',
+      fiscalAddress: c.fiscalAddress || '',
+      creditLimit: c.creditLimit,
+    });
     setError('');
     setShowModal(true);
   };
@@ -125,16 +158,18 @@ export function CustomersPage() {
     setError('');
     setSaving(true);
 
-    const emailPayload = form.email.trim() && !form.email.includes('@')
-      ? `${form.email.trim()}@gmail.com`
-      : form.email.trim();
+    const emailPayload =
+      form.email.trim() && !form.email.includes('@')
+        ? `${form.email.trim()}@gmail.com`
+        : form.email.trim();
 
     const cleanPhone = form.phone.replace(/[\s\-()]/g, '');
-    const phonePayload = cleanPhone === '+58' 
-      ? '' 
-      : (cleanPhone && !cleanPhone.startsWith('+')
+    const phonePayload =
+      cleanPhone === '+58'
+        ? ''
+        : cleanPhone && !cleanPhone.startsWith('+')
           ? `+58${cleanPhone}`
-          : cleanPhone);
+          : cleanPhone;
 
     const payload = {
       ...form,
@@ -200,34 +235,54 @@ export function CustomersPage() {
   const handleEmailBlur = () => {
     const email = form.email.trim();
     if (email && !email.includes('@')) {
-      setForm(p => ({ ...p, email: email + '@gmail.com' }));
+      setForm((p) => ({ ...p, email: email + '@gmail.com' }));
     }
   };
 
-  const filteredCustomers = customers.filter(c => 
-    !search || c.name.toLowerCase().includes(search.toLowerCase()) ||
-    (c.email || '').toLowerCase().includes(search.toLowerCase()) ||
-    (c.phone || '').includes(search)
+  const filteredCustomers = customers.filter(
+    (c) =>
+      !search ||
+      c.name.toLowerCase().includes(search.toLowerCase()) ||
+      (c.email || '').toLowerCase().includes(search.toLowerCase()) ||
+      (c.phone || '').includes(search)
   );
 
   const totalCustomers = customers.length;
   const totalCredit = customers.reduce((sum, c) => sum + (c.creditLimit || 0), 0);
   const totalBalance = customers.reduce((sum, c) => sum + (c.balance || 0), 0);
 
-  if (loading) return config.skeletonEnabled ? <SkeletonTablePage rows={8} cols={7} kpi={3} /> : <LoadingDots text="Cargando clientes" />;
+  if (loading)
+    return config.skeletonEnabled ? (
+      <SkeletonTablePage rows={8} cols={7} kpi={3} />
+    ) : (
+      <LoadingDots text="Cargando clientes" />
+    );
 
   return (
     <div className={styles.container}>
-      <TabNav tabs={[{ key: 'main', label: 'Clientes', icon: <Users size={16} /> }]} activeTab="main" onTabChange={() => {}} />
+      <TabNav
+        tabs={[{ key: 'main', label: 'Clientes', icon: <Users size={16} /> }]}
+        activeTab="main"
+        onTabChange={() => {}}
+      />
       <KpiGrid
         items={[
           { icon: <Users size={18} />, value: totalCustomers, label: 'Total Clientes' },
-          { icon: <DollarSign size={18} />, value: formatPrice(totalCredit), label: 'Límite de Crédito' },
-          { icon: <DollarSign size={18} />, value: formatPrice(totalBalance), label: 'Saldo Pendiente', color: totalBalance > 0 ? '#dc2626' : '#16a34a' },
+          {
+            icon: <DollarSign size={18} />,
+            value: formatPrice(totalCredit),
+            label: 'Límite de Crédito',
+          },
+          {
+            icon: <DollarSign size={18} />,
+            value: formatPrice(totalBalance),
+            label: 'Saldo Pendiente',
+            color: totalBalance > 0 ? 'var(--color-danger)' : 'var(--color-success)',
+          },
         ]}
       />
 
-<Toolbar
+      <Toolbar
         search={{ value: search, onChange: setSearch, placeholder: 'Buscar clientes...' }}
         onExport={handleExportCustomers}
         onImport={() => setShowImport(true)}
@@ -248,14 +303,30 @@ export function CustomersPage() {
             </tr>
           </thead>
           <tbody>
-            {filteredCustomers.map(c => (
+            {filteredCustomers.map((c) => (
               <tr key={c.id}>
-                <td><span className={tableStyles.nameText}>{c.name}</span></td>
+                <td>
+                  <span className={tableStyles.nameText}>{c.name}</span>
+                </td>
                 <td className={styles.colorMuted}>{c.email || '—'}</td>
                 <td>{c.phone || '—'}</td>
-                <td className={styles.textRight}><span className={tableStyles.numberValue}>{formatPrice(c.creditLimit)}</span></td>
                 <td className={styles.textRight}>
-                  <span className={`${tableStyles.numberValue} ${styles.balanceColor}`} style={{ '--balance-color': c.balance > (c.creditLimit * 0.8) ? 'var(--color-danger)' : c.balance > 0 ? 'var(--color-warning)' : 'var(--color-success)' } as React.CSSProperties}>
+                  <span className={tableStyles.numberValue}>{formatPrice(c.creditLimit)}</span>
+                </td>
+                <td className={styles.textRight}>
+                  <span
+                    className={`${tableStyles.numberValue} ${styles.balanceColor}`}
+                    style={
+                      {
+                        '--balance-color':
+                          c.balance > c.creditLimit * 0.8
+                            ? 'var(--color-danger)'
+                            : c.balance > 0
+                              ? 'var(--color-warning)'
+                              : 'var(--color-success)',
+                      } as React.CSSProperties
+                    }
+                  >
                     {formatPrice(c.balance)}
                   </span>
                 </td>
@@ -263,8 +334,13 @@ export function CustomersPage() {
                   {c.creditLimit > 0 ? (
                     <div className={tableStyles.progressBar}>
                       <div className={`${tableStyles.progressTrack} ${styles.w80px}`}>
-                        <div className={`${tableStyles.progressFill} ${styles.barFillWidth} ${c.balance > (c.creditLimit * 0.8) ? 'red' : c.balance > 0 ? 'orange' : 'green'}`}
-                          style={{ '--bar-fill-width': `${Math.min(100, (c.balance / c.creditLimit) * 100)}%` } as React.CSSProperties}
+                        <div
+                          className={`${tableStyles.progressFill} ${styles.barFillWidth} ${c.balance > c.creditLimit * 0.8 ? 'red' : c.balance > 0 ? 'orange' : 'green'}`}
+                          style={
+                            {
+                              '--bar-fill-width': `${Math.min(100, (c.balance / c.creditLimit) * 100)}%`,
+                            } as React.CSSProperties
+                          }
                         />
                       </div>
                     </div>
@@ -275,20 +351,40 @@ export function CustomersPage() {
                 <td className={styles.textCenter}>
                   <div className={`${styles.actions} ${styles.justifyCenter}`}>
                     {c.phone && (
-                      <button className={tableStyles.actionBtn} onClick={() => openWhatsApp(c.phone!, c.name)} title="Enviar WhatsApp">
+                      <button
+                        className={tableStyles.actionBtn}
+                        onClick={() => openWhatsApp(c.phone!, c.name)}
+                        title="Enviar WhatsApp"
+                      >
                         <MessageCircle size={14} />
                       </button>
                     )}
-                    <button className={tableStyles.actionBtn} onClick={() => openEdit(c)} title="Editar">
+                    <button
+                      className={tableStyles.actionBtn}
+                      onClick={() => openEdit(c)}
+                      title="Editar"
+                    >
                       <Pencil size={14} />
                     </button>
                     {c.balance > 0 && (
-                      <button className={tableStyles.actionBtn} onClick={() => { setPayingCustomer(c); setPayAmount(0); setShowPayModal(true); }} title="Abonar">
+                      <button
+                        className={tableStyles.actionBtn}
+                        onClick={() => {
+                          setPayingCustomer(c);
+                          setPayAmount(0);
+                          setShowPayModal(true);
+                        }}
+                        title="Abonar"
+                      >
                         <DollarSign size={14} />
                       </button>
                     )}
-                    {(user?.role === 'admin') && (
-                      <button className={`${tableStyles.actionBtn} danger`} onClick={() => handleDelete(c.id)} title="Eliminar">
+                    {user?.role === 'admin' && (
+                      <button
+                        className={`${tableStyles.actionBtn} danger`}
+                        onClick={() => handleDelete(c.id)}
+                        title="Eliminar"
+                      >
                         <Trash2 size={14} />
                       </button>
                     )}
@@ -298,7 +394,12 @@ export function CustomersPage() {
             ))}
             {filteredCustomers.length === 0 && (
               <tr>
-                <td colSpan={7} className={`${styles.textCenter} ${styles.p40} ${styles.colorMuted}`}>No hay clientes registrados</td>
+                <td
+                  colSpan={7}
+                  className={`${styles.textCenter} ${styles.p40} ${styles.colorMuted}`}
+                >
+                  No hay clientes registrados
+                </td>
               </tr>
             )}
           </tbody>
@@ -306,22 +407,33 @@ export function CustomersPage() {
       </div>
 
       {showModal && (
-        <Modal open={showModal} onClose={() => setShowModal(false)} title={editingCustomer ? 'Editar Cliente' : 'Nuevo Cliente'}>
+        <Modal
+          open={showModal}
+          onClose={() => setShowModal(false)}
+          title={editingCustomer ? 'Editar Cliente' : 'Nuevo Cliente'}
+        >
           <div className={styles.modalContent}>
             <form onSubmit={handleSave} className={styles.form}>
               {error && <div className={styles.error}>{error}</div>}
               <div className={styles.field}>
                 <label>Nombre</label>
-                <input value={form.name} onChange={e => setForm(p => ({ ...p, name: e.target.value }))} required placeholder="Nombre del cliente" />
+                <input
+                  value={form.name}
+                  onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))}
+                  required
+                  placeholder="Nombre del cliente"
+                />
               </div>
               <div className={styles.field}>
                 <label>Email</label>
-                {(!form.email.includes('@') || form.email.endsWith('@gmail.com')) ? (
+                {!form.email.includes('@') || form.email.endsWith('@gmail.com') ? (
                   <div className={styles.inputSuffix}>
                     <input
                       type="text"
-                      value={form.email.endsWith('@gmail.com') ? form.email.slice(0, -10) : form.email}
-                      onChange={e => setForm(p => ({ ...p, email: e.target.value }))}
+                      value={
+                        form.email.endsWith('@gmail.com') ? form.email.slice(0, -10) : form.email
+                      }
+                      onChange={(e) => setForm((p) => ({ ...p, email: e.target.value }))}
                       placeholder="usuario"
                     />
                     <span>@gmail.com</span>
@@ -330,20 +442,20 @@ export function CustomersPage() {
                   <input
                     type="email"
                     value={form.email}
-                    onChange={e => setForm(p => ({ ...p, email: e.target.value }))}
+                    onChange={(e) => setForm((p) => ({ ...p, email: e.target.value }))}
                     placeholder="usuario@gmail.com"
                   />
                 )}
               </div>
               <div className={styles.field}>
                 <label>Teléfono / WhatsApp</label>
-                {(form.phone.startsWith('+58') || !form.phone.startsWith('+')) ? (
+                {form.phone.startsWith('+58') || !form.phone.startsWith('+') ? (
                   <div className={styles.inputPrefix}>
                     <span>+58</span>
                     <input
                       type="text"
                       value={form.phone.startsWith('+58') ? form.phone.slice(3) : form.phone}
-                      onChange={e => setForm(p => ({ ...p, phone: e.target.value }))}
+                      onChange={(e) => setForm((p) => ({ ...p, phone: e.target.value }))}
                       placeholder="4XX XXX XXXX"
                     />
                   </div>
@@ -351,22 +463,33 @@ export function CustomersPage() {
                   <input
                     type="text"
                     value={form.phone}
-                    onChange={e => setForm(p => ({ ...p, phone: e.target.value }))}
+                    onChange={(e) => setForm((p) => ({ ...p, phone: e.target.value }))}
                     placeholder="+58 4XX XXX XXXX"
                   />
                 )}
               </div>
               <div className={styles.field}>
                 <label>Dirección</label>
-                <input value={form.address} onChange={e => setForm(p => ({ ...p, address: e.target.value }))} placeholder="Dirección del cliente" />
+                <input
+                  value={form.address}
+                  onChange={(e) => setForm((p) => ({ ...p, address: e.target.value }))}
+                  placeholder="Dirección del cliente"
+                />
               </div>
               <div className={styles.field}>
                 <label>RIF / CI / J</label>
-                <input value={form.taxId} onChange={e => setForm(p => ({ ...p, taxId: e.target.value }))} placeholder="J-12345678-9 / V-12345678" />
+                <input
+                  value={form.taxId}
+                  onChange={(e) => setForm((p) => ({ ...p, taxId: e.target.value }))}
+                  placeholder="J-12345678-9 / V-12345678"
+                />
               </div>
               <div className={styles.field}>
                 <label>Tipo Doc.</label>
-                <select value={form.documentType} onChange={e => setForm(p => ({ ...p, documentType: e.target.value }))}>
+                <select
+                  value={form.documentType}
+                  onChange={(e) => setForm((p) => ({ ...p, documentType: e.target.value }))}
+                >
                   <option value="V">V - Venezolano</option>
                   <option value="E">E - Extranjero</option>
                   <option value="J">J - Jurídico</option>
@@ -376,14 +499,33 @@ export function CustomersPage() {
               </div>
               <div className={styles.fieldFull}>
                 <label>Dirección Fiscal</label>
-                <input value={form.fiscalAddress} onChange={e => setForm(p => ({ ...p, fiscalAddress: e.target.value }))} placeholder="Dirección fiscal del cliente" />
+                <input
+                  value={form.fiscalAddress}
+                  onChange={(e) => setForm((p) => ({ ...p, fiscalAddress: e.target.value }))}
+                  placeholder="Dirección fiscal del cliente"
+                />
               </div>
               <div className={styles.field}>
                 <label>Límite de crédito ($)</label>
-                <input type="number" min="0" step="0.01" value={form.creditLimit || ''} onChange={e => setForm(p => ({ ...p, creditLimit: parseFloat(e.target.value) || 0 }))} placeholder="0.00" />
+                <input
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  value={form.creditLimit || ''}
+                  onChange={(e) =>
+                    setForm((p) => ({ ...p, creditLimit: parseFloat(e.target.value) || 0 }))
+                  }
+                  placeholder="0.00"
+                />
               </div>
               <div className={styles.modalActions}>
-                <button type="button" className={styles.cancelBtn} onClick={() => setShowModal(false)}>Cancelar</button>
+                <button
+                  type="button"
+                  className={styles.cancelBtn}
+                  onClick={() => setShowModal(false)}
+                >
+                  Cancelar
+                </button>
                 {isLimitExceeded ? (
                   <PremiumLockButton
                     requiredPlan={nextRequiredPlan}
@@ -394,7 +536,7 @@ export function CustomersPage() {
                   />
                 ) : (
                   <button type="submit" className={styles.saveBtn} disabled={saving}>
-                    {saving ? <ButtonLoader /> : (editingCustomer ? 'Actualizar' : 'Crear Cliente')}
+                    {saving ? <ButtonLoader /> : editingCustomer ? 'Actualizar' : 'Crear Cliente'}
                   </button>
                 )}
               </div>
@@ -404,7 +546,14 @@ export function CustomersPage() {
       )}
 
       {showPayModal && payingCustomer && (
-        <Modal open={showPayModal} onClose={() => { setShowPayModal(false); setPayingCustomer(null); }} title={`Abonar a ${payingCustomer.name}`}>
+        <Modal
+          open={showPayModal}
+          onClose={() => {
+            setShowPayModal(false);
+            setPayingCustomer(null);
+          }}
+          title={`Abonar a ${payingCustomer.name}`}
+        >
           <div className={styles.modalContent}>
             <div className={styles.payInfo}>
               <div className={styles.payRow}>
@@ -418,11 +567,33 @@ export function CustomersPage() {
             </div>
             <div className={styles.field}>
               <label>Monto a abonar</label>
-              <input type="number" min="0" step="0.01" max={payingCustomer.balance} value={payAmount || ''} onChange={e => setPayAmount(parseFloat(e.target.value) || 0)} autoFocus placeholder="Monto a abonar" />
+              <input
+                type="number"
+                min="0"
+                step="0.01"
+                max={payingCustomer.balance}
+                value={payAmount || ''}
+                onChange={(e) => setPayAmount(parseFloat(e.target.value) || 0)}
+                autoFocus
+                placeholder="Monto a abonar"
+              />
             </div>
             <div className={styles.modalActions}>
-              <button type="button" className={styles.cancelBtn} onClick={() => { setShowPayModal(false); setPayingCustomer(null); }}>Cancelar</button>
-              <button className={styles.saveBtn} onClick={handlePay} disabled={saving || payAmount <= 0}>
+              <button
+                type="button"
+                className={styles.cancelBtn}
+                onClick={() => {
+                  setShowPayModal(false);
+                  setPayingCustomer(null);
+                }}
+              >
+                Cancelar
+              </button>
+              <button
+                className={styles.saveBtn}
+                onClick={handlePay}
+                disabled={saving || payAmount <= 0}
+              >
                 {saving ? <ButtonLoader /> : 'Registrar Abono'}
               </button>
             </div>

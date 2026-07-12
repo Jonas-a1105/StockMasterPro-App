@@ -6,7 +6,17 @@ import { LoadingDots } from '@shared/ui/LoadingDots';
 import { SkeletonTablePage } from '@shared/ui/Skeleton';
 import { Modal } from '@shared/ui/Modal';
 import { ButtonLoader } from '@shared/ui/ButtonLoader';
-import { FileText, Plus, X, Check, ChevronRight, Search, RotateCcw, FileDown, FileUp } from 'lucide-react';
+import {
+  FileText,
+  Plus,
+  X,
+  Check,
+  ChevronRight,
+  Search,
+  RotateCcw,
+  FileDown,
+  FileUp,
+} from 'lucide-react';
 import { formatUsd } from '@shared/lib/format/currency';
 import { exportToExcel, type ColumnMapping } from '@shared/lib/excelHelper';
 import { ImportModal } from '@shared/ui/ImportModal';
@@ -65,17 +75,37 @@ const STATUS_STYLES: Record<string, string> = {
 
 function renderLoadingRows(config: any) {
   if (!config.skeletonEnabled) {
-    return <tr><td colSpan={8} className={styles.emptyRow}><LoadingDots text="Cargando conteos..." /></td></tr>;
+    return (
+      <tr>
+        <td colSpan={8} className={styles.emptyRow}>
+          <LoadingDots text="Cargando conteos..." />
+        </td>
+      </tr>
+    );
   }
   return Array.from({ length: 5 }).map((_, idx) => (
     <tr key={`loader-${idx}`}>
-      <td><div className={`skeleton ${styles.skeletonWidth60}`} /></td>
-      <td><div className={`skeleton ${styles.skeletonWidth120}`} /></td>
-      <td><div className={`skeleton ${styles.skeletonWidth100}`} /></td>
-      <td><div className={`skeleton ${styles.skeletonWidth80}`} /></td>
-      <td><div className={`skeleton ${styles.skeletonWidth40}`} /></td>
-      <td><div className={`skeleton ${styles.skeletonWidth60b}`} /></td>
-      <td><div className={`skeleton ${styles.skeletonWidth100b}`} /></td>
+      <td>
+        <div className={`skeleton ${styles.skeletonWidth60}`} />
+      </td>
+      <td>
+        <div className={`skeleton ${styles.skeletonWidth120}`} />
+      </td>
+      <td>
+        <div className={`skeleton ${styles.skeletonWidth100}`} />
+      </td>
+      <td>
+        <div className={`skeleton ${styles.skeletonWidth80}`} />
+      </td>
+      <td>
+        <div className={`skeleton ${styles.skeletonWidth40}`} />
+      </td>
+      <td>
+        <div className={`skeleton ${styles.skeletonWidth60b}`} />
+      </td>
+      <td>
+        <div className={`skeleton ${styles.skeletonWidth100b}`} />
+      </td>
       <td></td>
     </tr>
   ));
@@ -95,7 +125,12 @@ export function ConteoFisicoTab() {
   const [savingItem, setSavingItem] = useState<string | null>(null);
   const [showImport, setShowImport] = useState(false);
   const [warehouses, setWarehouses] = useState<any[]>([]);
-  const [form, setForm] = useState({ name: '', notes: '', warehouseId: '', productIds: [] as string[] });
+  const [form, setForm] = useState({
+    name: '',
+    notes: '',
+    warehouseId: '',
+    productIds: [] as string[],
+  });
   const [showStartConfirm, setShowStartConfirm] = useState<InventoryCount | null>(null);
   const [showCompleteConfirm, setShowCompleteConfirm] = useState<InventoryCount | null>(null);
   const [showApproveConfirm, setShowApproveConfirm] = useState<InventoryCount | null>(null);
@@ -189,7 +224,12 @@ export function ConteoFisicoTab() {
     }
   };
 
-  const handleUpdateItem = async (countId: string, itemId: string, countedQty: number, notes?: string) => {
+  const handleUpdateItem = async (
+    countId: string,
+    itemId: string,
+    countedQty: number,
+    notes?: string
+  ) => {
     setSavingItem(itemId);
     try {
       await api.patch(`/inventory-counts/${countId}/items/${itemId}`, { countedQty, notes });
@@ -222,13 +262,13 @@ export function ConteoFisicoTab() {
       { header: 'Diferencias', key: 'differences', type: 'number' },
       { header: 'Creado', key: 'createdAt', type: 'date' },
     ];
-    const data = counts.map(c => ({
+    const data = counts.map((c) => ({
       id: c.id.slice(0, 8),
       name: c.name || '—',
       warehouse: c.warehouse?.name || 'Todos',
       status: STATUS_LABELS[c.status],
       'items.length': c.items.length,
-      differences: c.items.filter(i => i.difference !== 0).length,
+      differences: c.items.filter((i) => i.difference !== 0).length,
       createdAt: new Date(c.createdAt).toLocaleDateString(),
     }));
     exportToExcel(data, COLS, 'conteos-fisicos', 'xlsx');
@@ -236,7 +276,8 @@ export function ConteoFisicoTab() {
   };
 
   const handleImport = async (data: any[], onProgress: (c: number, t: number) => void) => {
-    let success = 0, errors = 0;
+    let success = 0,
+      errors = 0;
     const details: string[] = [];
     for (let i = 0; i < data.length; i++) {
       const row = data[i];
@@ -264,10 +305,14 @@ export function ConteoFisicoTab() {
     setShowDetailModal(true);
   };
 
-  const filteredCounts = counts.filter(c => {
-    if (search && !c.id.toLowerCase().includes(search.toLowerCase()) &&
-        !c.name?.toLowerCase().includes(search.toLowerCase()) &&
-        !c.warehouse?.name.toLowerCase().includes(search.toLowerCase())) return false;
+  const filteredCounts = counts.filter((c) => {
+    if (
+      search &&
+      !c.id.toLowerCase().includes(search.toLowerCase()) &&
+      !c.name?.toLowerCase().includes(search.toLowerCase()) &&
+      !c.warehouse?.name.toLowerCase().includes(search.toLowerCase())
+    )
+      return false;
     if (statusFilter && c.status !== statusFilter) return false;
     return true;
   });
@@ -283,7 +328,13 @@ export function ConteoFisicoTab() {
           <button className={styles.btnSecondary} onClick={() => setShowImport(true)}>
             <FileUp size={16} /> Importar
           </button>
-          <button className={styles.btnPrimary} onClick={() => { setForm({ name: '', notes: '', warehouseId: '', productIds: [] }); setShowCreateModal(true); }}>
+          <button
+            className={styles.btnPrimary}
+            onClick={() => {
+              setForm({ name: '', notes: '', warehouseId: '', productIds: [] });
+              setShowCreateModal(true);
+            }}
+          >
             <Plus size={16} /> Nuevo Conteo
           </button>
         </div>
@@ -294,10 +345,14 @@ export function ConteoFisicoTab() {
           type="text"
           placeholder="Buscar por ID, nombre, almacén..."
           value={search}
-          onChange={e => setSearch(e.target.value)}
+          onChange={(e) => setSearch(e.target.value)}
           className={styles.searchInput}
         />
-        <select value={statusFilter} onChange={e => setStatusFilter(e.target.value)} className={styles.select}>
+        <select
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value)}
+          className={styles.select}
+        >
           <option value="">Todos los estados</option>
           <option value="draft">Borrador</option>
           <option value="in_progress">En Progreso</option>
@@ -322,52 +377,114 @@ export function ConteoFisicoTab() {
             </tr>
           </thead>
           <tbody>
-            {loading ? renderLoadingRows(config) : filteredCounts.map(count => (
-                <tr key={count.id}>
-                  <td className={`${styles.monoFont} ${styles.textMuted}`}>{count.id.slice(0, 8)}</td>
-                  <td><span className={tableStyles.nameText}>{count.name || '—'}</span></td>
-                  <td>{count.warehouse?.name || 'Todos'}</td>
-                  <td className={styles.textCenter}>
-                    <span className={`${styles.badge} ${STATUS_STYLES[count.status]}`}>{STATUS_LABELS[count.status]}</span>
-                  </td>
-                  <td className={styles.textCenter}>{count.items.length}</td>
-                  <td className={styles.textCenter}>
-                    <span className={`${styles.fontWeight600} ${count.items.some(i => i.difference !== 0) ? styles.textDanger : styles.textSuccess}`}>
-                      {count.items.filter(i => i.difference !== 0).length}
-                    </span>
-                  </td>
-                  <td>{new Date(count.createdAt).toLocaleDateString()}</td>
-                  <td className={`${styles.textCenter} ${styles.textCenterWhiteSpace}`}>
-                    <div className={styles.actionGroup}>
-                      <button className={styles.iconBtn} onClick={() => openDetail(count)} title="Ver detalle"><FileText size={14} /></button>
-                      {count.status === 'draft' && (
-                        <>
-                          <button className={styles.iconBtn} onClick={() => setShowStartConfirm(count)} title="Iniciar"><ChevronRight size={14} /></button>
-                          <button className={`${styles.iconBtn} danger`} onClick={() => setShowCancelConfirm(count)} title="Cancelar"><X size={14} /></button>
-                        </>
-                      )}
-                      {count.status === 'in_progress' && (
-                        <>
-                          <button className={styles.iconBtn} onClick={() => setShowCompleteConfirm(count)} title="Completar"><Check size={14} /></button>
-                          <button className={`${styles.iconBtn} danger`} onClick={() => setShowCancelConfirm(count)} title="Cancelar"><X size={14} /></button>
-                        </>
-                      )}
-                      {count.status === 'completed' && (
-                        <>
-                          <button className={styles.iconBtn} onClick={() => setShowApproveConfirm(count)} title="Aprobar"><Check size={14} /></button>
-                          <button className={`${styles.iconBtn} danger`} onClick={() => setShowCancelConfirm(count)} title="Cancelar"><X size={14} /></button>
-                        </>
-                      )}
-                      {count.status === 'approved' && (
-                        <button className={`${styles.iconBtn} success`} onClick={() => handleApplyAdjustments(count)} title="Aplicar ajustes al stock"><RotateCcw size={14} /></button>
-                      )}
-                    </div>
-                  </td>
-                </tr>
-              ))}
-              {filteredCounts.length === 0 && (
-                <tr><td colSpan={8} className={styles.emptyRow}>No hay conteos de inventario</td></tr>
-              )}
+            {loading
+              ? renderLoadingRows(config)
+              : filteredCounts.map((count) => (
+                  <tr key={count.id}>
+                    <td className={`${styles.monoFont} ${styles.textMuted}`}>
+                      {count.id.slice(0, 8)}
+                    </td>
+                    <td>
+                      <span className={tableStyles.nameText}>{count.name || '—'}</span>
+                    </td>
+                    <td>{count.warehouse?.name || 'Todos'}</td>
+                    <td className={styles.textCenter}>
+                      <span className={`${styles.badge} ${STATUS_STYLES[count.status]}`}>
+                        {STATUS_LABELS[count.status]}
+                      </span>
+                    </td>
+                    <td className={styles.textCenter}>{count.items.length}</td>
+                    <td className={styles.textCenter}>
+                      <span
+                        className={`${styles.fontWeight600} ${count.items.some((i) => i.difference !== 0) ? styles.textDanger : styles.textSuccess}`}
+                      >
+                        {count.items.filter((i) => i.difference !== 0).length}
+                      </span>
+                    </td>
+                    <td>{new Date(count.createdAt).toLocaleDateString()}</td>
+                    <td className={`${styles.textCenter} ${styles.textCenterWhiteSpace}`}>
+                      <div className={styles.actionGroup}>
+                        <button
+                          className={styles.iconBtn}
+                          onClick={() => openDetail(count)}
+                          title="Ver detalle"
+                        >
+                          <FileText size={14} />
+                        </button>
+                        {count.status === 'draft' && (
+                          <>
+                            <button
+                              className={styles.iconBtn}
+                              onClick={() => setShowStartConfirm(count)}
+                              title="Iniciar"
+                            >
+                              <ChevronRight size={14} />
+                            </button>
+                            <button
+                              className={`${styles.iconBtn} danger`}
+                              onClick={() => setShowCancelConfirm(count)}
+                              title="Cancelar"
+                            >
+                              <X size={14} />
+                            </button>
+                          </>
+                        )}
+                        {count.status === 'in_progress' && (
+                          <>
+                            <button
+                              className={styles.iconBtn}
+                              onClick={() => setShowCompleteConfirm(count)}
+                              title="Completar"
+                            >
+                              <Check size={14} />
+                            </button>
+                            <button
+                              className={`${styles.iconBtn} danger`}
+                              onClick={() => setShowCancelConfirm(count)}
+                              title="Cancelar"
+                            >
+                              <X size={14} />
+                            </button>
+                          </>
+                        )}
+                        {count.status === 'completed' && (
+                          <>
+                            <button
+                              className={styles.iconBtn}
+                              onClick={() => setShowApproveConfirm(count)}
+                              title="Aprobar"
+                            >
+                              <Check size={14} />
+                            </button>
+                            <button
+                              className={`${styles.iconBtn} danger`}
+                              onClick={() => setShowCancelConfirm(count)}
+                              title="Cancelar"
+                            >
+                              <X size={14} />
+                            </button>
+                          </>
+                        )}
+                        {count.status === 'approved' && (
+                          <button
+                            className={`${styles.iconBtn} success`}
+                            onClick={() => handleApplyAdjustments(count)}
+                            title="Aplicar ajustes al stock"
+                          >
+                            <RotateCcw size={14} />
+                          </button>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+            {filteredCounts.length === 0 && (
+              <tr>
+                <td colSpan={8} className={styles.emptyRow}>
+                  No hay conteos de inventario
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
@@ -384,7 +501,10 @@ export function ConteoFisicoTab() {
 
       <CountDetailModal
         open={showDetailModal}
-        onClose={() => { setShowDetailModal(false); setSelectedCount(null); }}
+        onClose={() => {
+          setShowDetailModal(false);
+          setSelectedCount(null);
+        }}
         count={selectedCount}
         onUpdateItem={handleUpdateItem}
         savingItem={savingItem}
@@ -450,22 +570,41 @@ function CreateCountModal({ open, onClose, onSubmit, loading, warehouses, form, 
         <div className="form-grid">
           <div className="field">
             <label>Nombre del conteo</label>
-            <input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} placeholder="Ej: Conteo mensual enero" required />
+            <input
+              value={form.name}
+              onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
+              placeholder="Ej: Conteo mensual enero"
+              required
+            />
           </div>
           <div className="field">
             <label>Almacén (opcional)</label>
-            <select value={form.warehouseId} onChange={e => setForm(f => ({ ...f, warehouseId: e.target.value }))}>
+            <select
+              value={form.warehouseId}
+              onChange={(e) => setForm((f) => ({ ...f, warehouseId: e.target.value }))}
+            >
               <option value="">Todos los almacenes</option>
-              {warehouses.map(w => <option key={w.id} value={w.id}>{w.name} ({w.code})</option>)}
+              {warehouses.map((w) => (
+                <option key={w.id} value={w.id}>
+                  {w.name} ({w.code})
+                </option>
+              ))}
             </select>
           </div>
           <div className="field-full">
             <label>Notas</label>
-            <textarea value={form.notes} onChange={e => setForm(f => ({ ...f, notes: e.target.value }))} rows={2} placeholder="Observaciones..." />
+            <textarea
+              value={form.notes}
+              onChange={(e) => setForm((f) => ({ ...f, notes: e.target.value }))}
+              rows={2}
+              placeholder="Observaciones..."
+            />
           </div>
         </div>
         <div className="form-actions">
-          <button type="button" className="cancelBtn" onClick={onClose}>Cancelar</button>
+          <button type="button" className="cancelBtn" onClick={onClose}>
+            Cancelar
+          </button>
           <button type="submit" className="saveBtn" disabled={loading}>
             {loading ? <span className="loader" /> : 'Crear'}
           </button>
@@ -479,17 +618,48 @@ function CountDetailModal({ open, onClose, count, onUpdateItem, savingItem }: an
   if (!open || !count) return null;
 
   return (
-    <Modal open={open} onClose={onClose} title={`Conteo: ${count.name || count.id.slice(0, 8)}`} wide>
+    <Modal
+      open={open}
+      onClose={onClose}
+      title={`Conteo: ${count.name || count.id.slice(0, 8)}`}
+      wide
+    >
       <div className="detail-header">
         <div className="detail-info">
-          <div><strong>Estado:</strong> <span className={`badge ${STATUS_STYLES[count.status]}`}>{STATUS_LABELS[count.status]}</span></div>
-          <div><strong>Almacén:</strong> {count.warehouse?.name || 'Todos'}</div>
-          <div><strong>Creado por:</strong> {count.user?.name || '—'}</div>
-          {count.startedAt && <div><strong>Iniciado:</strong> {new Date(count.startedAt).toLocaleString()}</div>}
-          {count.completedAt && <div><strong>Completado:</strong> {new Date(count.completedAt).toLocaleString()}</div>}
-          {count.approvedAt && <div><strong>Aprobado por:</strong> {count.approver?.name || '—'} ({new Date(count.approvedAt).toLocaleString()})</div>}
+          <div>
+            <strong>Estado:</strong>{' '}
+            <span className={`badge ${STATUS_STYLES[count.status]}`}>
+              {STATUS_LABELS[count.status]}
+            </span>
+          </div>
+          <div>
+            <strong>Almacén:</strong> {count.warehouse?.name || 'Todos'}
+          </div>
+          <div>
+            <strong>Creado por:</strong> {count.user?.name || '—'}
+          </div>
+          {count.startedAt && (
+            <div>
+              <strong>Iniciado:</strong> {new Date(count.startedAt).toLocaleString()}
+            </div>
+          )}
+          {count.completedAt && (
+            <div>
+              <strong>Completado:</strong> {new Date(count.completedAt).toLocaleString()}
+            </div>
+          )}
+          {count.approvedAt && (
+            <div>
+              <strong>Aprobado por:</strong> {count.approver?.name || '—'} (
+              {new Date(count.approvedAt).toLocaleString()})
+            </div>
+          )}
         </div>
-        {count.notes && <div className="detail-notes"><strong>Notas:</strong> {count.notes}</div>}
+        {count.notes && (
+          <div className="detail-notes">
+            <strong>Notas:</strong> {count.notes}
+          </div>
+        )}
       </div>
 
       <table className={tableStyles.table}>
@@ -512,19 +682,37 @@ function CountDetailModal({ open, onClose, count, onUpdateItem, savingItem }: an
                   type="number"
                   min="0"
                   value={item.countedQty ?? ''}
-                  onChange={e => onUpdateItem(count.id, item.id, parseInt(e.target.value) || 0, item.notes)}
+                  onChange={(e) =>
+                    onUpdateItem(count.id, item.id, parseInt(e.target.value) || 0, item.notes)
+                  }
                   className={styles.inputCell}
                   disabled={count.status !== 'in_progress'}
                 />
               </td>
-              <td className={`${styles.tdCenter} ${styles.fontWeight600} ${styles.colorVar}`} style={{ '--color-var': item.difference !== 0 ? 'var(--color-danger)' : 'var(--color-success)' } as React.CSSProperties}>
-                {item.difference >= 0 ? '+' : ''}{item.difference}
+              <td
+                className={`${styles.tdCenter} ${styles.fontWeight600} ${styles.colorVar}`}
+                style={
+                  {
+                    '--color-var':
+                      item.difference !== 0 ? 'var(--color-danger)' : 'var(--color-success)',
+                  } as React.CSSProperties
+                }
+              >
+                {item.difference >= 0 ? '+' : ''}
+                {item.difference}
               </td>
               <td>
                 <input
                   type="text"
                   value={item.notes || ''}
-                  onChange={e => onUpdateItem(count.id, item.id, item.countedQty ?? item.systemQty, e.target.value)}
+                  onChange={(e) =>
+                    onUpdateItem(
+                      count.id,
+                      item.id,
+                      item.countedQty ?? item.systemQty,
+                      e.target.value
+                    )
+                  }
                   className={styles.inputFull}
                   disabled={count.status !== 'in_progress'}
                 />
@@ -537,14 +725,30 @@ function CountDetailModal({ open, onClose, count, onUpdateItem, savingItem }: an
   );
 }
 
-function ConfirmationModal({ open, onClose, onConfirm, title, message, confirmLabel, danger }: any) {
+function ConfirmationModal({
+  open,
+  onClose,
+  onConfirm,
+  title,
+  message,
+  confirmLabel,
+  danger,
+}: any) {
   if (!open) return null;
   return (
     <Modal open={open} onClose={onClose} title={title}>
       <p>{message}</p>
       <div className="form-actions">
-        <button className="cancelBtn" onClick={onClose}>Cancelar</button>
-        <button className={`saveBtn ${danger ? 'danger' : ''}`} onClick={() => { onConfirm(); onClose(); }}>
+        <button className="cancelBtn" onClick={onClose}>
+          Cancelar
+        </button>
+        <button
+          className={`saveBtn ${danger ? 'danger' : ''}`}
+          onClick={() => {
+            onConfirm();
+            onClose();
+          }}
+        >
           {confirmLabel}
         </button>
       </div>

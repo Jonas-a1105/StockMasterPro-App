@@ -24,28 +24,72 @@ interface KpiGridProps {
 function getLottieData(label: string, lottieProp?: string) {
   if (lottieProp) {
     switch (lottieProp) {
-      case 'wallet': return walletData;
-      case 'card': return creditCardData;
-      case 'bag': return shoppingBagData;
-      case 'analytics': return analyticsData;
-      case 'warning': return warningData;
-      case 'trend': return trendingUpData;
+      case 'wallet':
+        return walletData;
+      case 'card':
+        return creditCardData;
+      case 'bag':
+        return shoppingBagData;
+      case 'analytics':
+        return analyticsData;
+      case 'warning':
+        return warningData;
+      case 'trend':
+        return trendingUpData;
     }
   }
   const norm = label.toLowerCase();
-  if (norm.includes('pendiente') || norm.includes('reembolsado') || norm.includes('utilidad') || norm.includes('ingreso') || norm.includes('neto') || norm.includes('caja')) {
+  if (
+    norm.includes('pendiente') ||
+    norm.includes('reembolsado') ||
+    norm.includes('utilidad') ||
+    norm.includes('ingreso') ||
+    norm.includes('neto') ||
+    norm.includes('caja')
+  ) {
     return walletData;
   }
-  if (norm.includes('crédito') || norm.includes('gasto') || norm.includes('cuenta') || norm.includes('administrador') || norm.includes('transacción') || norm.includes('pago')) {
+  if (
+    norm.includes('crédito') ||
+    norm.includes('gasto') ||
+    norm.includes('cuenta') ||
+    norm.includes('administrador') ||
+    norm.includes('transacción') ||
+    norm.includes('pago')
+  ) {
     return creditCardData;
   }
-  if (norm.includes('vendido') || norm.includes('producto') || norm.includes('almacén') || norm.includes('cliente') || norm.includes('usuario')) {
+  if (
+    norm.includes('vendido') ||
+    norm.includes('producto') ||
+    norm.includes('almacén') ||
+    norm.includes('cliente') ||
+    norm.includes('usuario')
+  ) {
     return shoppingBagData;
   }
-  if (norm.includes('total') || norm.includes('filtrado') || norm.includes('margen') || norm.includes('brecha') || norm.includes('spread') || norm.includes('exposición') || norm.includes('tasa')) {
+  if (
+    norm.includes('total') ||
+    norm.includes('filtrado') ||
+    norm.includes('margen') ||
+    norm.includes('brecha') ||
+    norm.includes('spread') ||
+    norm.includes('exposición') ||
+    norm.includes('tasa')
+  ) {
     return analyticsData;
   }
-  if (norm.includes('vencida') || norm.includes('muerto') || norm.includes('alerta') || norm.includes('cero') || norm.includes('bajo') || norm.includes('inactivo') || norm.includes('egreso') || norm.includes('riesgo') || norm.includes('volatilidad')) {
+  if (
+    norm.includes('vencida') ||
+    norm.includes('muerto') ||
+    norm.includes('alerta') ||
+    norm.includes('cero') ||
+    norm.includes('bajo') ||
+    norm.includes('inactivo') ||
+    norm.includes('egreso') ||
+    norm.includes('riesgo') ||
+    norm.includes('volatilidad')
+  ) {
     return warningData;
   }
   if (norm.includes('activo')) {
@@ -69,7 +113,9 @@ export function KpiGrid({ items }: KpiGridProps) {
             <div
               key={i}
               className={`${styles.card} kpi-card`}
-              style={item.color ? { '--kpi-color': item.color } as React.CSSProperties : undefined}
+              style={
+                item.color ? ({ '--kpi-color': item.color } as React.CSSProperties) : undefined
+              }
               onMouseEnter={() => setHoveredIdx(i)}
               onMouseLeave={() => setHoveredIdx(null)}
             >

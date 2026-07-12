@@ -392,7 +392,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: color 0.15s, background-color 0.15s;
+  transition:
+    color 0.15s,
+    background-color 0.15s;
   flex-shrink: 0;
   border-radius: var(--border-radius-sm);
 }
@@ -408,4 +410,9 @@
 }
 
 /* ── Utility classes ── */
-.flexRow { display: flex; flex-direction: row; align-items: center; gap: 6px; }
+.flexRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+}

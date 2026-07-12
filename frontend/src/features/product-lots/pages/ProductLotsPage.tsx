@@ -6,7 +6,18 @@ import { SkeletonTablePage } from '@shared/ui/Skeleton';
 import { useTheme } from '@contexts/ThemeContext';
 import { useExchangeRate } from '@contexts/ExchangeRateContext';
 import { formatUsd } from '@shared/lib/format/currency';
-import { Plus, Calendar, AlertTriangle, Trash2, Eye, Filter, X, Clock, Package, AlertCircle } from 'lucide-react';
+import {
+  Plus,
+  Calendar,
+  AlertTriangle,
+  Trash2,
+  Eye,
+  Filter,
+  X,
+  Clock,
+  Package,
+  AlertCircle,
+} from 'lucide-react';
 import { TabNav } from '@shared/ui/TabNav';
 import { KpiGrid } from '@shared/ui/KpiGrid';
 import { Toolbar } from '@shared/ui/Toolbar';
@@ -20,7 +31,7 @@ const TAB_ITEMS = [
   { key: 'expired', label: 'Vencidos', icon: <AlertCircle size={16} /> },
 ] as const;
 
-type TabKey = typeof TAB_ITEMS[number]['key'];
+type TabKey = (typeof TAB_ITEMS)[number]['key'];
 
 export function ProductLotsPage() {
   const { showToast } = useToast();
@@ -52,29 +63,41 @@ export function ProductLotsPage() {
     }
   };
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => {
+    load();
+  }, []);
 
   const filtered = useMemo(() => {
     let result = lots;
     if (activeTab === 'expiring') {
       const limit = new Date();
       limit.setDate(limit.getDate() + 30);
-      result = result.filter(l => l.expiryDate && new Date(l.expiryDate) <= limit && new Date(l.expiryDate) >= new Date() && l.quantity > 0);
+      result = result.filter(
+        (l) =>
+          l.expiryDate &&
+          new Date(l.expiryDate) <= limit &&
+          new Date(l.expiryDate) >= new Date() &&
+          l.quantity > 0
+      );
     } else if (activeTab === 'expired') {
-      result = result.filter(l => l.expiryDate && new Date(l.expiryDate) < new Date() && l.quantity > 0);
+      result = result.filter(
+        (l) => l.expiryDate && new Date(l.expiryDate) < new Date() && l.quantity > 0
+      );
     }
     if (search) {
-      result = result.filter(l =>
-        (l.product?.name || '').toLowerCase().includes(search.toLowerCase()) ||
-        (l.lotNumber || '').toLowerCase().includes(search.toLowerCase()) ||
-        (l.product?.barcode || '').includes(search)
+      result = result.filter(
+        (l) =>
+          (l.product?.name || '').toLowerCase().includes(search.toLowerCase()) ||
+          (l.lotNumber || '').toLowerCase().includes(search.toLowerCase()) ||
+          (l.product?.barcode || '').includes(search)
       );
     }
     return result;
   }, [lots, activeTab, search]);
 
   const statusOf = (lot: any) => {
-    if (!lot.expiryDate || lot.quantity === 0) return { label: 'Sin vencimiento', color: '#6b7280' };
+    if (!lot.expiryDate || lot.quantity === 0)
+      return { label: 'Sin vencimiento', color: '#6b7280' };
     const now = new Date();
     const exp = new Date(lot.expiryDate);
     const diffDays = Math.ceil((exp.getTime() - now.getTime()) / 86400000);
@@ -85,8 +108,16 @@ export function ProductLotsPage() {
 
   const totalLots = lots.length;
   const totalStock = lots.reduce((s, l) => s + (l.quantity || 0), 0);
-  const expiringCount = lots.filter(l => l.expiryDate && new Date(l.expiryDate) <= new Date(Date.now() + 30*86400000) && new Date(l.expiryDate) >= new Date() && l.quantity > 0).length;
-  const expiredCount = lots.filter(l => l.expiryDate && new Date(l.expiryDate) < new Date() && l.quantity > 0).length;
+  const expiringCount = lots.filter(
+    (l) =>
+      l.expiryDate &&
+      new Date(l.expiryDate) <= new Date(Date.now() + 30 * 86400000) &&
+      new Date(l.expiryDate) >= new Date() &&
+      l.quantity > 0
+  ).length;
+  const expiredCount = lots.filter(
+    (l) => l.expiryDate && new Date(l.expiryDate) < new Date() && l.quantity > 0
+  ).length;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -121,16 +152,24 @@ export function ProductLotsPage() {
     }
   };
 
-  const openCreate = () => setForm({ productId: '', lotNumber: '', quantity: 1, expiryDate: '', manufactureDate: '' }) || setModal({ type: 'create' });
-  const openEdit = (lot: any) => setForm({
-    productId: lot.productId,
-    lotNumber: lot.lotNumber,
-    quantity: lot.quantity,
-    expiryDate: lot.expiryDate ? lot.expiryDate.slice(0, 10) : '',
-    manufactureDate: lot.manufactureDate ? lot.manufactureDate.slice(0, 10) : '',
-  }) || setModal({ type: 'edit', lot });
+  const openCreate = () =>
+    setForm({ productId: '', lotNumber: '', quantity: 1, expiryDate: '', manufactureDate: '' }) ||
+    setModal({ type: 'create' });
+  const openEdit = (lot: any) =>
+    setForm({
+      productId: lot.productId,
+      lotNumber: lot.lotNumber,
+      quantity: lot.quantity,
+      expiryDate: lot.expiryDate ? lot.expiryDate.slice(0, 10) : '',
+      manufactureDate: lot.manufactureDate ? lot.manufactureDate.slice(0, 10) : '',
+    }) || setModal({ type: 'edit', lot });
 
-  if (loading) return config.skeletonEnabled ? <SkeletonTablePage rows={6} cols={7} kpi={4} /> : <LoadingDots text="Cargando lotes..." />;
+  if (loading)
+    return config.skeletonEnabled ? (
+      <SkeletonTablePage rows={6} cols={7} kpi={4} />
+    ) : (
+      <LoadingDots text="Cargando lotes..." />
+    );
 
   return (
     <div className={styles.container}>
@@ -140,15 +179,31 @@ export function ProductLotsPage() {
 
       <TabNav tabs={TAB_ITEMS} activeTab={activeTab} onTabChange={setActiveTab} />
 
-      <KpiGrid items={[
-        { icon: <Package size={18} />, value: totalLots, label: 'Total Lotes' },
-        { icon: <Package size={18} />, value: totalStock, label: 'Stock en Lotes' },
-        { icon: <Clock size={18} />, value: expiringCount, label: 'Por vencer (30d)', color: expiringCount > 0 ? '#f59e0b' : '#16a34a' },
-        { icon: <AlertCircle size={18} />, value: expiredCount, label: 'Vencidos', color: expiredCount > 0 ? '#ef4444' : '#16a34a' },
-      ]} />
+      <KpiGrid
+        items={[
+          { icon: <Package size={18} />, value: totalLots, label: 'Total Lotes' },
+          { icon: <Package size={18} />, value: totalStock, label: 'Stock en Lotes' },
+          {
+            icon: <Clock size={18} />,
+            value: expiringCount,
+            label: 'Por vencer (30d)',
+            color: expiringCount > 0 ? '#f59e0b' : '#16a34a',
+          },
+          {
+            icon: <AlertCircle size={18} />,
+            value: expiredCount,
+            label: 'Vencidos',
+            color: expiredCount > 0 ? '#ef4444' : '#16a34a',
+          },
+        ]}
+      />
 
       <Toolbar
-        search={{ value: search, onChange: setSearch, placeholder: 'Buscar por producto, lote, código...' }}
+        search={{
+          value: search,
+          onChange: setSearch,
+          placeholder: 'Buscar por producto, lote, código...',
+        }}
         addBtn={{ label: 'Nuevo Lote', onClick: openCreate }}
       />
 
@@ -166,64 +221,145 @@ export function ProductLotsPage() {
           </thead>
           <tbody>
             {filtered.length === 0 ? (
-              <tr><td colSpan={6} className={styles.emptyRow}>No hay lotes</td></tr>
-            ) : filtered.map(lot => {
-              const st = statusOf(lot);
-              return (
-                <tr key={lot.id}>
-                  <td><span className={tableStyles.nameText}>{lot.product?.name || lot.productId}</span></td>
-                  <td><span className={tableStyles.code}>{lot.lotNumber}</span></td>
-                  <td className={styles.textRight}><span className={tableStyles.numberValue}>{lot.quantity}</span></td>
-                  <td>{lot.expiryDate ? new Date(lot.expiryDate).toLocaleDateString() : '—'}</td>
-                  <td><span className={`${tableStyles.badge} ${styles.badgeDynamic}`} style={{ '--st-bg': st.color + '20', '--st-color': st.color } as React.CSSProperties}>{st.label}</span></td>
-                  <td className={styles.textCenter}>
-                    <div className={`${tableStyles.actions} ${styles.justifyCenter}`}>
-                      <button className={tableStyles.actionBtn} onClick={() => openEdit(lot)} title="Editar"><Eye size={14} /></button>
-                      <button className={`${tableStyles.actionBtn} danger`} onClick={() => handleDelete(lot.id)} title="Eliminar"><Trash2 size={14} /></button>
-                    </div>
-                  </td>
-                </tr>
-              );
-            })}
+              <tr>
+                <td colSpan={6} className={styles.emptyRow}>
+                  No hay lotes
+                </td>
+              </tr>
+            ) : (
+              filtered.map((lot) => {
+                const st = statusOf(lot);
+                return (
+                  <tr key={lot.id}>
+                    <td>
+                      <span className={tableStyles.nameText}>
+                        {lot.product?.name || lot.productId}
+                      </span>
+                    </td>
+                    <td>
+                      <span className={tableStyles.code}>{lot.lotNumber}</span>
+                    </td>
+                    <td className={styles.textRight}>
+                      <span className={tableStyles.numberValue}>{lot.quantity}</span>
+                    </td>
+                    <td>{lot.expiryDate ? new Date(lot.expiryDate).toLocaleDateString() : '—'}</td>
+                    <td>
+                      <span
+                        className={`${tableStyles.badge} ${styles.badgeDynamic}`}
+                        style={
+                          {
+                            '--st-bg': st.color + '20',
+                            '--st-color': st.color,
+                          } as React.CSSProperties
+                        }
+                      >
+                        {st.label}
+                      </span>
+                    </td>
+                    <td className={styles.textCenter}>
+                      <div className={`${tableStyles.actions} ${styles.justifyCenter}`}>
+                        <button
+                          className={tableStyles.actionBtn}
+                          onClick={() => openEdit(lot)}
+                          title="Editar"
+                        >
+                          <Eye size={14} />
+                        </button>
+                        <button
+                          className={`${tableStyles.actionBtn} danger`}
+                          onClick={() => handleDelete(lot.id)}
+                          title="Eliminar"
+                        >
+                          <Trash2 size={14} />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })
+            )}
           </tbody>
         </table>
       </div>
 
       {modal && (
-        <Modal open onClose={() => setModal(null)} title={modal.type === 'create' ? 'Nuevo Lote' : 'Editar Lote'} wide>
+        <Modal
+          open
+          onClose={() => setModal(null)}
+          title={modal.type === 'create' ? 'Nuevo Lote' : 'Editar Lote'}
+          wide
+        >
           <form onSubmit={handleSubmit} className={styles.form}>
             <div className={styles.fieldRow}>
               <div className={styles.field}>
                 <label>Producto *</label>
-                <select value={form.productId} onChange={e => setForm(f => ({ ...f, productId: e.target.value }))} required>
+                <select
+                  value={form.productId}
+                  onChange={(e) => setForm((f) => ({ ...f, productId: e.target.value }))}
+                  required
+                >
                   <option value="">Seleccionar...</option>
-                  {lots.map(l => <option key={l.productId} value={l.productId}>{l.product?.name || l.productId}</option>)}
+                  {lots.map((l) => (
+                    <option key={l.productId} value={l.productId}>
+                      {l.product?.name || l.productId}
+                    </option>
+                  ))}
                 </select>
               </div>
               <div className={styles.field}>
                 <label>N° de Lote *</label>
-                <input type="text" value={form.lotNumber} onChange={e => setForm(f => ({ ...f, lotNumber: e.target.value }))} required placeholder="LOTE-001" />
+                <input
+                  type="text"
+                  value={form.lotNumber}
+                  onChange={(e) => setForm((f) => ({ ...f, lotNumber: e.target.value }))}
+                  required
+                  placeholder="LOTE-001"
+                />
               </div>
             </div>
             <div className={styles.fieldRow}>
               <div className={styles.field}>
                 <label>Cantidad *</label>
-                <input type="number" min={1} value={form.quantity} onChange={e => setForm(f => ({ ...f, quantity: parseInt(e.target.value) || 1 }))} required />
+                <input
+                  type="number"
+                  min={1}
+                  value={form.quantity}
+                  onChange={(e) =>
+                    setForm((f) => ({ ...f, quantity: parseInt(e.target.value) || 1 }))
+                  }
+                  required
+                />
               </div>
               <div className={styles.field}>
                 <label>Fecha de Vencimiento</label>
-                <input type="date" value={form.expiryDate} onChange={e => setForm(f => ({ ...f, expiryDate: e.target.value }))} />
+                <input
+                  type="date"
+                  value={form.expiryDate}
+                  onChange={(e) => setForm((f) => ({ ...f, expiryDate: e.target.value }))}
+                />
               </div>
             </div>
             <div className={styles.fieldRow}>
               <div className={styles.field}>
                 <label>Fecha de Fabricación</label>
-                <input type="date" value={form.manufactureDate} onChange={e => setForm(f => ({ ...f, manufactureDate: e.target.value }))} />
+                <input
+                  type="date"
+                  value={form.manufactureDate}
+                  onChange={(e) => setForm((f) => ({ ...f, manufactureDate: e.target.value }))}
+                />
               </div>
             </div>
             <div className={styles.modalActions}>
-              <button type="button" className={styles.cancelBtn} onClick={() => setModal(null)}>Cancelar</button>
-              <button type="submit" className={styles.saveBtn} disabled={saving}>{saving ? 'Guardando...' : modal.type === 'create' ? 'Crear Lote' : 'Guardar Cambios'}</button>
+              <button type="button" className={styles.cancelBtn} onClick={() => setModal(null)}>
+                Cancelar
+              </button>
+              <button type="submit" className={styles.saveBtn} disabled={saving}>
+                {saving
+                  ? 'Guardando...'
+                  : modal.type === 'create'
+                    ? 'Crear Lote'
+                    : 'Guardar Cambios'}
+              </button>
             </div>
           </form>
         </Modal>

@@ -82,7 +82,9 @@ export function PremiumActivationAnimation({ onClose }: Props) {
             <span className={styles.kBadge}>Nivel de Cuenta: Elevado</span>
           </div>
           <div className={styles.gateOverflow}>
-            <h1 className={styles.kTitle}>SISTEMA <span className={styles.kTitleSpan}>PREMIUM</span></h1>
+            <h1 className={styles.kTitle}>
+              SISTEMA <span className={styles.kTitleSpan}>PREMIUM</span>
+            </h1>
           </div>
           <div className={styles.gateOverflow}>
             <p className={styles.kDesc}>Estructuras y privilegios de datos optimizados</p>
@@ -90,11 +92,15 @@ export function PremiumActivationAnimation({ onClose }: Props) {
         </div>
 
         <div className={styles.gateButtonArea}>
-          <button className={styles.btnPremiumLaunch} onClick={onClose}>Acceder al Panel</button>
+          <button className={styles.btnPremiumLaunch} onClick={onClose}>
+            Acceder al Panel
+          </button>
         </div>
       </div>
 
-      <button className={styles.systemRebootTrigger} onClick={rebootSequence}>Reiniciar Sistema</button>
+      <button className={styles.systemRebootTrigger} onClick={rebootSequence}>
+        Reiniciar Sistema
+      </button>
     </div>
   );
 }

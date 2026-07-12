@@ -12,15 +12,17 @@
   flex: 1 1 220px;
   max-width: 280px;
   width: 100%;
-  background-color: var(--bg-card, #fff);
+  background-color: var(--color-surface);
   border-radius: var(--card-radius, 8px);
   padding: 16px;
   box-shadow: 0 1px 3px rgb(0, 0, 0, 0.05);
   display: flex;
   align-items: center;
   gap: 14px;
-  border: var(--card-border-width, 1px) solid var(--border-color, #eee);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: var(--card-border-width, 1px) solid var(--color-border);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .card:hover {
@@ -36,7 +38,7 @@
   align-items: center;
   justify-content: center;
   background-color: rgb(240, 90, 40, 0.1);
-  color: var(--color-orange-red, #f05a28);
+  color: var(--color-primary);
   flex-shrink: 0;
 }
 
@@ -59,7 +61,7 @@
   display: block;
   font-size: var(--kpi-label-size);
   font-weight: var(--font-weight-medium);
-  color: var(--text-muted, #888);
+  color: var(--color-text-muted);
   margin-top: 2px;
 }
 

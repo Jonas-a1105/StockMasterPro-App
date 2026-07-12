@@ -1,4 +1,8 @@
-import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  BadRequestException,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from '@shared/infrastructure/prisma/prisma.service';
 
 export interface PurchaseOrderInput {
@@ -111,12 +115,21 @@ export class PostgresPurchaseOrderRepo {
 
     return this.prisma.purchaseOrder.update({
       where: { id },
-      data: { status: 'approved', approvedById: userId, approvedAt: new Date() },
+      data: {
+        status: 'approved',
+        approvedById: userId,
+        approvedAt: new Date(),
+      },
       include: { items: true },
     });
   }
 
-  async rejectOrder(id: string, tenantId: string, userId: string, reason?: string) {
+  async rejectOrder(
+    id: string,
+    tenantId: string,
+    userId: string,
+    reason?: string,
+  ) {
     const order = await this.prisma.purchaseOrder.findFirst({
       where: { id, tenantId, status: 'pending' },
     });
@@ -124,27 +137,57 @@ export class PostgresPurchaseOrderRepo {
 
     return this.prisma.purchaseOrder.update({
       where: { id },
-      data: { status: 'rejected', rejectedById: userId, rejectedAt: new Date(), rejectionReason: reason },
+      data: {
+        status: 'rejected',
+        rejectedById: userId,
+        rejectedAt: new Date(),
+        rejectionReason: reason,
+      },
       include: { items: true },
     });
   }
 
-  async cancelOrder(id: string, tenantId: string, userId: string, reason?: string) {
+  async cancelOrder(
+    id: string,
+    tenantId: string,
+    userId: string,
+    reason?: string,
+  ) {
     const order = await this.prisma.purchaseOrder.findFirst({
-      where: { id, tenantId, status: { in: ['pending', 'approved', 'partially_received'] } },
+      where: {
+        id,
+        tenantId,
+        status: { in: ['pending', 'approved', 'partially_received'] },
+      },
     });
-    if (!order) throw new NotFoundException('Orden no encontrada o ya no puede cancelarse');
+    if (!order)
+      throw new NotFoundException(
+        'Orden no encontrada o ya no puede cancelarse',
+      );
 
     return this.prisma.purchaseOrder.update({
       where: { id },
-      data: { status: 'cancelled', cancelledById: userId, cancelledAt: new Date(), cancellationReason: reason },
+      data: {
+        status: 'cancelled',
+        cancelledById: userId,
+        cancelledAt: new Date(),
+        cancellationReason: reason,
+      },
       include: { items: true },
     });
   }
 
-  async receiveOrder(id: string, tenantId: string, items?: { productId: string; quantity: number }[]) {
+  async receiveOrder(
+    id: string,
+    tenantId: string,
+    items?: { productId: string; quantity: number }[],
+  ) {
     const order = await this.prisma.purchaseOrder.findFirst({
-      where: { id, tenantId, status: { in: ['approved', 'partially_received'] } },
+      where: {
+        id,
+        tenantId,
+        status: { in: ['approved', 'partially_received'] },
+      },
       include: { items: true },
     });
     if (!order) throw new NotFoundException('Orden aprobada no encontrada');
@@ -169,7 +212,8 @@ export class PostgresPurchaseOrderRepo {
         const product = await tx.product.findFirst({
           where: { id: item.productId, tenantId },
         });
-        if (!product) throw new Error(`Producto ${item.productId} no encontrado`);
+        if (!product)
+          throw new Error(`Producto ${item.productId} no encontrado`);
 
         const currentStock = product.stock;
         const currentCost = Number(product.cost);
@@ -215,7 +259,10 @@ export class PostgresPurchaseOrderRepo {
 
       await tx.purchaseOrder.update({
         where: { id },
-        data: { status: allFullyReceived ? 'received' : 'partially_received', updatedAt: new Date() },
+        data: {
+          status: allFullyReceived ? 'received' : 'partially_received',
+          updatedAt: new Date(),
+        },
       });
 
       return this.prisma.purchaseOrder.findFirst({

@@ -48,14 +48,21 @@ export const palettes = [
 ];
 
 const FONT_OPTIONS = [
-  { label: 'System UI', value: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' },
+  {
+    label: 'System UI',
+    value:
+      'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+  },
   { label: 'Inter', value: '"Inter", system-ui, sans-serif' },
   { label: 'Poppins', value: '"Poppins", system-ui, sans-serif' },
   { label: 'Roboto', value: '"Roboto", system-ui, sans-serif' },
   { label: 'Open Sans', value: '"Open Sans", system-ui, sans-serif' },
   { label: 'Montserrat', value: '"Montserrat", system-ui, sans-serif' },
   { label: 'Lato', value: '"Lato", system-ui, sans-serif' },
-  { label: 'Outfit (Default)', value: "'Outfit', 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif" },
+  {
+    label: 'Outfit (Default)',
+    value: "'Outfit', 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif",
+  },
 ];
 
 const ThemeContext = createContext<ThemeContextType | null>(null);
@@ -114,11 +121,11 @@ const ThemeProvider = ({ children }: { children: ReactNode }) => {
   }, [savedPresets]);
 
   const updateConfig = useCallback((partial: Partial<ThemeConfig>) => {
-    setConfig(prev => ({ ...prev, ...partial }));
+    setConfig((prev) => ({ ...prev, ...partial }));
   }, []);
 
   const toggleDarkMode = useCallback(() => {
-    setConfig(prev => ({
+    setConfig((prev) => ({
       ...prev,
       darkMode: !prev.darkMode,
       oledMode: false,
@@ -126,7 +133,7 @@ const ThemeProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const toggleOledMode = useCallback(() => {
-    setConfig(prev => ({
+    setConfig((prev) => ({
       ...prev,
       oledMode: !prev.oledMode,
       darkMode: prev.oledMode ? prev.darkMode : true,
@@ -141,29 +148,34 @@ const ThemeProvider = ({ children }: { children: ReactNode }) => {
     setConfig(preset);
   }, []);
 
-  const savePreset = useCallback((name: string) => {
-    setSavedPresets(prev => {
-      const filtered = prev.filter(p => p.name !== name);
-      return [...filtered, { name, config }];
-    });
-  }, [config]);
+  const savePreset = useCallback(
+    (name: string) => {
+      setSavedPresets((prev) => {
+        const filtered = prev.filter((p) => p.name !== name);
+        return [...filtered, { name, config }];
+      });
+    },
+    [config]
+  );
 
   const deletePreset = useCallback((name: string) => {
-    setSavedPresets(prev => prev.filter(p => p.name !== name));
+    setSavedPresets((prev) => prev.filter((p) => p.name !== name));
   }, []);
 
   return (
-    <ThemeContext.Provider value={{
-      config,
-      updateConfig,
-      toggleDarkMode,
-      toggleOledMode,
-      resetTheme,
-      applyPreset,
-      savedPresets,
-      savePreset,
-      deletePreset,
-    }}>
+    <ThemeContext.Provider
+      value={{
+        config,
+        updateConfig,
+        toggleDarkMode,
+        toggleOledMode,
+        resetTheme,
+        applyPreset,
+        savedPresets,
+        savePreset,
+        deletePreset,
+      }}
+    >
       {children}
     </ThemeContext.Provider>
   );

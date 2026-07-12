@@ -13,17 +13,15 @@ export function ProductGrid({
 }) {
   return (
     <div className={styles.productsGrid}>
-      {products.map(product => (
+      {products.map((product) => (
         <ProductCard
           key={product.id}
           product={product}
           onAdd={onAdd}
-          cartItem={cartItems.find(item => item.product.id === product.id)}
+          cartItem={cartItems.find((item) => item.product.id === product.id)}
         />
       ))}
-      {products.length === 0 && (
-        <p className={styles.noResults}>No se encontraron productos</p>
-      )}
+      {products.length === 0 && <p className={styles.noResults}>No se encontraron productos</p>}
     </div>
   );
 }

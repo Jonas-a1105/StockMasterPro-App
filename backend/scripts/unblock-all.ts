@@ -23,7 +23,9 @@ async function unblock() {
   const licenseExpiresAt = new Date();
   licenseExpiresAt.setFullYear(licenseExpiresAt.getFullYear() + 10); // Expiración en 10 años
 
-  console.log('Actualizando todos los tenants a estado ACTIVO y plan ENTERPRISE...');
+  console.log(
+    'Actualizando todos los tenants a estado ACTIVO y plan ENTERPRISE...',
+  );
   const result = await prisma.tenant.updateMany({
     data: {
       planType: 'enterprise',
@@ -33,11 +35,13 @@ async function unblock() {
     },
   });
 
-  console.log(`Se actualizaron y desbloquearon ${result.count} empresas (tenants) con éxito.`);
+  console.log(
+    `Se actualizaron y desbloquearon ${result.count} empresas (tenants) con éxito.`,
+  );
 }
 
 unblock()
-  .catch(e => console.error(e))
+  .catch((e) => console.error(e))
   .finally(async () => {
     await prisma.$disconnect();
     await pool.end();

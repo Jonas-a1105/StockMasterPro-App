@@ -91,7 +91,11 @@ describe('ProcessSaleUseCase', () => {
     } as unknown as jest.Mocked<CashRegisterRepository>;
 
     invoiceSeqService = {
-      getNextInvoiceNumber: jest.fn().mockResolvedValue({ invoiceNumber: 'FACT-000001', sequenceNumber: 1, series: 'FACT' }),
+      getNextInvoiceNumber: jest.fn().mockResolvedValue({
+        invoiceNumber: 'FACT-000001',
+        sequenceNumber: 1,
+        series: 'FACT',
+      }),
       getOrCreateSequence: jest.fn(),
       resetSequence: jest.fn(),
     } as unknown as jest.Mocked<InvoiceSequenceService>;

@@ -232,7 +232,7 @@
 }
 
 .notifModalUnread::after {
-  content: "";
+  content: '';
   position: absolute;
   top: 14px;
   right: 14px;
@@ -364,9 +364,24 @@
 }
 
 /* ── Utility classes ── */
-.flexRow { display: flex; flex-direction: row; align-items: center; gap: 8px; }
-.cursorDefault { cursor: default; }
-.bgTransparent { background: transparent; }
-.borderTransparent { border-color: transparent; }
-.colorPrimary { color: var(--color-primary); }
-.colorMuted { color: var(--text-muted); }
+.flexRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+.cursorDefault {
+  cursor: default;
+}
+.bgTransparent {
+  background: transparent;
+}
+.borderTransparent {
+  border-color: transparent;
+}
+.colorPrimary {
+  color: var(--color-primary);
+}
+.colorMuted {
+  color: var(--text-muted);
+}

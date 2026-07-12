@@ -1,7 +1,7 @@
 .tabs {
   display: flex;
   gap: 4px;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--color-border);
   margin-bottom: 24px;
   overflow: auto hidden; /* Firefox scroll fix */
   scrollbar-width: none; /* Firefox */
@@ -17,7 +17,7 @@
   padding: 10px 14px;
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   cursor: pointer;
   white-space: nowrap;
   position: relative;
@@ -29,24 +29,26 @@
 }
 
 .tab:hover {
-  color: var(--text-main);
+  color: var(--color-text);
   background: none !important;
 }
 
-.tab svg, .tab i {
+.tab svg,
+.tab i {
   width: 22px !important;
   height: 22px !important;
-  color: var(--text-light);
+  color: var(--color-text-light);
 }
 
 .tabActive {
-  color: var(--brand-orange) !important;
+  color: var(--color-primary) !important;
   font-weight: var(--font-weight-semibold);
   background: none !important;
 }
 
-.tabActive svg, .tabActive i {
-  color: var(--brand-orange) !important;
+.tabActive svg,
+.tabActive i {
+  color: var(--color-primary) !important;
 }
 
 .tabActive::after {
@@ -56,5 +58,5 @@
   left: 0;
   right: 0;
   height: 2px;
-  background-color: var(--brand-orange);
+  background-color: var(--color-primary);
 }

@@ -12,7 +12,7 @@ export function SocialComments({ postId, catalogId }: { postId?: string; catalog
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);
   const [replyTo, setReplyTo] = useState<string | null>(null);
-  
+
   // Custom states for comment likes and user reaction mapping
   const [likedComments, setLikedComments] = useState<Record<string, boolean>>({});
   const [commentLikes, setCommentLikes] = useState<Record<string, number>>({});
@@ -30,7 +30,7 @@ export function SocialComments({ postId, catalogId }: { postId?: string; catalog
       if (p === 1) {
         setComments(data.comments);
       } else {
-        setComments(prev => [...prev, ...data.comments]);
+        setComments((prev) => [...prev, ...data.comments]);
       }
       setTotalPages(data.totalPages);
     } catch (err) {
@@ -54,7 +54,7 @@ export function SocialComments({ postId, catalogId }: { postId?: string; catalog
       likedMap[c.id] = (c as any).isLiked || false;
 
       if (c.replies) {
-        c.replies.forEach(r => {
+        c.replies.forEach((r) => {
           likesMap[r.id] = (r as any).reactionsCount || 0;
           likedMap[r.id] = (r as any).isLiked || false;
         });
@@ -62,8 +62,8 @@ export function SocialComments({ postId, catalogId }: { postId?: string; catalog
     };
 
     comments.forEach(processComment);
-    setCommentLikes(prev => ({ ...prev, ...likesMap }));
-    setLikedComments(prev => ({ ...prev, ...likedMap }));
+    setCommentLikes((prev) => ({ ...prev, ...likesMap }));
+    setLikedComments((prev) => ({ ...prev, ...likedMap }));
   }, [comments]);
 
   const handleSubmit = async () => {
@@ -76,11 +76,13 @@ export function SocialComments({ postId, catalogId }: { postId?: string; catalog
         parentId: replyTo || undefined,
       });
       if (replyTo) {
-        setComments(prev => prev.map(c =>
-          c.id === replyTo ? { ...c, replies: [...(c.replies || []), comment] } : c
-        ));
+        setComments((prev) =>
+          prev.map((c) =>
+            c.id === replyTo ? { ...c, replies: [...(c.replies || []), comment] } : c
+          )
+        );
       } else {
-        setComments(prev => [comment, ...prev]);
+        setComments((prev) => [comment, ...prev]);
       }
       setNewComment('');
       setReplyTo(null);
@@ -92,12 +94,16 @@ export function SocialComments({ postId, catalogId }: { postId?: string; catalog
   const handleDelete = async (commentId: string) => {
     try {
       await api.deleteSocialComment(commentId);
-      setComments(prev => prev.filter(c => c.id !== commentId).map(c => {
-        if (c.replies) {
-          return { ...c, replies: c.replies.filter(r => r.id !== commentId) };
-        }
-        return c;
-      }));
+      setComments((prev) =>
+        prev
+          .filter((c) => c.id !== commentId)
+          .map((c) => {
+            if (c.replies) {
+              return { ...c, replies: c.replies.filter((r) => r.id !== commentId) };
+            }
+            return c;
+          })
+      );
     } catch (err) {
       console.error('Error deleting comment', err);
     }
@@ -107,9 +113,9 @@ export function SocialComments({ postId, catalogId }: { postId?: string; catalog
     try {
       const isLiked = likedComments[commentId] || false;
       await api.toggleSocialReaction({ commentId, type: 'like' });
-      
-      setLikedComments(prev => ({ ...prev, [commentId]: !isLiked }));
-      setCommentLikes(prev => ({
+
+      setLikedComments((prev) => ({ ...prev, [commentId]: !isLiked }));
+      setCommentLikes((prev) => ({
         ...prev,
         [commentId]: Math.max(0, (prev[commentId] || 0) + (isLiked ? -1 : 1)),
       }));
@@ -119,7 +125,7 @@ export function SocialComments({ postId, catalogId }: { postId?: string; catalog
   };
 
   const handleAddEmoji = (emoji: string) => {
-    setNewComment(prev => prev + emoji);
+    setNewComment((prev) => prev + emoji);
   };
 
   const quickEmojis = ['❤️', '🙌', '🔥', '👏', '😍', '😢', '😂', '😝'];
@@ -148,8 +154,15 @@ export function SocialComments({ postId, catalogId }: { postId?: string; catalog
           </div>
           <div className="ig-comment-meta">
             <span>{formatCommentTime(comment.createdAt)}</span>
-            {likesCount > 0 && <span>{likesCount} {likesCount === 1 ? 'Me gusta' : 'Me gustas'}</span>}
-            <button className="ig-comment-reply-action" onClick={() => setReplyTo(replyTo === comment.id ? null : comment.id)}>
+            {likesCount > 0 && (
+              <span>
+                {likesCount} {likesCount === 1 ? 'Me gusta' : 'Me gustas'}
+              </span>
+            )}
+            <button
+              className="ig-comment-reply-action"
+              onClick={() => setReplyTo(replyTo === comment.id ? null : comment.id)}
+            >
               Responder
             </button>
             {comment.userId === user?.id && (
@@ -161,7 +174,7 @@ export function SocialComments({ postId, catalogId }: { postId?: string; catalog
 
           {comment.replies && comment.replies.length > 0 && (
             <div className="ig-comment-replies">
-              {comment.replies.map(reply => {
+              {comment.replies.map((reply) => {
                 const isReplyLiked = likedComments[reply.id] || false;
                 const replyLikesCount = commentLikes[reply.id] || 0;
 
@@ -169,7 +182,11 @@ export function SocialComments({ postId, catalogId }: { postId?: string; catalog
                   <div key={reply.id} className="ig-comment-item reply">
                     <div className="ig-comment-avatar-wrapper small">
                       {reply.user.socialProfile?.avatarUrl ? (
-                        <img className="ig-comment-avatar small" src={reply.user.socialProfile.avatarUrl} alt="" />
+                        <img
+                          className="ig-comment-avatar small"
+                          src={reply.user.socialProfile.avatarUrl}
+                          alt=""
+                        />
                       ) : (
                         <div className="ig-comment-avatar-placeholder small">
                           {(reply.user.name || 'U')[0].toUpperCase()}
@@ -187,14 +204,28 @@ export function SocialComments({ postId, catalogId }: { postId?: string; catalog
                         <span>{formatCommentTime(reply.createdAt)}</span>
                         {replyLikesCount > 0 && <span>{replyLikesCount} Me gusta</span>}
                         {reply.userId === user?.id && (
-                          <button className="ig-comment-delete-action" onClick={() => handleDelete(reply.id)}>
+                          <button
+                            className="ig-comment-delete-action"
+                            onClick={() => handleDelete(reply.id)}
+                          >
                             <Trash2 size={12} />
                           </button>
                         )}
                       </div>
                     </div>
-                    <button className={`ig-comment-like-btn ${isReplyLiked ? 'liked' : ''}`} onClick={() => handleLikeComment(reply.id)}>
-                      <Heart size={12} fill={isReplyLiked ? "var(--color-primary, #f97316)" : "transparent"} color={isReplyLiked ? "var(--color-primary, #f97316)" : "var(--text-light, #a8a8a8)"} />
+                    <button
+                      className={`ig-comment-like-btn ${isReplyLiked ? 'liked' : ''}`}
+                      onClick={() => handleLikeComment(reply.id)}
+                    >
+                      <Heart
+                        size={12}
+                        fill={isReplyLiked ? 'var(--color-primary, #f97316)' : 'transparent'}
+                        color={
+                          isReplyLiked
+                            ? 'var(--color-primary, #f97316)'
+                            : 'var(--text-light, #a8a8a8)'
+                        }
+                      />
                     </button>
                   </div>
                 );
@@ -202,8 +233,15 @@ export function SocialComments({ postId, catalogId }: { postId?: string; catalog
             </div>
           )}
         </div>
-        <button className={`ig-comment-like-btn ${isLiked ? 'liked' : ''}`} onClick={() => handleLikeComment(comment.id)}>
-          <Heart size={13} fill={isLiked ? "var(--color-primary, #f97316)" : "transparent"} color={isLiked ? "var(--color-primary, #f97316)" : "var(--text-light, #a8a8a8)"} />
+        <button
+          className={`ig-comment-like-btn ${isLiked ? 'liked' : ''}`}
+          onClick={() => handleLikeComment(comment.id)}
+        >
+          <Heart
+            size={13}
+            fill={isLiked ? 'var(--color-primary, #f97316)' : 'transparent'}
+            color={isLiked ? 'var(--color-primary, #f97316)' : 'var(--text-light, #a8a8a8)'}
+          />
         </button>
       </div>
     );
@@ -228,13 +266,13 @@ export function SocialComments({ postId, catalogId }: { postId?: string; catalog
       </div>
       <div className="ig-comment-action-dock">
         <div className="ig-quick-emojis-row">
-          {quickEmojis.map(emoji => (
+          {quickEmojis.map((emoji) => (
             <span key={emoji} className="ig-emoji-btn" onClick={() => handleAddEmoji(emoji)}>
               {emoji}
             </span>
           ))}
         </div>
-        
+
         {replyTo && (
           <div className="ig-reply-indicator">
             Respondiendo a comentario <button onClick={() => setReplyTo(null)}>Cancelar</button>
@@ -255,12 +293,18 @@ export function SocialComments({ postId, catalogId }: { postId?: string; catalog
             <input
               type="text"
               className="ig-comment-field"
-              placeholder={replyTo ? "Responder..." : "Escribe un comentario..."}
+              placeholder={replyTo ? 'Responder...' : 'Escribe un comentario...'}
               value={newComment}
-              onChange={e => setNewComment(e.target.value)}
-              onKeyDown={e => { if (e.key === 'Enter') handleSubmit(); }}
+              onChange={(e) => setNewComment(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') handleSubmit();
+              }}
             />
-            <button className="ig-comment-send-btn" onClick={handleSubmit} disabled={!newComment.trim()}>
+            <button
+              className="ig-comment-send-btn"
+              onClick={handleSubmit}
+              disabled={!newComment.trim()}
+            >
               <Send size={16} />
             </button>
           </div>

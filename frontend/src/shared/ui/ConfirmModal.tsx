@@ -21,7 +21,7 @@ export function ConfirmModal({
   message = 'Esta acción no se puede deshacer.',
   confirmText = 'Confirmar',
   cancelText = 'Cancelar',
-  type = 'warning'
+  type = 'warning',
 }: ConfirmModalProps) {
   useEffect(() => {
     if (!open) return;
@@ -47,14 +47,12 @@ export function ConfirmModal({
 
   return (
     <div className={styles.overlay} onClick={onClose}>
-      <div className={styles.modal} onClick={e => e.stopPropagation()}>
+      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
         <button className={styles.closeBtn} onClick={onClose} aria-label="Cerrar">
           <X size={18} />
         </button>
         <div className={styles.content}>
-          <div className={`${styles.iconWrapper} ${styles[type]}`}>
-            {getIcon()}
-          </div>
+          <div className={`${styles.iconWrapper} ${styles[type]}`}>{getIcon()}</div>
           <h3 className={styles.title}>{title}</h3>
           <p className={styles.message}>{message}</p>
         </div>

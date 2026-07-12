@@ -21,7 +21,7 @@ export function DashboardLayout() {
   const [sidebarMode, setSidebarMode] = useState<SidebarMode>(isMobile ? 'hidden' : 'compact');
 
   const toggleSidebar = useCallback(() => {
-    setSidebarMode(prev => {
+    setSidebarMode((prev) => {
       if (isMobile) {
         if (prev === 'hidden') return 'compact';
         if (prev === 'compact') return 'full';
@@ -32,9 +32,7 @@ export function DashboardLayout() {
   }, [isMobile]);
 
   useLayoutEffect(() => {
-    const w = isMobile ? '0px'
-      : sidebarMode === 'full' ? '260px'
-      : '60px';
+    const w = isMobile ? '0px' : sidebarMode === 'full' ? '260px' : '60px';
     document.documentElement.style.setProperty('--sidebar-w', w);
   }, [sidebarMode, isMobile]);
 

@@ -325,7 +325,7 @@
   flex-direction: column;
   gap: 4px;
   transition: all 0.2s ease;
-  background-color: var(--event-bg, rgb(136,136,136,0.1));
+  background-color: var(--event-bg, rgb(136, 136, 136, 0.1));
 }
 
 .eventCard:hover {
@@ -547,23 +547,116 @@
 }
 
 /* ── Form utilities ── */
-.formColumn { display: flex; flex-direction: column; gap: 14px; padding: 8px 0; }
-.formLabel { font-size: var(--font-size-caption); color: var(--text-muted, #888); display: block; margin-bottom: 4px; }
-.formInput { width: 100%; padding: 0 12px; height: 38px; font-size: var(--font-size-sm); border: 1px solid var(--border-color); border-radius: var(--input-radius, 6px); background: var(--bg-card); color: var(--text-main); }
-.formTextarea { width: 100%; padding: 8px 12px; font-size: var(--font-size-sm); border: 1px solid var(--border-color); border-radius: var(--input-radius, 6px); background: var(--bg-card); color: var(--text-main); resize: vertical; }
-.formGrid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.formFlex { display: flex; gap: 8px; }
-.colorPicker { display: flex; gap: 8px; }
-.colorCircle { width: 24px; height: 24px; border-radius: 50%; cursor: pointer; }
-.colorCircleSelected { outline: 2px solid var(--text-dark, #fff); outline-offset: 2px; }
-.checkboxRow { display: flex; align-items: center; gap: 8px; }
-.checkboxLabel { font-size: var(--font-size-caption); color: var(--text-muted, #888); }
-.submitBtn { padding: 10px 16px; background: var(--color-primary, #f05a28); color: var(--text-on-primary, #fff); border: none; font-weight: var(--font-weight-semibold); font-size: var(--font-size-sm); cursor: pointer; margin-top: 4px; border-radius: var(--btn-radius); }
-.loadingSkeleton { display: flex; flex-direction: column; gap: 10px; width: 100%; }
-.loadingText { color: var(--text-muted, #555); font-size: var(--font-size-caption); }
-.iconMuted { color: var(--text-muted, #555); opacity: 0.4; }
-.statValueOrange { color: var(--list-accent-color, #f97316); }
-.statValueGreen { color: var(--color-success, #16a34a); }
-.deleteBtn { background: none; border: none; color: var(--text-muted, #888); cursor: pointer; padding: 2px; }
-.eventCardFlex { display: flex; justify-content: space-between; align-items: flex-start; }
-.dayDot { width: 6px; height: 6px; border-radius: 50%; background-color: var(--dot-color, #888); }
+.formColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 8px 0;
+}
+.formLabel {
+  font-size: var(--font-size-caption);
+  color: var(--text-muted, #888);
+  display: block;
+  margin-bottom: 4px;
+}
+.formInput {
+  width: 100%;
+  padding: 0 12px;
+  height: 38px;
+  font-size: var(--font-size-sm);
+  border: 1px solid var(--border-color);
+  border-radius: var(--input-radius, 6px);
+  background: var(--bg-card);
+  color: var(--text-main);
+}
+.formTextarea {
+  width: 100%;
+  padding: 8px 12px;
+  font-size: var(--font-size-sm);
+  border: 1px solid var(--border-color);
+  border-radius: var(--input-radius, 6px);
+  background: var(--bg-card);
+  color: var(--text-main);
+  resize: vertical;
+}
+.formGrid2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.formFlex {
+  display: flex;
+  gap: 8px;
+}
+.colorPicker {
+  display: flex;
+  gap: 8px;
+}
+.colorCircle {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.colorCircleSelected {
+  outline: 2px solid var(--text-dark, #fff);
+  outline-offset: 2px;
+}
+.checkboxRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.checkboxLabel {
+  font-size: var(--font-size-caption);
+  color: var(--text-muted, #888);
+}
+.submitBtn {
+  padding: 10px 16px;
+  background: var(--color-primary, #f05a28);
+  color: var(--text-on-primary, #fff);
+  border: none;
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  margin-top: 4px;
+  border-radius: var(--btn-radius);
+}
+.loadingSkeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+.loadingText {
+  color: var(--text-muted, #555);
+  font-size: var(--font-size-caption);
+}
+.iconMuted {
+  color: var(--text-muted, #555);
+  opacity: 0.4;
+}
+.statValueOrange {
+  color: var(--list-accent-color, #f97316);
+}
+.statValueGreen {
+  color: var(--color-success, #16a34a);
+}
+.deleteBtn {
+  background: none;
+  border: none;
+  color: var(--text-muted, #888);
+  cursor: pointer;
+  padding: 2px;
+}
+.eventCardFlex {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.dayDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--dot-color, #888);
+}

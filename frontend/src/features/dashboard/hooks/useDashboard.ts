@@ -3,7 +3,7 @@ import { getDailySummary, getDashboardProducts, getDashboardSales } from '../api
 
 function groupSalesByDate(sales: any[]) {
   const map: Record<string, number> = {};
-  sales.forEach(s => {
+  sales.forEach((s) => {
     const date = s.createdAt?.split('T')[0];
     if (date) {
       map[date] = (map[date] || 0) + s.total;
@@ -17,9 +17,9 @@ function groupSalesByDate(sales: any[]) {
 
 function getBestSellers(sales: any[], products: any[]) {
   const productCount: Record<string, { name: string; qty: number; total: number }> = {};
-  sales.forEach(s => {
+  sales.forEach((s) => {
     (s.items || []).forEach((item: any) => {
-      const prod = products.find(p => p.id === item.productId);
+      const prod = products.find((p) => p.id === item.productId);
       const name = prod?.name || item.productName || 'Producto Eliminado';
       if (!productCount[name]) productCount[name] = { name, qty: 0, total: 0 };
       productCount[name].qty += item.quantity;
@@ -53,25 +53,46 @@ export function useDashboard() {
 
   useEffect(() => {
     Promise.all([
-      getDailySummary().then(setSummary).catch(() => {}),
-      getDashboardProducts().then(setProducts).catch(() => {}),
-      getDashboardSales(100).then(setSales).catch(() => {}),
+      getDailySummary()
+        .then(setSummary)
+        .catch(() => {}),
+      getDashboardProducts()
+        .then(setProducts)
+        .catch(() => {}),
+      getDashboardSales(100)
+        .then(setSales)
+        .catch(() => {}),
     ]).finally(() => setLoading(false));
   }, []);
 
-  const lowStockProducts = useMemo(() => products.filter(p => p.stock <= p.minStock), [products]);
+  const lowStockProducts = useMemo(() => products.filter((p) => p.stock <= p.minStock), [products]);
 
   const recentActivity = useMemo(() => {
     const items: { title: string; desc: string; time: string; color: string }[] = [];
     const now = Date.now();
-    sales.slice(0, 4).forEach(s => {
+    sales.slice(0, 4).forEach((s) => {
       const diff = now - new Date(s.createdAt).getTime();
       const mins = Math.floor(diff / 60000);
-      const time = mins < 60 ? `Hace ${mins} min` : mins < 1440 ? `Hace ${Math.floor(mins / 60)} hr` : `Hace ${Math.floor(mins / 1440)} día${Math.floor(mins / 1440) > 1 ? 's' : ''}`;
-      items.push({ title: `Venta registrada ${s.invoiceNumber ? `#${s.invoiceNumber}` : ''}`, desc: `Total $${(s.total || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} · ${s.paymentMethod || 'Caja Central'}`, time, color: '#22c55e' });
+      const time =
+        mins < 60
+          ? `Hace ${mins} min`
+          : mins < 1440
+            ? `Hace ${Math.floor(mins / 60)} hr`
+            : `Hace ${Math.floor(mins / 1440)} día${Math.floor(mins / 1440) > 1 ? 's' : ''}`;
+      items.push({
+        title: `Venta registrada ${s.invoiceNumber ? `#${s.invoiceNumber}` : ''}`,
+        desc: `Total $${(s.total || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} · ${s.paymentMethod || 'Caja Central'}`,
+        time,
+        color: '#22c55e',
+      });
     });
-    lowStockProducts.slice(0, 3).forEach(p => {
-      items.push({ title: `Alerta: Stock Mínimo - ${p.name}`, desc: `Producto '${p.name}' alcanzó el límite de resguardo.`, time: 'Reciente', color: '#f97316' });
+    lowStockProducts.slice(0, 3).forEach((p) => {
+      items.push({
+        title: `Alerta: Stock Mínimo - ${p.name}`,
+        desc: `Producto '${p.name}' alcanzó el límite de resguardo.`,
+        time: 'Reciente',
+        color: '#f97316',
+      });
     });
     return items;
   }, [sales, lowStockProducts]);
@@ -83,7 +104,10 @@ export function useDashboard() {
   const bestSellersData = useMemo(() => {
     const totalQty = bestSellers.reduce((sum, p) => sum + p.qty, 0);
     return {
-      items: bestSellers.map(p => ({ ...p, share: totalQty > 0 ? Math.round((p.qty / totalQty) * 100) : 0 })),
+      items: bestSellers.map((p) => ({
+        ...p,
+        share: totalQty > 0 ? Math.round((p.qty / totalQty) * 100) : 0,
+      })),
       totalQty,
     };
   }, [bestSellers]);
@@ -92,8 +116,20 @@ export function useDashboard() {
 
   const todaySales = useMemo(() => {
     const today = new Date().toISOString().split('T')[0];
-    return sales.filter(s => s.createdAt?.startsWith(today));
+    return sales.filter((s) => s.createdAt?.startsWith(today));
   }, [sales]);
 
-  return { summary, products, sales, loading, lowStockProducts, recentActivity, totalStock, salesChartData, bestSellersData, netProfit, todaySales };
+  return {
+    summary,
+    products,
+    sales,
+    loading,
+    lowStockProducts,
+    recentActivity,
+    totalStock,
+    salesChartData,
+    bestSellersData,
+    netProfit,
+    todaySales,
+  };
 }

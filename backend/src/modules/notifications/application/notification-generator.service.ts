@@ -35,7 +35,11 @@ export class NotificationGeneratorService {
           });
           if (!exists) {
             const admins = await this.prisma.user.findMany({
-              where: { tenantId: tenant.id, isActive: true, role: { in: ['admin', 'gerente'] } },
+              where: {
+                tenantId: tenant.id,
+                isActive: true,
+                role: { in: ['admin', 'gerente'] },
+              },
               select: { id: true },
             });
 
@@ -56,7 +60,11 @@ export class NotificationGeneratorService {
         }
 
         const nearLow = await this.prisma.product.findMany({
-          where: { tenantId: tenant.id, isActive: true, stock: { gt: 0, lte: 5 } },
+          where: {
+            tenantId: tenant.id,
+            isActive: true,
+            stock: { gt: 0, lte: 5 },
+          },
           select: { id: true, name: true, stock: true, tenantId: true },
         });
 
@@ -71,7 +79,11 @@ export class NotificationGeneratorService {
           });
           if (!exists) {
             const admins = await this.prisma.user.findMany({
-              where: { tenantId: tenant.id, isActive: true, role: { in: ['admin', 'gerente'] } },
+              where: {
+                tenantId: tenant.id,
+                isActive: true,
+                role: { in: ['admin', 'gerente'] },
+              },
               select: { id: true },
             });
 
@@ -91,7 +103,10 @@ export class NotificationGeneratorService {
           }
         }
       } catch (err) {
-        this.logger.error(`Error generando notificaciones para tenant ${tenant.id}`, err);
+        this.logger.error(
+          `Error generando notificaciones para tenant ${tenant.id}`,
+          err,
+        );
       }
     }
 
@@ -119,16 +134,25 @@ export class NotificationGeneratorService {
             quantity: { gt: 0 },
           },
           select: {
-            id: true, lotNumber: true, expiryDate: true, quantity: true,
+            id: true,
+            lotNumber: true,
+            expiryDate: true,
+            quantity: true,
             product: { select: { id: true, name: true } },
           },
         });
 
         for (const lot of expiringLots) {
           if (!lot.expiryDate) continue;
-          const daysUntilExpiry = Math.ceil((lot.expiryDate.getTime() - Date.now()) / 86400000);
+          const daysUntilExpiry = Math.ceil(
+            (lot.expiryDate.getTime() - Date.now()) / 86400000,
+          );
           const admins = await this.prisma.user.findMany({
-            where: { tenantId: tenant.id, isActive: true, role: { in: ['admin', 'gerente'] } },
+            where: {
+              tenantId: tenant.id,
+              isActive: true,
+              role: { in: ['admin', 'gerente'] },
+            },
             select: { id: true },
           });
 
@@ -147,7 +171,10 @@ export class NotificationGeneratorService {
           }
         }
       } catch (err) {
-        this.logger.error(`Error generando notificaciones de lotes para tenant ${tenant.id}`, err);
+        this.logger.error(
+          `Error generando notificaciones de lotes para tenant ${tenant.id}`,
+          err,
+        );
       }
     }
   }

@@ -4,7 +4,10 @@ import {
   InventoryCountRepository,
   InventoryCountFilters,
 } from '../../application/ports/inventory-count.repository.interface';
-import { InventoryCount, InventoryCountItem } from '../../domain/inventory-count.entity';
+import {
+  InventoryCount,
+  InventoryCountItem,
+} from '../../domain/inventory-count.entity';
 
 @Injectable()
 export class PostgresInventoryCountRepo implements InventoryCountRepository {
@@ -47,7 +50,10 @@ export class PostgresInventoryCountRepo implements InventoryCountRepository {
     return counts.map((c) => this.toCount(c));
   }
 
-  async count(tenantId: string, filters?: InventoryCountFilters): Promise<number> {
+  async count(
+    tenantId: string,
+    filters?: InventoryCountFilters,
+  ): Promise<number> {
     const where: any = { tenantId };
     if (filters) {
       if (filters.status) where.status = filters.status;
@@ -76,18 +82,21 @@ export class PostgresInventoryCountRepo implements InventoryCountRepository {
         completedAt: count.completedAt,
         approvedBy: count.approvedBy,
         approvedAt: count.approvedAt,
-        items: count.items.length > 0 ? {
-          create: count.items.map((item) => ({
-            id: item.id,
-            tenantId: item.tenantId,
-            productId: item.productId,
-            productWarehouseId: item.productWarehouseId,
-            systemQty: item.systemQty,
-            countedQty: item.countedQty,
-            difference: item.difference,
-            notes: item.notes,
-          })),
-        } : undefined,
+        items:
+          count.items.length > 0
+            ? {
+                create: count.items.map((item) => ({
+                  id: item.id,
+                  tenantId: item.tenantId,
+                  productId: item.productId,
+                  productWarehouseId: item.productWarehouseId,
+                  systemQty: item.systemQty,
+                  countedQty: item.countedQty,
+                  difference: item.difference,
+                  notes: item.notes,
+                })),
+              }
+            : undefined,
       },
       include: { items: true },
     });
@@ -112,7 +121,10 @@ export class PostgresInventoryCountRepo implements InventoryCountRepository {
     return this.toCount(updated);
   }
 
-  async addItems(countId: string, items: InventoryCountItem[]): Promise<InventoryCount> {
+  async addItems(
+    countId: string,
+    items: InventoryCountItem[],
+  ): Promise<InventoryCount> {
     await this.prisma.inventoryCountItem.createMany({
       data: items.map((item) => ({
         id: item.id,
@@ -126,7 +138,10 @@ export class PostgresInventoryCountRepo implements InventoryCountRepository {
         notes: item.notes,
       })),
     });
-    return this.findById(countId, items[0]?.tenantId ?? '') as Promise<InventoryCount>;
+    return this.findById(
+      countId,
+      items[0]?.tenantId ?? '',
+    ) as Promise<InventoryCount>;
   }
 
   async updateItem(item: InventoryCountItem): Promise<InventoryCountItem> {
@@ -141,7 +156,10 @@ export class PostgresInventoryCountRepo implements InventoryCountRepository {
     return item;
   }
 
-  async getItem(itemId: string, tenantId: string): Promise<InventoryCountItem | null> {
+  async getItem(
+    itemId: string,
+    tenantId: string,
+  ): Promise<InventoryCountItem | null> {
     const item = await this.prisma.inventoryCountItem.findFirst({
       where: { id: itemId, tenantId },
     });

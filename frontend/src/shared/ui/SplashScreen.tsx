@@ -110,7 +110,9 @@ export function SplashScreen({ onFinish }: { onFinish: () => void }) {
       <div className="splash-inner">
         <div className="splash-float">
           <svg viewBox="0 0 620 200">
-            <path className="splash-stroke" d="
+            <path
+              className="splash-stroke"
+              d="
               M 95 65 
               C 65 65, 65 95, 90 100 
               C 115 105, 115 135, 85 135 
@@ -123,8 +125,11 @@ export function SplashScreen({ onFinish }: { onFinish: () => void }) {
               H 550 
               V 135 
               H 468
-            " />
-            <path className="splash-crown" d="
+            "
+            />
+            <path
+              className="splash-crown"
+              d="
               M 482 83 
               L 476 68 
               L 493 74 
@@ -133,10 +138,17 @@ export function SplashScreen({ onFinish }: { onFinish: () => void }) {
               L 544 68 
               L 538 83 
               Z
-            " />
-            <text x="180" y="123" className="splash-text-main">StockMaster</text>
-            <text x="484" y="121" className="splash-text-pro">PRO</text>
-            <text x="182" y="160" className="splash-text-tagline">INVENTORY &amp; ANALYTICS PLATFORM</text>
+            "
+            />
+            <text x="180" y="123" className="splash-text-main">
+              StockMaster
+            </text>
+            <text x="484" y="121" className="splash-text-pro">
+              PRO
+            </text>
+            <text x="182" y="160" className="splash-text-tagline">
+              INVENTORY &amp; ANALYTICS PLATFORM
+            </text>
           </svg>
         </div>
       </div>

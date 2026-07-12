@@ -171,7 +171,12 @@ export class PostgresProductRepo implements ProductRepository {
     productId: string,
     warehouseId: string,
     tenantId: string,
-  ): Promise<{ id: string; productId: string; warehouseId: string; stock: number } | null> {
+  ): Promise<{
+    id: string;
+    productId: string;
+    warehouseId: string;
+    stock: number;
+  } | null> {
     const pw = await this.prisma.productWarehouse.findFirst({
       where: { productId, warehouseId, tenantId },
       select: { id: true, productId: true, warehouseId: true, stock: true },
@@ -182,7 +187,12 @@ export class PostgresProductRepo implements ProductRepository {
   async getProductWarehouseById(
     id: string,
     tenantId: string,
-  ): Promise<{ id: string; productId: string; warehouseId: string; stock: number } | null> {
+  ): Promise<{
+    id: string;
+    productId: string;
+    warehouseId: string;
+    stock: number;
+  } | null> {
     const pw = await this.prisma.productWarehouse.findFirst({
       where: { id, tenantId },
       select: { id: true, productId: true, warehouseId: true, stock: true },
@@ -193,7 +203,9 @@ export class PostgresProductRepo implements ProductRepository {
   async getProductWarehouses(
     productId: string,
     tenantId: string,
-  ): Promise<{ id: string; productId: string; warehouseId: string; stock: number }[]> {
+  ): Promise<
+    { id: string; productId: string; warehouseId: string; stock: number }[]
+  > {
     const pws = await this.prisma.productWarehouse.findMany({
       where: { productId, tenantId },
       select: { id: true, productId: true, warehouseId: true, stock: true },

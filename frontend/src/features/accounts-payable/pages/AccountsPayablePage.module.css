@@ -105,7 +105,8 @@
   justify-content: center;
   width: 30px;
   height: 30px;
-  border-color: var(--border-color); border-style: solid;
+  border-color: var(--border-color);
+  border-style: solid;
   border-radius: var(--card-radius, 4px);
   background: none;
   cursor: pointer;
@@ -159,7 +160,8 @@
 .field select,
 .field textarea {
   padding: 10px 12px;
-  border-color: var(--border-color); border-style: solid;
+  border-color: var(--border-color);
+  border-style: solid;
   border-radius: var(--card-radius, 4px);
   font-size: var(--font-size-sm);
   outline: none;
@@ -184,7 +186,8 @@
 
 .cancelBtn {
   padding: 10px 20px;
-  border-color: var(--border-color); border-style: solid;
+  border-color: var(--border-color);
+  border-style: solid;
   border-radius: var(--card-radius, 4px);
   background: none;
   font-size: var(--font-size-sm);

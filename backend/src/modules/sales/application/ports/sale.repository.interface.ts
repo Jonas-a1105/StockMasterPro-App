@@ -27,7 +27,11 @@ export interface SaleRepository {
     offset?: number,
   ): Promise<Sale[]>;
   count(tenantId: string, filters?: SaleFilters): Promise<number>;
-  create(sale: Sale, offlineId?: string, payments?: SalePaymentInput[]): Promise<Sale>;
+  create(
+    sale: Sale,
+    offlineId?: string,
+    payments?: SalePaymentInput[],
+  ): Promise<Sale>;
   voidSale(id: string, tenantId: string): Promise<void>;
   getDailySummary(tenantId: string): Promise<{ total: number; count: number }>;
 }

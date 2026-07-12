@@ -4,7 +4,16 @@ import { useToast } from '@contexts/ToastContext';
 import { useExchangeRate } from '@contexts/ExchangeRateContext';
 import { LoadingDots } from '@shared/ui/LoadingDots';
 import { TabNav } from '@shared/ui/TabNav';
-import { TrendingUp, PackageX, DollarSign, ShoppingCart, TrendingDown, Filter, Eye, Download } from 'lucide-react';
+import {
+  TrendingUp,
+  PackageX,
+  DollarSign,
+  ShoppingCart,
+  TrendingDown,
+  Filter,
+  Eye,
+  Download,
+} from 'lucide-react';
 import { useTheme } from '@contexts/ThemeContext';
 import { SkeletonTablePage } from '@shared/ui/Skeleton';
 import { KpiGrid } from '@shared/ui/KpiGrid';
@@ -14,7 +23,11 @@ import styles from './BestSellersPage.module.css';
 import tableStyles from '@shared/ui/TableList.module.css';
 function formatDate(d: string | null) {
   if (!d) return '\u2014';
-  return new Date(d).toLocaleDateString('es-MX', { year: 'numeric', month: 'short', day: 'numeric' });
+  return new Date(d).toLocaleDateString('es-MX', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
 }
 
 export function BestSellersPage() {
@@ -39,10 +52,17 @@ export function BestSellersPage() {
   async function loadBestSellers() {
     setLoading(true);
     try {
-      const data = await api.getBestSellers({ limit: bestLimit, startDate: startDate || undefined, endDate: endDate || undefined });
+      const data = await api.getBestSellers({
+        limit: bestLimit,
+        startDate: startDate || undefined,
+        endDate: endDate || undefined,
+      });
       setBestSellers(data);
-    } catch (err: any) { showToast(err.message, 'error'); }
-    finally { setLoading(false); }
+    } catch (err: any) {
+      showToast(err.message, 'error');
+    } finally {
+      setLoading(false);
+    }
   }
 
   async function loadDeadProducts() {
@@ -50,8 +70,11 @@ export function BestSellersPage() {
     try {
       const data = await api.getDeadProducts({ days: deadDays });
       setDeadProducts(data);
-    } catch (err: any) { showToast(err.message, 'error'); }
-    finally { setLoading(false); }
+    } catch (err: any) {
+      showToast(err.message, 'error');
+    } finally {
+      setLoading(false);
+    }
   }
 
   function applyFilters() {
@@ -59,16 +82,18 @@ export function BestSellersPage() {
     else loadDeadProducts();
   }
 
-  const filteredBest = bestSellers.filter(p =>
-    !search ||
-    p.name.toLowerCase().includes(search.toLowerCase()) ||
-    (p.barcode || '').toLowerCase().includes(search.toLowerCase())
+  const filteredBest = bestSellers.filter(
+    (p) =>
+      !search ||
+      p.name.toLowerCase().includes(search.toLowerCase()) ||
+      (p.barcode || '').toLowerCase().includes(search.toLowerCase())
   );
 
-  const filteredDead = deadProducts.filter(p =>
-    !search ||
-    p.name.toLowerCase().includes(search.toLowerCase()) ||
-    (p.barcode || '').toLowerCase().includes(search.toLowerCase())
+  const filteredDead = deadProducts.filter(
+    (p) =>
+      !search ||
+      p.name.toLowerCase().includes(search.toLowerCase()) ||
+      (p.barcode || '').toLowerCase().includes(search.toLowerCase())
   );
 
   const bestTotalRevenue = bestSellers.reduce((sum, p) => sum + (p.totalRevenue || 0), 0);
@@ -103,7 +128,7 @@ export function BestSellersPage() {
       { header: 'Última Venta', key: 'lastSale' },
       { header: 'Días Sin Vender', key: 'daysWithoutSale' },
     ];
-    const data = filteredDead.map(p => ({
+    const data = filteredDead.map((p) => ({
       name: p.name,
       barcode: p.barcode || '—',
       stock: p.stock,
@@ -121,27 +146,54 @@ export function BestSellersPage() {
           { key: 'dead', label: 'Productos Muertos', icon: <PackageX size={16} /> },
         ]}
         activeTab={tab}
-        onTabChange={k => setTab(k as 'best' | 'dead')}
+        onTabChange={(k) => setTab(k as 'best' | 'dead')}
       />
 
       <KpiGrid
         items={[
           { icon: <ShoppingCart size={18} />, value: bestTotalSold, label: 'Total Vendido' },
-          { icon: <DollarSign size={18} />, value: formatPrice(bestTotalRevenue), label: 'Ingreso Total' },
-          { icon: <TrendingDown size={18} />, value: deadCount, label: 'Productos Muertos', color: deadCount > 0 ? '#dc2626' : '#16a34a' },
+          {
+            icon: <DollarSign size={18} />,
+            value: formatPrice(bestTotalRevenue),
+            label: 'Ingreso Total',
+          },
+          {
+            icon: <TrendingDown size={18} />,
+            value: deadCount,
+            label: 'Productos Muertos',
+            color: deadCount > 0 ? 'var(--color-danger)' : 'var(--color-success)',
+          },
         ]}
       />
 
       <Toolbar
-        search={{ value: search, onChange: setSearch, placeholder: tab === 'best' ? 'Buscar más vendidos...' : 'Buscar productos muertos...' }}
+        search={{
+          value: search,
+          onChange: setSearch,
+          placeholder: tab === 'best' ? 'Buscar más vendidos...' : 'Buscar productos muertos...',
+        }}
       >
         {tab === 'best' ? (
           <div className={styles.toolbarFilters}>
             <span className={styles.filterLabel}>Desde:</span>
-            <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} className={styles.dateInput} />
+            <input
+              type="date"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+              className={styles.dateInput}
+            />
             <span className={styles.filterLabel}>Hasta:</span>
-            <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} className={styles.dateInput} />
-            <select value={bestLimit} onChange={e => setBestLimit(Number(e.target.value))} className={styles.selectFilter}>
+            <input
+              type="date"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+              className={styles.dateInput}
+            />
+            <select
+              value={bestLimit}
+              onChange={(e) => setBestLimit(Number(e.target.value))}
+              className={styles.selectFilter}
+            >
               <option value={5}>Top 5</option>
               <option value={10}>Top 10</option>
               <option value={20}>Top 20</option>
@@ -153,7 +205,11 @@ export function BestSellersPage() {
           </div>
         ) : (
           <div className={styles.toolbarFiltersDead}>
-            <select value={deadDays} onChange={e => setDeadDays(Number(e.target.value))} className={styles.selectFilter}>
+            <select
+              value={deadDays}
+              onChange={(e) => setDeadDays(Number(e.target.value))}
+              className={styles.selectFilter}
+            >
               <option value={30}>30 días</option>
               <option value={60}>60 días</option>
               <option value={90}>90 días</option>
@@ -167,7 +223,11 @@ export function BestSellersPage() {
         )}
       </Toolbar>
 
-      {loading && config.skeletonEnabled ? <SkeletonTablePage rows={bestLimit} cols={6} tabs={2} kpi={3} /> : loading ? <LoadingDots text="Cargando..." /> : (
+      {loading && config.skeletonEnabled ? (
+        <SkeletonTablePage rows={bestLimit} cols={6} tabs={2} kpi={3} />
+      ) : loading ? (
+        <LoadingDots text="Cargando..." />
+      ) : (
         <>
           {tab === 'best' && (
             <div className={tableStyles.tableContainer}>
@@ -179,23 +239,49 @@ export function BestSellersPage() {
                     <th>Código</th>
                     <th className={styles.textRight}>Cant. Vendida</th>
                     <th className={styles.textRight}>Ingreso Total</th>
-                    <th>% del Total <button className={styles.exportBtn} onClick={handleExportBest} title="Exportar a Excel"><Download size={14} /></button></th>
+                    <th>
+                      % del Total{' '}
+                      <button
+                        className={styles.exportBtn}
+                        onClick={handleExportBest}
+                        title="Exportar a Excel"
+                      >
+                        <Download size={14} />
+                      </button>
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
                   {filteredBest.map((p, i) => (
                     <tr key={p.id}>
                       <td className={styles.rankCell}>{i + 1}</td>
-                      <td><span className={tableStyles.nameText}>{p.name}</span></td>
-                      <td><span className={tableStyles.code}>{p.barcode || '\u2014'}</span></td>
-                      <td className={styles.textRight}><span className={tableStyles.numberValue}>{p.totalQty}</span></td>
-                      <td className={styles.textRight}><span className={tableStyles.numberValue}>{formatPrice(p.totalRevenue)}</span></td>
+                      <td>
+                        <span className={tableStyles.nameText}>{p.name}</span>
+                      </td>
+                      <td>
+                        <span className={tableStyles.code}>{p.barcode || '\u2014'}</span>
+                      </td>
+                      <td className={styles.textRight}>
+                        <span className={tableStyles.numberValue}>{p.totalQty}</span>
+                      </td>
+                      <td className={styles.textRight}>
+                        <span className={tableStyles.numberValue}>
+                          {formatPrice(p.totalRevenue)}
+                        </span>
+                      </td>
                       <td>
                         <div className={tableStyles.progressBar}>
                           <div className={tableStyles.progressTrack}>
-                            <div className={`${tableStyles.progressFill} ${tableStyles.progressFillOrange} progressBarFill`} style={{ '--progress-width': p.percentage + '%' }} />
+                            <div
+                              className={`${tableStyles.progressFill} ${tableStyles.progressFillOrange} progressBarFill`}
+                              style={{ '--progress-width': p.percentage + '%' }}
+                            />
                           </div>
-                          <span className={`${tableStyles.progressValue} ${tableStyles.progressValueWhite}`}>{p.percentage.toFixed(1)}%</span>
+                          <span
+                            className={`${tableStyles.progressValue} ${tableStyles.progressValueWhite}`}
+                          >
+                            {p.percentage.toFixed(1)}%
+                          </span>
                         </div>
                       </td>
                     </tr>
@@ -217,7 +303,16 @@ export function BestSellersPage() {
                   <table className={tableStyles.table}>
                     <thead>
                       <tr>
-                        <th>Producto <button className={styles.exportBtn} onClick={handleExportDead} title="Exportar a Excel"><Download size={14} /></button></th>
+                        <th>
+                          Producto{' '}
+                          <button
+                            className={styles.exportBtn}
+                            onClick={handleExportDead}
+                            title="Exportar a Excel"
+                          >
+                            <Download size={14} />
+                          </button>
+                        </th>
                         <th>Código</th>
                         <th className={styles.textRight}>Stock Actual</th>
                         <th>Última Venta</th>
@@ -226,15 +321,29 @@ export function BestSellersPage() {
                       </tr>
                     </thead>
                     <tbody>
-                      {filteredDead.map(p => (
+                      {filteredDead.map((p) => (
                         <tr key={p.id}>
-                          <td><span className={tableStyles.nameText}>{p.name}</span></td>
-                          <td><span className={tableStyles.code}>{p.barcode || '\u2014'}</span></td>
-                          <td className={styles.textRight}><span className={tableStyles.numberValue}>{p.stock}</span></td>
-                          <td className={styles.textRight}>{p.daysWithoutSale !== null ? `${p.daysWithoutSale} días` : 'Nunca vendido'}</td>
+                          <td>
+                            <span className={tableStyles.nameText}>{p.name}</span>
+                          </td>
+                          <td>
+                            <span className={tableStyles.code}>{p.barcode || '\u2014'}</span>
+                          </td>
+                          <td className={styles.textRight}>
+                            <span className={tableStyles.numberValue}>{p.stock}</span>
+                          </td>
+                          <td className={styles.textRight}>
+                            {p.daysWithoutSale !== null
+                              ? `${p.daysWithoutSale} días`
+                              : 'Nunca vendido'}
+                          </td>
                           <td className={styles.textCenter}>
                             <div className={styles.actionCell}>
-                              <button className={tableStyles.actionBtn} onClick={() => window.location.href = `/inventory?edit=${p.id}`} title="Ver producto">
+                              <button
+                                className={tableStyles.actionBtn}
+                                onClick={() => (window.location.href = `/inventory?edit=${p.id}`)}
+                                title="Ver producto"
+                              >
                                 <Eye size={14} />
                               </button>
                             </div>

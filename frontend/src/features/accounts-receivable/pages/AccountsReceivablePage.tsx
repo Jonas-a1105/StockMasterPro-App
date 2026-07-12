@@ -54,7 +54,9 @@ export function AccountsReceivablePage() {
     }
   };
 
-  useEffect(() => { loadData(); }, []);
+  useEffect(() => {
+    loadData();
+  }, []);
 
   const openCreate = () => {
     setForm({ customerId: '', totalAmount: 0, dueDate: '', notes: '' });
@@ -92,7 +94,10 @@ export function AccountsReceivablePage() {
     setError('');
     setSaving(true);
     try {
-      await api.payAccountsReceivable(payingReceivable.id, { amount: payAmount, paymentMethod: payMethod });
+      await api.payAccountsReceivable(payingReceivable.id, {
+        amount: payAmount,
+        paymentMethod: payMethod,
+      });
       setShowPayModal(false);
       setPayingReceivable(null);
       showToast('Pago registrado correctamente', 'success');
@@ -115,15 +120,32 @@ export function AccountsReceivablePage() {
     return { label: 'Pendiente', className: styles.statusPending };
   };
 
-  const filtered = receivables.filter(r =>
+  const filtered = receivables.filter((r) =>
     r.customer.name.toLowerCase().includes(search.toLowerCase())
   );
 
-  const totalPending = filtered.reduce((sum, r) => sum + (r.status !== 'paid' ? r.pendingAmount : 0), 0);
-  const totalOverdue = filtered.reduce((sum, r) => sum + (r.status === 'overdue' || (r.status === 'pending' && new Date(r.dueDate) < new Date()) ? r.pendingAmount : 0), 0);
-  const overdueCount = filtered.filter(r => r.status === 'overdue' || (r.status === 'pending' && new Date(r.dueDate) < new Date())).length;
+  const totalPending = filtered.reduce(
+    (sum, r) => sum + (r.status !== 'paid' ? r.pendingAmount : 0),
+    0
+  );
+  const totalOverdue = filtered.reduce(
+    (sum, r) =>
+      sum +
+      (r.status === 'overdue' || (r.status === 'pending' && new Date(r.dueDate) < new Date())
+        ? r.pendingAmount
+        : 0),
+    0
+  );
+  const overdueCount = filtered.filter(
+    (r) => r.status === 'overdue' || (r.status === 'pending' && new Date(r.dueDate) < new Date())
+  ).length;
 
-  if (loading) return config.skeletonEnabled ? <SkeletonTablePage /> : <LoadingDots text="Cargando cuentas por cobrar..." />;
+  if (loading)
+    return config.skeletonEnabled ? (
+      <SkeletonTablePage />
+    ) : (
+      <LoadingDots text="Cargando cuentas por cobrar..." />
+    );
 
   return (
     <>
@@ -134,8 +156,19 @@ export function AccountsReceivablePage() {
 
       <KpiGrid
         kpis={[
-          { label: 'Total por Cobrar', value: formatPrice(totalPending), icon: DollarSign, color: '#f59e0b' },
-          { label: 'Vencidas', value: formatPrice(totalOverdue), icon: Calendar, color: '#ef4444', subtitle: `${overdueCount} cuenta${overdueCount !== 1 ? 's' : ''}` },
+          {
+            label: 'Total por Cobrar',
+            value: formatPrice(totalPending),
+            icon: DollarSign,
+            color: '#f59e0b',
+          },
+          {
+            label: 'Vencidas',
+            value: formatPrice(totalOverdue),
+            icon: Calendar,
+            color: '#ef4444',
+            subtitle: `${overdueCount} cuenta${overdueCount !== 1 ? 's' : ''}`,
+          },
           { label: 'Clientes', value: customers.length, icon: Users, color: '#3b82f6' },
         ]}
       />
@@ -155,48 +188,98 @@ export function AccountsReceivablePage() {
           </thead>
           <tbody>
             {filtered.length === 0 ? (
-              <tr><td colSpan={7} className={styles.emptyRow}>No hay cuentas por cobrar</td></tr>
-            ) : filtered.map(r => {
-              const statusInfo = getStatusLabel(r.status, r.dueDate);
-              return (
-                <tr key={r.id}>
-                  <td><strong>{r.customer.name}</strong></td>
-                  <td>{formatPrice(r.totalAmount)}</td>
-                  <td>{formatPrice(r.pendingAmount)}</td>
-                  <td>{new Date(r.dueDate).toLocaleDateString()}</td>
-                  <td><span className={`${styles.statusBadge} ${statusInfo.className}`}>{statusInfo.label}</span></td>
-                  <td className={styles.notesCell}>{r.notes || '—'}</td>
-                  <td>
-                    {r.status !== 'paid' && (
-                      <button className={styles.payBtn} onClick={() => openPay(r)}>Cobrar</button>
-                    )}
-                  </td>
-                </tr>
-              );
-            })}
+              <tr>
+                <td colSpan={7} className={styles.emptyRow}>
+                  No hay cuentas por cobrar
+                </td>
+              </tr>
+            ) : (
+              filtered.map((r) => {
+                const statusInfo = getStatusLabel(r.status, r.dueDate);
+                return (
+                  <tr key={r.id}>
+                    <td>
+                      <strong>{r.customer.name}</strong>
+                    </td>
+                    <td>{formatPrice(r.totalAmount)}</td>
+                    <td>{formatPrice(r.pendingAmount)}</td>
+                    <td>{new Date(r.dueDate).toLocaleDateString()}</td>
+                    <td>
+                      <span className={`${styles.statusBadge} ${statusInfo.className}`}>
+                        {statusInfo.label}
+                      </span>
+                    </td>
+                    <td className={styles.notesCell}>{r.notes || '—'}</td>
+                    <td>
+                      {r.status !== 'paid' && (
+                        <button className={styles.payBtn} onClick={() => openPay(r)}>
+                          Cobrar
+                        </button>
+                      )}
+                    </td>
+                  </tr>
+                );
+              })
+            )}
           </tbody>
         </table>
       </div>
 
-      <Modal open={showCreateModal} onClose={() => setShowCreateModal(false)} title="Nueva Cuenta por Cobrar">
+      <Modal
+        open={showCreateModal}
+        onClose={() => setShowCreateModal(false)}
+        title="Nueva Cuenta por Cobrar"
+      >
         <form onSubmit={handleCreate}>
           <div className={styles.formFields}>
             {error && <div className={styles.error}>{error}</div>}
             <label>Cliente *</label>
-            <select value={form.customerId} onChange={e => setForm(p => ({ ...p, customerId: e.target.value }))} required>
+            <select
+              value={form.customerId}
+              onChange={(e) => setForm((p) => ({ ...p, customerId: e.target.value }))}
+              required
+            >
               <option value="">Seleccionar cliente</option>
-              {customers.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+              {customers.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.name}
+                </option>
+              ))}
             </select>
             <label>Monto Total ($) *</label>
-            <input type="number" step="0.01" min="0.01" value={form.totalAmount || ''} onChange={e => setForm(p => ({ ...p, totalAmount: Number(e.target.value) }))} required />
+            <input
+              type="number"
+              step="0.01"
+              min="0.01"
+              value={form.totalAmount || ''}
+              onChange={(e) => setForm((p) => ({ ...p, totalAmount: Number(e.target.value) }))}
+              required
+            />
             <label>Fecha de Vencimiento *</label>
-            <input type="date" value={form.dueDate} onChange={e => setForm(p => ({ ...p, dueDate: e.target.value }))} required />
+            <input
+              type="date"
+              value={form.dueDate}
+              onChange={(e) => setForm((p) => ({ ...p, dueDate: e.target.value }))}
+              required
+            />
             <label>Notas</label>
-            <textarea value={form.notes} onChange={e => setForm(p => ({ ...p, notes: e.target.value }))} rows={2} />
+            <textarea
+              value={form.notes}
+              onChange={(e) => setForm((p) => ({ ...p, notes: e.target.value }))}
+              rows={2}
+            />
           </div>
           <div className={styles.formActions}>
-            <button type="button" className={styles.cancelBtn} onClick={() => setShowCreateModal(false)}>Cancelar</button>
-            <button type="submit" className={styles.saveBtn} disabled={saving}>{saving ? <LoadingDots /> : 'Crear'}</button>
+            <button
+              type="button"
+              className={styles.cancelBtn}
+              onClick={() => setShowCreateModal(false)}
+            >
+              Cancelar
+            </button>
+            <button type="submit" className={styles.saveBtn} disabled={saving}>
+              {saving ? <LoadingDots /> : 'Crear'}
+            </button>
           </div>
         </form>
       </Modal>
@@ -206,20 +289,44 @@ export function AccountsReceivablePage() {
           <form onSubmit={handlePay}>
             <div className={styles.formFields}>
               {error && <div className={styles.error}>{error}</div>}
-              <p className={styles.mb12}>Cliente: <strong>{payingReceivable.customer.name}</strong></p>
-              <p className={styles.mb12}>Pendiente: <strong>{formatPrice(payingReceivable.pendingAmount)}</strong></p>
+              <p className={styles.mb12}>
+                Cliente: <strong>{payingReceivable.customer.name}</strong>
+              </p>
+              <p className={styles.mb12}>
+                Pendiente: <strong>{formatPrice(payingReceivable.pendingAmount)}</strong>
+              </p>
               <label>Monto a cobrar *</label>
-              <input type="number" step="0.01" min="0.01" max={payingReceivable.pendingAmount} value={payAmount || ''} onChange={e => setPayAmount(Number(e.target.value))} required />
+              <input
+                type="number"
+                step="0.01"
+                min="0.01"
+                max={payingReceivable.pendingAmount}
+                value={payAmount || ''}
+                onChange={(e) => setPayAmount(Number(e.target.value))}
+                required
+              />
               <label>Método de pago *</label>
-              <select value={payMethod} onChange={e => setPayMethod(e.target.value as any)} required>
+              <select
+                value={payMethod}
+                onChange={(e) => setPayMethod(e.target.value as any)}
+                required
+              >
                 <option value="cash">Efectivo</option>
                 <option value="card">Tarjeta</option>
                 <option value="transfer">Transferencia</option>
               </select>
             </div>
             <div className={styles.formActions}>
-              <button type="button" className={styles.cancelBtn} onClick={() => setShowPayModal(false)}>Cancelar</button>
-              <button type="submit" className={styles.saveBtn} disabled={saving}>{saving ? <LoadingDots /> : 'Confirmar Pago'}</button>
+              <button
+                type="button"
+                className={styles.cancelBtn}
+                onClick={() => setShowPayModal(false)}
+              >
+                Cancelar
+              </button>
+              <button type="submit" className={styles.saveBtn} disabled={saving}>
+                {saving ? <LoadingDots /> : 'Confirmar Pago'}
+              </button>
             </div>
           </form>
         )}

@@ -42,13 +42,16 @@ export function useGlobalSearch() {
     }
   }, []);
 
-  const debouncedSearch = useCallback((query: string, limit?: number) => {
-    if (debounceTimeoutRef.current) clearTimeout(debounceTimeoutRef.current);
-    const timeout = setTimeout(() => {
-      search(query, limit);
-    }, 300);
-    debounceTimeoutRef.current = timeout;
-  }, [search]);
+  const debouncedSearch = useCallback(
+    (query: string, limit?: number) => {
+      if (debounceTimeoutRef.current) clearTimeout(debounceTimeoutRef.current);
+      const timeout = setTimeout(() => {
+        search(query, limit);
+      }, 300);
+      debounceTimeoutRef.current = timeout;
+    },
+    [search]
+  );
 
   return { results, loading, search: debouncedSearch };
 }

@@ -9,14 +9,35 @@ export function useProducts() {
   const [initialLoading, setInitialLoading] = useState(true);
 
   const loadProducts = useCallback(async () => {
-    try { setProducts(await getInventoryProducts()); } catch {} finally { setInitialLoading(false); }
+    try {
+      setProducts(await getInventoryProducts());
+    } catch {
+    } finally {
+      setInitialLoading(false);
+    }
   }, []);
 
   const loadCategories = useCallback(async () => {
-    try { setCategories(await getCategories()); } catch {}
+    try {
+      setCategories(await getCategories());
+    } catch {}
   }, []);
 
-  useEffect(() => { loadProducts(); loadCategories(); getWarehouses().then(setWarehouses).catch(() => {}); }, [loadProducts, loadCategories]);
+  useEffect(() => {
+    loadProducts();
+    loadCategories();
+    getWarehouses()
+      .then(setWarehouses)
+      .catch(() => {});
+  }, [loadProducts, loadCategories]);
 
-  return { products, setProducts, categories, warehouses, initialLoading, loadProducts, loadCategories };
+  return {
+    products,
+    setProducts,
+    categories,
+    warehouses,
+    initialLoading,
+    loadProducts,
+    loadCategories,
+  };
 }

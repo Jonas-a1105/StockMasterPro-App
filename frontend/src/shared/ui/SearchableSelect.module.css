@@ -15,9 +15,9 @@
   height: 38px;
   padding: 0 36px 0 12px;
   font-size: var(--font-size-sm);
-  color: var(--text-main);
-  background-color: var(--bg-card, #fff);
-  border: 1px solid var(--input-border, var(--border-color));
+  color: var(--color-text);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border-input);
   border-radius: var(--input-radius, 8px) !important;
   outline: none;
   transition: all 0.15s ease-in-out;
@@ -25,17 +25,17 @@
 }
 
 .inputField:focus {
-  border-color: var(--brand-orange, #f05a28);
+  border-color: var(--color-primary);
   box-shadow: 0 0 0 3px var(--brand-orange-light, rgb(240, 90, 40, 0.15));
 }
 
 .inputField::placeholder {
-  color: var(--text-main);
+  color: var(--color-text);
   opacity: 0.9;
 }
 
 .inputField:focus::placeholder {
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   opacity: 0.6;
 }
 
@@ -51,12 +51,12 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   padding: 0;
 }
 
 .chevronBtn:hover {
-  color: var(--text-main);
+  color: var(--color-text);
   transform: none !important;
   box-shadow: none !important;
 }
@@ -74,8 +74,8 @@
   top: calc(100% + 4px);
   left: 0;
   right: 0;
-  background-color: var(--bg-card, #fff);
-  border: 1px solid var(--border-color, #eee);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: var(--card-radius, 12px);
   box-shadow: 0 10px 25px rgb(0, 0, 0, 0.1);
   z-index: 250;
@@ -99,7 +99,7 @@
 }
 
 .optionsList::-webkit-scrollbar-thumb {
-  background-color: var(--text-muted);
+  background-color: var(--color-text-muted);
   border-radius: var(--border-radius-md);
 }
 
@@ -111,7 +111,7 @@
   border: none;
   background: transparent;
   font-size: var(--font-size-sm);
-  color: var(--text-main);
+  color: var(--color-text);
   text-align: left;
   cursor: pointer;
   border-radius: var(--btn-radius, 8px);
@@ -119,20 +119,20 @@
 }
 
 .optionItem:hover {
-  background-color: var(--bg-hover, rgb(0, 0, 0, 0.03));
+  background-color: var(--color-bg-hover);
   transform: none !important;
   box-shadow: none !important;
 }
 
 .optionActive {
-  background-color: var(--brand-orange, #f05a28) !important;
+  background-color: var(--color-primary) !important;
   color: var(--text-on-primary, #fff) !important;
 }
 
 .emptyOption {
   padding: 12px;
   font-size: var(--font-size-sm);
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   text-align: center;
 }
 

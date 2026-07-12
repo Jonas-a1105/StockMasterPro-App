@@ -21,8 +21,15 @@ export interface InventoryCountRepository {
   count(tenantId: string, filters?: InventoryCountFilters): Promise<number>;
   create(count: InventoryCount): Promise<InventoryCount>;
   update(count: InventoryCount): Promise<InventoryCount>;
-  addItems(countId: string, items: InventoryCountItem[]): Promise<InventoryCount>;
+  addItems(
+    countId: string,
+    items: InventoryCountItem[],
+  ): Promise<InventoryCount>;
   updateItem(item: InventoryCountItem): Promise<InventoryCountItem>;
   getItem(itemId: string, tenantId: string): Promise<InventoryCountItem | null>;
-  getSystemQuantities(productIds: string[], tenantId: string, warehouseId?: string): Promise<Map<string, number>>;
+  getSystemQuantities(
+    productIds: string[],
+    tenantId: string,
+    warehouseId?: string,
+  ): Promise<Map<string, number>>;
 }

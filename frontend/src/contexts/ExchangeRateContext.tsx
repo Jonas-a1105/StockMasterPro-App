@@ -1,7 +1,15 @@
 import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from 'react';
 import { api } from '@shared/lib/http/client';
 import { useAuth } from '@contexts/AuthContext';
-import { loadConfig, saveConfig, formatPrice as fp, formatBs, formatUsd, type CurrencyConfig, type FormatPriceOptions } from '@shared/lib/format/currency';
+import {
+  loadConfig,
+  saveConfig,
+  formatPrice as fp,
+  formatBs,
+  formatUsd,
+  type CurrencyConfig,
+  type FormatPriceOptions,
+} from '@shared/lib/format/currency';
 
 interface ExchangeRateContextValue {
   rate: number;
@@ -39,7 +47,7 @@ export function ExchangeRateProvider({ children }: { children: ReactNode }) {
   const [error, setError] = useState<string | null>(null);
   const [config, setConfig] = useState<CurrencyConfig>(loadConfig);
   const [configLoading, setConfigLoading] = useState(true);
-const [manualRate, setManualRateState] = useState<number>(0);
+  const [manualRate, setManualRateState] = useState<number>(0);
 
   const fetchRate = useCallback(async () => {
     try {
@@ -118,7 +126,8 @@ const [manualRate, setManualRateState] = useState<number>(0);
   };
 
   const formatPriceFn = useCallback(
-    (amount: number | null | undefined, options?: FormatPriceOptions) => fp(amount, rate, config, options),
+    (amount: number | null | undefined, options?: FormatPriceOptions) =>
+      fp(amount, rate, config, options),
     [rate, config]
   );
 
@@ -127,23 +136,30 @@ const [manualRate, setManualRateState] = useState<number>(0);
     [rate, config.decimals]
   );
 
-  const formatUsdFn = useCallback(
-    (amount: number | null | undefined) => formatUsd(amount),
-    []
-  );
+  const formatUsdFn = useCallback((amount: number | null | undefined) => formatUsd(amount), []);
 
   const toBs = useCallback((amount: number) => amount * rate, [rate]);
   const toUsd = useCallback((amount: number) => amount / rate, [rate]);
 
   return (
-    <ExchangeRateContext.Provider value={{
-      rate, updatedAt, source, loading: loading || configLoading, error, config, updateConfig,
-      manualRate, setManualRate,
-      formatPrice: formatPriceFn,
-      formatBs: formatBsFn,
-      formatUsd: formatUsdFn,
-      toBs, toUsd
-    }}>
+    <ExchangeRateContext.Provider
+      value={{
+        rate,
+        updatedAt,
+        source,
+        loading: loading || configLoading,
+        error,
+        config,
+        updateConfig,
+        manualRate,
+        setManualRate,
+        formatPrice: formatPriceFn,
+        formatBs: formatBsFn,
+        formatUsd: formatUsdFn,
+        toBs,
+        toUsd,
+      }}
+    >
       {children}
     </ExchangeRateContext.Provider>
   );

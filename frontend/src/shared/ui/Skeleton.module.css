@@ -14,7 +14,9 @@
   );
   background-size: 200% 100%;
   opacity: 0;
-  animation: skeletonShimmer 1.6s ease-in-out infinite, skeletonFadeIn 0.4s ease forwards;
+  animation:
+    skeletonShimmer 1.6s ease-in-out infinite,
+    skeletonFadeIn 0.4s ease forwards;
 }
 
 .animDelay {
@@ -30,20 +32,30 @@
   animation-delay: var(--sk-bar-delay, 0s);
 }
 
-[data-theme="dark"] .skeleton,
-[data-theme="oled"] .skeleton {
+[data-theme='dark'] .skeleton,
+[data-theme='oled'] .skeleton {
   --skeleton-base: #2a2a2a;
   --skeleton-shine: #363636;
 }
 
 @keyframes skeletonShimmer {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
 }
 
 @keyframes skeletonFadeIn {
-  from { opacity: 0; transform: translateY(4px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .skeletonGroup {
@@ -57,10 +69,10 @@
   display: flex;
   flex-direction: column;
   gap: 0;
-  border: var(--card-border-width, 1px) solid var(--border-color, #eee);
+  border: var(--card-border-width, 1px) solid var(--color-border);
   border-radius: var(--card-radius, 4px);
   overflow: hidden;
-  background: var(--bg-card, #fff);
+  background: var(--color-surface);
 }
 
 .skeletonTableRow {
@@ -68,7 +80,7 @@
   grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
   gap: 12px;
   padding: 12px 16px;
-  border-bottom: var(--card-border-width, 1px) solid var(--border-color, #eee);
+  border-bottom: var(--card-border-width, 1px) solid var(--color-border);
   opacity: 0;
   animation: skeletonFadeIn 0.35s ease forwards;
 }
@@ -89,10 +101,10 @@
 }
 
 .skeletonCard {
-  border: var(--card-border-width, 1px) solid var(--border-color, #eee);
+  border: var(--card-border-width, 1px) solid var(--color-border);
   border-radius: var(--card-radius, 4px);
   padding: 16px;
-  background: var(--bg-card, #fff);
+  background: var(--color-surface);
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -118,8 +130,8 @@
   grid-template-columns: 1fr 1fr;
   gap: 6px;
   padding: 10px 0;
-  border-top: var(--card-border-width, 1px) solid var(--border-color, #eee);
-  border-bottom: var(--card-border-width, 1px) solid var(--border-color, #eee);
+  border-top: var(--card-border-width, 1px) solid var(--color-border);
+  border-bottom: var(--card-border-width, 1px) solid var(--color-border);
 }
 
 .skeletonCardFooter {
@@ -136,10 +148,10 @@
 }
 
 .skeletonKPICard {
-  border: var(--card-border-width, 1px) solid var(--border-color, #eee);
+  border: var(--card-border-width, 1px) solid var(--color-border);
   border-radius: var(--card-radius, 4px);
   padding: 16px;
-  background: var(--bg-card, #fff);
+  background: var(--color-surface);
   opacity: 0;
   animation: skeletonFadeIn 0.4s ease forwards;
 }
@@ -152,9 +164,9 @@
 
 /* === Skeleton Chart === */
 .skeletonChart {
-  border: var(--card-border-width, 1px) solid var(--border-color, #eee);
+  border: var(--card-border-width, 1px) solid var(--color-border);
   border-radius: var(--card-radius, 4px);
-  background: var(--bg-card, #fff);
+  background: var(--color-surface);
   display: flex;
   align-items: flex-end;
   padding: 20px 16px 16px;
@@ -182,7 +194,9 @@
     var(--skeleton-base, #e8e8e8) 100%
   );
   background-size: 200% 100%;
-  animation: skeletonShimmer 1.6s ease-in-out infinite, skeletonBarGrow 0.6s ease forwards;
+  animation:
+    skeletonShimmer 1.6s ease-in-out infinite,
+    skeletonBarGrow 0.6s ease forwards;
   opacity: 0;
 }
 
@@ -233,10 +247,10 @@
 }
 
 .skeletonCard {
-  border: var(--card-border-width, 1px) solid var(--border-color, #eee);
+  border: var(--card-border-width, 1px) solid var(--color-border);
   border-radius: var(--card-radius, 4px);
   padding: 16px;
-  background: var(--bg-card, #fff);
+  background: var(--color-surface);
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -267,10 +281,10 @@
 }
 
 .skeletonPOSCard {
-  border: var(--card-border-width, 1px) solid var(--border-color, #eee);
+  border: var(--card-border-width, 1px) solid var(--color-border);
   border-radius: var(--card-radius, 4px);
   padding: 12px;
-  background: var(--bg-card, #fff);
+  background: var(--color-surface);
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -282,10 +296,10 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-  border: var(--card-border-width, 1px) solid var(--border-color, #eee);
+  border: var(--card-border-width, 1px) solid var(--color-border);
   border-radius: var(--card-radius, 4px);
   padding: 16px;
-  background: var(--bg-card, #fff);
+  background: var(--color-surface);
   opacity: 0;
   animation: skeletonFadeIn 0.4s ease 0.1s forwards;
 }

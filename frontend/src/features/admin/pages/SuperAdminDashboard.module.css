@@ -33,7 +33,9 @@
   padding: 20px;
   border: 1px solid var(--border);
   border-left: 4px solid var(--brand);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
 }
 
 .kpiCard:hover {
@@ -127,8 +129,12 @@
 }
 
 @keyframes shimmer {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
 }
 
 .chartContainer {
@@ -272,7 +278,9 @@
   padding: 20px;
   border: 1px solid var(--border);
   border-left: 4px solid var(--brand);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
 }
 
 .kpiCard:hover {
@@ -449,19 +457,45 @@
 }
 
 /* ── Dynamic color utilities ── */
-.borderLeftPrimary { border-left-color: var(--color-primary, #f05a28); }
-.borderLeftSuccess { border-left-color: var(--color-success, #16a34a); }
-.borderLeftWarning { border-left-color: var(--color-warning, #f59e0b); }
-.borderLeftDanger { border-left-color: var(--color-danger, #ef4444); }
-.borderLeftInfo { border-left-color: var(--color-info, #3b82f6); }
+.borderLeftPrimary {
+  border-left-color: var(--color-primary, #f05a28);
+}
+.borderLeftSuccess {
+  border-left-color: var(--color-success, #16a34a);
+}
+.borderLeftWarning {
+  border-left-color: var(--color-warning, #f59e0b);
+}
+.borderLeftDanger {
+  border-left-color: var(--color-danger, #ef4444);
+}
+.borderLeftInfo {
+  border-left-color: var(--color-info, #3b82f6);
+}
 
-.textPrimary { color: var(--color-primary, #f05a28); }
-.textSuccess { color: var(--color-success, #16a34a); }
-.textWarning { color: var(--color-warning, #f59e0b); }
-.textDanger { color: var(--color-danger, #ef4444); }
-.textInfo { color: var(--color-info, #3b82f6); }
+.textPrimary {
+  color: var(--color-primary, #f05a28);
+}
+.textSuccess {
+  color: var(--color-success, #16a34a);
+}
+.textWarning {
+  color: var(--color-warning, #f59e0b);
+}
+.textDanger {
+  color: var(--color-danger, #ef4444);
+}
+.textInfo {
+  color: var(--color-info, #3b82f6);
+}
 
 /* Trend colors */
-.trendPositive { color: var(--color-success, #16a34a); }
-.trendNegative { color: var(--color-danger, #ef4444); }
-.trendNeutral { color: var(--text-muted, #6b7280); }
+.trendPositive {
+  color: var(--color-success, #16a34a);
+}
+.trendNegative {
+  color: var(--color-danger, #ef4444);
+}
+.trendNeutral {
+  color: var(--text-muted, #6b7280);
+}

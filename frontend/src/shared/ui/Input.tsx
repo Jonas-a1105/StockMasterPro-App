@@ -10,7 +10,9 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 export const Input = forwardRef<HTMLInputElement, InputProps>(
   ({ error, label, helperText, className = '', id, ...props }, ref) => {
     const inputId = id || `input-${props.name || Math.random().toString(36).slice(2, 9)}`;
-    const classes = [styles.input, error ? styles.inputError : '', className].filter(Boolean).join(' ');
+    const classes = [styles.input, error ? styles.inputError : '', className]
+      .filter(Boolean)
+      .join(' ');
 
     return (
       <div className={styles.wrapper}>
@@ -24,7 +26,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         {helperText && !error && <span className={styles.helper}>{helperText}</span>}
       </div>
     );
-  },
+  }
 );
 
 Input.displayName = 'Input';

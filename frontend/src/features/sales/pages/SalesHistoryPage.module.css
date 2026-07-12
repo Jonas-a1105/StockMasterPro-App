@@ -15,7 +15,8 @@
   font-size: var(--font-size-sm);
 }
 
-.filterBtn, .clearBtn {
+.filterBtn,
+.clearBtn {
   padding: 7px 16px;
   border-radius: var(--border-radius-md);
   font-size: var(--font-size-sm);
@@ -24,8 +25,15 @@
   border: none;
 }
 
-.filterBtn { background: var(--color-primary); color: var(--text-on-primary, #fff); }
-.clearBtn { background: transparent; color: var(--text-muted); border: 1px solid var(--border-color); }
+.filterBtn {
+  background: var(--color-primary);
+  color: var(--text-on-primary, #fff);
+}
+.clearBtn {
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--border-color);
+}
 
 .tableContainer {
   overflow-x: auto;
@@ -58,8 +66,12 @@
   color: var(--text-primary);
 }
 
-.table tr:last-child td { border-bottom: none; }
-.table tr:hover td { background: var(--bg-hover); }
+.table tr:last-child td {
+  border-bottom: none;
+}
+.table tr:hover td {
+  background: var(--bg-hover);
+}
 
 .emptyRow {
   text-align: center;
@@ -67,8 +79,13 @@
   color: var(--text-muted);
 }
 
-.cellMuted { color: var(--text-muted); font-size: var(--font-size-caption); }
-.cellTotal { font-weight: var(--font-weight-semibold); }
+.cellMuted {
+  color: var(--text-muted);
+  font-size: var(--font-size-caption);
+}
+.cellTotal {
+  font-weight: var(--font-weight-semibold);
+}
 
 .paymentBadge {
   display: inline-block;
@@ -185,4 +202,3 @@
   font-weight: var(--font-weight-medium);
   cursor: pointer;
 }
-

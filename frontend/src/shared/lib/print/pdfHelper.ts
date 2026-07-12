@@ -6,7 +6,7 @@ export function exportToPdf(
   data: any[],
   columns: ColumnMapping[],
   title: string,
-  filename: string,
+  filename: string
 ) {
   const doc = new jsPDF('landscape', 'mm', 'a4');
   const pageWidth = doc.internal.pageSize.getWidth();
@@ -17,12 +17,12 @@ export function exportToPdf(
   doc.setFontSize(10);
   doc.text(`Generado: ${new Date().toLocaleDateString()}`, pageWidth / 2, 22, { align: 'center' });
 
-  const headers = columns.map(c => c.header);
-  const rows = data.map(item =>
-    columns.map(col => {
+  const headers = columns.map((c) => c.header);
+  const rows = data.map((item) =>
+    columns.map((col) => {
       const val = item[col.key];
       return val !== undefined && val !== null ? String(val) : '';
-    }),
+    })
   );
 
   autoTable(doc, {

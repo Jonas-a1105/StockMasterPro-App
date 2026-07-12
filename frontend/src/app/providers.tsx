@@ -12,11 +12,19 @@ import { QueryProvider } from '@shared/lib/query/QueryProvider';
 
 function ThemedToaster() {
   const { config } = useTheme();
-  return <Toaster position="top-center" theme={config.darkMode || config.oledMode ? 'dark' : 'light'} offset={{ top: 15 }} />;
+  return (
+    <Toaster
+      position="top-center"
+      theme={config.darkMode || config.oledMode ? 'dark' : 'light'}
+      offset={{ top: 15 }}
+    />
+  );
 }
 
 function AppWithSplash() {
-  const [splashDone, setSplashDone] = useState(() => sessionStorage.getItem('splashDone') === 'true');
+  const [splashDone, setSplashDone] = useState(
+    () => sessionStorage.getItem('splashDone') === 'true'
+  );
 
   const handleSplashFinish = useCallback(() => {
     sessionStorage.setItem('splashDone', 'true');

@@ -22,7 +22,8 @@ export function useProductsQuery(params?: Record<string, unknown>) {
 export function useProductDetailQuery(id: string) {
   return useQuery({
     queryKey: queryKeys.products.detail(id),
-    queryFn: () => getInventoryProducts().then((products) => products.find((p: any) => p.id === id)),
+    queryFn: () =>
+      getInventoryProducts().then((products) => products.find((p: any) => p.id === id)),
     enabled: !!id,
   });
 }

@@ -41,14 +41,23 @@ export function NotificationsPage() {
     }
   };
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => {
+    load();
+  }, []);
 
   const handleMarkAsRead = async (id: string) => {
-    try { await markAsRead(id); setNotifications(prev => prev.map(n => n.id === id ? { ...n, unread: false } : n)); } catch {}
+    try {
+      await markAsRead(id);
+      setNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, unread: false } : n)));
+    } catch {}
   };
 
   const handleMarkAllAsRead = async () => {
-    try { await markAllAsRead(); setNotifications(prev => prev.map(n => ({ ...n, unread: false }))); showToast('Todas marcadas como leídas', 'success'); } catch {}
+    try {
+      await markAllAsRead();
+      setNotifications((prev) => prev.map((n) => ({ ...n, unread: false })));
+      showToast('Todas marcadas como leídas', 'success');
+    } catch {}
   };
 
   const handleClick = (n: Notification) => {
@@ -56,18 +65,27 @@ export function NotificationsPage() {
     if (n.link) navigate(n.link);
   };
 
-  const filtered = filter === 'all' ? notifications : filter === 'unread' ? notifications.filter(n => n.unread) : notifications.filter(n => n.category === filter);
+  const filtered =
+    filter === 'all'
+      ? notifications
+      : filter === 'unread'
+        ? notifications.filter((n) => n.unread)
+        : notifications.filter((n) => n.category === filter);
 
-  const categories = Array.from(new Set(notifications.map(n => n.category)));
-  const unreadCount = notifications.filter(n => n.unread).length;
+  const categories = Array.from(new Set(notifications.map((n) => n.category)));
+  const unreadCount = notifications.filter((n) => n.unread).length;
 
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <button className={styles.backBtn} onClick={() => navigate(-1)}><ArrowLeft size={18} /></button>
+        <button className={styles.backBtn} onClick={() => navigate(-1)}>
+          <ArrowLeft size={18} />
+        </button>
         <h2 className={styles.title}>Notificaciones</h2>
         {unreadCount > 0 && (
-          <button className={styles.markAllBtn} onClick={handleMarkAllAsRead}>Marcar todo como leído</button>
+          <button className={styles.markAllBtn} onClick={handleMarkAllAsRead}>
+            Marcar todo como leído
+          </button>
         )}
       </div>
 
@@ -83,27 +101,51 @@ export function NotificationsPage() {
       </div>
 
       <div className={styles.filterBar}>
-        <button className={`${styles.filterBtn} ${filter === 'all' ? styles.filterActive : ''}`} onClick={() => setFilter('all')}>Todas</button>
-        <button className={`${styles.filterBtn} ${filter === 'unread' ? styles.filterActive : ''}`} onClick={() => setFilter('unread')}>Sin leer</button>
-        {categories.map(cat => (
-          <button key={cat} className={`${styles.filterBtn} ${filter === cat ? styles.filterActive : ''}`} onClick={() => setFilter(cat)}>{cat}</button>
+        <button
+          className={`${styles.filterBtn} ${filter === 'all' ? styles.filterActive : ''}`}
+          onClick={() => setFilter('all')}
+        >
+          Todas
+        </button>
+        <button
+          className={`${styles.filterBtn} ${filter === 'unread' ? styles.filterActive : ''}`}
+          onClick={() => setFilter('unread')}
+        >
+          Sin leer
+        </button>
+        {categories.map((cat) => (
+          <button
+            key={cat}
+            className={`${styles.filterBtn} ${filter === cat ? styles.filterActive : ''}`}
+            onClick={() => setFilter(cat)}
+          >
+            {cat}
+          </button>
         ))}
       </div>
 
       <div className={styles.list}>
         {loading ? (
-          <div className={styles.empty}><span>Cargando...</span></div>
+          <div className={styles.empty}>
+            <span>Cargando...</span>
+          </div>
         ) : filtered.length === 0 ? (
           <div className={styles.empty}>
             <Bell size={32} className={styles.bellMuted} />
             <span>No hay notificaciones</span>
           </div>
         ) : (
-          filtered.map(n => {
+          filtered.map((n) => {
             const Icon = notifIconMap[n.type] || MessageSquare;
             return (
-              <div key={n.id} className={`${styles.item} ${n.unread ? styles.itemUnread : ''}`} onClick={() => handleClick(n)}>
-                <div className={`${styles.iconBox} ${styles[`icon${n.type.charAt(0).toUpperCase() + n.type.slice(1)}`]}`}>
+              <div
+                key={n.id}
+                className={`${styles.item} ${n.unread ? styles.itemUnread : ''}`}
+                onClick={() => handleClick(n)}
+              >
+                <div
+                  className={`${styles.iconBox} ${styles[`icon${n.type.charAt(0).toUpperCase() + n.type.slice(1)}`]}`}
+                >
                   <Icon size={16} />
                 </div>
                 <div className={styles.content}>
@@ -116,7 +158,18 @@ export function NotificationsPage() {
                     <span>{n.category}</span>
                   </div>
                 </div>
-                {n.unread && <button className={styles.readBtn} onClick={(e) => { e.stopPropagation(); handleMarkAsRead(n.id); }} title="Marcar como leído"><BellRing size={14} /></button>}
+                {n.unread && (
+                  <button
+                    className={styles.readBtn}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleMarkAsRead(n.id);
+                    }}
+                    title="Marcar como leído"
+                  >
+                    <BellRing size={14} />
+                  </button>
+                )}
               </div>
             );
           })

@@ -70,8 +70,10 @@ export function generateFiscalInvoicePdf(invoice: InvoiceData, company: CompanyI
   y += 10;
   const infoX = pageWidth - margin - 80;
   doc.setFontSize(9);
-  doc.text(`N° Factura: ${invoice.invoiceNumber}`, infoX, y); y += 5;
-  doc.text(`Fecha: ${new Date(invoice.createdAt).toLocaleDateString('es-VE')}`, infoX, y); y += 5;
+  doc.text(`N° Factura: ${invoice.invoiceNumber}`, infoX, y);
+  y += 5;
+  doc.text(`Fecha: ${new Date(invoice.createdAt).toLocaleDateString('es-VE')}`, infoX, y);
+  y += 5;
   doc.text(`Documento: ${invoice.documentType || 'Factura'}`, infoX, y);
 
   // === Customer Info ===
@@ -83,13 +85,16 @@ export function generateFiscalInvoicePdf(invoice: InvoiceData, company: CompanyI
   y += 6;
   doc.setFontSize(9);
   if (invoice.customerName) {
-    doc.text(`Cliente: ${invoice.customerName}`, margin, y); y += 5;
+    doc.text(`Cliente: ${invoice.customerName}`, margin, y);
+    y += 5;
   }
   if (invoice.customerTaxId) {
-    doc.text(`RIF/CI: ${invoice.customerTaxId}`, margin, y); y += 5;
+    doc.text(`RIF/CI: ${invoice.customerTaxId}`, margin, y);
+    y += 5;
   }
   if (invoice.customerFiscalAddress) {
-    doc.text(`Dirección Fiscal: ${invoice.customerFiscalAddress}`, margin, y); y += 5;
+    doc.text(`Dirección Fiscal: ${invoice.customerFiscalAddress}`, margin, y);
+    y += 5;
   }
 
   // === Items Table ===
@@ -155,7 +160,12 @@ export function generateFiscalInvoicePdf(invoice: InvoiceData, company: CompanyI
   const footerY = doc.internal.pageSize.getHeight() - 20;
   doc.setFontSize(7);
   doc.setTextColor(150);
-  doc.text(`Documento generado electrónicamente. ${company.companyName} - RIF ${company.companyTaxId || 'N/A'}`, pageWidth / 2, footerY, { align: 'center' });
+  doc.text(
+    `Documento generado electrónicamente. ${company.companyName} - RIF ${company.companyTaxId || 'N/A'}`,
+    pageWidth / 2,
+    footerY,
+    { align: 'center' }
+  );
 
   doc.save(`factura-${invoice.invoiceNumber || 'sin-numero'}.pdf`);
 }

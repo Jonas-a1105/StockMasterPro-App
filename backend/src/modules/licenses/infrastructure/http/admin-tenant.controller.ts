@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Param, Body, UseGuards, NotFoundException } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Param,
+  Body,
+  UseGuards,
+  NotFoundException,
+} from '@nestjs/common';
 import { JwtAuthGuard } from '@shared/infrastructure/guards/jwt-auth.guard';
 import { PlatformAdminGuard } from '@shared/infrastructure/guards/platform-admin.guard';
 import { AuthPrismaService } from '@shared/infrastructure/prisma/auth-prisma.service';
@@ -6,9 +14,7 @@ import { AuthPrismaService } from '@shared/infrastructure/prisma/auth-prisma.ser
 @Controller('admin/tenants')
 @UseGuards(JwtAuthGuard, PlatformAdminGuard)
 export class AdminTenantController {
-  constructor(
-    private readonly prisma: AuthPrismaService,
-  ) {}
+  constructor(private readonly prisma: AuthPrismaService) {}
 
   @Get()
   async findAll() {

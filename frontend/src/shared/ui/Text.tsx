@@ -38,22 +38,21 @@ interface TextProps {
   className?: string;
 }
 
-export function Text({
-  variant = 'body',
-  color,
-  weight,
-  as,
-  children,
-  className = '',
-}: TextProps) {
+export function Text({ variant = 'body', color, weight, as, children, className = '' }: TextProps) {
   const Tag = as || VARIANTS_AS[variant] || 'span';
   const variantClass = VARIANT_MAP[variant];
   const classes = [
     variantClass ? styles[variantClass] : '',
-    color && color !== 'main' ? styles[`color${color.charAt(0).toUpperCase() + color.slice(1)}` as keyof typeof styles] : '',
-    weight ? styles[`weight${weight.charAt(0).toUpperCase() + weight.slice(1)}` as keyof typeof styles] : '',
+    color && color !== 'main'
+      ? styles[`color${color.charAt(0).toUpperCase() + color.slice(1)}` as keyof typeof styles]
+      : '',
+    weight
+      ? styles[`weight${weight.charAt(0).toUpperCase() + weight.slice(1)}` as keyof typeof styles]
+      : '',
     className,
-  ].filter(Boolean).join(' ');
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   return <Tag className={classes}>{children}</Tag>;
 }

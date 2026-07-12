@@ -37,9 +37,8 @@ export function LicenseToolPage() {
           <h2>Generador de Licencias Offline</h2>
         </div>
         <p className={styles.description}>
-          Genera códigos de licencia firmados criptográficamente.
-          Estos códigos pueden ser verificados sin conexión a internet
-          usando la clave pública incorporada en la aplicación.
+          Genera códigos de licencia firmados criptográficamente. Estos códigos pueden ser
+          verificados sin conexión a internet usando la clave pública incorporada en la aplicación.
         </p>
         <div className={styles.form}>
           <div className={styles.field}>
@@ -47,13 +46,13 @@ export function LicenseToolPage() {
             <input
               type="number"
               value={days}
-              onChange={e => setDays(Number(e.target.value))}
+              onChange={(e) => setDays(Number(e.target.value))}
               min={1}
             />
           </div>
           <div className={styles.field}>
             <label>Tier / Plan</label>
-            <select value={tier} onChange={e => setTier(e.target.value)}>
+            <select value={tier} onChange={(e) => setTier(e.target.value)}>
               <option value="pro">PRO</option>
               <option value="enterprise">Enterprise</option>
             </select>
@@ -71,12 +70,7 @@ export function LicenseToolPage() {
                 <Copy size={14} /> Copiar
               </button>
             </div>
-            <textarea
-              className={styles.codeArea}
-              value={generatedCode}
-              readOnly
-              rows={4}
-            />
+            <textarea className={styles.codeArea} value={generatedCode} readOnly rows={4} />
           </div>
         )}
       </div>

@@ -1,5 +1,13 @@
 import { useState, useEffect } from 'react';
-import { Settings, UserPlus, UserCheck, MapPin, Link as LinkIcon, Grid, ShoppingBag } from 'lucide-react';
+import {
+  Settings,
+  UserPlus,
+  UserCheck,
+  MapPin,
+  Link as LinkIcon,
+  Grid,
+  ShoppingBag,
+} from 'lucide-react';
 import { Skeleton } from '@shared/ui/Skeleton';
 import { useAuth } from '@contexts/AuthContext';
 import { api } from '@shared/lib/http/client';
@@ -43,7 +51,9 @@ export function SocialProfileView({ targetUserId }: { targetUserId?: string }) {
   const [editing, setEditing] = useState(false);
   const [editForm, setEditForm] = useState({ displayName: '', bio: '', location: '', website: '' });
 
-  useEffect(() => { loadProfile(); }, [targetUserId]);
+  useEffect(() => {
+    loadProfile();
+  }, [targetUserId]);
 
   const loadProfile = async () => {
     setLoading(true);
@@ -57,7 +67,12 @@ export function SocialProfileView({ targetUserId }: { targetUserId?: string }) {
         setProfile(p);
         setStats(s);
         setFollowCounts(f);
-        setEditForm({ displayName: p.displayName || '', bio: p.bio || '', location: p.location || '', website: p.website || '' });
+        setEditForm({
+          displayName: p.displayName || '',
+          bio: p.bio || '',
+          location: p.location || '',
+          website: p.website || '',
+        });
       } else {
         const [p, f] = await Promise.all([
           api.getSocialUserProfile(targetUserId!),
@@ -85,9 +100,10 @@ export function SocialProfileView({ targetUserId }: { targetUserId?: string }) {
     try {
       const result = await api.toggleFollow(targetUserId);
       setIsFollowing(result.action === 'followed');
-      setFollowCounts(prev => ({
+      setFollowCounts((prev) => ({
         ...prev,
-        followers: result.action === 'followed' ? prev.followers + 1 : Math.max(0, prev.followers - 1),
+        followers:
+          result.action === 'followed' ? prev.followers + 1 : Math.max(0, prev.followers - 1),
       }));
     } catch {}
   };
@@ -124,22 +140,39 @@ export function SocialProfileView({ targetUserId }: { targetUserId?: string }) {
                 <Settings size={18} /> Editar perfil
               </button>
             ) : (
-              <button className={`ig-profile-follow-btn ${isFollowing ? 'following' : ''}`} onClick={handleToggleFollow}>
+              <button
+                className={`ig-profile-follow-btn ${isFollowing ? 'following' : ''}`}
+                onClick={handleToggleFollow}
+              >
                 {isFollowing ? 'Siguiendo' : 'Seguir'}
               </button>
             )}
           </div>
 
           <div className="ig-profile-stats">
-            <div className="ig-stat"><strong>{stats.posts}</strong> <span>publicaciones</span></div>
-            <div className="ig-stat"><strong>{followCounts.followers}</strong> <span>seguidores</span></div>
-            <div className="ig-stat"><strong>{followCounts.following}</strong> <span>seguidos</span></div>
+            <div className="ig-stat">
+              <strong>{stats.posts}</strong> <span>publicaciones</span>
+            </div>
+            <div className="ig-stat">
+              <strong>{followCounts.followers}</strong> <span>seguidores</span>
+            </div>
+            <div className="ig-stat">
+              <strong>{followCounts.following}</strong> <span>seguidos</span>
+            </div>
           </div>
 
           {profile.bio && <p className="ig-profile-bio">{profile.bio}</p>}
           <div className="ig-profile-links">
-            {profile.location && <span><MapPin size={14} /> {profile.location}</span>}
-            {profile.website && <span><LinkIcon size={14} /> {profile.website}</span>}
+            {profile.location && (
+              <span>
+                <MapPin size={14} /> {profile.location}
+              </span>
+            )}
+            {profile.website && (
+              <span>
+                <LinkIcon size={14} /> {profile.website}
+              </span>
+            )}
           </div>
         </div>
       </div>
@@ -147,23 +180,48 @@ export function SocialProfileView({ targetUserId }: { targetUserId?: string }) {
       {/* Edit Form */}
       {editing && isOwn && (
         <div className="ig-profile-edit-form">
-          <input value={editForm.displayName} onChange={e => setEditForm(p => ({ ...p, displayName: e.target.value }))} placeholder="Nombre" />
-          <textarea value={editForm.bio} onChange={e => setEditForm(p => ({ ...p, bio: e.target.value }))} placeholder="Bio" rows={3} />
-          <input value={editForm.location} onChange={e => setEditForm(p => ({ ...p, location: e.target.value }))} placeholder="Ubicación" />
-          <input value={editForm.website} onChange={e => setEditForm(p => ({ ...p, website: e.target.value }))} placeholder="Sitio web" />
+          <input
+            value={editForm.displayName}
+            onChange={(e) => setEditForm((p) => ({ ...p, displayName: e.target.value }))}
+            placeholder="Nombre"
+          />
+          <textarea
+            value={editForm.bio}
+            onChange={(e) => setEditForm((p) => ({ ...p, bio: e.target.value }))}
+            placeholder="Bio"
+            rows={3}
+          />
+          <input
+            value={editForm.location}
+            onChange={(e) => setEditForm((p) => ({ ...p, location: e.target.value }))}
+            placeholder="Ubicación"
+          />
+          <input
+            value={editForm.website}
+            onChange={(e) => setEditForm((p) => ({ ...p, website: e.target.value }))}
+            placeholder="Sitio web"
+          />
           <div className="ig-profile-edit-actions">
             <button onClick={() => setEditing(false)}>Cancelar</button>
-            <button className="ig-btn-primary" onClick={handleSaveProfile}>Guardar</button>
+            <button className="ig-btn-primary" onClick={handleSaveProfile}>
+              Guardar
+            </button>
           </div>
         </div>
       )}
 
       {/* Tabs */}
       <div className="ig-profile-tabs">
-        <button className={`ig-profile-tab ${activeTab === 'posts' ? 'active' : ''}`} onClick={() => setActiveTab('posts')}>
+        <button
+          className={`ig-profile-tab ${activeTab === 'posts' ? 'active' : ''}`}
+          onClick={() => setActiveTab('posts')}
+        >
           <Grid size={12} /> PUBLICACIONES
         </button>
-        <button className={`ig-profile-tab ${activeTab === 'catalogs' ? 'active' : ''}`} onClick={() => setActiveTab('catalogs')}>
+        <button
+          className={`ig-profile-tab ${activeTab === 'catalogs' ? 'active' : ''}`}
+          onClick={() => setActiveTab('catalogs')}
+        >
           <ShoppingBag size={12} /> CATÁLOGOS
         </button>
       </div>

@@ -106,9 +106,10 @@ export class ProcessSaleUseCase {
     );
 
     // Validate payments if provided
-    const payments = input.payments && input.payments.length > 0
-      ? input.payments
-      : [{ paymentMethod: input.paymentMethod, amount: total }];
+    const payments =
+      input.payments && input.payments.length > 0
+        ? input.payments
+        : [{ paymentMethod: input.paymentMethod, amount: total }];
 
     const paymentsTotal = payments.reduce((sum, p) => sum + p.amount, 0);
     if (Math.abs(paymentsTotal - total) > 0.01) {
@@ -132,14 +133,19 @@ export class ProcessSaleUseCase {
       new Date(),
     );
 
-    const createdSale = await this.saleRepo.create(sale, input.offlineId, payments);
+    const createdSale = await this.saleRepo.create(
+      sale,
+      input.offlineId,
+      payments,
+    );
 
     // Generate fiscal invoice number
     try {
-      const { invoiceNumber } = await this.invoiceSeqService.getNextInvoiceNumber(
-        input.tenantId,
-        'FACT',
-      );
+      const { invoiceNumber } =
+        await this.invoiceSeqService.getNextInvoiceNumber(
+          input.tenantId,
+          'FACT',
+        );
       await this.prisma.sale.update({
         where: { id: createdSale.id },
         data: { invoiceNumber, invoiceSeries: 'FACT', documentType: 'factura' },
@@ -150,7 +156,7 @@ export class ProcessSaleUseCase {
     }
 
     // Post-sale financial integration
-    const hasCreditPayment = payments.some(p => p.paymentMethod === 'credit');
+    const hasCreditPayment = payments.some((p) => p.paymentMethod === 'credit');
     if (hasCreditPayment) {
       if (!input.customerId) {
         throw new InvalidSaleOperationException(
@@ -159,7 +165,7 @@ export class ProcessSaleUseCase {
       }
 
       const creditAmount = payments
-        .filter(p => p.paymentMethod === 'credit')
+        .filter((p) => p.paymentMethod === 'credit')
         .reduce((sum, p) => sum + p.amount, 0);
 
       const dueDate = new Date();
@@ -177,7 +183,9 @@ export class ProcessSaleUseCase {
 
     // Handle cash register transactions for non-credit payments
     for (const payment of payments) {
-      if (['cash', 'card', 'transfer', 'mobile'].includes(payment.paymentMethod)) {
+      if (
+        ['cash', 'card', 'transfer', 'mobile'].includes(payment.paymentMethod)
+      ) {
         const openSession = await this.cashRepo.findOpenSession(
           input.userId,
           input.tenantId,

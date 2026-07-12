@@ -1,4 +1,8 @@
-.container { display: flex; flex-direction: column; gap: 20px; }
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
 
 .chartCard {
   background: var(--bg-card);
@@ -136,8 +140,12 @@
   border-bottom: 1px solid var(--border-color);
 }
 
-.thLeft { text-align: left; }
-.thRight { text-align: right; }
+.thLeft {
+  text-align: left;
+}
+.thRight {
+  text-align: right;
+}
 
 .table td {
   padding: 10px 12px;

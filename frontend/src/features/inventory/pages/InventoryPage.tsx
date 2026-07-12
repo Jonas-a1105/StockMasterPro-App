@@ -8,7 +8,8 @@ import { SuppliersTab } from '@features/suppliers';
 import { PurchaseOrdersTab } from '@features/purchase-orders';
 import styles from './InventoryPage.module.css';
 
-type Tab = 'products' | 'suppliers' | 'purchase-orders' | 'adjustments' | 'kardex' | 'conteo-fisico';
+type Tab =
+  'products' | 'suppliers' | 'purchase-orders' | 'adjustments' | 'kardex' | 'conteo-fisico';
 
 const TABS: { key: Tab; label: string; icon: any }[] = [
   { key: 'products', label: 'Productos', icon: Package },
@@ -25,15 +26,20 @@ export function InventoryPage() {
   return (
     <div className={styles.container}>
       <div className={styles.tabs}>
-        {TABS.map(tab => {
+        {TABS.map((tab) => {
           const Icon = tab.icon;
           return (
-            <button key={tab.key} className={`${styles.tab} ${activeTab === tab.key ? styles.tabActive : ''}`} onClick={() => setActiveTab(tab.key)}>
-              <Icon size={16} /><span>{tab.label}</span>
+            <button
+              key={tab.key}
+              className={`${styles.tab} ${activeTab === tab.key ? styles.tabActive : ''}`}
+              onClick={() => setActiveTab(tab.key)}
+            >
+              <Icon size={16} />
+              <span>{tab.label}</span>
             </button>
           );
         })}
-        </div>
+      </div>
       {activeTab === 'products' && <ProductsTab />}
       {activeTab === 'suppliers' && <SuppliersTab />}
       {activeTab === 'purchase-orders' && <PurchaseOrdersTab />}

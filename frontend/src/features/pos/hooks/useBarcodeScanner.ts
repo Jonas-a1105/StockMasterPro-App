@@ -53,80 +53,86 @@ export function useBarcodeScanner() {
 
   const stopScanning = useCallback(() => {
     setScanning(false);
-    
+
     if (streamRef.current) {
-      streamRef.current.getTracks().forEach(track => track.stop());
+      streamRef.current.getTracks().forEach((track) => track.stop());
       streamRef.current = null;
     }
-    
+
     if (animationRef.current) {
       cancelAnimationFrame(animationRef.current);
       animationRef.current = null;
     }
-    
+
     if (videoRef.current) {
       videoRef.current.srcObject = null;
     }
   }, []);
 
-  const detectBarcode = useCallback((onDetect: (result: BarcodeScannerResult) => void) => {
-    if (!scanning) return;
+  const detectBarcode = useCallback(
+    (onDetect: (result: BarcodeScannerResult) => void) => {
+      if (!scanning) return;
 
-    const video = videoRef.current;
-    const canvas = canvasRef.current;
-    
-    if (!video || !canvas || video.videoWidth === 0 || video.videoHeight === 0) {
-      animationRef.current = requestAnimationFrame(() => detectBarcode(onDetect));
-      return;
-    }
+      const video = videoRef.current;
+      const canvas = canvasRef.current;
 
-    const ctx = canvas.getContext('2d', { willReadFrequently: true });
-    if (!ctx) {
-      animationRef.current = requestAnimationFrame(() => detectBarcode(onDetect));
-      return;
-    }
-
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-    // Try to use BarcodeDetector API if available
-    if ('BarcodeDetector' in window) {
-      try {
-        const detector = new (window as any).BarcodeDetector({
-          formats: ['ean_13', 'ean_8', 'upc_a', 'upc_e', 'code_128', 'code_39', 'qr_code'],
-        });
-        
-        detector.detect(canvas).then((barcodes: any[]) => {
-          if (barcodes.length > 0) {
-            onDetect({
-              code: barcodes[0].rawValue,
-              format: barcodes[0].format,
-            });
-          } else if (scanning) {
-            animationRef.current = requestAnimationFrame(() => detectBarcode(onDetect));
-          }
-        }).catch(() => {
-          if (scanning) {
-            animationRef.current = requestAnimationFrame(() => detectBarcode(onDetect));
-          }
-        });
+      if (!video || !canvas || video.videoWidth === 0 || video.videoHeight === 0) {
+        animationRef.current = requestAnimationFrame(() => detectBarcode(onDetect));
         return;
-      } catch (e) {
-        // Fall through to fallback
       }
-    }
 
-    // Fallback: simple scan interval
-    if (scanning) {
-      animationRef.current = requestAnimationFrame(() => detectBarcode(onDetect));
-    }
-  }, [scanning]);
+      const ctx = canvas.getContext('2d', { willReadFrequently: true });
+      if (!ctx) {
+        animationRef.current = requestAnimationFrame(() => detectBarcode(onDetect));
+        return;
+      }
+
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      // Try to use BarcodeDetector API if available
+      if ('BarcodeDetector' in window) {
+        try {
+          const detector = new (window as any).BarcodeDetector({
+            formats: ['ean_13', 'ean_8', 'upc_a', 'upc_e', 'code_128', 'code_39', 'qr_code'],
+          });
+
+          detector
+            .detect(canvas)
+            .then((barcodes: any[]) => {
+              if (barcodes.length > 0) {
+                onDetect({
+                  code: barcodes[0].rawValue,
+                  format: barcodes[0].format,
+                });
+              } else if (scanning) {
+                animationRef.current = requestAnimationFrame(() => detectBarcode(onDetect));
+              }
+            })
+            .catch(() => {
+              if (scanning) {
+                animationRef.current = requestAnimationFrame(() => detectBarcode(onDetect));
+              }
+            });
+          return;
+        } catch (e) {
+          // Fall through to fallback
+        }
+      }
+
+      // Fallback: simple scan interval
+      if (scanning) {
+        animationRef.current = requestAnimationFrame(() => detectBarcode(onDetect));
+      }
+    },
+    [scanning]
+  );
 
   useEffect(() => {
     return () => {
       if (streamRef.current) {
-        streamRef.current.getTracks().forEach(track => track.stop());
+        streamRef.current.getTracks().forEach((track) => track.stop());
       }
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);

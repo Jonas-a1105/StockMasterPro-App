@@ -7,10 +7,10 @@ export function useCart() {
   const [items, setItems] = useState<CartItem[]>([]);
 
   const add = (product: Product) => {
-    setItems(prev => {
-      const existing = prev.find(item => item.product.id === product.id);
+    setItems((prev) => {
+      const existing = prev.find((item) => item.product.id === product.id);
       if (existing) {
-        return prev.map(item =>
+        return prev.map((item) =>
           item.product.id === product.id
             ? { ...item, quantity: Math.min(item.quantity + 1, product.stock) }
             : item
@@ -22,33 +22,39 @@ export function useCart() {
 
   const addMultiple = (product: Product, qty: number) => {
     if (qty <= 0) return;
-    setItems(prev => {
-      const existing = prev.find(item => item.product.id === product.id);
+    setItems((prev) => {
+      const existing = prev.find((item) => item.product.id === product.id);
       if (existing) {
-        return prev.map(item =>
+        return prev.map((item) =>
           item.product.id === product.id
             ? { ...item, quantity: Math.min(item.quantity + qty, product.stock) }
             : item
         );
       }
-      return [...prev, { product, quantity: Math.min(qty, product.stock), discount: 0, taxRate: config.taxRate }];
+      return [
+        ...prev,
+        { product, quantity: Math.min(qty, product.stock), discount: 0, taxRate: config.taxRate },
+      ];
     });
   };
 
   const updateQty = (productId: string, delta: number) => {
-    setItems(prev =>
-      prev.map(item => {
-        if (item.product.id !== productId) return item;
-        const newQty = item.quantity + delta;
-        if (newQty <= 0) return null;
-        return { ...item, quantity: Math.min(newQty, item.product.stock) };
-      }).filter(Boolean) as CartItem[]
+    setItems(
+      (prev) =>
+        prev
+          .map((item) => {
+            if (item.product.id !== productId) return item;
+            const newQty = item.quantity + delta;
+            if (newQty <= 0) return null;
+            return { ...item, quantity: Math.min(newQty, item.product.stock) };
+          })
+          .filter(Boolean) as CartItem[]
     );
   };
 
   const setItemDiscount = (productId: string, discount: number) => {
-    setItems(prev =>
-      prev.map(item =>
+    setItems((prev) =>
+      prev.map((item) =>
         item.product.id === productId
           ? { ...item, discount: Math.max(0, Math.min(100, discount)) }
           : item
@@ -57,8 +63,8 @@ export function useCart() {
   };
 
   const setItemTaxRate = (productId: string, taxRate: number) => {
-    setItems(prev =>
-      prev.map(item =>
+    setItems((prev) =>
+      prev.map((item) =>
         item.product.id === productId
           ? { ...item, taxRate: Math.max(0, Math.min(100, taxRate)) }
           : item
@@ -67,18 +73,22 @@ export function useCart() {
   };
 
   const remove = (productId: string) => {
-    setItems(prev => prev.filter(item => item.product.id !== productId));
+    setItems((prev) => prev.filter((item) => item.product.id !== productId));
   };
 
   const clear = () => setItems([]);
 
-  const subtotal = useMemo(() =>
-    items.reduce((sum, item) => sum + item.product.price * item.quantity, 0),
+  const subtotal = useMemo(
+    () => items.reduce((sum, item) => sum + item.product.price * item.quantity, 0),
     [items]
   );
 
-  const totalDiscount = useMemo(() =>
-    items.reduce((sum, item) => sum + (item.product.price * item.quantity * (item.discount ?? 0) / 100), 0),
+  const totalDiscount = useMemo(
+    () =>
+      items.reduce(
+        (sum, item) => sum + (item.product.price * item.quantity * (item.discount ?? 0)) / 100,
+        0
+      ),
     [items]
   );
 

@@ -104,7 +104,7 @@ export class LicensesService {
     ]);
     const mbEstimate = products * 0.005 + sales * 0.01 + movements * 0.002;
     return { estimateMB: Math.round(mbEstimate * 100) / 100 };
-  };
+  }
 
   async upgradePlan(tenantId: string, newPlan: string) {
     const tenant = await this.licenseRepo.findTenantById(tenantId);
@@ -121,7 +121,7 @@ export class LicensesService {
     return this.licenseRepo.updatePlan(tenantId, newPlan);
   }
 
-async generate(dto: {
+  async generate(dto: {
     targetTenantId?: string;
     days: number;
     tier?: string;
@@ -137,14 +137,14 @@ async generate(dto: {
       tier: dto.tier || 'pro',
       iat,
     };
-    
+
     // RS256 con clave privada (configurada en JWT_SECRET_RSA_PRIVATE)
     const code = this.jwtService.sign(payload, {
       secret: process.env.LICENSE_JWT_PRIVATE_KEY!,
       algorithm: 'RS256',
       keyid: process.env.LICENSE_KEY_ID || 'v1',
     });
-    
+
     // Guardar licencia en BD con JTI
     await this.prisma.license.create({
       data: {
@@ -172,7 +172,13 @@ async generate(dto: {
       const payload = this.jwtService.verify(code, {
         secret: process.env.LICENSE_JWT_PUBLIC_KEY!,
         algorithms: ['RS256'],
-      }) as { jti: string; targetTenantId?: string; exp: number; tier: string; iat: number };
+      }) as {
+        jti: string;
+        targetTenantId?: string;
+        exp: number;
+        tier: string;
+        iat: number;
+      };
 
       // Verificar que el JTI no haya sido usado
       const existingLicense = await this.prisma.license.findUnique({
@@ -310,10 +316,10 @@ async generate(dto: {
     };
   }
 
-async getLicenses(tenantId: string) {
+  async getLicenses(tenantId: string) {
     return this.prisma.license.findMany({
       where: { tenantId },
       orderBy: { createdAt: 'desc' },
     });
-}
+  }
 }

@@ -20,7 +20,7 @@ export function SearchableSelect({
   onChange,
   options,
   placeholder = 'Seleccionar...',
-  emptyLabel = 'Sin resultados'
+  emptyLabel = 'Sin resultados',
 }: SearchableSelectProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState('');
@@ -29,7 +29,7 @@ export function SearchableSelect({
 
   // Find the label for the current value
   const selectedOption = useMemo(() => {
-    return options.find(opt => opt.value === value);
+    return options.find((opt) => opt.value === value);
   }, [options, value]);
 
   // Update input text when value changes or when dropdown opens/closes
@@ -44,7 +44,7 @@ export function SearchableSelect({
     if (!isOpen) return options;
     const query = search.toLowerCase().trim();
     if (!query) return options;
-    return options.filter(opt => opt.label.toLowerCase().includes(query));
+    return options.filter((opt) => opt.label.toLowerCase().includes(query));
   }, [options, search, isOpen]);
 
   // Close dropdown on click outside
@@ -101,7 +101,10 @@ export function SearchableSelect({
           onClick={handleToggle}
           aria-label="Abrir selección"
         >
-          <ChevronDown size={16} className={`${styles.chevronIcon} ${isOpen ? styles.chevronOpen : ''}`} />
+          <ChevronDown
+            size={16}
+            className={`${styles.chevronIcon} ${isOpen ? styles.chevronOpen : ''}`}
+          />
         </button>
       </div>
 
@@ -111,7 +114,7 @@ export function SearchableSelect({
             {filteredOptions.length === 0 ? (
               <div className={styles.emptyOption}>{emptyLabel}</div>
             ) : (
-              filteredOptions.map(opt => (
+              filteredOptions.map((opt) => (
                 <button
                   key={opt.value}
                   type="button"

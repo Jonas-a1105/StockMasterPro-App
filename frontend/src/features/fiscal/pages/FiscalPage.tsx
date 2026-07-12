@@ -21,19 +21,31 @@ export function FiscalPage() {
       if (tab === 'retenciones') {
         setWithholdings(await getWithholdings());
       } else {
-        setBooks(await getFiscalBooks(bookType, dateRange.start || undefined, dateRange.end || undefined));
+        setBooks(
+          await getFiscalBooks(bookType, dateRange.start || undefined, dateRange.end || undefined)
+        );
       }
-    } catch {} finally { setLoading(false); }
+    } catch {
+    } finally {
+      setLoading(false);
+    }
   }, [tab, bookType, dateRange]);
 
-  useEffect(() => { loadData(); }, [loadData]);
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
 
   const tabs = [
     { key: 'retenciones', label: 'Retenciones', icon: null },
     { key: 'libros', label: 'Libros Fiscales', icon: null },
   ];
 
-  if (loading) return config.skeletonEnabled ? <SkeletonTablePage rows={8} cols={6} kpi={0} /> : <p className={styles.emptyState}>Cargando...</p>;
+  if (loading)
+    return config.skeletonEnabled ? (
+      <SkeletonTablePage rows={8} cols={6} kpi={0} />
+    ) : (
+      <p className={styles.emptyState}>Cargando...</p>
+    );
 
   return (
     <div className={styles.container}>
@@ -42,7 +54,9 @@ export function FiscalPage() {
 
       {tab === 'retenciones' && (
         <div>
-          <div className={`${styles.headerFlex} ${styles.flexCenter} ${styles.gap16} ${styles.mb20}`}>
+          <div
+            className={`${styles.headerFlex} ${styles.flexCenter} ${styles.gap16} ${styles.mb20}`}
+          >
             <h3 className={styles.sectionTitle}>Retenciones Registradas</h3>
           </div>
           <div className={tableStyles.container}>
@@ -63,21 +77,35 @@ export function FiscalPage() {
                 {withholdings.map((w: any) => (
                   <tr key={w.id}>
                     <td>
-                      <span className={`${styles.badge} ${w.type === 'iva' ? styles.bgBlueLight : styles.bgYellowLight} ${w.type === 'iva' ? styles.colorBlue : styles.colorYellow}`}>
+                      <span
+                        className={`${styles.badge} ${w.type === 'iva' ? styles.bgBlueLight : styles.bgYellowLight} ${w.type === 'iva' ? styles.colorBlue : styles.colorYellow}`}
+                      >
                         {w.type === 'iva' ? 'IVA' : 'ISLR'}
                       </span>
                     </td>
                     <td>{w.supplier?.name || 'N/A'}</td>
                     <td className={styles.textRight}>${Number(w.baseAmount).toFixed(2)}</td>
                     <td className={styles.textCenter}>{Number(w.rate).toFixed(1)}%</td>
-                    <td className={`${styles.textRight} ${styles.fontWeight600}`}>${Number(w.amount).toFixed(2)}</td>
+                    <td className={`${styles.textRight} ${styles.fontWeight600}`}>
+                      ${Number(w.amount).toFixed(2)}
+                    </td>
                     <td>{w.invoiceNumber || '-'}</td>
                     <td>{w.createdAt ? new Date(w.createdAt).toLocaleDateString() : '-'}</td>
-                    <td><span className={`${styles.badge} ${styles.bgGreenLight} ${styles.colorGreen}`}>{w.status}</span></td>
+                    <td>
+                      <span
+                        className={`${styles.badge} ${styles.bgGreenLight} ${styles.colorGreen}`}
+                      >
+                        {w.status}
+                      </span>
+                    </td>
                   </tr>
                 ))}
                 {withholdings.length === 0 && (
-                  <tr><td colSpan={8} className={styles.emptyRow}>No hay retenciones registradas</td></tr>
+                  <tr>
+                    <td colSpan={8} className={styles.emptyRow}>
+                      No hay retenciones registradas
+                    </td>
+                  </tr>
                 )}
               </tbody>
             </table>
@@ -87,21 +115,39 @@ export function FiscalPage() {
 
       {tab === 'libros' && (
         <div>
-          <div className={`${styles.headerFlex} ${styles.flexCenter} ${styles.gap16} ${styles.mb20} ${styles.flexWrap}`}>
+          <div
+            className={`${styles.headerFlex} ${styles.flexCenter} ${styles.gap16} ${styles.mb20} ${styles.flexWrap}`}
+          >
             <div className={`${styles.flexCenter} ${styles.gap8} ${styles.flexWrap}`}>
               <label className={styles.formLabel}>Tipo:</label>
-              <select value={bookType} onChange={e => setBookType(e.target.value as any)} className={styles.formSelect}>
+              <select
+                value={bookType}
+                onChange={(e) => setBookType(e.target.value as any)}
+                className={styles.formSelect}
+              >
                 <option value="ventas">Libro de Ventas</option>
                 <option value="compras">Libro de Compras</option>
               </select>
             </div>
             <div className={`${styles.flexCenter} ${styles.gap8} ${styles.flexWrap}`}>
               <label className={styles.formLabel}>Desde:</label>
-              <input type="date" value={dateRange.start} onChange={e => setDateRange(p => ({ ...p, start: e.target.value }))} className={styles.formInput} />
+              <input
+                type="date"
+                value={dateRange.start}
+                onChange={(e) => setDateRange((p) => ({ ...p, start: e.target.value }))}
+                className={styles.formInput}
+              />
               <label className={styles.formLabel}>Hasta:</label>
-              <input type="date" value={dateRange.end} onChange={e => setDateRange(p => ({ ...p, end: e.target.value }))} className={styles.formInput} />
+              <input
+                type="date"
+                value={dateRange.end}
+                onChange={(e) => setDateRange((p) => ({ ...p, end: e.target.value }))}
+                className={styles.formInput}
+              />
             </div>
-            <button className={styles.addBtn} onClick={loadData}>Consultar</button>
+            <button className={styles.addBtn} onClick={loadData}>
+              Consultar
+            </button>
           </div>
           <div className={tableStyles.container}>
             <table className={tableStyles.table}>
@@ -133,7 +179,11 @@ export function FiscalPage() {
               </thead>
               <tbody>
                 {books.length === 0 ? (
-                  <tr><td colSpan={bookType === 'ventas' ? 8 : 7} className={styles.emptyRow}>No hay datos en el período seleccionado</td></tr>
+                  <tr>
+                    <td colSpan={bookType === 'ventas' ? 8 : 7} className={styles.emptyRow}>
+                      No hay datos en el período seleccionado
+                    </td>
+                  </tr>
                 ) : (
                   books.map((r: any, idx: number) => (
                     <tr key={idx}>
@@ -146,7 +196,9 @@ export function FiscalPage() {
                           <td className={styles.textRight}>${r.subtotal.toFixed(2)}</td>
                           <td className={styles.textRight}>${r.tax.toFixed(2)}</td>
                           <td className={styles.textRight}>${r.discount.toFixed(2)}</td>
-                          <td className={`${styles.textRight} ${styles.bold}`}>${r.total.toFixed(2)}</td>
+                          <td className={`${styles.textRight} ${styles.bold}`}>
+                            ${r.total.toFixed(2)}
+                          </td>
                         </>
                       ) : (
                         <>

@@ -30,7 +30,7 @@ export function ForgotPasswordPage() {
         <h1 className={styles.headerTitle}>StockMaster Pro</h1>
       </div>
       <div className={styles.authCard}>
-          <div className={styles.sectionHeader}>
+        <div className={styles.sectionHeader}>
           <div className={styles.indicatorRow}>
             <div className={styles.indicatorDot} />
             <span className={styles.indicatorText}>PASSWORD_RECOVERY</span>
@@ -44,25 +44,51 @@ export function ForgotPasswordPage() {
 
         {sent ? (
           <>
-            <p className={`${styles.colorTextMuted} ${styles.fontSize14} ${styles.mt8} ${styles.mb8}`}>
-              Si el correo <strong>{email}</strong> está registrado, recibirás un enlace para restablecer tu contraseña.
+            <p
+              className={`${styles.colorTextMuted} ${styles.fontSize14} ${styles.mt8} ${styles.mb8}`}
+            >
+              Si el correo <strong>{email}</strong> está registrado, recibirás un enlace para
+              restablecer tu contraseña.
             </p>
-            <Link to="/login" className={`${styles.footerLinkAccent} ${styles.textCenter} ${styles.mt12}`}>Volver al inicio de sesión</Link>
+            <Link
+              to="/login"
+              className={`${styles.footerLinkAccent} ${styles.textCenter} ${styles.mt12}`}
+            >
+              Volver al inicio de sesión
+            </Link>
           </>
         ) : (
           <form onSubmit={handleSubmit}>
-            <p className={`${styles.colorTextMuted} ${styles.fontSize14} ${styles.mt8} ${styles.mb8}`}>
+            <p
+              className={`${styles.colorTextMuted} ${styles.fontSize14} ${styles.mt8} ${styles.mb8}`}
+            >
               Ingresa tu correo y te enviaremos un enlace para restablecer tu contraseña.
             </p>
             {error && <div className={styles.error}>{error}</div>}
             <div className={styles.field}>
               <label>Correo electrónico</label>
-              <input type="email" value={email} onChange={e => setEmail(e.target.value)} className={styles.input} placeholder="tu@correo.com" required />
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className={styles.input}
+                placeholder="tu@correo.com"
+                required
+              />
             </div>
-            <button type="submit" className={`${styles.submitBtn} ${styles.btnShimmer}`} disabled={loading || !email}>
+            <button
+              type="submit"
+              className={`${styles.submitBtn} ${styles.btnShimmer}`}
+              disabled={loading || !email}
+            >
               {loading ? 'Enviando...' : 'Enviar enlace'}
             </button>
-            <Link to="/login" className={`${styles.footerLinkAccent} ${styles.textCenter} ${styles.mt12}`}>Volver al inicio de sesión</Link>
+            <Link
+              to="/login"
+              className={`${styles.footerLinkAccent} ${styles.textCenter} ${styles.mt12}`}
+            >
+              Volver al inicio de sesión
+            </Link>
           </form>
         )}
       </div>

@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Patch, Body, Param, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Patch,
+  Body,
+  Param,
+  Query,
+} from '@nestjs/common';
 import { Roles } from '@shared/infrastructure/decorators/roles.decorator';
 import { CurrentUser } from '@shared/infrastructure/decorators/current-user.decorator';
 import { AuthenticatedUser } from '@shared/infrastructure/types/authenticated-user';
@@ -26,7 +34,11 @@ export class FiscalController {
     @Body() body: { series: string; nextNumber: number },
     @CurrentUser() user: AuthenticatedUser,
   ) {
-    return this.seqService.resetSequence(user.tenantId, body.series, body.nextNumber);
+    return this.seqService.resetSequence(
+      user.tenantId,
+      body.series,
+      body.nextNumber,
+    );
   }
 
   @Get('withholdings')
@@ -41,11 +53,17 @@ export class FiscalController {
   @Post('withholdings')
   @Roles('admin', 'gerente')
   async createWithholding(
-    @Body() body: {
+    @Body()
+    body: {
       type: 'iva' | 'islr';
-      baseAmount: number; rate: number; amount: number;
-      supplierId?: string; purchaseOrderId?: string;
-      invoiceNumber?: string; invoiceDate?: string; notes?: string;
+      baseAmount: number;
+      rate: number;
+      amount: number;
+      supplierId?: string;
+      purchaseOrderId?: string;
+      invoiceNumber?: string;
+      invoiceDate?: string;
+      notes?: string;
     },
     @CurrentUser() user: AuthenticatedUser,
   ) {

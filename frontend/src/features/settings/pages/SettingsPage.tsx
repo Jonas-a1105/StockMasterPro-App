@@ -1,6 +1,55 @@
 import { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { DollarSign, Percent, Coins, Eye, RefreshCw, Store, Download, Upload, RotateCcw, Palette, Square, Sparkles, Save, Trash2, Cloud, History, FileDown, FileUp, FileCode, BellRing, Inbox, Sliders, TriangleAlert, MessageSquare, Monitor, Mail, Globe, Settings, Server, HardDrive, Download as DownloadIcon, X, Pause, Trash2 as Trash, Loader2, CheckCircle, ClipboardList, Search, ShieldCheck, Users, Activity, PieChart, Shield, Edit2, ToggleRight, ToggleLeft, MapPin, Building2 } from 'lucide-react';
+import {
+  DollarSign,
+  Percent,
+  Coins,
+  Eye,
+  RefreshCw,
+  Store,
+  Download,
+  Upload,
+  RotateCcw,
+  Palette,
+  Square,
+  Sparkles,
+  Save,
+  Trash2,
+  Cloud,
+  History,
+  FileDown,
+  FileUp,
+  FileCode,
+  BellRing,
+  Inbox,
+  Sliders,
+  TriangleAlert,
+  MessageSquare,
+  Monitor,
+  Mail,
+  Globe,
+  Settings,
+  Server,
+  HardDrive,
+  Download as DownloadIcon,
+  X,
+  Pause,
+  Trash2 as Trash,
+  Loader2,
+  CheckCircle,
+  ClipboardList,
+  Search,
+  ShieldCheck,
+  Users,
+  Activity,
+  PieChart,
+  Shield,
+  Edit2,
+  ToggleRight,
+  ToggleLeft,
+  MapPin,
+  Building2,
+} from 'lucide-react';
 import { api } from '@shared/lib/http/client';
 import { useToast } from '@contexts/ToastContext';
 import { useExchangeRate } from '@contexts/ExchangeRateContext';
@@ -19,7 +68,16 @@ import styles from './SettingsPage.module.css';
 import tableStyles from '@shared/ui/TableList.module.css';
 import { SessionsTab } from '../components/SessionsTab';
 
-type Tab = 'tax-currency' | 'personalization' | 'branches' | 'backup' | 'notifications' | 'downloads' | 'bitacora' | 'licenses' | 'sessions';
+type Tab =
+  | 'tax-currency'
+  | 'personalization'
+  | 'branches'
+  | 'backup'
+  | 'notifications'
+  | 'downloads'
+  | 'bitacora'
+  | 'licenses'
+  | 'sessions';
 
 const TABS: { key: Tab; label: string; icon: any }[] = [
   { key: 'tax-currency', label: 'Impuestos y moneda', icon: DollarSign },
@@ -58,12 +116,17 @@ export function SettingsPage() {
   const { licenseStatus, isAuthenticated, isLoading: authLoading } = useAuth();
   const { showToast } = useToast();
   const tabParam = searchParams.get('tab') as Tab;
-  const defaultTab: Tab = (tabParam && TABS.some(t => t.key === tabParam)) ? tabParam : 'tax-currency';
+  const defaultTab: Tab =
+    tabParam && TABS.some((t) => t.key === tabParam) ? tabParam : 'tax-currency';
   const [activeTab, setActiveTab] = useState<Tab>(defaultTab);
 
   useEffect(() => {
     const currentTabParam = searchParams.get('tab') as Tab;
-    if (currentTabParam && TABS.some(t => t.key === currentTabParam) && currentTabParam !== activeTab) {
+    if (
+      currentTabParam &&
+      TABS.some((t) => t.key === currentTabParam) &&
+      currentTabParam !== activeTab
+    ) {
       setActiveTab(currentTabParam);
     }
   }, [searchParams]);
@@ -88,7 +151,7 @@ export function SettingsPage() {
     <div className={styles.container}>
       <div className={styles.contentBody}>
         <nav className={styles.tabsContainer}>
-          {TABS.map(tab => {
+          {TABS.map((tab) => {
             const Icon = tab.icon;
             const locked = isTabLocked(tab.key);
             return (
@@ -106,36 +169,24 @@ export function SettingsPage() {
         </nav>
 
         {activeTab === 'tax-currency' && <TaxCurrencyTab />}
-        {activeTab === 'personalization' && (
-          licenseStatus?.tier === 'free' ? (
-            <PremiumLockScreen
-              requiredPlan="pro"
-              sectionName="Personalización Visual"
-            />
+        {activeTab === 'personalization' &&
+          (licenseStatus?.tier === 'free' ? (
+            <PremiumLockScreen requiredPlan="pro" sectionName="Personalización Visual" />
           ) : (
             <PersonalizationTab />
-          )
-        )}
-        {activeTab === 'branches' && (
-          licenseStatus?.tier === 'free' ? (
-            <PremiumLockScreen
-              requiredPlan="pro"
-              sectionName="Gestión de Sucursales"
-            />
+          ))}
+        {activeTab === 'branches' &&
+          (licenseStatus?.tier === 'free' ? (
+            <PremiumLockScreen requiredPlan="pro" sectionName="Gestión de Sucursales" />
           ) : (
             <BranchesTab />
-          )
-        )}
-        {activeTab === 'backup' && (
-          licenseStatus?.tier === 'free' ? (
-            <PremiumLockScreen
-              requiredPlan="pro"
-              sectionName="Respaldo de Datos"
-            />
+          ))}
+        {activeTab === 'backup' &&
+          (licenseStatus?.tier === 'free' ? (
+            <PremiumLockScreen requiredPlan="pro" sectionName="Respaldo de Datos" />
           ) : (
             <BackupTab />
-          )
-        )}
+          ))}
         {activeTab === 'notifications' && <NotificationsTab />}
         {activeTab === 'downloads' && <DownloadsTab />}
         {activeTab === 'bitacora' && <BitacoraTab />}
@@ -252,7 +303,7 @@ function TaxCurrencyTab() {
               type="text"
               className={styles.formControl}
               value={taxName}
-              onChange={e => setTaxName(e.target.value)}
+              onChange={(e) => setTaxName(e.target.value)}
               placeholder="IVA"
             />
           </div>
@@ -266,7 +317,7 @@ function TaxCurrencyTab() {
                 step="0.01"
                 className={`${styles.formControl} ${styles.paddingRightLarge}`}
                 value={taxRate}
-                onChange={e => setTaxRate(e.target.value)}
+                onChange={(e) => setTaxRate(e.target.value)}
                 placeholder="16"
               />
               <div className={styles.inputAddon}>%</div>
@@ -288,7 +339,7 @@ function TaxCurrencyTab() {
               type="text"
               className={styles.formControl}
               value={currencySymbol}
-              onChange={e => setCurrencySymbol(e.target.value)}
+              onChange={(e) => setCurrencySymbol(e.target.value)}
               placeholder="Bs"
             />
           </div>
@@ -297,7 +348,7 @@ function TaxCurrencyTab() {
             <select
               className={styles.formControl}
               value={currencyPosition}
-              onChange={e => setCurrencyPosition(e.target.value as 'before' | 'after')}
+              onChange={(e) => setCurrencyPosition(e.target.value as 'before' | 'after')}
             >
               <option value="before">Antes del monto (Bs 100)</option>
               <option value="after">Después del monto (100 Bs)</option>
@@ -308,7 +359,7 @@ function TaxCurrencyTab() {
             <select
               className={styles.formControl}
               value={decimalPlaces}
-              onChange={e => setDecimalPlaces(Number(e.target.value))}
+              onChange={(e) => setDecimalPlaces(Number(e.target.value))}
             >
               <option value="0">0 (100)</option>
               <option value="2">2 (100.00)</option>
@@ -320,7 +371,7 @@ function TaxCurrencyTab() {
             <select
               className={styles.formControl}
               value={displayCurrency}
-              onChange={e => setDisplayCurrency(e.target.value as 'bs' | 'usd' | 'both')}
+              onChange={(e) => setDisplayCurrency(e.target.value as 'bs' | 'usd' | 'both')}
             >
               <option value="both">Ambas monedas ($ y Bs)</option>
               <option value="local">Solo moneda local (Bs)</option>
@@ -343,7 +394,7 @@ function TaxCurrencyTab() {
               type="text"
               className={styles.formControl}
               value={companyTaxId}
-              onChange={e => setCompanyTaxId(e.target.value)}
+              onChange={(e) => setCompanyTaxId(e.target.value)}
               placeholder="J-12345678-9"
             />
           </div>
@@ -353,7 +404,7 @@ function TaxCurrencyTab() {
               type="text"
               className={styles.formControl}
               value={companyPhone}
-              onChange={e => setCompanyPhone(e.target.value)}
+              onChange={(e) => setCompanyPhone(e.target.value)}
               placeholder="+58 4XX XXX XXXX"
             />
           </div>
@@ -363,7 +414,7 @@ function TaxCurrencyTab() {
               type="text"
               className={styles.formControl}
               value={companyFiscalAddress}
-              onChange={e => setCompanyFiscalAddress(e.target.value)}
+              onChange={(e) => setCompanyFiscalAddress(e.target.value)}
               placeholder="Av. Principal, Edificio, Oficina, Ciudad"
             />
           </div>
@@ -391,7 +442,13 @@ function TaxCurrencyTab() {
             <RefreshCw size={13} /> Restablecer valores
           </button>
           <button className={styles.btnFlatPrimary} onClick={saveSettings} disabled={saving}>
-            {saving ? 'Guardando...' : <><Save size={14} /> Guardar cambios</>}
+            {saving ? (
+              'Guardando...'
+            ) : (
+              <>
+                <Save size={14} /> Guardar cambios
+              </>
+            )}
           </button>
         </div>
       </div>
@@ -416,58 +473,58 @@ function PersonalizationTab() {
         </div>
         <div className={styles.toggleRow}>
           <span className={styles.pFieldLabel}>Modo oscuro</span>
-          <button 
-            className={`${styles.pToggle} ${config.darkMode ? styles.pToggleOn : ''}`} 
+          <button
+            className={`${styles.pToggle} ${config.darkMode ? styles.pToggleOn : ''}`}
             onClick={toggleDarkMode}
           >
             <span className={styles.pToggleKnob} />
           </button>
         </div>
-<div className={`${styles.toggleRow} ${styles.mt8}`}>
-        <span className={styles.pFieldLabel}>Modo OLED</span>
-        <button 
-          className={`${styles.pToggle} ${config.oledMode ? styles.pToggleOn : ''}`} 
-          onClick={toggleOledMode}
-        >
-          <span className={styles.pToggleKnob} />
-        </button>
-      </div>
-      <div className={`${styles.toggleRow} ${styles.mt8}`}>
-        <span className={styles.pFieldLabel}>Bordes en tarjetas/KPI</span>
-        <button 
-          className={`${styles.pToggle} ${config.cardBorderEnabled ? styles.pToggleOn : ''}`} 
-          onClick={() => updateConfig({ cardBorderEnabled: !config.cardBorderEnabled })}
-        >
-          <span className={styles.pToggleKnob} />
-        </button>
-      </div>
-      <div className={`${styles.toggleRow} ${styles.mt8}`}>
-        <span className={styles.pFieldLabel}>Bordes en header</span>
-        <button 
-          className={`${styles.pToggle} ${config.headerBorderEnabled ? styles.pToggleOn : ''}`} 
-          onClick={() => updateConfig({ headerBorderEnabled: !config.headerBorderEnabled })}
-        >
-          <span className={styles.pToggleKnob} />
-        </button>
-      </div>
-      <div className={`${styles.toggleRow} ${styles.mt8}`}>
-        <span className={styles.pFieldLabel}>Bordes en footer</span>
-        <button 
-          className={`${styles.pToggle} ${config.footerBorderEnabled ? styles.pToggleOn : ''}`} 
-          onClick={() => updateConfig({ footerBorderEnabled: !config.footerBorderEnabled })}
-        >
-          <span className={styles.pToggleKnob} />
-        </button>
-      </div>
-<div className={`${styles.toggleRow} ${styles.mt8}`}>
-        <span className={styles.pFieldLabel}>Sombras globales</span>
-        <button 
-          className={`${styles.pToggle} ${config.shadowEnabled ? styles.pToggleOn : ''}`} 
-          onClick={() => updateConfig({ shadowEnabled: !config.shadowEnabled })}
-        >
-          <span className={styles.pToggleKnob} />
-        </button>
-      </div>
+        <div className={`${styles.toggleRow} ${styles.mt8}`}>
+          <span className={styles.pFieldLabel}>Modo OLED</span>
+          <button
+            className={`${styles.pToggle} ${config.oledMode ? styles.pToggleOn : ''}`}
+            onClick={toggleOledMode}
+          >
+            <span className={styles.pToggleKnob} />
+          </button>
+        </div>
+        <div className={`${styles.toggleRow} ${styles.mt8}`}>
+          <span className={styles.pFieldLabel}>Bordes en tarjetas/KPI</span>
+          <button
+            className={`${styles.pToggle} ${config.cardBorderEnabled ? styles.pToggleOn : ''}`}
+            onClick={() => updateConfig({ cardBorderEnabled: !config.cardBorderEnabled })}
+          >
+            <span className={styles.pToggleKnob} />
+          </button>
+        </div>
+        <div className={`${styles.toggleRow} ${styles.mt8}`}>
+          <span className={styles.pFieldLabel}>Bordes en header</span>
+          <button
+            className={`${styles.pToggle} ${config.headerBorderEnabled ? styles.pToggleOn : ''}`}
+            onClick={() => updateConfig({ headerBorderEnabled: !config.headerBorderEnabled })}
+          >
+            <span className={styles.pToggleKnob} />
+          </button>
+        </div>
+        <div className={`${styles.toggleRow} ${styles.mt8}`}>
+          <span className={styles.pFieldLabel}>Bordes en footer</span>
+          <button
+            className={`${styles.pToggle} ${config.footerBorderEnabled ? styles.pToggleOn : ''}`}
+            onClick={() => updateConfig({ footerBorderEnabled: !config.footerBorderEnabled })}
+          >
+            <span className={styles.pToggleKnob} />
+          </button>
+        </div>
+        <div className={`${styles.toggleRow} ${styles.mt8}`}>
+          <span className={styles.pFieldLabel}>Sombras globales</span>
+          <button
+            className={`${styles.pToggle} ${config.shadowEnabled ? styles.pToggleOn : ''}`}
+            onClick={() => updateConfig({ shadowEnabled: !config.shadowEnabled })}
+          >
+            <span className={styles.pToggleKnob} />
+          </button>
+        </div>
       </div>
 
       {/* Tarjeta: Bordes Redondeados */}
@@ -479,22 +536,22 @@ function PersonalizationTab() {
         <div className={styles.sliderRow}>
           <label className={styles.pFieldLabel}>Radio de bordes global</label>
           <div className={styles.sliderGroup}>
-            <input 
-              type="range" 
-              className={styles.pSlider} 
-              min={0} 
-              max={24} 
-              step={1} 
-              value={config.cardRadius} 
-              onChange={e => {
+            <input
+              type="range"
+              className={styles.pSlider}
+              min={0}
+              max={24}
+              step={1}
+              value={config.cardRadius}
+              onChange={(e) => {
                 const r = parseFloat(e.target.value);
-                updateConfig({ 
+                updateConfig({
                   cardRadius: r,
                   // Mantener inputs y botones proporcionales (la mitad del radio global)
                   inputBorderRadius: Math.round(r * 0.5),
-                  btnBorderRadius: Math.round(r * 0.5)
+                  btnBorderRadius: Math.round(r * 0.5),
                 });
-              }} 
+              }}
             />
             <span className={styles.sliderValue}>{config.cardRadius}px</span>
           </div>
@@ -509,8 +566,8 @@ function PersonalizationTab() {
         </div>
         <div className={styles.toggleRow}>
           <span className={styles.pFieldLabel}>Animaciones y transiciones</span>
-          <button 
-            className={`${styles.pToggle} ${config.animationEnabled ? styles.pToggleOn : ''}`} 
+          <button
+            className={`${styles.pToggle} ${config.animationEnabled ? styles.pToggleOn : ''}`}
             onClick={() => updateConfig({ animationEnabled: !config.animationEnabled })}
           >
             <span className={styles.pToggleKnob} />
@@ -544,7 +601,9 @@ function BranchesTab() {
   const [loading, setLoading] = useState(true);
   const [modal, setModal] = useState<{ type: 'create' | 'edit'; data?: any } | null>(null);
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => {
+    load();
+  }, []);
 
   async function load() {
     setLoading(true);
@@ -564,7 +623,9 @@ function BranchesTab() {
       showToast('Almacén creado', 'success');
       setModal(null);
       load();
-    } catch (err: any) { showToast(err.message, 'error'); }
+    } catch (err: any) {
+      showToast(err.message, 'error');
+    }
   }
 
   async function handleUpdate(id: string, data: any) {
@@ -573,7 +634,9 @@ function BranchesTab() {
       showToast('Almacén actualizado', 'success');
       setModal(null);
       load();
-    } catch (err: any) { showToast(err.message, 'error'); }
+    } catch (err: any) {
+      showToast(err.message, 'error');
+    }
   }
 
   async function handleDelete(id: string, name: string) {
@@ -582,7 +645,9 @@ function BranchesTab() {
       await api.delete(`/warehouses/${id}`);
       showToast('Almacén eliminado', 'success');
       load();
-    } catch (err: any) { showToast(err.message, 'error'); }
+    } catch (err: any) {
+      showToast(err.message, 'error');
+    }
   }
 
   async function toggleActive(w: any) {
@@ -590,7 +655,9 @@ function BranchesTab() {
       await api.put(`/warehouses/${w.id}`, { isActive: !w.isActive });
       showToast(w.isActive ? 'Almacén desactivado' : 'Almacén activado', 'success');
       load();
-    } catch (err: any) { showToast(err.message, 'error'); }
+    } catch (err: any) {
+      showToast(err.message, 'error');
+    }
   }
 
   return (
@@ -603,7 +670,11 @@ function BranchesTab() {
       </div>
 
       {loading ? (
-        config.skeletonEnabled ? <SkeletonTablePage rows={5} cols={5} tabs={0} kpi={0} /> : <LoadingDots text="Cargando sucursales..." />
+        config.skeletonEnabled ? (
+          <SkeletonTablePage rows={5} cols={5} tabs={0} kpi={0} />
+        ) : (
+          <LoadingDots text="Cargando sucursales..." />
+        )
       ) : warehouses.length === 0 ? (
         <div className={styles.emptyState}>
           <Store size={40} className={styles.emptyIcon} />
@@ -622,7 +693,7 @@ function BranchesTab() {
               </tr>
             </thead>
             <tbody>
-              {warehouses.map(w => (
+              {warehouses.map((w) => (
                 <tr key={w.id}>
                   <td>
                     <div className={tableStyles.nameCell}>
@@ -630,22 +701,38 @@ function BranchesTab() {
                       <span className={tableStyles.nameText}>{w.name}</span>
                     </div>
                   </td>
-                  <td><span className={tableStyles.code}>{w.code}</span></td>
+                  <td>
+                    <span className={tableStyles.code}>{w.code}</span>
+                  </td>
                   <td className={styles.textMuted}>{w.address || '—'}</td>
                   <td className={styles.textCenter}>
-                    <span className={`${tableStyles.badge} ${w.isActive ? tableStyles.badgeActive : tableStyles.badgeInactive}`}>
+                    <span
+                      className={`${tableStyles.badge} ${w.isActive ? tableStyles.badgeActive : tableStyles.badgeInactive}`}
+                    >
                       {w.isActive ? 'Activo' : 'Inactivo'}
                     </span>
                   </td>
                   <td className={styles.textCenter}>
                     <div className={`${tableStyles.actions} ${styles.flexCenter}`}>
-                      <button className={tableStyles.actionBtn} onClick={() => setModal({ type: 'edit', data: w })} title="Editar">
+                      <button
+                        className={tableStyles.actionBtn}
+                        onClick={() => setModal({ type: 'edit', data: w })}
+                        title="Editar"
+                      >
                         <Edit2 size={14} />
                       </button>
-                      <button className={tableStyles.actionBtn} onClick={() => toggleActive(w)} title={w.isActive ? 'Desactivar' : 'Activar'}>
+                      <button
+                        className={tableStyles.actionBtn}
+                        onClick={() => toggleActive(w)}
+                        title={w.isActive ? 'Desactivar' : 'Activar'}
+                      >
                         {w.isActive ? <ToggleRight size={14} /> : <ToggleLeft size={14} />}
                       </button>
-                      <button className={`${tableStyles.actionBtn} danger`} onClick={() => handleDelete(w.id, w.name)} title="Eliminar">
+                      <button
+                        className={`${tableStyles.actionBtn} danger`}
+                        onClick={() => handleDelete(w.id, w.name)}
+                        title="Eliminar"
+                      >
                         <Trash2 size={14} />
                       </button>
                     </div>
@@ -661,7 +748,9 @@ function BranchesTab() {
         <WarehouseModal
           type={modal.type}
           data={modal.data}
-          onSave={modal.type === 'create' ? handleCreate : (d: any) => handleUpdate(modal.data.id, d)}
+          onSave={
+            modal.type === 'create' ? handleCreate : (d: any) => handleUpdate(modal.data.id, d)
+          }
           onClose={() => setModal(null)}
         />
       )}
@@ -669,7 +758,17 @@ function BranchesTab() {
   );
 }
 
-function WarehouseModal({ type, data, onSave, onClose }: { type: string; data?: any; onSave: (d: any) => void; onClose: () => void }) {
+function WarehouseModal({
+  type,
+  data,
+  onSave,
+  onClose,
+}: {
+  type: string;
+  data?: any;
+  onSave: (d: any) => void;
+  onClose: () => void;
+}) {
   const [name, setName] = useState(data?.name || '');
   const [code, setCode] = useState(data?.code || '');
   const [address, setAddress] = useState(data?.address || '');
@@ -685,23 +784,39 @@ function WarehouseModal({ type, data, onSave, onClose }: { type: string; data?: 
 
   return (
     <div className={styles.overlay} onClick={onClose}>
-      <div className={styles.modal} onClick={e => e.stopPropagation()}>
+      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
         <h3>{type === 'create' ? 'Nueva Sucursal' : 'Editar Sucursal'}</h3>
         <form onSubmit={handleSubmit}>
           <div className={styles.field}>
             <label>Nombre *</label>
-            <input value={name} onChange={e => setName(e.target.value)} required placeholder="Ej: Sucursal Centro" />
+            <input
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+              placeholder="Ej: Sucursal Centro"
+            />
           </div>
           <div className={styles.field}>
             <label>Código *</label>
-            <input value={code} onChange={e => setCode(e.target.value)} required placeholder="Ej: SUC-001" />
+            <input
+              value={code}
+              onChange={(e) => setCode(e.target.value)}
+              required
+              placeholder="Ej: SUC-001"
+            />
           </div>
           <div className={styles.field}>
             <label>Dirección</label>
-            <input value={address} onChange={e => setAddress(e.target.value)} placeholder="Opcional" />
+            <input
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+              placeholder="Opcional"
+            />
           </div>
           <div className={styles.modalActions}>
-            <button type="button" className={styles.btnSecondary} onClick={onClose}>Cancelar</button>
+            <button type="button" className={styles.btnSecondary} onClick={onClose}>
+              Cancelar
+            </button>
             <button type="submit" className={styles.btn} disabled={saving}>
               {saving ? 'Guardando...' : type === 'create' ? 'Crear' : 'Guardar'}
             </button>
@@ -713,22 +828,27 @@ function WarehouseModal({ type, data, onSave, onClose }: { type: string; data?: 
 }
 
 function NotificationsTab() {
-  const [activeNotifTab, setActiveNotifTab] = useState<'todo' | 'sistema' | 'soporte' | 'seguridad'>('todo');
+  const [activeNotifTab, setActiveNotifTab] = useState<
+    'todo' | 'sistema' | 'soporte' | 'seguridad'
+  >('todo');
   const [unreadCount, setUnreadCount] = useState(0);
-  const [notifications, setNotifications] = useState<Array<{
-    id: string;
-    type: 'critical' | 'success' | 'info';
-    title: string;
-    description: string;
-    time: string;
-    category: string;
-    unread: boolean;
-  }>>([]);
+  const [notifications, setNotifications] = useState<
+    Array<{
+      id: string;
+      type: 'critical' | 'success' | 'info';
+      title: string;
+      description: string;
+      time: string;
+      category: string;
+      unread: boolean;
+    }>
+  >([]);
   const [channels, setChannels] = useState({ push: true, email: true, webhook: false });
 
   useEffect(() => {
-    api.getNotifications()
-      .then(data => {
+    api
+      .getNotifications()
+      .then((data) => {
         setNotifications(data);
         setUnreadCount(data.filter((n: any) => n.unread).length);
       })
@@ -736,18 +856,19 @@ function NotificationsTab() {
   }, []);
 
   const markAllAsRead = () => {
-    setNotifications(prev => prev.map(n => ({ ...n, unread: false })));
+    setNotifications((prev) => prev.map((n) => ({ ...n, unread: false })));
     setUnreadCount(0);
   };
 
   const markAsRead = (id: string) => {
-    setNotifications(prev => prev.map(n => n.id === id ? { ...n, unread: false } : n));
-    setUnreadCount(prev => Math.max(0, prev - 1));
+    setNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, unread: false } : n)));
+    setUnreadCount((prev) => Math.max(0, prev - 1));
   };
 
-  const filteredNotifs = activeNotifTab === 'todo'
-    ? notifications
-    : notifications.filter(n => n.category.toLowerCase() === activeNotifTab);
+  const filteredNotifs =
+    activeNotifTab === 'todo'
+      ? notifications
+      : notifications.filter((n) => n.category.toLowerCase() === activeNotifTab);
 
   const notifIconMap: Record<string, any> = {
     critical: TriangleAlert,
@@ -759,7 +880,10 @@ function NotificationsTab() {
     <div className={styles.notifContainer}>
       <div className={styles.backupHeader}>
         <h3>Orquestador de Alertas Centralizadas</h3>
-        <p>Ecosistema modular de auditoría de registros, eventos del sistema y entrega de notificaciones.</p>
+        <p>
+          Ecosistema modular de auditoría de registros, eventos del sistema y entrega de
+          notificaciones.
+        </p>
       </div>
 
       <div className={styles.notifGrid}>
@@ -776,20 +900,22 @@ function NotificationsTab() {
           </div>
 
           <div className={styles.notifTabs}>
-            {(['todo', 'sistema', 'soporte', 'seguridad'] as const).map(tab => (
+            {(['todo', 'sistema', 'soporte', 'seguridad'] as const).map((tab) => (
               <button
                 key={tab}
                 className={`${styles.notifTab} ${activeNotifTab === tab ? styles.notifTabActive : ''}`}
                 onClick={() => setActiveNotifTab(tab)}
               >
                 {tab === 'todo' ? 'Todo' : tab.charAt(0).toUpperCase() + tab.slice(1)}
-                {tab === 'todo' && unreadCount > 0 && <span className={styles.notifTabBadge}>{unreadCount}</span>}
+                {tab === 'todo' && unreadCount > 0 && (
+                  <span className={styles.notifTabBadge}>{unreadCount}</span>
+                )}
               </button>
             ))}
           </div>
 
           <div className={styles.notifFeed}>
-            {filteredNotifs.map(n => {
+            {filteredNotifs.map((n) => {
               const Icon = notifIconMap[n.type];
               return (
                 <div
@@ -803,7 +929,9 @@ function NotificationsTab() {
                   <div className={styles.notifContent}>
                     <span className={styles.notifHeadline}>{n.title}</span>
                     <span className={styles.notifDesc}>{n.description}</span>
-                    <span className={styles.notifTime}>{n.time} • {n.category}</span>
+                    <span className={styles.notifTime}>
+                      {n.time} • {n.category}
+                    </span>
                   </div>
                 </div>
               );
@@ -821,7 +949,9 @@ function NotificationsTab() {
           <div className={styles.notifMetrics}>
             <div className={styles.notifMetricTile}>
               <span className={styles.notifMetricLabel}>No leídas</span>
-              <span className={`${styles.notifMetricValue} ${styles.colorPrimary}`}>{unreadCount}</span>
+              <span className={`${styles.notifMetricValue} ${styles.colorPrimary}`}>
+                {unreadCount}
+              </span>
             </div>
             <div className={styles.notifMetricTile}>
               <span className={styles.notifMetricLabel}>Entregadas hoy</span>
@@ -832,20 +962,35 @@ function NotificationsTab() {
           <div className={styles.notifChannelList}>
             <span className={styles.backupFieldLabel}>Canales Activos</span>
             <div className={styles.notifChannelRow}>
-              <div className={styles.notifChannelInfo}><Monitor size={16} /> Push en el navegador</div>
-              <button className={`${styles.pToggle} ${channels.push ? styles.pToggleOn : ''}`} onClick={() => setChannels({...channels, push: !channels.push})}>
+              <div className={styles.notifChannelInfo}>
+                <Monitor size={16} /> Push en el navegador
+              </div>
+              <button
+                className={`${styles.pToggle} ${channels.push ? styles.pToggleOn : ''}`}
+                onClick={() => setChannels({ ...channels, push: !channels.push })}
+              >
                 <span className={styles.pToggleKnob} />
               </button>
             </div>
             <div className={styles.notifChannelRow}>
-              <div className={styles.notifChannelInfo}><Mail size={16} /> Alertas por email</div>
-              <button className={`${styles.pToggle} ${channels.email ? styles.pToggleOn : ''}`} onClick={() => setChannels({...channels, email: !channels.email})}>
+              <div className={styles.notifChannelInfo}>
+                <Mail size={16} /> Alertas por email
+              </div>
+              <button
+                className={`${styles.pToggle} ${channels.email ? styles.pToggleOn : ''}`}
+                onClick={() => setChannels({ ...channels, email: !channels.email })}
+              >
                 <span className={styles.pToggleKnob} />
               </button>
             </div>
             <div className={styles.notifChannelRow}>
-              <div className={styles.notifChannelInfo}><Globe size={16} /> Retransmisión por Webhooks</div>
-              <button className={`${styles.pToggle} ${channels.webhook ? styles.pToggleOn : ''}`} onClick={() => setChannels({...channels, webhook: !channels.webhook})}>
+              <div className={styles.notifChannelInfo}>
+                <Globe size={16} /> Retransmisión por Webhooks
+              </div>
+              <button
+                className={`${styles.pToggle} ${channels.webhook ? styles.pToggleOn : ''}`}
+                onClick={() => setChannels({ ...channels, webhook: !channels.webhook })}
+              >
                 <span className={styles.pToggleKnob} />
               </button>
             </div>
@@ -871,33 +1016,43 @@ function DownloadsTab() {
   const [downloadPath, setDownloadPath] = useState('/var/www/data/downloads/secure_stack');
 
   const [activeDownloads, setActiveDownloads] = useState([
-    { 
-      id: 1, 
-      name: 'ubuntu-26.04-desktop-amd64.iso', 
-      source: 'mirror_core_us', 
-      downloaded: 2.1, 
-      total: 4.6, 
-      speed: 32.4, 
+    {
+      id: 1,
+      name: 'ubuntu-26.04-desktop-amd64.iso',
+      source: 'mirror_core_us',
+      downloaded: 2.1,
+      total: 4.6,
+      speed: 32.4,
       status: 'downloading',
       progress: 45,
-      icon: 'file-zipper'
+      icon: 'file-zipper',
     },
-    { 
-      id: 2, 
-      name: 'node_modules_production_backup.tar.gz', 
-      source: 'local_storage', 
-      downloaded: 840, 
-      total: 900, 
-      speed: 15.8, 
+    {
+      id: 2,
+      name: 'node_modules_production_backup.tar.gz',
+      source: 'local_storage',
+      downloaded: 840,
+      total: 900,
+      speed: 15.8,
       status: 'downloading',
       progress: 93,
-      icon: 'box-archive'
+      icon: 'box-archive',
     },
   ]);
 
   const [history, setHistory] = useState([
-    { id: 1, category: 'Imágenes', name: 'asset_pack_marketing_v2.zip', completed: 'Completado ayer • 412 MB • Verificado por MD5' },
-    { id: 2, category: 'Software', name: 'docker-compose-production-stack.yml', completed: 'Completado 29 Jun, 2026 • 18 KB • Cifrado AES' },
+    {
+      id: 1,
+      category: 'Imágenes',
+      name: 'asset_pack_marketing_v2.zip',
+      completed: 'Completado ayer • 412 MB • Verificado por MD5',
+    },
+    {
+      id: 2,
+      category: 'Software',
+      name: 'docker-compose-production-stack.yml',
+      completed: 'Completado 29 Jun, 2026 • 18 KB • Cifrado AES',
+    },
   ]);
 
   const handleBandwidthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -909,14 +1064,16 @@ function DownloadsTab() {
   };
 
   const pauseDownload = (id: number) => {
-    setActiveDownloads(prev => prev.map(d => 
-      d.id === id ? { ...d, status: d.status === 'paused' ? 'downloading' : 'paused' } : d
-    ));
+    setActiveDownloads((prev) =>
+      prev.map((d) =>
+        d.id === id ? { ...d, status: d.status === 'paused' ? 'downloading' : 'paused' } : d
+      )
+    );
     showToast('Descarga pausada', 'info');
   };
 
   const cancelDownload = (id: number) => {
-    setActiveDownloads(prev => prev.filter(d => d.id !== id));
+    setActiveDownloads((prev) => prev.filter((d) => d.id !== id));
     showToast('Descarga cancelada', 'info');
   };
 
@@ -925,7 +1082,7 @@ function DownloadsTab() {
   };
 
   const removeFromHistory = (id: number) => {
-    setHistory(prev => prev.filter(h => h.id !== id));
+    setHistory((prev) => prev.filter((h) => h.id !== id));
     showToast('Registro eliminado del historial', 'info');
   };
 
@@ -946,7 +1103,9 @@ function DownloadsTab() {
     <div className={styles.downloadContainer}>
       <div className={styles.backupHeader}>
         <h3>Gestor de Descargas Globales</h3>
-        <p>Ecosistema escalable de descarga paralela orientada a servidores y almacenamiento masivo.</p>
+        <p>
+          Ecosistema escalable de descarga paralela orientada a servidores y almacenamiento masivo.
+        </p>
       </div>
 
       <div className={styles.downloadGrid}>
@@ -959,20 +1118,32 @@ function DownloadsTab() {
           <div className={styles.updateAlertBox}>
             <div className={`${styles.flexBetween} ${styles.flexWrap} ${styles.gap10}`}>
               <span className={styles.updateVersionTag}>Nueva actualización detectada</span>
-              <span className={`${styles.fontSize12} ${styles.fontWeight700} ${styles.colorPrimary}`}>Tamaño: 2.4 GB</span>
+              <span
+                className={`${styles.fontSize12} ${styles.fontWeight700} ${styles.colorPrimary}`}
+              >
+                Tamaño: 2.4 GB
+              </span>
             </div>
             <div className={styles.updateInfoTitle}>Versión Estable del Core v2.4.0</div>
             <p className={styles.updateChangelog}>
-              • Optimización del rendimiento de la base de datos paralela en un 25%.<br/>
-              • Parche crítico de seguridad para la validación de firmas de paquetes distribuidos.<br/>
-              • Soporte ampliado para módulos modulares Bento Grid y renderizado plano escalable.
+              • Optimización del rendimiento de la base de datos paralela en un 25%.
+              <br />
+              • Parche crítico de seguridad para la validación de firmas de paquetes distribuidos.
+              <br />• Soporte ampliado para módulos modulares Bento Grid y renderizado plano
+              escalable.
             </p>
           </div>
           <div className={styles.btnGroupRow}>
-            <button className={`${styles.backupBtnSecondary} ${styles.btnHalf}`} onClick={() => showToast('Se te recordará en 24 horas', 'info')}>
+            <button
+              className={`${styles.backupBtnSecondary} ${styles.btnHalf}`}
+              onClick={() => showToast('Se te recordará en 24 horas', 'info')}
+            >
               Descargar más tarde
             </button>
-            <button className={`${styles.backupBtnPrimary} ${styles.btnHalf}`} onClick={() => showToast('Iniciando descarga de v2.4.0...', 'success')}>
+            <button
+              className={`${styles.backupBtnPrimary} ${styles.btnHalf}`}
+              onClick={() => showToast('Iniciando descarga de v2.4.0...', 'success')}
+            >
               <DownloadIcon size={16} />
               Descargar ahora
             </button>
@@ -983,13 +1154,19 @@ function DownloadsTab() {
         <div className={`${styles.downloadCard} ${styles.relative}`}>
           {currentPlan === 'free' && (
             <div className={styles.absFullOverlay}>
-              <PremiumLockButton requiredPlan="intermedio" label="Bloqueado" sublabel="Mantén pulsado para Intermedio" width="90%" height="40px" />
+              <PremiumLockButton
+                requiredPlan="intermedio"
+                label="Bloqueado"
+                sublabel="Mantén pulsado para Intermedio"
+                width="90%"
+                height="40px"
+              />
             </div>
           )}
           <div className={styles.backupCardTitle}>
             <Server size={16} />
             Estado del Entorno
-</div>
+          </div>
           <div className={`${styles.metaGrid} ${styles.metaGridSingle}`}>
             <div className={styles.metaItem}>
               <span className={styles.metaLabel}>Versión Actual</span>
@@ -997,19 +1174,30 @@ function DownloadsTab() {
             </div>
             <div className={styles.metaItem}>
               <span className={styles.metaLabel}>Último Análisis de Integridad</span>
-              <span className={`${styles.metaValue} ${styles.colorSuccess}`}><CheckCircle size={14} /> Correcto</span>
+              <span className={`${styles.metaValue} ${styles.colorSuccess}`}>
+                <CheckCircle size={14} /> Correcto
+              </span>
             </div>
           </div>
           <p className={`${styles.updateChangelog} ${styles.fontSize12}`}>
-            El sistema está configurado para escalar dinámicamente según la carga de descarga concurrente asignada.
+            El sistema está configurado para escalar dinámicamente según la carga de descarga
+            concurrente asignada.
           </p>
         </div>
 
         {/* TARJETA: MÉTRICAS Y VELOCIDAD DE RED */}
         <div className={`${styles.downloadCard} ${styles.relative}`}>
           {currentPlan === 'free' && (
-            <div className={`${styles.absolute} ${styles.inset0} ${styles.bgOverlay} ${styles.flexCenter} ${styles.p16} ${styles.z10}`}>
-              <PremiumLockButton requiredPlan="intermedio" label="Bloqueado" sublabel="Mantén pulsado para Intermedio" width="90%" height="40px" />
+            <div
+              className={`${styles.absolute} ${styles.inset0} ${styles.bgOverlay} ${styles.flexCenter} ${styles.p16} ${styles.z10}`}
+            >
+              <PremiumLockButton
+                requiredPlan="intermedio"
+                label="Bloqueado"
+                sublabel="Mantén pulsado para Intermedio"
+                width="90%"
+                height="40px"
+              />
             </div>
           )}
           <div className={styles.networkStats}>
@@ -1025,7 +1213,14 @@ function DownloadsTab() {
           <div className={styles.configGroup}>
             <span className={styles.backupFieldLabel}>Limitar Ancho de Banda</span>
             <div className={styles.rangeFlex}>
-              <input type="range" min="10" max="200" value={bandwidthLimit} onChange={handleBandwidthChange} className={styles.rangeInput} />
+              <input
+                type="range"
+                min="10"
+                max="200"
+                value={bandwidthLimit}
+                onChange={handleBandwidthChange}
+                className={styles.rangeInput}
+              />
               <span className={styles.rangeValue}>{bandwidthLimit} MB/s</span>
             </div>
           </div>
@@ -1038,11 +1233,17 @@ function DownloadsTab() {
         </div>
 
         {/* TARJETAS INDIVIDUALES: CADA DESCARGA ACTIVA ES SU PROPIA TARJETA */}
-{activeDownloads.length === 0 ? (
-<div className={`${styles.downloadCard} ${styles.relative}`}>
-  {currentPlan === 'free' && (
-    <div className={styles.absFullOverlay}>
-                <PremiumLockButton requiredPlan="intermedio" label="Bloqueado" sublabel="Mantén pulsado para Intermedio" width="90%" height="40px" />
+        {activeDownloads.length === 0 ? (
+          <div className={`${styles.downloadCard} ${styles.relative}`}>
+            {currentPlan === 'free' && (
+              <div className={styles.absFullOverlay}>
+                <PremiumLockButton
+                  requiredPlan="intermedio"
+                  label="Bloqueado"
+                  sublabel="Mantén pulsado para Intermedio"
+                  width="90%"
+                  height="40px"
+                />
               </div>
             )}
             <div className={styles.emptyState}>
@@ -1051,17 +1252,24 @@ function DownloadsTab() {
             </div>
           </div>
         ) : (
-          activeDownloads.map(d => {
+          activeDownloads.map((d) => {
             const Icon = getDownloadIcon(d.name);
             const isPaused = d.status === 'paused';
             const unit = d.total >= 1 ? 'GB' : 'MB';
-            const displayDownloaded = d.total >= 1 ? d.downloaded : (d.downloaded * 1024).toFixed(0);
+            const displayDownloaded =
+              d.total >= 1 ? d.downloaded : (d.downloaded * 1024).toFixed(0);
             const displayTotal = d.total >= 1 ? d.total : (d.total * 1024).toFixed(0);
             return (
               <div key={d.id} className={`${styles.downloadCard} ${styles.relative}`}>
                 {currentPlan === 'free' && (
                   <div className={styles.freeOverlay}>
-                    <PremiumLockButton requiredPlan="intermedio" label="Bloqueado" sublabel="Mantén pulsado para Intermedio" width="90%" height="40px" />
+                    <PremiumLockButton
+                      requiredPlan="intermedio"
+                      label="Bloqueado"
+                      sublabel="Mantén pulsado para Intermedio"
+                      width="90%"
+                      height="40px"
+                    />
                   </div>
                 )}
                 <div className={`${styles.backupCardTitle} ${styles.cardTitleNoBorder}`}>
@@ -1070,13 +1278,22 @@ function DownloadsTab() {
                 </div>
                 <div className={`${styles.flexBetween} ${styles.itemsCenter} ${styles.gap10}`}>
                   <span className={styles.fileSizeStatus}>
-                    {isPaused ? 'En pausa' : 'Descargando de ' + d.source} • {displayDownloaded} {unit} de {displayTotal} {unit}
+                    {isPaused ? 'En pausa' : 'Descargando de ' + d.source} • {displayDownloaded}{' '}
+                    {unit} de {displayTotal} {unit}
                   </span>
                   <div className={styles.itemActions}>
-                    <button className={styles.btnIcon} title={isPaused ? 'Reanudar' : 'Pausar'} onClick={() => pauseDownload(d.id)}>
+                    <button
+                      className={styles.btnIcon}
+                      title={isPaused ? 'Reanudar' : 'Pausar'}
+                      onClick={() => pauseDownload(d.id)}
+                    >
                       {isPaused ? <DownloadIcon size={14} /> : <Pause size={14} />}
                     </button>
-                    <button className={`${styles.btnIcon} ${styles.dangerBtn}`} title="Cancelar" onClick={() => cancelDownload(d.id)}>
+                    <button
+                      className={`${styles.btnIcon} ${styles.dangerBtn}`}
+                      title="Cancelar"
+                      onClick={() => cancelDownload(d.id)}
+                    >
                       <X size={14} />
                     </button>
                   </div>
@@ -1088,9 +1305,13 @@ function DownloadsTab() {
                     />
                   </div>
                   <div className={styles.progressDetails}>
-                    <span>{d.progress}% • {displayDownloaded} {unit} / {displayTotal} {unit}</span>
+                    <span>
+                      {d.progress}% • {displayDownloaded} {unit} / {displayTotal} {unit}
+                    </span>
                     <span className={`${isPaused ? styles.textMuted : styles.colorSuccess}`}>
-                      {isPaused ? '— En pausa' : `${d.speed} MB/s — Quedan ${Math.ceil((d.total - d.downloaded) * 1024 / d.speed)}s`}
+                      {isPaused
+                        ? '— En pausa'
+                        : `${d.speed} MB/s — Quedan ${Math.ceil(((d.total - d.downloaded) * 1024) / d.speed)}s`}
                     </span>
                   </div>
                 </div>
@@ -1103,7 +1324,13 @@ function DownloadsTab() {
         <div className={`${styles.downloadCard} ${styles.relative}`}>
           {currentPlan === 'free' && (
             <div className={styles.absFullOverlay}>
-              <PremiumLockButton requiredPlan="intermedio" label="Bloqueado" sublabel="Mantén pulsado para Intermedio" width="90%" height="40px" />
+              <PremiumLockButton
+                requiredPlan="intermedio"
+                label="Bloqueado"
+                sublabel="Mantén pulsado para Intermedio"
+                width="90%"
+                height="40px"
+              />
             </div>
           )}
           <div className={styles.backupCardTitle}>
@@ -1112,12 +1339,21 @@ function DownloadsTab() {
           </div>
           <div className={styles.configGroup}>
             <span className={styles.backupFieldLabel}>Ruta de Destino Local</span>
-            <input type="text" className={styles.textInput} value={downloadPath} onChange={e => setDownloadPath(e.target.value)} />
+            <input
+              type="text"
+              className={styles.textInput}
+              value={downloadPath}
+              onChange={(e) => setDownloadPath(e.target.value)}
+            />
           </div>
           <div className={styles.configGroup}>
             <span className={styles.backupFieldLabel}>Optimización de CDN / Espejos</span>
             <div className={styles.inputContainer}>
-              <select className={styles.backupSelect} value={cdnMirror} onChange={e => setCdnMirror(e.target.value)}>
+              <select
+                className={styles.backupSelect}
+                value={cdnMirror}
+                onChange={(e) => setCdnMirror(e.target.value)}
+              >
                 <option value="auto">Espejo Global Inteligente (Automático)</option>
                 <option value="na">Región Norteamérica (AWS CDN Cloudflare)</option>
                 <option value="eu">Región Europa Este (Failover Directo)</option>
@@ -1127,7 +1363,11 @@ function DownloadsTab() {
           <div className={styles.configGroup}>
             <span className={styles.backupFieldLabel}>Descargas Simultáneas</span>
             <div className={styles.inputContainer}>
-              <select className={styles.backupSelect} value={concurrentDownloads} onChange={e => setConcurrentDownloads(e.target.value)}>
+              <select
+                className={styles.backupSelect}
+                value={concurrentDownloads}
+                onChange={(e) => setConcurrentDownloads(e.target.value)}
+              >
                 <option value="2">2 Tareas simultáneas (Recomendado)</option>
                 <option value="4">4 Tareas simultáneas (Ancho de banda ilimitado)</option>
                 <option value="1">Secuencial estricto (1 a la vez)</option>
@@ -1135,7 +1375,10 @@ function DownloadsTab() {
             </div>
           </div>
           <div className={styles.mtAuto}>
-            <button className={`${styles.backupBtnPrimary} ${styles.btnFull}`} onClick={applySettings}>
+            <button
+              className={`${styles.backupBtnPrimary} ${styles.btnFull}`}
+              onClick={applySettings}
+            >
               <Save size={16} />
               Aplicar Ajustes
             </button>
@@ -1144,23 +1387,29 @@ function DownloadsTab() {
 
         {/* TARJETA: HISTORIAL (SPAN 4) */}
         <div className={`${styles.downloadCard} ${styles.downloadCardDouble} ${styles.relative}`}>
-{currentPlan === 'free' && (
-              <div className={styles.absFullOverlay}>
-                <PremiumLockButton requiredPlan="intermedio" label="Bloqueado" sublabel="Mantén pulsado para Intermedio" width="90%" height="40px" />
-              </div>
-            )}
-            <div className={styles.backupCardTitle}>
-              <History size={16} />
-              Historial de Archivos Guardados
+          {currentPlan === 'free' && (
+            <div className={styles.absFullOverlay}>
+              <PremiumLockButton
+                requiredPlan="intermedio"
+                label="Bloqueado"
+                sublabel="Mantén pulsado para Intermedio"
+                width="90%"
+                height="40px"
+              />
             </div>
-            {history.length === 0 ? (
-              <div className={`${styles.emptyState} ${styles.p40_20}`}>
-                <History size={32} className={styles.colorMuted} />
-                <span className={styles.emptyText}>No hay archivos en el historial</span>
-              </div>
-            ) : (
+          )}
+          <div className={styles.backupCardTitle}>
+            <History size={16} />
+            Historial de Archivos Guardados
+          </div>
+          {history.length === 0 ? (
+            <div className={`${styles.emptyState} ${styles.p40_20}`}>
+              <History size={32} className={styles.colorMuted} />
+              <span className={styles.emptyText}>No hay archivos en el historial</span>
+            </div>
+          ) : (
             <div className={styles.historyList}>
-              {history.map(h => (
+              {history.map((h) => (
                 <div key={h.id} className={styles.historyItem}>
                   <div className={styles.fileInfo}>
                     <span className={styles.badgeCategory}>{h.category}</span>
@@ -1170,10 +1419,18 @@ function DownloadsTab() {
                     </div>
                   </div>
                   <div className={styles.historyActions}>
-                    <button className={styles.btnIcon} title="Abrir ubicación" onClick={() => openLocation(h.id)}>
+                    <button
+                      className={styles.btnIcon}
+                      title="Abrir ubicación"
+                      onClick={() => openLocation(h.id)}
+                    >
                       <Server size={14} />
                     </button>
-                    <button className={`${styles.btnIcon} ${styles.dangerBtn}`} title="Eliminar registro" onClick={() => removeFromHistory(h.id)}>
+                    <button
+                      className={`${styles.btnIcon} ${styles.dangerBtn}`}
+                      title="Eliminar registro"
+                      onClick={() => removeFromHistory(h.id)}
+                    >
                       <Trash size={14} />
                     </button>
                   </div>
@@ -1194,16 +1451,61 @@ function BitacoraTab() {
   const [moduleFilter, setModuleFilter] = useState('all');
 
   const logs = [
-    { id: 1, user: 'Sistema', initials: 'S', avatarColor: '#e53935', action: 'Bloqueo de IP por peticiones denegadas', module: 'Autenticación / Core', ip: '192.168.100.42', severity: 'critical', time: '19:26:12' },
-    { id: 2, user: 'Jonas Mendoza', initials: 'J', avatarColor: 'var(--color-primary)', action: 'Modificación de Tasa de Impuestos (IVA)', module: 'Stock Master Pro', ip: '180.23.45.102', severity: 'warning', time: '19:14:05' },
-    { id: 3, user: 'Andy B.', initials: 'A', avatarColor: 'var(--color-success)', action: 'Creación de ticket de soporte #SGEN-4082', module: 'SGEN-Support', ip: '180.23.45.109', severity: 'info', time: '17:42:51' },
-    { id: 4, user: 'Jonas Mendoza', initials: 'J', avatarColor: 'var(--color-primary)', action: 'Sincronización manual de registros JSON', module: 'Autenticación / Core', ip: '180.23.45.102', severity: 'info', time: '17:30:22' },
+    {
+      id: 1,
+      user: 'Sistema',
+      initials: 'S',
+      avatarColor: '#e53935',
+      action: 'Bloqueo de IP por peticiones denegadas',
+      module: 'Autenticación / Core',
+      ip: '192.168.100.42',
+      severity: 'critical',
+      time: '19:26:12',
+    },
+    {
+      id: 2,
+      user: 'Jonas Mendoza',
+      initials: 'J',
+      avatarColor: 'var(--color-primary)',
+      action: 'Modificación de Tasa de Impuestos (IVA)',
+      module: 'Stock Master Pro',
+      ip: '180.23.45.102',
+      severity: 'warning',
+      time: '19:14:05',
+    },
+    {
+      id: 3,
+      user: 'Andy B.',
+      initials: 'A',
+      avatarColor: 'var(--color-success)',
+      action: 'Creación de ticket de soporte #SGEN-4082',
+      module: 'SGEN-Support',
+      ip: '180.23.45.109',
+      severity: 'info',
+      time: '17:42:51',
+    },
+    {
+      id: 4,
+      user: 'Jonas Mendoza',
+      initials: 'J',
+      avatarColor: 'var(--color-primary)',
+      action: 'Sincronización manual de registros JSON',
+      module: 'Autenticación / Core',
+      ip: '180.23.45.102',
+      severity: 'info',
+      time: '17:30:22',
+    },
   ];
 
-  const filteredLogs = logs.filter(l => {
-    const matchSearch = !searchTerm || l.action.toLowerCase().includes(searchTerm.toLowerCase()) || l.user.toLowerCase().includes(searchTerm.toLowerCase()) || l.ip.includes(searchTerm);
+  const filteredLogs = logs.filter((l) => {
+    const matchSearch =
+      !searchTerm ||
+      l.action.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      l.user.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      l.ip.includes(searchTerm);
     const matchSeverity = severityFilter === 'all' || l.severity === severityFilter;
-    const matchModule = moduleFilter === 'all' || l.module.toLowerCase().includes(moduleFilter.toLowerCase());
+    const matchModule =
+      moduleFilter === 'all' || l.module.toLowerCase().includes(moduleFilter.toLowerCase());
     return matchSearch && matchSeverity && matchModule;
   });
 
@@ -1217,7 +1519,10 @@ function BitacoraTab() {
     <div className={styles.downloadContainer}>
       <div className={styles.backupHeader}>
         <h3>Bitácora de Acciones del Sistema</h3>
-        <p>Auditoría inmutable de eventos, modificaciones operacionales y seguridad de la infraestructura.</p>
+        <p>
+          Auditoría inmutable de eventos, modificaciones operacionales y seguridad de la
+          infraestructura.
+        </p>
       </div>
 
       <div className={styles.downloadGrid}>
@@ -1228,7 +1533,9 @@ function BitacoraTab() {
               <span className={styles.statLabel}>Eventos Hoy</span>
               <div className={styles.statValue}>1,402</div>
             </div>
-            <div className={styles.bitIconBox}><ClipboardList size={18} /></div>
+            <div className={styles.bitIconBox}>
+              <ClipboardList size={18} />
+            </div>
           </div>
         </div>
 
@@ -1239,7 +1546,9 @@ function BitacoraTab() {
               <span className={styles.statLabel}>Alertas Críticas</span>
               <div className={`${styles.statValue} ${styles.statValueRed}`}>2</div>
             </div>
-            <div className={styles.bitIconBoxRed}><TriangleAlert size={18} /></div>
+            <div className={styles.bitIconBoxRed}>
+              <TriangleAlert size={18} />
+            </div>
           </div>
         </div>
 
@@ -1250,7 +1559,9 @@ function BitacoraTab() {
               <span className={styles.statLabel}>Tasa de Éxito</span>
               <div className={`${styles.statValue} ${styles.statValueGreen}`}>99.8%</div>
             </div>
-            <div className={styles.bitIconBoxGreen}><ShieldCheck size={18} /></div>
+            <div className={styles.bitIconBoxGreen}>
+              <ShieldCheck size={18} />
+            </div>
           </div>
         </div>
 
@@ -1261,7 +1572,9 @@ function BitacoraTab() {
               <span className={styles.statLabel}>Operadores Activos</span>
               <div className={styles.statValue}>5</div>
             </div>
-            <div className={styles.bitIconBox}><Users size={18} /></div>
+            <div className={styles.bitIconBox}>
+              <Users size={18} />
+            </div>
           </div>
         </div>
 
@@ -1276,8 +1589,13 @@ function BitacoraTab() {
               <line x1="0" y1="20" x2="400" y2="20" stroke="var(--border-color)" strokeWidth="1" />
               <line x1="0" y1="50" x2="400" y2="50" stroke="var(--border-color)" strokeWidth="1" />
               <line x1="0" y1="80" x2="400" y2="80" stroke="var(--border-color)" strokeWidth="1" />
-              <path d="M 0 80 L 50 75 L 100 40 L 150 45 L 200 90 L 250 25 L 300 30 L 350 65 L 400 20"
-                    fill="none" stroke="var(--color-primary)" strokeWidth="2.5" strokeLinecap="round"/>
+              <path
+                d="M 0 80 L 50 75 L 100 40 L 150 45 L 200 90 L 250 25 L 300 30 L 350 65 L 400 20"
+                fill="none"
+                stroke="var(--color-primary)"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+              />
             </svg>
             <div className={styles.chartLabelsRow}>
               <span>00:00</span>
@@ -1297,16 +1615,31 @@ function BitacoraTab() {
           </div>
           <div className={styles.activityBreakdown}>
             <div className={styles.progressItem}>
-              <div className={styles.progressInfoText}><span>SGEN-Support (Soporte)</span><span>542 eventos</span></div>
-              <div className={styles.barTrack}><div className={`${styles.barFill} ${styles.progress55}`} /></div>
+              <div className={styles.progressInfoText}>
+                <span>SGEN-Support (Soporte)</span>
+                <span>542 eventos</span>
+              </div>
+              <div className={styles.barTrack}>
+                <div className={`${styles.barFill} ${styles.progress55}`} />
+              </div>
             </div>
             <div className={styles.progressItem}>
-              <div className={styles.progressInfoText}><span>Stock Master Pro (Inventario)</span><span>310 eventos</span></div>
-              <div className={styles.barTrack}><div className={`${styles.barFill} ${styles.progress32}`} /></div>
+              <div className={styles.progressInfoText}>
+                <span>Stock Master Pro (Inventario)</span>
+                <span>310 eventos</span>
+              </div>
+              <div className={styles.barTrack}>
+                <div className={`${styles.barFill} ${styles.progress32}`} />
+              </div>
             </div>
             <div className={styles.progressItem}>
-              <div className={styles.progressInfoText}><span>Infraestructura y Seguridad</span><span>124 eventos</span></div>
-              <div className={styles.barTrack}><div className={`${styles.barFill} ${styles.progress13}`} /></div>
+              <div className={styles.progressInfoText}>
+                <span>Infraestructura y Seguridad</span>
+                <span>124 eventos</span>
+              </div>
+              <div className={styles.barTrack}>
+                <div className={`${styles.barFill} ${styles.progress13}`} />
+              </div>
             </div>
           </div>
         </div>
@@ -1316,10 +1649,20 @@ function BitacoraTab() {
           <div className={styles.filtersRow}>
             <div className={styles.searchContainer}>
               <Search size={15} className={styles.colorMutedFlex} />
-              <input type="text" className={styles.searchInput} placeholder="Buscar por acción, IP, operador..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
+              <input
+                type="text"
+                className={styles.searchInput}
+                placeholder="Buscar por acción, IP, operador..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
             </div>
             <div className={styles.selectBox}>
-              <select className={styles.bitSelect} value={severityFilter} onChange={e => setSeverityFilter(e.target.value)}>
+              <select
+                className={styles.bitSelect}
+                value={severityFilter}
+                onChange={(e) => setSeverityFilter(e.target.value)}
+              >
                 <option value="all">Todas las Severidades</option>
                 <option value="info">Información (Info)</option>
                 <option value="warning">Advertencia (Warning)</option>
@@ -1327,7 +1670,11 @@ function BitacoraTab() {
               </select>
             </div>
             <div className={styles.selectBox}>
-              <select className={styles.bitSelect} value={moduleFilter} onChange={e => setModuleFilter(e.target.value)}>
+              <select
+                className={styles.bitSelect}
+                value={moduleFilter}
+                onChange={(e) => setModuleFilter(e.target.value)}
+              >
                 <option value="all">Todos los Módulos</option>
                 <option value="sgen">SGEN-Support</option>
                 <option value="stock">Stock Master Pro</option>
@@ -1352,18 +1699,25 @@ function BitacoraTab() {
                 <span className={styles.emptyText}>No se encontraron registros</span>
               </div>
             ) : (
-              filteredLogs.map(l => {
+              filteredLogs.map((l) => {
                 const b = severityBadge[l.severity];
                 return (
                   <div key={l.id} className={styles.tableRow}>
                     <div className={styles.bitUserCell}>
-                      <div className={`${styles.bitAvatar} ${styles.avatarDynamic}`} style={{ '--avatar-color': l.avatarColor }}>{l.initials}</div>
+                      <div
+                        className={`${styles.bitAvatar} ${styles.avatarDynamic}`}
+                        style={{ '--avatar-color': l.avatarColor }}
+                      >
+                        {l.initials}
+                      </div>
                       <span>{l.user}</span>
                     </div>
                     <div className={styles.bitActionCell}>{l.action}</div>
                     <div className={styles.bitModuleCell}>{l.module}</div>
                     <div className={styles.bitIpCell}>{l.ip}</div>
-                    <div><span className={styles[b.cls]}>{b.label}</span></div>
+                    <div>
+                      <span className={styles[b.cls]}>{b.label}</span>
+                    </div>
                     <div className={styles.bitTimeCell}>{l.time}</div>
                   </div>
                 );
@@ -1371,7 +1725,10 @@ function BitacoraTab() {
             )}
           </div>
 
-          <button className={`${styles.backupBtnPrimary} ${styles.mt4}`} onClick={() => showToast('Generando paquete consolidado de auditoría...', 'success')}>
+          <button
+            className={`${styles.backupBtnPrimary} ${styles.mt4}`}
+            onClick={() => showToast('Generando paquete consolidado de auditoría...', 'success')}
+          >
             <FileDown size={16} />
             Exportar Registro
           </button>
@@ -1383,7 +1740,13 @@ function BitacoraTab() {
 
 function LicensesTab() {
   const { showToast } = useToast();
-  const { user, licenseBlocked, activateLicense, isAuthenticated, isLoading: authLoading } = useAuth();
+  const {
+    user,
+    licenseBlocked,
+    activateLicense,
+    isAuthenticated,
+    isLoading: authLoading,
+  } = useAuth();
   const { config } = useTheme();
   const [licenseStatus, setLicenseStatus] = useState<any>(null);
   const [statusLoading, setStatusLoading] = useState(true);
@@ -1407,7 +1770,11 @@ function LicensesTab() {
 
   useEffect(() => {
     if (!isAuthenticated || authLoading) return;
-    api.getLicenseStatus().then(setLicenseStatus).catch(() => {}).finally(() => setStatusLoading(false));
+    api
+      .getLicenseStatus()
+      .then(setLicenseStatus)
+      .catch(() => {})
+      .finally(() => setStatusLoading(false));
   }, [isAuthenticated, authLoading]);
 
   const handleOpenPortal = async () => {
@@ -1430,13 +1797,21 @@ function LicensesTab() {
     setShowStripeModal(false);
     setShowPremiumAnim(true);
     setStatusLoading(true);
-    api.getLicenseStatus().then(setLicenseStatus).catch(() => {}).finally(() => setStatusLoading(false));
+    api
+      .getLicenseStatus()
+      .then(setLicenseStatus)
+      .catch(() => {})
+      .finally(() => setStatusLoading(false));
   };
 
   const handleGenerate = async () => {
     setGenerating(true);
     try {
-      const res = await api.generateLicense({ days, tier, targetTenantId: targetTenantId || undefined });
+      const res = await api.generateLicense({
+        days,
+        tier,
+        targetTenantId: targetTenantId || undefined,
+      });
       setGeneratedCode(res.code);
       showToast('Código de licencia generado exitosamente', 'success');
     } catch (err: any) {
@@ -1455,7 +1830,10 @@ function LicensesTab() {
       showToast('Licencia activada correctamente', 'success');
       setActivationCode('');
       setShowPremiumAnim(true);
-      api.getLicenseStatus().then(setLicenseStatus).catch(() => {});
+      api
+        .getLicenseStatus()
+        .then(setLicenseStatus)
+        .catch(() => {});
     } catch (err: any) {
       showToast(err.message, 'error');
     } finally {
@@ -1470,7 +1848,10 @@ function LicensesTab() {
       showToast('Suscripción cancelada. La licencia ha sido bloqueada.', 'success');
       setCancelStep(0);
       setCancelConfirmText('');
-      api.getLicenseStatus().then(setLicenseStatus).catch(() => {});
+      api
+        .getLicenseStatus()
+        .then(setLicenseStatus)
+        .catch(() => {});
     } catch (err: any) {
       showToast(err.message, 'error');
     } finally {
@@ -1483,7 +1864,10 @@ function LicensesTab() {
     try {
       const res = await api.reactivateLicense();
       showToast(res.message, 'success');
-      api.getLicenseStatus().then(setLicenseStatus).catch(() => {});
+      api
+        .getLicenseStatus()
+        .then(setLicenseStatus)
+        .catch(() => {});
     } catch (err: any) {
       showToast(err.message, 'error');
     } finally {
@@ -1503,7 +1887,11 @@ function LicensesTab() {
   return (
     <div className={styles.backupContainer}>
       {statusLoading ? (
-        config.skeletonEnabled ? <SkeletonTablePage rows={3} cols={2} tabs={0} kpi={2} /> : <LoadingDots text="Cargando información de licencia..." />
+        config.skeletonEnabled ? (
+          <SkeletonTablePage rows={3} cols={2} tabs={0} kpi={2} />
+        ) : (
+          <LoadingDots text="Cargando información de licencia..." />
+        )
       ) : (
         <>
           <div className={styles.backupHeader}>
@@ -1533,13 +1921,19 @@ function LicensesTab() {
                   <div className={styles.configGroup}>
                     <span className={styles.backupFieldLabel}>Fecha de activación</span>
                     <span className={styles.fontSize14Weight600}>
-                      {licenseStatus.activatedAt ? new Date(licenseStatus.activatedAt).toLocaleDateString() : '—'}
+                      {licenseStatus.activatedAt
+                        ? new Date(licenseStatus.activatedAt).toLocaleDateString()
+                        : '—'}
                     </span>
                   </div>
                   <div className={styles.configGroup}>
                     <span className={styles.backupFieldLabel}>Fecha de expiración</span>
-                    <span className={`${styles.fontSize14Weight600} ${isExpired ? styles.colorRed : ''}`}>
-                      {licenseStatus.expiresAt ? new Date(licenseStatus.expiresAt).toLocaleDateString() : '—'}
+                    <span
+                      className={`${styles.fontSize14Weight600} ${isExpired ? styles.colorRed : ''}`}
+                    >
+                      {licenseStatus.expiresAt
+                        ? new Date(licenseStatus.expiresAt).toLocaleDateString()
+                        : '—'}
                     </span>
                   </div>
                 </div>
@@ -1550,7 +1944,9 @@ function LicensesTab() {
                   <Shield size={16} />
                   Licencia
                 </div>
-                <p className={styles.backupCardDesc}>No se pudo obtener información de la licencia.</p>
+                <p className={styles.backupCardDesc}>
+                  No se pudo obtener información de la licencia.
+                </p>
               </div>
             )}
 
@@ -1561,33 +1957,49 @@ function LicensesTab() {
                   Planes de Suscripción Premium (Stripe)
                 </div>
                 <p className={styles.backupCardDesc}>
-                  Desbloquea instantáneamente todas las funciones profesionales y de auditoría. Elige el plan que mejor se adapte a tu negocio.
+                  Desbloquea instantáneamente todas las funciones profesionales y de auditoría.
+                  Elige el plan que mejor se adapte a tu negocio.
                 </p>
                 <div className={styles.gridAutoFit220}>
-<div className={`${styles.cardBorder} ${styles.flexColumnGap6Col}`}>
-                      <div>
-                        <h4 className={styles.fontSize15Bold}>Plan PRO</h4>
-                        <p className={styles.subtitle11Muted}>Ideal para comercios en crecimiento con personal a cargo y control de stock.</p>
-                        <div className={styles.fontSize22Bold}>$39 <span className={styles.fontSize11Weight500}>/ mes</span></div>
-                        <ul className={styles.listItemFlex}>
-                          <li>Productos e inventario ilimitados</li>
-                          <li>Hasta 5 usuarios concurrentes</li>
-                          <li>Hasta 2 almacenes / sucursales</li>
-                          <li>Cuentas por pagar y gastos fijos</li>
-                          <li>Clientes con límite de crédito</li>
-</ul>
+                  <div className={`${styles.cardBorder} ${styles.flexColumnGap6Col}`}>
+                    <div>
+                      <h4 className={styles.fontSize15Bold}>Plan PRO</h4>
+                      <p className={styles.subtitle11Muted}>
+                        Ideal para comercios en crecimiento con personal a cargo y control de stock.
+                      </p>
+                      <div className={styles.fontSize22Bold}>
+                        $39 <span className={styles.fontSize11Weight500}>/ mes</span>
                       </div>
-                      <button className={`${styles.backupBtnPrimary} ${styles.btnFullWidth} ${styles.mt10}`} onClick={() => { setSelectedPlanForStripe('pro'); setShowStripeModal(true); }}>
-                        Suscribirse a PRO
-                      </button>
+                      <ul className={styles.listItemFlex}>
+                        <li>Productos e inventario ilimitados</li>
+                        <li>Hasta 5 usuarios concurrentes</li>
+                        <li>Hasta 2 almacenes / sucursales</li>
+                        <li>Cuentas por pagar y gastos fijos</li>
+                        <li>Clientes con límite de crédito</li>
+                      </ul>
                     </div>
+                    <button
+                      className={`${styles.backupBtnPrimary} ${styles.btnFullWidth} ${styles.mt10}`}
+                      onClick={() => {
+                        setSelectedPlanForStripe('pro');
+                        setShowStripeModal(true);
+                      }}
+                    >
+                      Suscribirse a PRO
+                    </button>
+                  </div>
 
                   <div className={`${styles.laserBorderCard} ${styles.flexColumnGap6Col}`}>
                     <div className={styles.absTopRightZero}>RECOMENDADO</div>
                     <div className={styles.flexColumnGap6Col}>
                       <h4 className={styles.fontSize15Bold}>Plan Enterprise</h4>
-                      <p className={styles.subtitle11Muted}>Auditoría avanzada para operaciones de alta facturación y múltiples sucursales.</p>
-                      <div className={styles.fontSize22Bold}>$79 <span className={styles.fontSize11Weight500}>/ mes</span></div>
+                      <p className={styles.subtitle11Muted}>
+                        Auditoría avanzada para operaciones de alta facturación y múltiples
+                        sucursales.
+                      </p>
+                      <div className={styles.fontSize22Bold}>
+                        $79 <span className={styles.fontSize11Weight500}>/ mes</span>
+                      </div>
                       <ul className={styles.listItemFlex}>
                         <li>Todo lo del plan PRO e ilimitado</li>
                         <li>Usuarios y almacenes ilimitados</li>
@@ -1596,7 +2008,13 @@ function LicensesTab() {
                         <li>Soporte técnico prioritario</li>
                       </ul>
                     </div>
-                    <button className={`${styles.backupBtnPrimary} ${styles.btnShimmerActive} ${styles.btnFullWidth} ${styles.mt10}`} onClick={() => { setSelectedPlanForStripe('enterprise'); setShowStripeModal(true); }}>
+                    <button
+                      className={`${styles.backupBtnPrimary} ${styles.btnShimmerActive} ${styles.btnFullWidth} ${styles.mt10}`}
+                      onClick={() => {
+                        setSelectedPlanForStripe('enterprise');
+                        setShowStripeModal(true);
+                      }}
+                    >
                       Suscribirse a Enterprise
                     </button>
                   </div>
@@ -1610,9 +2028,14 @@ function LicensesTab() {
                     Portal de Facturación
                   </div>
                   <p className={styles.backupCardDesc}>
-                    Accede a tu portal de autogestión de Stripe para cambiar tu método de pago, ver tus facturas descargables o dar de baja tu suscripción.
+                    Accede a tu portal de autogestión de Stripe para cambiar tu método de pago, ver
+                    tus facturas descargables o dar de baja tu suscripción.
                   </p>
-                  <button className={styles.backupBtnPrimary} onClick={handleOpenPortal} disabled={managingPortal}>
+                  <button
+                    className={styles.backupBtnPrimary}
+                    onClick={handleOpenPortal}
+                    disabled={managingPortal}
+                  >
                     {managingPortal ? 'Cargando Portal...' : 'Gestionar en Stripe'}
                   </button>
                 </div>
@@ -1634,11 +2057,15 @@ function LicensesTab() {
                   className={styles.tcInput}
                   type="text"
                   value={activationCode}
-                  onChange={e => setActivationCode(e.target.value)}
+                  onChange={(e) => setActivationCode(e.target.value)}
                   placeholder="Código de licencia"
                   required
                 />
-                <button type="submit" className={styles.backupBtnPrimary} disabled={activating || !activationCode.trim()}>
+                <button
+                  type="submit"
+                  className={styles.backupBtnPrimary}
+                  disabled={activating || !activationCode.trim()}
+                >
                   {activating ? 'Activando...' : 'Activar Licencia'}
                 </button>
               </form>
@@ -1656,24 +2083,28 @@ function LicensesTab() {
                     <p className={styles.backupCardDesc}>
                       Al cancelar, tu licencia será bloqueada y perderás acceso al sistema.
                     </p>
-<button
-                        className={`${styles.btnSecondary} ${styles.confirmBtnRed}`}
-                        onClick={() => setCancelStep(1)}
-                      >
-                        Cancelar suscripción
-                      </button>
+                    <button
+                      className={`${styles.btnSecondary} ${styles.confirmBtnRed}`}
+                      onClick={() => setCancelStep(1)}
+                    >
+                      Cancelar suscripción
+                    </button>
                   </>
                 )}
 
                 {cancelStep === 1 && (
                   <>
                     <p className={`${styles.backupCardDesc} ${styles.colorRedWeight600}`}>
-                      ¿Estás completamente seguro? Esta acción bloqueará tu licencia de forma inmediata.
+                      ¿Estás completamente seguro? Esta acción bloqueará tu licencia de forma
+                      inmediata.
                     </p>
                     <div className={styles.flexGap12Full}>
                       <button
                         className={`${styles.btnSecondary} ${styles.btnFlex1}`}
-                        onClick={() => { setCancelStep(0); setCancelConfirmText(''); }}
+                        onClick={() => {
+                          setCancelStep(0);
+                          setCancelConfirmText('');
+                        }}
                       >
                         Volver
                       </button>
@@ -1690,19 +2121,23 @@ function LicensesTab() {
                 {cancelStep === 2 && (
                   <>
                     <p className={`${styles.backupCardDesc} ${styles.colorRedWeight600}`}>
-                      Confirmación final. Escribe <strong>CANCELAR</strong> para confirmar la cancelación.
+                      Confirmación final. Escribe <strong>CANCELAR</strong> para confirmar la
+                      cancelación.
                     </p>
                     <input
                       className={styles.tcInput}
                       type="text"
                       value={cancelConfirmText}
-                      onChange={e => setCancelConfirmText(e.target.value)}
+                      onChange={(e) => setCancelConfirmText(e.target.value)}
                       placeholder="Escribe CANCELAR"
                     />
                     <div className={styles.flexGap12Full}>
                       <button
                         className={`${styles.btnSecondary} ${styles.btnFlex1}`}
-                        onClick={() => { setCancelStep(0); setCancelConfirmText(''); }}
+                        onClick={() => {
+                          setCancelStep(0);
+                          setCancelConfirmText('');
+                        }}
                       >
                         Atrás
                       </button>
@@ -1728,15 +2163,19 @@ function LicensesTab() {
                 <p className={styles.backupCardDesc}>
                   La licencia está cancelada pero aún no ha expirado. Puedes reactivarla.
                 </p>
-<button
-                    className={`${styles.backupBtnPrimary} ${styles.selfStart}`}
-                    onClick={() => {
-                      if (window.confirm('¿Reactivar la suscripción? El tenant volverá a tener acceso inmediato.')) {
-                        handleReactivate();
-                      }
-                    }}
-                    disabled={reactivating}
-                  >
+                <button
+                  className={`${styles.backupBtnPrimary} ${styles.selfStart}`}
+                  onClick={() => {
+                    if (
+                      window.confirm(
+                        '¿Reactivar la suscripción? El tenant volverá a tener acceso inmediato.'
+                      )
+                    ) {
+                      handleReactivate();
+                    }
+                  }}
+                  disabled={reactivating}
+                >
                   {reactivating ? 'Reactivando...' : 'Reactivar suscripción'}
                 </button>
               </div>
@@ -1752,12 +2191,22 @@ function LicensesTab() {
                 </div>
                 <div className={styles.configGroup}>
                   <span className={styles.backupFieldLabel}>Días de duración</span>
-                  <input type="number" className={styles.tcInput} value={days} onChange={e => setDays(Number(e.target.value))} min={1} />
+                  <input
+                    type="number"
+                    className={styles.tcInput}
+                    value={days}
+                    onChange={(e) => setDays(Number(e.target.value))}
+                    min={1}
+                  />
                 </div>
                 <div className={styles.configGroup}>
                   <span className={styles.backupFieldLabel}>Tier / Plan</span>
                   <div className={styles.backupSelectWrap}>
-                    <select className={styles.backupSelect} value={tier} onChange={e => setTier(e.target.value)}>
+                    <select
+                      className={styles.backupSelect}
+                      value={tier}
+                      onChange={(e) => setTier(e.target.value)}
+                    >
                       <option value="pro">PRO</option>
                       <option value="enterprise">Enterprise</option>
                     </select>
@@ -1765,20 +2214,40 @@ function LicensesTab() {
                 </div>
                 <div className={styles.configGroup}>
                   <span className={styles.backupFieldLabel}>Target Tenant ID (opcional)</span>
-                  <input type="text" className={styles.tcInput} value={targetTenantId} onChange={e => setTargetTenantId(e.target.value)} placeholder="Dejar vacío para el tenant actual" />
+                  <input
+                    type="text"
+                    className={styles.tcInput}
+                    value={targetTenantId}
+                    onChange={(e) => setTargetTenantId(e.target.value)}
+                    placeholder="Dejar vacío para el tenant actual"
+                  />
                 </div>
-                <button className={styles.backupBtnPrimary} onClick={handleGenerate} disabled={generating}>
+                <button
+                  className={styles.backupBtnPrimary}
+                  onClick={handleGenerate}
+                  disabled={generating}
+                >
                   {generating ? 'Generando...' : 'Generar Código'}
                 </button>
                 {generatedCode && (
                   <div className={styles.flexColumnGap8}>
                     <div className={styles.flexBetweenCenter}>
-                      <span className={`${styles.backupFieldLabel} ${styles.colorGreenWeight600}`}>Código generado</span>
-                      <button className={`${styles.btnSecondary} ${styles.p8} ${styles.fontSize11}`} onClick={copyToClipboard}>
+                      <span className={`${styles.backupFieldLabel} ${styles.colorGreenWeight600}`}>
+                        Código generado
+                      </span>
+                      <button
+                        className={`${styles.btnSecondary} ${styles.p8} ${styles.fontSize11}`}
+                        onClick={copyToClipboard}
+                      >
                         Copiar
                       </button>
                     </div>
-                    <textarea className={`${styles.tcInput} ${styles.fontMono11}`} value={generatedCode} readOnly rows={3} />
+                    <textarea
+                      className={`${styles.tcInput} ${styles.fontMono11}`}
+                      value={generatedCode}
+                      readOnly
+                      rows={3}
+                    />
                   </div>
                 )}
               </div>
@@ -1787,14 +2256,15 @@ function LicensesTab() {
         </>
       )}
 
-      {showPremiumAnim && (
-        <PremiumActivationAnimation onClose={() => setShowPremiumAnim(false)} />
-      )}
+      {showPremiumAnim && <PremiumActivationAnimation onClose={() => setShowPremiumAnim(false)} />}
 
       <StripeCheckoutModal
         open={showStripeModal}
         planType={selectedPlanForStripe || ''}
-        onClose={() => { setShowStripeModal(false); setSelectedPlanForStripe(null); }}
+        onClose={() => {
+          setShowStripeModal(false);
+          setSelectedPlanForStripe(null);
+        }}
         onSuccess={handlePaymentSuccess}
       />
     </div>
@@ -1808,7 +2278,11 @@ function BackupTab() {
   const [importStatus, setImportStatus] = useState<string | null>(null);
   const [exportStatus, setExportStatus] = useState<string | null>(null);
   const [fileName, setFileName] = useState<string | null>(null);
-  const [exportModules, setExportModules] = useState({ systemStructure: true, taxCurrency: true, interfacePrefs: false });
+  const [exportModules, setExportModules] = useState({
+    systemStructure: true,
+    taxCurrency: true,
+    interfacePrefs: false,
+  });
   const [backupFrequency, setBackupFrequency] = useState('daily');
   const [backupDestination, setBackupDestination] = useState('local');
   const [emailNotifications, setEmailNotifications] = useState(true);
@@ -1853,7 +2327,7 @@ function BackupTab() {
   };
 
   const toggleModule = (key: 'systemStructure' | 'taxCurrency' | 'interfacePrefs') => {
-    setExportModules(prev => ({ ...prev, [key]: !prev[key] }));
+    setExportModules((prev) => ({ ...prev, [key]: !prev[key] }));
   };
 
   return (
@@ -1871,7 +2345,8 @@ function BackupTab() {
             Exportar Configuración
           </div>
           <p className={styles.backupCardDesc}>
-            Genera y descarga un archivo cifrado en formato JSON estructurado con la información actual de tu plataforma.
+            Genera y descarga un archivo cifrado en formato JSON estructurado con la información
+            actual de tu plataforma.
           </p>
           <div className={styles.backupModuleList}>
             <div className={styles.backupModuleItem}>
@@ -1926,13 +2401,18 @@ function BackupTab() {
             Importar y Restaurar
           </div>
           <p className={styles.backupCardDesc}>
-            Carga un paquete JSON previamente estructurado para sobrescribir o restaurar parámetros de configuración global de forma inmediata.
+            Carga un paquete JSON previamente estructurado para sobrescribir o restaurar parámetros
+            de configuración global de forma inmediata.
           </p>
           <div className={styles.dropzone} onClick={() => fileRef.current?.click()}>
             <FileCode size={28} />
             <div className={styles.dropzoneText}>
               <h4>{fileName ? 'Archivo cargado con éxito' : 'Selecciona o suelta tu archivo'}</h4>
-              <p>{fileName ? `${fileName} listo para procesar.` : 'Formatos admitidos: .json (Máx. 8MB)'}</p>
+              <p>
+                {fileName
+                  ? `${fileName} listo para procesar.`
+                  : 'Formatos admitidos: .json (Máx. 8MB)'}
+              </p>
             </div>
             <input ref={fileRef} type="file" accept=".json" onChange={handleImport} hidden />
           </div>
@@ -1960,12 +2440,17 @@ function BackupTab() {
             Respaldos Automatizados
           </div>
           <p className={styles.backupCardDesc}>
-            Garantiza la resiliencia tecnológica programando copias de seguridad automáticas directas a repositorios cloud externos.
+            Garantiza la resiliencia tecnológica programando copias de seguridad automáticas
+            directas a repositorios cloud externos.
           </p>
           <div className={styles.backupFieldGroup}>
             <span className={styles.backupFieldLabel}>Frecuencia de Copias</span>
             <div className={styles.backupSelectWrap}>
-              <select className={styles.backupSelect} value={backupFrequency} onChange={e => setBackupFrequency(e.target.value)}>
+              <select
+                className={styles.backupSelect}
+                value={backupFrequency}
+                onChange={(e) => setBackupFrequency(e.target.value)}
+              >
                 <option value="daily">Cada 24 horas (Diario automatizado)</option>
                 <option value="weekly">Cada fin de semana (Sábados 00:00)</option>
                 <option value="monthly">Mensual consolidado</option>
@@ -1975,7 +2460,11 @@ function BackupTab() {
           <div className={styles.backupFieldGroup}>
             <span className={styles.backupFieldLabel}>Destino de Almacenamiento Cloud</span>
             <div className={styles.backupSelectWrap}>
-              <select className={styles.backupSelect} value={backupDestination} onChange={e => setBackupDestination(e.target.value)}>
+              <select
+                className={styles.backupSelect}
+                value={backupDestination}
+                onChange={(e) => setBackupDestination(e.target.value)}
+              >
                 <option value="local">Servidor Local Seguro (Por defecto)</option>
                 <option value="aws">Amazon Web Services (AWS S3 Bucket)</option>
                 <option value="gcp">Google Cloud Storage Cluster</option>
@@ -2000,7 +2489,8 @@ function BackupTab() {
             Registro e Historial de Respaldos
           </div>
           <p className={styles.backupCardDesc}>
-            Bitácora histórica verificada de las últimas operaciones de respaldo y restauración ejecutadas en el entorno.
+            Bitácora histórica verificada de las últimas operaciones de respaldo y restauración
+            ejecutadas en el entorno.
           </p>
           <div className={styles.historyList}>
             <div className={styles.historyItem}>
@@ -2012,8 +2502,12 @@ function BackupTab() {
                 </div>
               </div>
               <div className={styles.historyActions}>
-                <button className={styles.historyBtn} title="Descargar copia"><Download size={14} /></button>
-                <button className={styles.historyBtn} title="Restaurar a esta versión"><RotateCcw size={14} /></button>
+                <button className={styles.historyBtn} title="Descargar copia">
+                  <Download size={14} />
+                </button>
+                <button className={styles.historyBtn} title="Restaurar a esta versión">
+                  <RotateCcw size={14} />
+                </button>
               </div>
             </div>
             <div className={styles.historyItem}>
@@ -2025,8 +2519,12 @@ function BackupTab() {
                 </div>
               </div>
               <div className={styles.historyActions}>
-                <button className={styles.historyBtn} title="Descargar copia"><Download size={14} /></button>
-                <button className={styles.historyBtn} title="Restaurar a esta versión"><RotateCcw size={14} /></button>
+                <button className={styles.historyBtn} title="Descargar copia">
+                  <Download size={14} />
+                </button>
+                <button className={styles.historyBtn} title="Restaurar a esta versión">
+                  <RotateCcw size={14} />
+                </button>
               </div>
             </div>
           </div>

@@ -1,0 +1,8 @@
+node_modules/
+dist/
+build/
+.git/
+.agent/
+package-lock.json
+*.min.css
+*.min.js

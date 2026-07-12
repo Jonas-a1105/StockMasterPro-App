@@ -74,7 +74,11 @@ export function SkeletonCards({ count = 4 }: { count?: number }) {
   return (
     <div className={styles.skeletonCards}>
       {Array.from({ length: count }).map((_, i) => (
-        <div key={i} className={`${styles.skeletonCard} ${styles.animDelay}`} style={{ '--sk-delay': `${i * 0.1}s` } as React.CSSProperties}>
+        <div
+          key={i}
+          className={`${styles.skeletonCard} ${styles.animDelay}`}
+          style={{ '--sk-delay': `${i * 0.1}s` } as React.CSSProperties}
+        >
           <div className={styles.skeletonCardHeader}>
             <div className={styles.skeletonFlex}>
               <Skeleton height={14} width="70%" />
@@ -105,7 +109,11 @@ export function SkeletonKPI({ count = 4 }: { count?: number }) {
   return (
     <div className={styles.skeletonKPI}>
       {Array.from({ length: count }).map((_, i) => (
-        <div key={i} className={`${styles.skeletonKPICard} ${styles.animDelay}`} style={{ '--sk-delay': `${i * 0.08}s` } as React.CSSProperties}>
+        <div
+          key={i}
+          className={`${styles.skeletonKPICard} ${styles.animDelay}`}
+          style={{ '--sk-delay': `${i * 0.08}s` } as React.CSSProperties}
+        >
           <div className={styles.skeletonFlexCenter}>
             <Skeleton variant="circle" width={36} height={36} />
             <div className={styles.skeletonFlex}>
@@ -121,16 +129,21 @@ export function SkeletonKPI({ count = 4 }: { count?: number }) {
 
 export function SkeletonChart({ height = 250 }: { height?: number }) {
   return (
-    <div className={`${styles.skeletonChart} ${styles.chartCustom}`} style={{ '--sk-chart-h': height } as React.CSSProperties}>
+    <div
+      className={`${styles.skeletonChart} ${styles.chartCustom}`}
+      style={{ '--sk-chart-h': height } as React.CSSProperties}
+    >
       <div className={styles.skeletonChartBars}>
         {Array.from({ length: 7 }).map((_, i) => (
           <div
             key={i}
             className={`${styles.skeletonChartBar} ${styles.barCustom}`}
-            style={{
-              '--sk-bar-h': `${30 + Math.random() * 60}%`,
-              '--sk-bar-delay': `${i * 0.1}s`,
-            } as React.CSSProperties}
+            style={
+              {
+                '--sk-bar-h': `${30 + Math.random() * 60}%`,
+                '--sk-bar-delay': `${i * 0.1}s`,
+              } as React.CSSProperties
+            }
           />
         ))}
       </div>
@@ -140,7 +153,17 @@ export function SkeletonChart({ height = 250 }: { height?: number }) {
 
 /* === Page-level skeleton presets === */
 
-export function SkeletonTablePage({ rows = 5, cols = 6, tabs = 1, kpi = 3 }: { rows?: number; cols?: number; tabs?: number; kpi?: number }) {
+export function SkeletonTablePage({
+  rows = 5,
+  cols = 6,
+  tabs = 1,
+  kpi = 3,
+}: {
+  rows?: number;
+  cols?: number;
+  tabs?: number;
+  kpi?: number;
+}) {
   return (
     <div className={styles.skeletonPage}>
       {tabs > 0 && (

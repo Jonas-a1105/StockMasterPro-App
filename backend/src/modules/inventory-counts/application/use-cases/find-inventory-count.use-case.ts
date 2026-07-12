@@ -3,7 +3,10 @@ import {
   InventoryCountRepository,
   INVENTORY_COUNT_REPOSITORY,
 } from '../ports/inventory-count.repository.interface';
-import { InventoryCount, InventoryCountNotFoundException } from '@modules/inventory-counts';
+import {
+  InventoryCount,
+  InventoryCountNotFoundException,
+} from '@modules/inventory-counts';
 
 @Injectable()
 export class FindInventoryCountUseCase {
@@ -14,7 +17,8 @@ export class FindInventoryCountUseCase {
 
   async findById(id: string, tenantId: string): Promise<InventoryCount> {
     const count = await this.countRepo.findById(id, tenantId);
-    if (!count) throw new NotFoundException('Conteo de inventario no encontrado');
+    if (!count)
+      throw new NotFoundException('Conteo de inventario no encontrado');
     return count;
   }
 

@@ -1,5 +1,13 @@
 import { useState, useRef } from 'react';
-import { X, Upload, Download, FileSpreadsheet, AlertCircle, CheckCircle2, Loader2 } from 'lucide-react';
+import {
+  X,
+  Upload,
+  Download,
+  FileSpreadsheet,
+  AlertCircle,
+  CheckCircle2,
+  Loader2,
+} from 'lucide-react';
 import { type ColumnMapping, downloadTemplate, parseExcelFile } from '@shared/lib/excelHelper';
 import styles from './ImportModal.module.css';
 
@@ -9,7 +17,10 @@ interface ImportModalProps {
   title: string;
   columns: ColumnMapping[];
   templateFilename: string;
-  onImport: (data: any[], onProgress: (current: number, total: number) => void) => Promise<{ successCount: number; errorCount: number; details: string[] }>;
+  onImport: (
+    data: any[],
+    onProgress: (current: number, total: number) => void
+  ) => Promise<{ successCount: number; errorCount: number; details: string[] }>;
 }
 
 export function ImportModal({
@@ -25,7 +36,11 @@ export function ImportModal({
   const [parsedData, setParsedData] = useState<any[]>([]);
   const [errors, setErrors] = useState<string[]>([]);
   const [progress, setProgress] = useState({ current: 0, total: 0 });
-  const [summaryResult, setSummaryResult] = useState<{ successCount: number; errorCount: number; details: string[] } | null>(null);
+  const [summaryResult, setSummaryResult] = useState<{
+    successCount: number;
+    errorCount: number;
+    details: string[];
+  } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   if (!open) return null;
@@ -53,7 +68,7 @@ export function ImportModal({
   const handleStartImport = async () => {
     setStep('importing');
     setProgress({ current: 0, total: parsedData.length });
-    
+
     try {
       const result = await onImport(parsedData, (current, total) => {
         setProgress({ current, total });
@@ -95,17 +110,26 @@ export function ImportModal({
           {step === 'upload' && (
             <div className={styles.uploadStep}>
               <p className={styles.description}>
-                Carga un archivo de Excel (.xlsx) o de valores separados por comas (.csv) para realizar una importación masiva de {title.toLowerCase()}.
+                Carga un archivo de Excel (.xlsx) o de valores separados por comas (.csv) para
+                realizar una importación masiva de {title.toLowerCase()}.
               </p>
 
               {/* Template Download */}
               <div className={styles.templateSection}>
-                <span>Descarga la plantilla de ejemplo para estructurar correctamente tus datos:</span>
+                <span>
+                  Descarga la plantilla de ejemplo para estructurar correctamente tus datos:
+                </span>
                 <div className={styles.templateButtons}>
-                  <button className={styles.textBtn} onClick={() => downloadTemplate(columns, templateFilename, 'xlsx')}>
+                  <button
+                    className={styles.textBtn}
+                    onClick={() => downloadTemplate(columns, templateFilename, 'xlsx')}
+                  >
                     <Download size={14} /> Plantilla Excel (.xlsx)
                   </button>
-                  <button className={styles.textBtn} onClick={() => downloadTemplate(columns, templateFilename, 'csv')}>
+                  <button
+                    className={styles.textBtn}
+                    onClick={() => downloadTemplate(columns, templateFilename, 'csv')}
+                  >
                     <Download size={14} /> Plantilla CSV (.csv)
                   </button>
                 </div>
@@ -155,7 +179,7 @@ export function ImportModal({
                 <table className={styles.previewTable}>
                   <thead>
                     <tr>
-                      {columns.map(col => (
+                      {columns.map((col) => (
                         <th key={col.key}>{col.header}</th>
                       ))}
                     </tr>
@@ -163,9 +187,11 @@ export function ImportModal({
                   <tbody>
                     {parsedData.slice(0, 3).map((row, rIndex) => (
                       <tr key={rIndex}>
-                        {columns.map(col => (
+                        {columns.map((col) => (
                           <td key={col.key}>
-                            {row[col.key] !== undefined && row[col.key] !== null ? String(row[col.key]) : '—'}
+                            {row[col.key] !== undefined && row[col.key] !== null
+                              ? String(row[col.key])
+                              : '—'}
                           </td>
                         ))}
                       </tr>
@@ -173,9 +199,7 @@ export function ImportModal({
                   </tbody>
                 </table>
                 {parsedData.length > 3 && (
-                  <div className={styles.moreRows}>
-                    ... y {parsedData.length - 3} filas más.
-                  </div>
+                  <div className={styles.moreRows}>... y {parsedData.length - 3} filas más.</div>
                 )}
               </div>
 
@@ -201,7 +225,11 @@ export function ImportModal({
               <div className={styles.progressBarBg}>
                 <div
                   className={styles.progressBarFill}
-                  style={{ '--import-progress': `${(progress.current / progress.total) * 100}%` } as React.CSSProperties}
+                  style={
+                    {
+                      '--import-progress': `${(progress.current / progress.total) * 100}%`,
+                    } as React.CSSProperties
+                  }
                 />
               </div>
             </div>
@@ -211,7 +239,7 @@ export function ImportModal({
             <div className={styles.summaryStep}>
               <CheckCircle2 size={40} className={styles.successIcon} />
               <div className={styles.summaryTitle}>Importación Completada</div>
-              
+
               <div className={styles.summaryGrid}>
                 <div className={styles.summaryCard}>
                   <div className={styles.summaryLabel}>Creados/Actualizados</div>
@@ -228,7 +256,12 @@ export function ImportModal({
                   <div className={styles.detailsTitle}>Detalles de procesamiento:</div>
                   <div className={styles.detailsList}>
                     {summaryResult.details.map((detail, index) => (
-                      <div key={index} className={detail.includes('Error') ? styles.detailError : styles.detailInfo}>
+                      <div
+                        key={index}
+                        className={
+                          detail.includes('Error') ? styles.detailError : styles.detailInfo
+                        }
+                      >
                         {detail}
                       </div>
                     ))}

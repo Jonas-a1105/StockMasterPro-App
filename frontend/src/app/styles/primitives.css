@@ -5,8 +5,8 @@
   --orange-600: #c2410c;
 
   /* ─── Neutral Palette ─── */
-  --gray-0:   #ffffff;
-  --gray-50:  #f8fafc;
+  --gray-0: #ffffff;
+  --gray-50: #f8fafc;
   --gray-100: #f1f5f9;
   --gray-200: #e2e8f0;
   --gray-300: #cbd5e1;
@@ -16,93 +16,93 @@
   --gray-700: #334155;
   --gray-800: #1e293b;
   --gray-900: #0f172a;
-  --black:    #000000;
+  --black: #000000;
 
   /* ─── Feedback Palette (ONE value per semantic color) ─── */
-  --green-500:  #10b981;
-  --red-500:    #ef4444;
-  --amber-500:  #f59e0b;
-  --blue-500:   #3b82f6;
-  --teal-500:   #14b8a6;
+  --green-500: #10b981;
+  --red-500: #ef4444;
+  --amber-500: #f59e0b;
+  --blue-500: #3b82f6;
+  --teal-500: #14b8a6;
   --purple-500: #8b5cf6;
-  --pink-500:   #ec4899;
-  --cyan-500:   #06b6d4;
+  --pink-500: #ec4899;
+  --cyan-500: #06b6d4;
   --yellow-500: #eab308;
 
   /* ─── Spacing Scale ─── */
-  --space-1:  4px;
-  --space-2:  8px;
-  --space-3:  12px;
-  --space-4:  16px;
-  --space-5:  20px;
-  --space-6:  24px;
-  --space-8:  32px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
   --space-10: 40px;
   --space-12: 48px;
 
   /* ─── Border Radius Scale ─── */
-  --radius-sm:     4px;
-  --radius-md:     8px;
-  --radius-lg:     12px;
-  --radius-xl:     16px;
-  --radius-2xl:    24px;
-  --radius-full:   9999px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 24px;
+  --radius-full: 9999px;
 
   /* ─── Typography Scale ─── */
-  --font-family:        'Outfit', 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
-  --font-family-mono:   'JetBrains Mono', 'Courier New', Courier, monospace;
-  --font-size-2xs:  10px;
-  --font-size-xs:   11px;
-  --font-size-sm:   13px;
-  --font-size-md:   15px;
-  --font-size-lg:   16px;
-  --font-size-xl:   18px;
-  --font-size-2xl:  20px;
-  --font-size-3xl:  22px;
-  --font-size-4xl:  24px;
+  --font-family: 'Outfit', 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+  --font-family-mono: 'JetBrains Mono', 'Courier New', Courier, monospace;
+  --font-size-2xs: 10px;
+  --font-size-xs: 11px;
+  --font-size-sm: 13px;
+  --font-size-md: 15px;
+  --font-size-lg: 16px;
+  --font-size-xl: 18px;
+  --font-size-2xl: 20px;
+  --font-size-3xl: 22px;
+  --font-size-4xl: 24px;
   --font-size-hero: 80px;
-  --font-weight-normal:    400;
-  --font-weight-medium:    500;
-  --font-weight-semibold:  600;
-  --font-weight-bold:      700;
-  --line-height-tight:     1.2;
-  --line-height-normal:    1.5;
-  --line-height-relaxed:   1.75;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --line-height-tight: 1.2;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
 
   /* ─── Shadows ─── */
-  --shadow-xs:  0 1px 2px rgba(0, 0, 0, 0.03);
-  --shadow-sm:  0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
-  --shadow-md:  0 4px 8px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.05);
-  --shadow-lg:  0 8px 24px rgba(0, 0, 0, 0.12), 0 4px 12px rgba(0, 0, 0, 0.08);
-  --shadow-xl:  0 16px 40px rgba(0, 0, 0, 0.15);
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.03);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12), 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-xl: 0 16px 40px rgba(0, 0, 0, 0.15);
 
   /* ─── Transitions ─── */
-  --transition-fast:  100ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-base:  150ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-slow:  250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-fast: 100ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 250ms cubic-bezier(0.4, 0, 0.2, 1);
 
   /* ─── Layout Constants ─── */
-  --input-height:     40px;
-  --header-height:    60px;
-  --sidebar-width:    260px;
+  --input-height: 40px;
+  --header-height: 60px;
+  --sidebar-width: 260px;
   --sidebar-collapsed: 60px;
-  --z-dropdown:       100;
-  --z-modal:          1000;
-  --z-toast:          9999;
-  --z-tooltip:        10000;
+  --z-dropdown: 100;
+  --z-modal: 1000;
+  --z-toast: 9999;
+  --z-tooltip: 10000;
 
   /* ─── Borders ─── */
-  --border-width:       1px;
+  --border-width: 1px;
   --border-width-focus: 2px;
 
   /* ─── Focus Ring ─── */
-  --focus-ring-width:   3px;
-  --focus-ring-color:   var(--orange-500);
+  --focus-ring-width: 3px;
+  --focus-ring-color: var(--orange-500);
   --focus-ring-opacity: 0.15;
 
   /* ─── Animation Durations ─── */
   --duration-instant: 0ms;
-  --duration-fast:    100ms;
-  --duration-base:    150ms;
-  --duration-slow:    250ms;
+  --duration-fast: 100ms;
+  --duration-base: 150ms;
+  --duration-slow: 250ms;
 }

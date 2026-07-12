@@ -2,7 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@shared/infrastructure/prisma/prisma.service';
 
 export interface GlobalSearchResult {
-  type: 'product' | 'customer' | 'supplier' | 'sale' | 'purchaseOrder' | 'inventoryCount';
+  type:
+    | 'product'
+    | 'customer'
+    | 'supplier'
+    | 'sale'
+    | 'purchaseOrder'
+    | 'inventoryCount';
   id: string;
   title: string;
   subtitle: string;
@@ -13,7 +19,11 @@ export interface GlobalSearchResult {
 export class GlobalSearchService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async search(tenantId: string, query: string, limit = 10): Promise<GlobalSearchResult[]> {
+  async search(
+    tenantId: string,
+    query: string,
+    limit = 10,
+  ): Promise<GlobalSearchResult[]> {
     const searchTerm = query.trim().toLowerCase();
     if (!searchTerm || searchTerm.length < 2) return [];
 
@@ -31,7 +41,14 @@ export class GlobalSearchService {
           { brand: { contains: searchTerm, mode: 'insensitive' } },
         ],
       },
-      select: { id: true, name: true, barcode: true, price: true, stock: true, brand: true },
+      select: {
+        id: true,
+        name: true,
+        barcode: true,
+        price: true,
+        stock: true,
+        brand: true,
+      },
       take: limit,
     });
 
@@ -56,7 +73,14 @@ export class GlobalSearchService {
           { taxId: { contains: searchTerm, mode: 'insensitive' } },
         ],
       },
-      select: { id: true, name: true, email: true, phone: true, taxId: true, balance: true },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        phone: true,
+        taxId: true,
+        balance: true,
+      },
       take: limit,
     });
 
@@ -81,7 +105,14 @@ export class GlobalSearchService {
           { taxId: { contains: searchTerm, mode: 'insensitive' } },
         ],
       },
-      select: { id: true, name: true, contact: true, email: true, phone: true, taxId: true },
+      select: {
+        id: true,
+        name: true,
+        contact: true,
+        email: true,
+        phone: true,
+        taxId: true,
+      },
       take: limit,
     });
 
@@ -152,7 +183,10 @@ export class GlobalSearchService {
           { id: { equals: searchTerm } },
         ],
       },
-      include: { warehouse: { select: { name: true } }, items: { select: { id: true } } },
+      include: {
+        warehouse: { select: { name: true } },
+        items: { select: { id: true } },
+      },
       orderBy: { createdAt: 'desc' },
       take: limit,
     });
@@ -168,11 +202,26 @@ export class GlobalSearchService {
     }
 
     // Sort by relevance (exact matches first, then by type priority)
-    const typePriority = { product: 1, customer: 2, sale: 3, supplier: 4, purchaseOrder: 5, inventoryCount: 6 };
+    const typePriority = {
+      product: 1,
+      customer: 2,
+      sale: 3,
+      supplier: 4,
+      purchaseOrder: 5,
+      inventoryCount: 6,
+    };
     return results
       .sort((a, b) => {
-        const aExact = a.title.toLowerCase().includes(searchTerm) && a.title.toLowerCase().startsWith(searchTerm) ? 0 : 1;
-        const bExact = b.title.toLowerCase().includes(searchTerm) && b.title.toLowerCase().startsWith(searchTerm) ? 0 : 1;
+        const aExact =
+          a.title.toLowerCase().includes(searchTerm) &&
+          a.title.toLowerCase().startsWith(searchTerm)
+            ? 0
+            : 1;
+        const bExact =
+          b.title.toLowerCase().includes(searchTerm) &&
+          b.title.toLowerCase().startsWith(searchTerm)
+            ? 0
+            : 1;
         if (aExact !== bExact) return aExact - bExact;
         return (typePriority[a.type] || 99) - (typePriority[b.type] || 99);
       })

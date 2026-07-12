@@ -57,7 +57,12 @@ export class PurchaseOrderController {
     @Body() dto: ApproveRejectPurchaseOrderDto,
     @CurrentUser() user: AuthenticatedUser,
   ) {
-    return this.purchaseOrderService.rejectOrder(id, user.tenantId, user.id, dto.reason);
+    return this.purchaseOrderService.rejectOrder(
+      id,
+      user.tenantId,
+      user.id,
+      dto.reason,
+    );
   }
 
   @Patch(':id/cancel')
@@ -67,7 +72,12 @@ export class PurchaseOrderController {
     @Body() dto: CancelPurchaseOrderDto,
     @CurrentUser() user: AuthenticatedUser,
   ) {
-    return this.purchaseOrderService.cancelOrder(id, user.tenantId, user.id, dto.reason);
+    return this.purchaseOrderService.cancelOrder(
+      id,
+      user.tenantId,
+      user.id,
+      dto.reason,
+    );
   }
 
   @Patch(':id/receive')

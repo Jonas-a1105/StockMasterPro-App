@@ -39,7 +39,13 @@ export function LoginPage() {
       {/* CONTENEDOR DE ENCABEZADO CENTRAL */}
       <div className={styles.authHeader}>
         <div className={styles.logoBox}>
-          <svg viewBox="0 0 240 240" fill="none" width="84" height="84" className={styles.overflowVisible}>
+          <svg
+            viewBox="0 0 240 240"
+            fill="none"
+            width="84"
+            height="84"
+            className={styles.overflowVisible}
+          >
             <path
               d="M 65 90 C 40 90, 40 115, 60 120 C 80 125, 80 150, 55 150 L 85 85 L 105 125 L 125 85 L 125 150 H 185 V 115 H 135 V 150"
               fill="none"
@@ -56,7 +62,17 @@ export function LoginPage() {
               strokeLinecap="round"
               strokeLinejoin="round"
             />
-            <text x="144" y="141" fill="var(--color-primary, #f05a28)" fontSize="16" fontWeight="900" fontFamily="system-ui, -apple-system, sans-serif" letterSpacing="0.05em">PRO</text>
+            <text
+              x="144"
+              y="141"
+              fill="var(--color-primary, #f05a28)"
+              fontSize="16"
+              fontWeight="900"
+              fontFamily="system-ui, -apple-system, sans-serif"
+              letterSpacing="0.05em"
+            >
+              PRO
+            </text>
           </svg>
         </div>
         <h1 className={styles.headerTitle}>¡Bienvenido!</h1>
@@ -84,7 +100,7 @@ export function LoginPage() {
             <input
               type="email"
               value={email}
-              onChange={e => setEmail(e.target.value)}
+              onChange={(e) => setEmail(e.target.value)}
               required
               className={styles.input}
               placeholder="usuario@empresa.com"
@@ -95,10 +111,7 @@ export function LoginPage() {
           <div className={styles.field}>
             <div className={styles.fieldHeader}>
               <label>Clave Criptográfica</label>
-              <Link
-                to="/forgot-password"
-                className={styles.forgotLink}
-              >
+              <Link to="/forgot-password" className={styles.forgotLink}>
                 ¿olvidó su clave?
               </Link>
             </div>
@@ -106,7 +119,7 @@ export function LoginPage() {
               <input
                 type={showPassword ? 'text' : 'password'}
                 value={password}
-                onChange={e => setPassword(e.target.value)}
+                onChange={(e) => setPassword(e.target.value)}
                 required
                 className={styles.input}
                 placeholder="••••••••"
@@ -132,7 +145,13 @@ export function LoginPage() {
             />
             <div className={styles.checkboxCustom}>
               {rememberMe && (
-                <svg className={styles.checkboxCheckIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4">
+                <svg
+                  className={styles.checkboxCheckIcon}
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                >
                   <polyline points="20 6 9 17 4 12" />
                 </svg>
               )}
@@ -148,25 +167,26 @@ export function LoginPage() {
             disabled={loading}
             className={`${styles.submitBtn} ${styles.btnShimmer}`}
           >
-            {loading ? (
-              <ButtonLoader />
-            ) : (
-              'Autenticar Estación ➔'
-            )}
+            {loading ? <ButtonLoader /> : 'Autenticar Estación ➔'}
           </button>
         </form>
       </div>
 
       {/* ENLACES INFERIORES */}
-<div className={styles.footerLinks}>
+      <div className={styles.footerLinks}>
         <p className={`${styles.m0} ${styles.fontSize11} ${styles.colorMuted}`}>
           ¿No tienes una cuenta?{' '}
-          <Link to="/register" className={`${styles.footerLinkAccent} ${styles.footerLinkAccentRegister}`}>
+          <Link
+            to="/register"
+            className={`${styles.footerLinkAccent} ${styles.footerLinkAccentRegister}`}
+          >
             Regístrate
           </Link>
         </p>
         <p className={`${styles.mt12} ${styles.fontSize11}`}>
-          <Link to="/" className={`${styles.textDecorationNone} ${styles.colorMuted}`}>➔ Volver al Inicio (Landing)</Link>
+          <Link to="/" className={`${styles.textDecorationNone} ${styles.colorMuted}`}>
+            ➔ Volver al Inicio (Landing)
+          </Link>
         </p>
       </div>
     </div>

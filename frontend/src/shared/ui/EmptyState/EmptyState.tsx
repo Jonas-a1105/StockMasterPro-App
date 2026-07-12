@@ -57,9 +57,7 @@ export function EmptyState({
 
   return (
     <div className={`${styles.emptyState} ${className}`}>
-      <div className={styles.iconWrapper}>
-        {iconNode}
-      </div>
+      <div className={styles.iconWrapper}>{iconNode}</div>
       <h3 className={styles.title}>{title}</h3>
       {description && <p className={styles.description}>{description}</p>}
       {action && (

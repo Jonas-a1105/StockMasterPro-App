@@ -7,13 +7,24 @@ interface AuthContextType {
   token: string | null;
   isLoading: boolean;
   login: (email: string, password: string) => Promise<void>;
-  register: (data: { tenantName: string; email: string; password: string; name: string }) => Promise<void>;
+  register: (data: {
+    tenantName: string;
+    email: string;
+    password: string;
+    name: string;
+  }) => Promise<void>;
   logout: () => void;
   isAuthenticated: boolean;
   licenseBlocked: boolean;
   activateLicense: (code: string) => Promise<void>;
   dismissLicenseBlock: () => void;
-  licenseStatus: { tier: string; status: string; expiresAt: string; activatedAt: string; isBlocked: boolean } | null;
+  licenseStatus: {
+    tier: string;
+    status: string;
+    expiresAt: string;
+    activatedAt: string;
+    isBlocked: boolean;
+  } | null;
   licenseUsage: any;
   refreshLicense: () => Promise<void>;
 }
@@ -42,10 +53,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const refreshLicense = useCallback(async () => {
     try {
-      const [status, usage] = await Promise.all([
-        api.getLicenseStatus(),
-        api.getLicenseUsage(),
-      ]);
+      const [status, usage] = await Promise.all([api.getLicenseStatus(), api.getLicenseUsage()]);
       if (status) setLicenseStatus(status);
       if (usage) setLicenseUsage(usage);
     } catch {
@@ -64,7 +72,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         api.setToken(savedToken);
         api.setRefreshToken(savedRefreshToken);
         let parsedUser: User | null = null;
-        try { parsedUser = JSON.parse(savedUser); } catch { /* corrupt localStorage */ }
+        try {
+          parsedUser = JSON.parse(savedUser);
+        } catch {
+          /* corrupt localStorage */
+        }
         if (!parsedUser) {
           clearSession();
           setIsLoading(false);
@@ -132,7 +144,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (usage) setLicenseUsage(usage);
   };
 
-  const register = async (data: { tenantName: string; email: string; password: string; name: string }) => {
+  const register = async (data: {
+    tenantName: string;
+    email: string;
+    password: string;
+    name: string;
+  }) => {
     // Limpiar estado previo antes de registro
     clearSession();
     const res = await api.register(data);
@@ -160,11 +177,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const handleLicenseBlocked = () => setLicenseBlocked(true);
     const handleLicenseActivated = () => setLicenseBlocked(false);
     const handleAuthExpired = () => logout();
-    
+
     window.addEventListener('license-blocked', handleLicenseBlocked);
     window.addEventListener('license-activated', handleLicenseActivated);
     window.addEventListener('auth-expired', handleAuthExpired);
-    
+
     return () => {
       window.removeEventListener('license-blocked', handleLicenseBlocked);
       window.removeEventListener('license-activated', handleLicenseActivated);
@@ -172,28 +189,38 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
   }, [logout]);
 
-  const activateLicense = useCallback(async (code: string) => {
-    await api.activateLicense(code);
-    setLicenseBlocked(false);
-    window.dispatchEvent(new Event('license-activated'));
-    refreshLicense();
-  }, [refreshLicense]);
+  const activateLicense = useCallback(
+    async (code: string) => {
+      await api.activateLicense(code);
+      setLicenseBlocked(false);
+      window.dispatchEvent(new Event('license-activated'));
+      refreshLicense();
+    },
+    [refreshLicense]
+  );
 
   const dismissLicenseBlock = useCallback(() => {
     window.dispatchEvent(new Event('license-activated'));
   }, []);
 
   return (
-    <AuthContext.Provider value={{
-      user, token, isLoading, login, register, logout,
-      isAuthenticated: !!token,
-      licenseBlocked,
-      activateLicense,
-      dismissLicenseBlock,
-      licenseStatus,
-      licenseUsage,
-      refreshLicense,
-    }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        token,
+        isLoading,
+        login,
+        register,
+        logout,
+        isAuthenticated: !!token,
+        licenseBlocked,
+        activateLicense,
+        dismissLicenseBlock,
+        licenseStatus,
+        licenseUsage,
+        refreshLicense,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

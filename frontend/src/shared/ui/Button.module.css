@@ -20,9 +20,9 @@
 
 /* Variants */
 .btnPrimary {
-  background: var(--color-primary, #f5661e);
+  background: var(--color-primary);
   color: var(--text-on-primary, #fff);
-  border-color: var(--color-primary, #f5661e);
+  border-color: var(--color-primary);
 }
 
 .btnPrimary:hover:not(:disabled) {
@@ -30,19 +30,19 @@
 }
 
 .btnSecondary {
-  background: var(--color-surface, #1a1a1e);
-  color: var(--text-main, #0f172a);
-  border-color: var(--border-color, #e2e8f0);
+  background: var(--color-surface);
+  color: var(--color-text);
+  border-color: var(--color-border);
 }
 
 .btnSecondary:hover:not(:disabled) {
-  background: var(--bg-hover, #f1f5f9);
+  background: var(--color-bg-hover);
 }
 
 .btnDanger {
-  background: var(--color-danger, #e5484d);
+  background: var(--color-danger);
   color: var(--text-on-primary, #fff);
-  border-color: var(--color-danger, #e5484d);
+  border-color: var(--color-danger);
 }
 
 .btnDanger:hover:not(:disabled) {
@@ -51,12 +51,12 @@
 
 .btnGhost {
   background: transparent;
-  color: var(--text-main, #0f172a);
+  color: var(--color-text);
   border-color: transparent;
 }
 
 .btnGhost:hover:not(:disabled) {
-  background: var(--bg-hover, #f1f5f9);
+  background: var(--color-bg-hover);
 }
 
 /* Sizes */
@@ -97,7 +97,9 @@
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .iconWrap {

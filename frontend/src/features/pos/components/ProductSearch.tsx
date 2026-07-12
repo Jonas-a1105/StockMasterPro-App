@@ -19,7 +19,7 @@ export function ProductSearch({
         className={styles.searchInput}
         placeholder="Buscar producto por nombre o código de barras..."
         value={search}
-        onChange={e => onSearchChange(e.target.value)}
+        onChange={(e) => onSearchChange(e.target.value)}
         autoFocus
       />
     </div>

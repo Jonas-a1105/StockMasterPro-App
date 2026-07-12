@@ -14,7 +14,7 @@ export function LicenseBlock({ onActivate }: LicenseBlockProps) {
   const [code, setCode] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  
+
   // Stripe States
   const [showStripeModal, setShowStripeModal] = useState(false);
   const [selectedPlanForStripe, setSelectedPlanForStripe] = useState<string | null>(null);
@@ -49,21 +49,27 @@ export function LicenseBlock({ onActivate }: LicenseBlockProps) {
             <h3>Planes Premium</h3>
           </div>
           <p className={styles.desc}>
-            Suscríbete ahora para reactivar tu cuenta y acceder a todas las herramientas profesionales.
+            Suscríbete ahora para reactivar tu cuenta y acceder a todas las herramientas
+            profesionales.
           </p>
 
           <div className={styles.plansGrid}>
             <div className={styles.planCard}>
               <h4>Plan PRO</h4>
-              <div className={styles.price}>$39 <span>/ mes</span></div>
+              <div className={styles.price}>
+                $39 <span>/ mes</span>
+              </div>
               <ul className={styles.features}>
                 <li>Inventario ilimitado</li>
                 <li>Hasta 5 usuarios</li>
                 <li>Cuentas por pagar</li>
               </ul>
-              <button 
-                className={styles.btnPay} 
-                onClick={() => { setSelectedPlanForStripe('pro'); setShowStripeModal(true); }}
+              <button
+                className={styles.btnPay}
+                onClick={() => {
+                  setSelectedPlanForStripe('pro');
+                  setShowStripeModal(true);
+                }}
               >
                 Suscribirse PRO
               </button>
@@ -72,15 +78,20 @@ export function LicenseBlock({ onActivate }: LicenseBlockProps) {
             <div className={`${styles.planCard} ${styles.recommended}`}>
               <span className={styles.badge}>RECOMENDADO</span>
               <h4>Plan Enterprise</h4>
-              <div className={styles.price}>$79 <span>/ mes</span></div>
+              <div className={styles.price}>
+                $79 <span>/ mes</span>
+              </div>
               <ul className={styles.features}>
                 <li>Todo ilimitado</li>
                 <li>PWA offline</li>
                 <li>Soporte 24/7</li>
               </ul>
-              <button 
-                className={styles.btnPayPrimary} 
-                onClick={() => { setSelectedPlanForStripe('enterprise'); setShowStripeModal(true); }}
+              <button
+                className={styles.btnPayPrimary}
+                onClick={() => {
+                  setSelectedPlanForStripe('enterprise');
+                  setShowStripeModal(true);
+                }}
               >
                 Suscribirse Enterprise
               </button>
@@ -90,7 +101,10 @@ export function LicenseBlock({ onActivate }: LicenseBlockProps) {
           <StripeCheckoutModal
             open={showStripeModal}
             planType={selectedPlanForStripe || ''}
-            onClose={() => { setShowStripeModal(false); setSelectedPlanForStripe(null); }}
+            onClose={() => {
+              setShowStripeModal(false);
+              setSelectedPlanForStripe(null);
+            }}
             onSuccess={handlePaymentSuccess}
           />
         </div>
@@ -103,28 +117,37 @@ export function LicenseBlock({ onActivate }: LicenseBlockProps) {
       <div className={styles.modal}>
         <Ban size={48} className={styles.icon} />
         <h2>Licencia Expirada</h2>
-        <p>Tu licencia ha expirado. Por favor, introduce un nuevo código de activación o contacta al administrador.</p>
+        <p>
+          Tu licencia ha expirado. Por favor, introduce un nuevo código de activación o contacta al
+          administrador.
+        </p>
         <form onSubmit={handleSubmit} className={styles.form}>
           <input
             type="text"
             value={code}
-            onChange={e => setCode(e.target.value)}
+            onChange={(e) => setCode(e.target.value)}
             placeholder="Código de activación"
             className={styles.input}
             required
           />
           {error && <div className={styles.error}>{error}</div>}
           <button type="submit" className={styles.btn} disabled={loading}>
-            {loading ? <><Spinner size={16} /> Validando</> : 'Activar'}
+            {loading ? (
+              <>
+                <Spinner size={16} /> Validando
+              </>
+            ) : (
+              'Activar'
+            )}
           </button>
-          
+
           <div className={styles.divider}>
             <span>O TAMBIÉN</span>
           </div>
 
-          <button 
-            type="button" 
-            className={styles.btnStripe} 
+          <button
+            type="button"
+            className={styles.btnStripe}
             onClick={() => setShowPlanSelect(true)}
           >
             <CreditCard size={14} /> Pagar con Tarjeta (Stripe)

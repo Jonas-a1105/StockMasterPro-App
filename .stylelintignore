@@ -1,0 +1,7 @@
+node_modules
+dist
+build
+.gemini
+package-lock.json
+**/dist/**
+**/node_modules/**

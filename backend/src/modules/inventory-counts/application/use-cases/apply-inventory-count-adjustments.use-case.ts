@@ -1,4 +1,9 @@
-import { Inject, Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import {
   InventoryCountRepository,
   INVENTORY_COUNT_REPOSITORY,
@@ -21,12 +26,16 @@ export class ApplyInventoryCountAdjustmentsUseCase {
     private readonly productRepo: ProductRepository,
   ) {}
 
-  async execute(input: ApplyAdjustmentsInput): Promise<{ applied: number; skipped: number }> {
+  async execute(
+    input: ApplyAdjustmentsInput,
+  ): Promise<{ applied: number; skipped: number }> {
     const count = await this.countRepo.findById(input.countId, input.tenantId);
     if (!count) throw new NotFoundException('Conteo no encontrado');
 
     if (count.status !== 'approved') {
-      throw new BadRequestException('Solo se pueden aplicar ajustes de conteos aprobados');
+      throw new BadRequestException(
+        'Solo se pueden aplicar ajustes de conteos aprobados',
+      );
     }
 
     let applied = 0;

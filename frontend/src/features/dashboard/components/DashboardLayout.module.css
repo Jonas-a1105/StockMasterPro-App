@@ -24,15 +24,17 @@
   align-items: center;
 }
 
-.content > :not([class*="posContainer"]) {
+.content > :not([class*='posContainer']) {
   max-width: 1250px;
   width: 100%;
-  padding: var(--layout-padding-top) var(--layout-padding-x) var(--layout-padding-bottom) var(--layout-padding-x);
+  padding: var(--layout-padding-top) var(--layout-padding-x) var(--layout-padding-bottom)
+    var(--layout-padding-x);
   box-sizing: border-box;
 }
 
 @media (max-width: 768px) {
-  .content > :not([class*="posContainer"]) {
-    padding: var(--layout-padding-top) var(--layout-padding-x-mobile) var(--layout-padding-bottom-mobile) var(--layout-padding-x-mobile) !important;
+  .content > :not([class*='posContainer']) {
+    padding: var(--layout-padding-top) var(--layout-padding-x-mobile)
+      var(--layout-padding-bottom-mobile) var(--layout-padding-x-mobile) !important;
   }
 }

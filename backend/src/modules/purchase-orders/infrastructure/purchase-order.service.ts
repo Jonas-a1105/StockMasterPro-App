@@ -44,11 +44,21 @@ export class PurchaseOrderService {
     return this.poRepo.approveOrder(id, tenantId, userId);
   }
 
-  async rejectOrder(id: string, tenantId: string, userId: string, reason?: string) {
+  async rejectOrder(
+    id: string,
+    tenantId: string,
+    userId: string,
+    reason?: string,
+  ) {
     return this.poRepo.rejectOrder(id, tenantId, userId, reason);
   }
 
-  async cancelOrder(id: string, tenantId: string, userId: string, reason?: string) {
+  async cancelOrder(
+    id: string,
+    tenantId: string,
+    userId: string,
+    reason?: string,
+  ) {
     return this.poRepo.cancelOrder(id, tenantId, userId, reason);
   }
 

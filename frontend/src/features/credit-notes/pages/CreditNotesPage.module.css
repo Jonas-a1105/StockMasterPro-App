@@ -76,7 +76,8 @@
   justify-content: center;
   width: 30px;
   height: 30px;
-  border-color: var(--border-color); border-style: solid;
+  border-color: var(--border-color);
+  border-style: solid;
   border-radius: var(--card-radius, 4px);
   background: none;
   cursor: pointer;
@@ -124,7 +125,8 @@
 .field select,
 .field textarea {
   padding: 10px 12px;
-  border-color: var(--border-color); border-style: solid;
+  border-color: var(--border-color);
+  border-style: solid;
   border-radius: var(--card-radius, 4px);
   font-size: var(--font-size-sm);
   outline: none;
@@ -194,7 +196,8 @@
 .itemRow select {
   flex: 1;
   padding: 8px 10px;
-  border-color: var(--border-color); border-style: solid;
+  border-color: var(--border-color);
+  border-style: solid;
   border-radius: var(--card-radius, 4px);
   font-size: var(--font-size-sm);
   outline: none;
@@ -206,7 +209,8 @@
 .qtyInput {
   width: 70px;
   padding: 8px 10px;
-  border-color: var(--border-color); border-style: solid;
+  border-color: var(--border-color);
+  border-style: solid;
   border-radius: var(--card-radius, 4px);
   font-size: var(--font-size-sm);
   outline: none;
@@ -218,7 +222,8 @@
 .priceInput {
   width: 100px;
   padding: 8px 10px;
-  border-color: var(--border-color); border-style: solid;
+  border-color: var(--border-color);
+  border-style: solid;
   border-radius: var(--card-radius, 4px);
   font-size: var(--font-size-sm);
   outline: none;
@@ -238,7 +243,8 @@
 .removeBtn {
   width: 28px;
   height: 28px;
-  border-color: var(--border-color); border-style: solid;
+  border-color: var(--border-color);
+  border-style: solid;
   border-radius: var(--card-radius, 4px);
   background: none;
   cursor: pointer;
@@ -276,7 +282,8 @@
 
 .cancelBtn {
   padding: 10px 20px;
-  border-color: var(--border-color); border-style: solid;
+  border-color: var(--border-color);
+  border-style: solid;
   border-radius: var(--card-radius, 4px);
   background: none;
   font-size: var(--font-size-sm);
@@ -339,9 +346,27 @@
   margin: 0 0 8px;
 }
 
-.textRight { text-align: right; }
-.textCenter { text-align: center; }
-.textMuted { color: var(--text-muted); }
-.flexCenter { justify-content: center; }
-.sectionTitle { font-size: var(--font-size-caption); font-weight: var(--font-weight-bold); text-transform: none; color: var(--text-muted); margin-bottom: 8px; }
-.emptyCell { text-align: center; padding: 40px; color: var(--text-muted); }
+.textRight {
+  text-align: right;
+}
+.textCenter {
+  text-align: center;
+}
+.textMuted {
+  color: var(--text-muted);
+}
+.flexCenter {
+  justify-content: center;
+}
+.sectionTitle {
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-bold);
+  text-transform: none;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+.emptyCell {
+  text-align: center;
+  padding: 40px;
+  color: var(--text-muted);
+}

@@ -76,30 +76,58 @@ export interface CartItem {
 }
 
 export interface Supplier {
-  id: string; tenantId: string; name: string; contact: string | null;
-  phone: string | null; email: string | null; address: string | null;
-  taxId: string | null; fiscalAddress: string | null;
-  createdAt: string; updatedAt: string;
+  id: string;
+  tenantId: string;
+  name: string;
+  contact: string | null;
+  phone: string | null;
+  email: string | null;
+  address: string | null;
+  taxId: string | null;
+  fiscalAddress: string | null;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface PurchaseOrder {
-  id: string; tenantId: string; supplierId: string | null; userId: string;
-  status: string; total: number; notes: string | null;
-  approvedById: string | null; approvedAt: string | null;
-  rejectedById: string | null; rejectedAt: string | null; rejectionReason: string | null;
-  cancelledById: string | null; cancelledAt: string | null; cancellationReason: string | null;
+  id: string;
+  tenantId: string;
+  supplierId: string | null;
+  userId: string;
+  status: string;
+  total: number;
+  notes: string | null;
+  approvedById: string | null;
+  approvedAt: string | null;
+  rejectedById: string | null;
+  rejectedAt: string | null;
+  rejectionReason: string | null;
+  cancelledById: string | null;
+  cancelledAt: string | null;
+  cancellationReason: string | null;
   expectedDeliveryDate: string | null;
-  items: PurchaseOrderItem[]; createdAt: string;
+  items: PurchaseOrderItem[];
+  createdAt: string;
 }
 
 export interface PurchaseOrderItem {
-  id: string; productId: string; quantity: number; receivedQty: number;
-  cost: number; subtotal: number;
+  id: string;
+  productId: string;
+  quantity: number;
+  receivedQty: number;
+  cost: number;
+  subtotal: number;
 }
 
 export interface InventoryMovement {
-  id: string; productId: string; type: string; quantity: number;
-  reference: string | null; notes: string | null; userId: string; createdAt: string;
+  id: string;
+  productId: string;
+  type: string;
+  quantity: number;
+  reference: string | null;
+  notes: string | null;
+  userId: string;
+  createdAt: string;
 }
 
 export interface TenantUser {
@@ -192,7 +220,11 @@ export interface SocialPost {
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
-  user: { id: string; name: string; socialProfile?: { avatarUrl: string | null; displayName: string } };
+  user: {
+    id: string;
+    name: string;
+    socialProfile?: { avatarUrl: string | null; displayName: string };
+  };
   _count: { comments: number; reactions: number };
   reactions?: { type: string }[];
   userReaction?: string | null;
@@ -212,7 +244,11 @@ export interface SocialCatalog {
   updatedAt: string;
   publishedAt: string | null;
   items: SocialCatalogItem[];
-  user?: { id: string; name: string; socialProfile?: { avatarUrl: string | null; displayName: string } };
+  user?: {
+    id: string;
+    name: string;
+    socialProfile?: { avatarUrl: string | null; displayName: string };
+  };
   _count?: { items: number };
 }
 
@@ -242,7 +278,11 @@ export interface SocialComment {
   images: string[];
   createdAt: string;
   updatedAt: string;
-  user: { id: string; name: string; socialProfile?: { avatarUrl: string | null; displayName: string } };
+  user: {
+    id: string;
+    name: string;
+    socialProfile?: { avatarUrl: string | null; displayName: string };
+  };
   replies?: SocialComment[];
   _count?: { replies: number };
 }
@@ -265,8 +305,16 @@ export interface SocialFollow {
   followerUserId: string;
   followedUserId: string;
   createdAt: string;
-  followerUser?: { id: string; name: string; socialProfile?: { avatarUrl: string | null; displayName: string } };
-  followedUser?: { id: string; name: string; socialProfile?: { avatarUrl: string | null; displayName: string } };
+  followerUser?: {
+    id: string;
+    name: string;
+    socialProfile?: { avatarUrl: string | null; displayName: string };
+  };
+  followedUser?: {
+    id: string;
+    name: string;
+    socialProfile?: { avatarUrl: string | null; displayName: string };
+  };
 }
 
 export interface SocialNotification {

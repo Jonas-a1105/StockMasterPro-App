@@ -54,7 +54,9 @@
   color: var(--text-muted);
 }
 
-.themeToggle:hover { filter: brightness(1.2); }
+.themeToggle:hover {
+  filter: brightness(1.2);
+}
 
 /* Theme icons handled by JS conditional render */
 
@@ -75,12 +77,20 @@
   width: 20px;
   height: 2px;
   background: var(--text-dark);
-  transition: transform 0.3s, opacity 0.3s;
+  transition:
+    transform 0.3s,
+    opacity 0.3s;
 }
 
-.hamburgerLine.open:nth-child(1) { transform: rotate(45deg) translate(4px, 4px); }
-.hamburgerLine.open:nth-child(2) { opacity: 0; }
-.hamburgerLine.open:nth-child(3) { transform: rotate(-45deg) translate(4px, -4px); }
+.hamburgerLine.open:nth-child(1) {
+  transform: rotate(45deg) translate(4px, 4px);
+}
+.hamburgerLine.open:nth-child(2) {
+  opacity: 0;
+}
+.hamburgerLine.open:nth-child(3) {
+  transform: rotate(-45deg) translate(4px, -4px);
+}
 
 /* ─── Nav Links ─── */
 .navLinks {
@@ -98,7 +108,9 @@
   white-space: nowrap;
 }
 
-.navLink:hover { color: var(--color-primary); }
+.navLink:hover {
+  color: var(--color-primary);
+}
 
 .navCta {
   background: var(--color-primary);
@@ -110,7 +122,9 @@
   padding: 10px 20px;
 }
 
-.navCta:hover { filter: brightness(1.1); }
+.navCta:hover {
+  filter: brightness(1.1);
+}
 
 /* ─── Hero ─── */
 .hero {
@@ -163,10 +177,15 @@
   font-weight: var(--font-weight-bold);
   letter-spacing: 1.5px;
   padding: 14px 32px;
-  transition: filter 0.15s, transform 0.15s;
+  transition:
+    filter 0.15s,
+    transform 0.15s;
 }
 
-.heroCta:hover { filter: brightness(1.1); transform: scale(1.02); }
+.heroCta:hover {
+  filter: brightness(1.1);
+  transform: scale(1.02);
+}
 
 .heroSecondary {
   text-decoration: none;
@@ -176,14 +195,20 @@
   color: var(--text-muted);
 }
 
-.heroSecondary:hover { border-color: var(--color-primary); color: var(--color-primary); }
+.heroSecondary:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
 
 /* ─── Sections ─── */
-.sectionAlt, .sectionPricing {
+.sectionAlt,
+.sectionPricing {
   padding: 80px 24px;
 }
 
-.sectionAlt { background: var(--bg-main); }
+.sectionAlt {
+  background: var(--bg-main);
+}
 
 .sectionInner {
   max-width: 1200px;
@@ -220,7 +245,9 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-  transition: border-color 0.15s, transform 0.15s;
+  transition:
+    border-color 0.15s,
+    transform 0.15s;
 }
 
 .featureCard:hover {
@@ -277,9 +304,12 @@
   transition: transform 0.15s;
 }
 
-.card:hover { transform: translateY(-3px); }
-.card.popular { background: var(--color-primary, #f05a28); }
-
+.card:hover {
+  transform: translateY(-3px);
+}
+.card.popular {
+  background: var(--color-primary, #f05a28);
+}
 
 .card.popular.selected::before {
   content: '';
@@ -295,8 +325,12 @@
 }
 
 @keyframes laserTravel {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .badge {
@@ -348,7 +382,9 @@
   background: var(--text-muted);
 }
 
-.cardDotActive { background: var(--color-primary) !important; }
+.cardDotActive {
+  background: var(--color-primary) !important;
+}
 
 .planName {
   font-size: var(--font-size-lg);
@@ -424,7 +460,9 @@
   transition: all 0.15s;
 }
 
-.cta:hover { filter: brightness(1.1); }
+.cta:hover {
+  filter: brightness(1.1);
+}
 
 .ctaActive {
   background: var(--color-primary) !important;
@@ -441,14 +479,20 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, transparent, rgb(255,255,255,0.5), transparent);
+  background: linear-gradient(90deg, transparent, rgb(255, 255, 255, 0.5), transparent);
   animation: shimmer 3s infinite ease-in-out;
 }
 
 @keyframes shimmer {
-  0% { transform: translateX(-150%); }
-  12% { transform: translateX(150%); }
-  100% { transform: translateX(150%); }
+  0% {
+    transform: translateX(-150%);
+  }
+  12% {
+    transform: translateX(150%);
+  }
+  100% {
+    transform: translateX(150%);
+  }
 }
 
 /* ─── Download ─── */
@@ -502,12 +546,21 @@
 
 /* ─── Responsive ─── */
 @media (max-width: 1024px) {
-  .featureGrid { grid-template-columns: repeat(2, 1fr); }
-  .pricingGrid { grid-template-columns: 1fr; gap: 20px; max-width: 400px; margin: 0 auto; }
+  .featureGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .pricingGrid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    max-width: 400px;
+    margin: 0 auto;
+  }
 }
 
 @media (max-width: 768px) {
-  .hamburger { display: flex; }
+  .hamburger {
+    display: flex;
+  }
   .navLinks {
     position: fixed;
     top: 0;
@@ -521,12 +574,24 @@
     z-index: 105;
     background: var(--bg-card);
   }
-  .navOpen { transform: translateY(0); }
-  .hero { padding: 60px 20px 40px; }
-  .sectionAlt, .sectionPricing { padding: 60px 20px; }
+  .navOpen {
+    transform: translateY(0);
+  }
+  .hero {
+    padding: 60px 20px 40px;
+  }
+  .sectionAlt,
+  .sectionPricing {
+    padding: 60px 20px;
+  }
 }
 
 @media (max-width: 480px) {
-  .featureGrid { grid-template-columns: 1fr; }
-  .downloadCard { width: 100%; padding: 28px 24px; }
+  .featureGrid {
+    grid-template-columns: 1fr;
+  }
+  .downloadCard {
+    width: 100%;
+    padding: 28px 24px;
+  }
 }

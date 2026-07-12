@@ -1,12 +1,32 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Plus, Wrench, Edit2, Trash2, Eye, Package, LayoutGrid, LayoutList, Download, Upload, Shield, Lock, X } from 'lucide-react';
+import {
+  Plus,
+  Wrench,
+  Edit2,
+  Trash2,
+  Eye,
+  Package,
+  LayoutGrid,
+  LayoutList,
+  Download,
+  Upload,
+  Shield,
+  Lock,
+  X,
+} from 'lucide-react';
 import { useAuth } from '@contexts/AuthContext';
 import { useToast } from '@contexts/ToastContext';
 import { useTheme } from '@contexts/ThemeContext';
 import { useExchangeRate } from '@contexts/ExchangeRateContext';
 import { useProducts } from '../hooks/useProducts';
-import { createInventoryProduct, updateInventoryProduct, deleteInventoryProduct, getInventoryMovements, createCategory } from '../api/inventory.api';
+import {
+  createInventoryProduct,
+  updateInventoryProduct,
+  deleteInventoryProduct,
+  getInventoryMovements,
+  createCategory,
+} from '../api/inventory.api';
 import { ProductKpiBar } from './ProductKpiBar';
 import { ProductFilters } from './ProductFilters';
 import { ProductForm, type ProductFormData } from './ProductForm';
@@ -24,10 +44,14 @@ import styles from '../pages/InventoryPage.module.css';
 import tableStyles from '@shared/ui/TableList.module.css';
 
 const PRODUCT_COLUMNS: ColumnMapping[] = [
-  { header: 'Nombre', key: 'name', type: 'string' }, { header: 'Marca', key: 'brand', type: 'string' },
-  { header: 'Código', key: 'barcode', type: 'string' }, { header: 'Precio ($)', key: 'price', type: 'number' },
-  { header: 'Costo ($)', key: 'cost', type: 'number' }, { header: 'Stock', key: 'stock', type: 'number' },
-  { header: 'Stock Mínimo', key: 'minStock', type: 'number' }, { header: 'Descripción', key: 'description', type: 'string' },
+  { header: 'Nombre', key: 'name', type: 'string' },
+  { header: 'Marca', key: 'brand', type: 'string' },
+  { header: 'Código', key: 'barcode', type: 'string' },
+  { header: 'Precio ($)', key: 'price', type: 'number' },
+  { header: 'Costo ($)', key: 'cost', type: 'number' },
+  { header: 'Stock', key: 'stock', type: 'number' },
+  { header: 'Stock Mínimo', key: 'minStock', type: 'number' },
+  { header: 'Descripción', key: 'description', type: 'string' },
   { header: 'Imagen URL', key: 'imageUrl', type: 'string' },
 ];
 
@@ -37,13 +61,32 @@ export function ProductsTab() {
   const navigate = useNavigate();
   const { formatUsd, formatBs } = useExchangeRate();
   const { config, updateConfig } = useTheme();
-  const { products, setProducts, categories, warehouses, initialLoading, loadProducts, loadCategories } = useProducts();
+  const {
+    products,
+    setProducts,
+    categories,
+    warehouses,
+    initialLoading,
+    loadProducts,
+    loadCategories,
+  } = useProducts();
 
   const [search, setSearch] = useState('');
   const [warehouseFilter, setWarehouseFilter] = useState('');
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
-  const [form, setForm] = useState<ProductFormData>({ name: '', barcode: '', price: 0, cost: 0, stock: 0, minStock: 0, description: '', brand: '', imageUrl: '', categoryId: '' });
+  const [form, setForm] = useState<ProductFormData>({
+    name: '',
+    barcode: '',
+    price: 0,
+    cost: 0,
+    stock: 0,
+    minStock: 0,
+    description: '',
+    brand: '',
+    imageUrl: '',
+    categoryId: '',
+  });
   const [loading, setLoading] = useState(false);
   const [showImport, setShowImport] = useState(false);
   const [showNewCategory, setShowNewCategory] = useState(false);
@@ -59,7 +102,11 @@ export function ProductsTab() {
   const sortRef = useRef<HTMLDivElement>(null);
   const toolsRef = useRef<HTMLDivElement>(null);
 
-  const isLimitExceeded = !editingId && licenseUsage?.products && licenseUsage.products.limit !== null && licenseUsage.products.current >= licenseUsage.products.limit;
+  const isLimitExceeded =
+    !editingId &&
+    licenseUsage?.products &&
+    licenseUsage.products.limit !== null &&
+    licenseUsage.products.current >= licenseUsage.products.limit;
   const nextRequiredPlan = 'pro';
   const currentViewMode: ViewMode = config.productViewMode;
   const toggleViewMode = (mode: ViewMode) => updateConfig({ productViewMode: mode });
@@ -74,8 +121,12 @@ export function ProductsTab() {
   }, []);
 
   const handleSort = (field: SortField) => {
-    if (sortField === field) { setSortDirection(prev => prev === 'asc' ? 'desc' : 'asc'); }
-    else { setSortField(field); setSortDirection('asc'); }
+    if (sortField === field) {
+      setSortDirection((prev) => (prev === 'asc' ? 'desc' : 'asc'));
+    } else {
+      setSortField(field);
+      setSortDirection('asc');
+    }
     setShowSortMenu(false);
   };
 
@@ -85,18 +136,38 @@ export function ProductsTab() {
   };
 
   const handleImportProducts = async (data: any[], onProgress: (c: number, t: number) => void) => {
-    let successCount = 0, errorCount = 0;
+    let successCount = 0,
+      errorCount = 0;
     const details: string[] = [];
     for (let i = 0; i < data.length; i++) {
       const row = data[i];
       try {
         if (!row.name) throw new Error('El nombre del producto es obligatorio.');
-        const existing = products.find(p => p.barcode && p.barcode === row.barcode);
-        const payload = { name: row.name, barcode: row.barcode || null, price: Number(row.price) || 0, cost: Number(row.cost) || 0, stock: Number(row.stock) || 0, minStock: Number(row.minStock) || 0, description: row.description || null, brand: row.brand || null, imageUrl: row.imageUrl || null, categoryId: null };
-        if (existing) { await updateInventoryProduct(existing.id, payload); details.push(`Actualizado: ${row.name}`); }
-        else { await createInventoryProduct(payload); details.push(`Creado: ${row.name}`); }
+        const existing = products.find((p) => p.barcode && p.barcode === row.barcode);
+        const payload = {
+          name: row.name,
+          barcode: row.barcode || null,
+          price: Number(row.price) || 0,
+          cost: Number(row.cost) || 0,
+          stock: Number(row.stock) || 0,
+          minStock: Number(row.minStock) || 0,
+          description: row.description || null,
+          brand: row.brand || null,
+          imageUrl: row.imageUrl || null,
+          categoryId: null,
+        };
+        if (existing) {
+          await updateInventoryProduct(existing.id, payload);
+          details.push(`Actualizado: ${row.name}`);
+        } else {
+          await createInventoryProduct(payload);
+          details.push(`Creado: ${row.name}`);
+        }
         successCount++;
-      } catch (err: any) { errorCount++; details.push(`Error en fila ${i + 1} (${row.name || 'Sin Nombre'}): ${err.message}`); }
+      } catch (err: any) {
+        errorCount++;
+        details.push(`Error en fila ${i + 1} (${row.name || 'Sin Nombre'}): ${err.message}`);
+      }
       onProgress(i + 1, data.length);
     }
     await loadProducts();
@@ -104,14 +175,23 @@ export function ProductsTab() {
   };
 
   const filteredProducts = useMemo(() => {
-    let result = products.filter(p => p.name.toLowerCase().includes(search.toLowerCase()) || p.barcode?.includes(search) || (p.brand && p.brand.toLowerCase().includes(search.toLowerCase())));
+    let result = products.filter(
+      (p) =>
+        p.name.toLowerCase().includes(search.toLowerCase()) ||
+        p.barcode?.includes(search) ||
+        (p.brand && p.brand.toLowerCase().includes(search.toLowerCase()))
+    );
     if (sortField !== 'none') {
       result = [...result].sort((a, b) => {
         let cmp = 0;
         if (sortField === 'name') cmp = a.name.localeCompare(b.name);
         else if (sortField === 'price') cmp = a.price - b.price;
         else if (sortField === 'stock') cmp = a.stock - b.stock;
-        else if (sortField === 'status') { const aL = a.stock <= a.minStock ? 0 : 1; const bL = b.stock <= b.minStock ? 0 : 1; cmp = aL - bL; }
+        else if (sortField === 'status') {
+          const aL = a.stock <= a.minStock ? 0 : 1;
+          const bL = b.stock <= b.minStock ? 0 : 1;
+          cmp = aL - bL;
+        }
         return sortDirection === 'asc' ? cmp : -cmp;
       });
     }
@@ -125,16 +205,47 @@ export function ProductsTab() {
       if (!payload.categoryId) payload.categoryId = null;
       if (!payload.imageUrl) payload.imageUrl = null;
       if (!payload.brand) payload.brand = null;
-      if (editingId) { await updateInventoryProduct(editingId, payload); } else { await createInventoryProduct(payload); }
-      setShowForm(false); setEditingId(null);
-      setForm({ name: '', barcode: '', price: 0, cost: 0, stock: 0, minStock: 0, description: '', brand: '', imageUrl: '', categoryId: '' });
+      if (editingId) {
+        await updateInventoryProduct(editingId, payload);
+      } else {
+        await createInventoryProduct(payload);
+      }
+      setShowForm(false);
+      setEditingId(null);
+      setForm({
+        name: '',
+        barcode: '',
+        price: 0,
+        cost: 0,
+        stock: 0,
+        minStock: 0,
+        description: '',
+        brand: '',
+        imageUrl: '',
+        categoryId: '',
+      });
       await loadProducts();
       showToast(editingId ? 'Producto actualizado' : 'Producto creado', 'success');
-    } catch (err: any) { showToast(err.message, 'error'); } finally { setLoading(false); }
+    } catch (err: any) {
+      showToast(err.message, 'error');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const startEdit = (product: Product) => {
-    setForm({ name: product.name, barcode: product.barcode || '', price: product.price, cost: product.cost, stock: product.stock, minStock: product.minStock, description: product.description || '', brand: (product as any).brand || '', imageUrl: (product as any).imageUrl || '', categoryId: product.categoryId || '' });
+    setForm({
+      name: product.name,
+      barcode: product.barcode || '',
+      price: product.price,
+      cost: product.cost,
+      stock: product.stock,
+      minStock: product.minStock,
+      description: product.description || '',
+      brand: (product as any).brand || '',
+      imageUrl: (product as any).imageUrl || '',
+      categoryId: product.categoryId || '',
+    });
     setEditingId(product.id);
     setShowForm(true);
   };
@@ -145,13 +256,26 @@ export function ProductsTab() {
 
   const confirmDelete = async () => {
     if (!deleteConfirm) return;
-    try { await deleteInventoryProduct(deleteConfirm.id); showToast('Producto eliminado exitosamente', 'success'); await loadProducts(); setDeleteConfirm(null); } catch (err: any) { showToast(err.message || 'Error al eliminar el producto', 'error'); }
+    try {
+      await deleteInventoryProduct(deleteConfirm.id);
+      showToast('Producto eliminado exitosamente', 'success');
+      await loadProducts();
+      setDeleteConfirm(null);
+    } catch (err: any) {
+      showToast(err.message || 'Error al eliminar el producto', 'error');
+    }
   };
 
   const handleViewDetails = async (product: Product) => {
     setViewProduct(product);
     setLoadingMovements(true);
-    try { setMovements(await getInventoryMovements(product.id)); } catch { setMovements([]); } finally { setLoadingMovements(false); }
+    try {
+      setMovements(await getInventoryMovements(product.id));
+    } catch {
+      setMovements([]);
+    } finally {
+      setLoadingMovements(false);
+    }
   };
 
   const handleCreateCategory = async () => {
@@ -159,78 +283,248 @@ export function ProductsTab() {
     try {
       const cat = await createCategory({ name: newCategoryName.trim() });
       await loadCategories();
-      setForm(p => ({ ...p, categoryId: cat.id }));
-      setNewCategoryName(''); setShowNewCategory(false);
+      setForm((p) => ({ ...p, categoryId: cat.id }));
+      setNewCategoryName('');
+      setShowNewCategory(false);
       showToast(`Categoría "${cat.name}" creada`, 'success');
-    } catch (err: any) { showToast(err.message, 'error'); }
+    } catch (err: any) {
+      showToast(err.message, 'error');
+    }
   };
 
   const getCategoryName = (catId: string | null) => {
     if (!catId) return '—';
-    const cat = categories.find(c => c.id === catId);
+    const cat = categories.find((c) => c.id === catId);
     return cat ? cat.name : '—';
   };
 
   return (
     <>
       <ProductKpiBar products={products} />
-      <ProductFilters search={search} onSearchChange={setSearch} warehouseFilter={warehouseFilter} onWarehouseChange={setWarehouseFilter} warehouses={warehouses} sortField={sortField} sortDirection={sortDirection} onSort={handleSort} showSortMenu={showSortMenu} setShowSortMenu={setShowSortMenu} sortRef={sortRef}>
+      <ProductFilters
+        search={search}
+        onSearchChange={setSearch}
+        warehouseFilter={warehouseFilter}
+        onWarehouseChange={setWarehouseFilter}
+        warehouses={warehouses}
+        sortField={sortField}
+        sortDirection={sortDirection}
+        onSort={handleSort}
+        showSortMenu={showSortMenu}
+        setShowSortMenu={setShowSortMenu}
+        sortRef={sortRef}
+      >
         <div className={styles.viewToggle}>
-          <button className={`${styles.viewToggleBtn} ${currentViewMode === 'table' ? styles.viewToggleBtnActive : ''}`} onClick={() => toggleViewMode('table')} title="Vista de Tabla"><LayoutList size={15} /></button>
-          <button className={`${styles.viewToggleBtn} ${currentViewMode === 'cards' ? styles.viewToggleBtnActive : ''}`} onClick={() => toggleViewMode('cards')} title="Vista de Tarjetas"><LayoutGrid size={15} /></button>
+          <button
+            className={`${styles.viewToggleBtn} ${currentViewMode === 'table' ? styles.viewToggleBtnActive : ''}`}
+            onClick={() => toggleViewMode('table')}
+            title="Vista de Tabla"
+          >
+            <LayoutList size={15} />
+          </button>
+          <button
+            className={`${styles.viewToggleBtn} ${currentViewMode === 'cards' ? styles.viewToggleBtnActive : ''}`}
+            onClick={() => toggleViewMode('cards')}
+            title="Vista de Tarjetas"
+          >
+            <LayoutGrid size={15} />
+          </button>
         </div>
 
         <div className={styles.toolsDropdown} ref={toolsRef}>
-          <button className={styles.toolsDropdownBtn} onClick={() => { setShowToolsMenu(!showToolsMenu); setShowSortMenu(false); }}><Wrench size={14} /> <span>Herramientas</span></button>
+          <button
+            className={styles.toolsDropdownBtn}
+            onClick={() => {
+              setShowToolsMenu(!showToolsMenu);
+              setShowSortMenu(false);
+            }}
+          >
+            <Wrench size={14} /> <span>Herramientas</span>
+          </button>
           {showToolsMenu && (
             <div className={styles.toolsDropdownMenu}>
               {licenseStatus?.tier === 'free' ? (
-<button className={`${styles.toolsMenuItem} ${styles.disabledMenuItem}`} onClick={() => { setShowToolsMenu(false); showToast('Esta función requiere Plan Intermedio o superior', 'info'); navigate('/settings?tab=licenses&upgrade=intermedio'); }}>
-              <Download size={14} className={styles.toolsMenuIcon} /> <span>Exportar Excel</span> <Lock size={12} className={styles.lockIcon} />
+                <button
+                  className={`${styles.toolsMenuItem} ${styles.disabledMenuItem}`}
+                  onClick={() => {
+                    setShowToolsMenu(false);
+                    showToast('Esta función requiere Plan Intermedio o superior', 'info');
+                    navigate('/settings?tab=licenses&upgrade=intermedio');
+                  }}
+                >
+                  <Download size={14} className={styles.toolsMenuIcon} />{' '}
+                  <span>Exportar Excel</span> <Lock size={12} className={styles.lockIcon} />
                 </button>
               ) : (
-                <button className={styles.toolsMenuItem} onClick={() => { handleExportProducts(); setShowToolsMenu(false); }}><Download size={14} className={styles.toolsMenuIcon} /> <span>Exportar Excel</span></button>
+                <button
+                  className={styles.toolsMenuItem}
+                  onClick={() => {
+                    handleExportProducts();
+                    setShowToolsMenu(false);
+                  }}
+                >
+                  <Download size={14} className={styles.toolsMenuIcon} />{' '}
+                  <span>Exportar Excel</span>
+                </button>
               )}
               {licenseStatus?.tier !== 'free' && (
-                <button className={styles.toolsMenuItem} onClick={() => { exportToPdf(products, PRODUCT_COLUMNS, 'Inventario - Productos', 'inventario_productos'); setShowToolsMenu(false); }}><Download size={14} className={styles.toolsMenuIcon} /> <span>Exportar PDF</span></button>
+                <button
+                  className={styles.toolsMenuItem}
+                  onClick={() => {
+                    exportToPdf(
+                      products,
+                      PRODUCT_COLUMNS,
+                      'Inventario - Productos',
+                      'inventario_productos'
+                    );
+                    setShowToolsMenu(false);
+                  }}
+                >
+                  <Download size={14} className={styles.toolsMenuIcon} /> <span>Exportar PDF</span>
+                </button>
               )}
               {licenseStatus?.tier === 'free' ? (
-<button className={`${styles.toolsMenuItem} ${styles.disabledMenuItem}`} onClick={() => { setShowToolsMenu(false); showToast('Esta función requiere Plan Intermedio o superior', 'info'); navigate('/settings?tab=licenses&upgrade=intermedio'); }}>
-              <Upload size={14} className={styles.toolsMenuIcon} /> <span>Importar Archivo</span> <Lock size={12} className={styles.lockIcon} />
+                <button
+                  className={`${styles.toolsMenuItem} ${styles.disabledMenuItem}`}
+                  onClick={() => {
+                    setShowToolsMenu(false);
+                    showToast('Esta función requiere Plan Intermedio o superior', 'info');
+                    navigate('/settings?tab=licenses&upgrade=intermedio');
+                  }}
+                >
+                  <Upload size={14} className={styles.toolsMenuIcon} />{' '}
+                  <span>Importar Archivo</span> <Lock size={12} className={styles.lockIcon} />
                 </button>
               ) : (
-                <button className={styles.toolsMenuItem} onClick={() => { setShowImport(true); setShowToolsMenu(false); }}><Upload size={14} className={styles.toolsMenuIcon} /> <span>Importar Archivo</span></button>
+                <button
+                  className={styles.toolsMenuItem}
+                  onClick={() => {
+                    setShowImport(true);
+                    setShowToolsMenu(false);
+                  }}
+                >
+                  <Upload size={14} className={styles.toolsMenuIcon} />{' '}
+                  <span>Importar Archivo</span>
+                </button>
               )}
               <div className={styles.toolsMenuDivider} />
-              <button className={styles.toolsMenuItem} onClick={() => { showToast('Respaldo local en desarrollo', 'info'); setShowToolsMenu(false); }}><Shield size={14} className={styles.toolsMenuIcon} /> <span>Crear Respaldo</span></button>
+              <button
+                className={styles.toolsMenuItem}
+                onClick={() => {
+                  showToast('Respaldo local en desarrollo', 'info');
+                  setShowToolsMenu(false);
+                }}
+              >
+                <Shield size={14} className={styles.toolsMenuIcon} /> <span>Crear Respaldo</span>
+              </button>
             </div>
           )}
         </div>
 
         {user?.role !== 'cajero' && (
-          <button className={styles.addBtn} onClick={() => { setShowForm(true); setEditingId(null); setForm({ name: '', barcode: '', price: 0, cost: 0, stock: 0, minStock: 0, description: '', brand: '', imageUrl: '', categoryId: '' }); setShowNewCategory(false); }}>
+          <button
+            className={styles.addBtn}
+            onClick={() => {
+              setShowForm(true);
+              setEditingId(null);
+              setForm({
+                name: '',
+                barcode: '',
+                price: 0,
+                cost: 0,
+                stock: 0,
+                minStock: 0,
+                description: '',
+                brand: '',
+                imageUrl: '',
+                categoryId: '',
+              });
+              setShowNewCategory(false);
+            }}
+          >
             <Plus size={18} /> Nuevo Producto
           </button>
         )}
       </ProductFilters>
 
-      <ProductForm key={editingId || 'new'} open={showForm} editingId={editingId} initialData={form} onClose={() => { setShowForm(false); setEditingId(null); setForm({ name: '', barcode: '', price: 0, cost: 0, stock: 0, minStock: 0, description: '', brand: '', imageUrl: '', categoryId: '' }); }} onSubmit={handleSubmit} loading={loading} isLimitExceeded={isLimitExceeded} nextRequiredPlan={nextRequiredPlan} categories={categories} onShowNewCategory={() => setShowNewCategory(!showNewCategory)} showNewCategory={showNewCategory} newCategoryName={newCategoryName} onNewCategoryNameChange={setNewCategoryName} onCreateCategory={handleCreateCategory} />
+      <ProductForm
+        key={editingId || 'new'}
+        open={showForm}
+        editingId={editingId}
+        initialData={form}
+        onClose={() => {
+          setShowForm(false);
+          setEditingId(null);
+          setForm({
+            name: '',
+            barcode: '',
+            price: 0,
+            cost: 0,
+            stock: 0,
+            minStock: 0,
+            description: '',
+            brand: '',
+            imageUrl: '',
+            categoryId: '',
+          });
+        }}
+        onSubmit={handleSubmit}
+        loading={loading}
+        isLimitExceeded={isLimitExceeded}
+        nextRequiredPlan={nextRequiredPlan}
+        categories={categories}
+        onShowNewCategory={() => setShowNewCategory(!showNewCategory)}
+        showNewCategory={showNewCategory}
+        newCategoryName={newCategoryName}
+        onNewCategoryNameChange={setNewCategoryName}
+        onCreateCategory={handleCreateCategory}
+      />
 
-      <Modal open={!!viewProduct} onClose={() => setViewProduct(null)} title="DETALLES DEL PRODUCTO" xwide>
-        {viewProduct && <ProductDetailPanel product={viewProduct} movements={movements} loadingMovements={loadingMovements} getCategoryName={getCategoryName} />}
+      <Modal
+        open={!!viewProduct}
+        onClose={() => setViewProduct(null)}
+        title="DETALLES DEL PRODUCTO"
+        xwide
+      >
+        {viewProduct && (
+          <ProductDetailPanel
+            product={viewProduct}
+            movements={movements}
+            loadingMovements={loadingMovements}
+            getCategoryName={getCategoryName}
+          />
+        )}
       </Modal>
 
       {initialLoading && config.skeletonEnabled ? (
-        config.productViewMode === 'cards' ? <SkeletonCards count={8} /> : <SkeletonTable rows={8} cols={10} />
+        config.productViewMode === 'cards' ? (
+          <SkeletonCards count={8} />
+        ) : (
+          <SkeletonTable rows={8} cols={10} />
+        )
       ) : currentViewMode === 'cards' ? (
         <div className={styles.productsGrid}>
-          {filteredProducts.map(product => {
+          {filteredProducts.map((product) => {
             const isBajo = product.stock <= product.minStock;
             return (
-              <div key={product.id} className={`${styles.productCard} ${isBajo ? styles.prodLowStock : ''}`}>
-                <div className={styles.prodImageContainer} onClick={() => handleViewDetails(product)}>
-                  {product.imageUrl ? <img src={product.imageUrl} alt="" /> : <Package size={28} className={styles.textMuted} />}
-                  {product.stock === 0 ? <div className={`${styles.prodBadge} ${styles.prodBadgeOut}`}>Agotado</div> : isBajo ? <div className={`${styles.prodBadge} ${styles.prodBadgeLow}`}>Bajo Stock</div> : null}
+              <div
+                key={product.id}
+                className={`${styles.productCard} ${isBajo ? styles.prodLowStock : ''}`}
+              >
+                <div
+                  className={styles.prodImageContainer}
+                  onClick={() => handleViewDetails(product)}
+                >
+                  {product.imageUrl ? (
+                    <img src={product.imageUrl} alt="" />
+                  ) : (
+                    <Package size={28} className={styles.textMuted} />
+                  )}
+                  {product.stock === 0 ? (
+                    <div className={`${styles.prodBadge} ${styles.prodBadgeOut}`}>Agotado</div>
+                  ) : isBajo ? (
+                    <div className={`${styles.prodBadge} ${styles.prodBadgeLow}`}>Bajo Stock</div>
+                  ) : null}
                 </div>
                 <div className={styles.prodInfoGrid}>
                   <div className={styles.prodPriceUsd}>{formatUsd(product.price)}</div>
@@ -244,51 +538,154 @@ export function ProductsTab() {
                       <span className={styles.prodPriceBsValue}>{formatBs(product.price)}</span>
                     </div>
                     <div className={styles.prodActionsRow}>
-                      <button className={styles.iconBtn} onClick={() => handleViewDetails(product)} title="Ver"><Eye size={16} /></button>
-                      {user?.role !== 'cajero' && (<><button className={styles.iconBtn} onClick={() => startEdit(product)} title="Editar"><Edit2 size={16} /></button><button className={`${styles.iconBtn} ${styles.iconBtnDelete}`} onClick={() => handleDelete(product.id, product.name)} title="Eliminar"><Trash2 size={16} /></button></>)}
+                      <button
+                        className={styles.iconBtn}
+                        onClick={() => handleViewDetails(product)}
+                        title="Ver"
+                      >
+                        <Eye size={16} />
+                      </button>
+                      {user?.role !== 'cajero' && (
+                        <>
+                          <button
+                            className={styles.iconBtn}
+                            onClick={() => startEdit(product)}
+                            title="Editar"
+                          >
+                            <Edit2 size={16} />
+                          </button>
+                          <button
+                            className={`${styles.iconBtn} ${styles.iconBtnDelete}`}
+                            onClick={() => handleDelete(product.id, product.name)}
+                            title="Eliminar"
+                          >
+                            <Trash2 size={16} />
+                          </button>
+                        </>
+                      )}
                     </div>
                   </div>
                 </div>
               </div>
             );
           })}
-          {filteredProducts.length === 0 && <div className={styles.emptyGrid}>No hay productos registrados</div>}
+          {filteredProducts.length === 0 && (
+            <div className={styles.emptyGrid}>No hay productos registrados</div>
+          )}
         </div>
       ) : (
         <div className={tableStyles.container}>
           <table className={tableStyles.table}>
             <thead>
               <tr>
-                <th>Producto</th><th>Marca</th><th>Categoría</th><th>Código</th>
-                <th className={styles.textRight}>Precio ($)</th><th className={styles.textRight}>Precio (Bs)</th>
-                <th className={styles.textRight}>Costo ($)</th><th className={styles.textRight}>Costo (Bs)</th>
-                <th className={styles.textRight}>Ganancia ($)</th><th className={styles.textRight}>Ganancia (Bs)</th>
-                <th className={styles.textRight}>Stock</th><th className={styles.textRight}>Min.</th>
-                <th className={styles.textCenter}>Estado</th><th className={styles.textCenter}>Acción</th>
+                <th>Producto</th>
+                <th>Marca</th>
+                <th>Categoría</th>
+                <th>Código</th>
+                <th className={styles.textRight}>Precio ($)</th>
+                <th className={styles.textRight}>Precio (Bs)</th>
+                <th className={styles.textRight}>Costo ($)</th>
+                <th className={styles.textRight}>Costo (Bs)</th>
+                <th className={styles.textRight}>Ganancia ($)</th>
+                <th className={styles.textRight}>Ganancia (Bs)</th>
+                <th className={styles.textRight}>Stock</th>
+                <th className={styles.textRight}>Min.</th>
+                <th className={styles.textCenter}>Estado</th>
+                <th className={styles.textCenter}>Acción</th>
               </tr>
             </thead>
             <tbody>
-              {filteredProducts.map(product => {
+              {filteredProducts.map((product) => {
                 const profit = product.price - product.cost;
                 return (
                   <tr key={product.id}>
-                    <td><div className={tableStyles.nameCell}>{product.imageUrl ? <img src={product.imageUrl} alt="" className={`${styles.objectCover} ${styles.w28h28} ${styles.flexShrink0}`} /> : <span className={`${styles.w28h28} ${styles.flexCenter} ${styles.flexShrink0} ${styles.bgMain}`}><Package size={14} /></span>}<span className={tableStyles.nameText}>{product.name}</span></div></td>
+                    <td>
+                      <div className={tableStyles.nameCell}>
+                        {product.imageUrl ? (
+                          <img
+                            src={product.imageUrl}
+                            alt=""
+                            className={`${styles.objectCover} ${styles.w28h28} ${styles.flexShrink0}`}
+                          />
+                        ) : (
+                          <span
+                            className={`${styles.w28h28} ${styles.flexCenter} ${styles.flexShrink0} ${styles.bgMain}`}
+                          >
+                            <Package size={14} />
+                          </span>
+                        )}
+                        <span className={tableStyles.nameText}>{product.name}</span>
+                      </div>
+                    </td>
                     <td className={styles.textMuted}>{(product as any).brand || '—'}</td>
                     <td className={styles.textMuted}>{getCategoryName(product.categoryId)}</td>
-                    <td><span className={tableStyles.code}>{product.barcode || '—'}</span></td>
-                    <td className={styles.textRight}><span className={tableStyles.numberValue}>{formatUsd(product.price)}</span></td>
-                    <td className={styles.textRight}><span className={tableStyles.numberValue}>{formatBs(product.price)}</span></td>
-                    <td className={styles.textRight}><span className={tableStyles.numberValue}>{formatUsd(product.cost)}</span></td>
-                    <td className={styles.textRight}><span className={tableStyles.numberValue}>{formatBs(product.cost)}</span></td>
-                    <td className={styles.textRight}><span className={`${tableStyles.numberValue} ${profit >= 0 ? styles.textSuccess : styles.textDanger}`}>{formatUsd(profit)}</span></td>
-                    <td className={styles.textRight}><span className={`${tableStyles.numberValue} ${profit >= 0 ? styles.textSuccess : styles.textDanger}`}>{formatBs(profit)}</span></td>
-                    <td className={styles.textRight}><span className={tableStyles.numberValue}>{product.stock}</span></td>
+                    <td>
+                      <span className={tableStyles.code}>{product.barcode || '—'}</span>
+                    </td>
+                    <td className={styles.textRight}>
+                      <span className={tableStyles.numberValue}>{formatUsd(product.price)}</span>
+                    </td>
+                    <td className={styles.textRight}>
+                      <span className={tableStyles.numberValue}>{formatBs(product.price)}</span>
+                    </td>
+                    <td className={styles.textRight}>
+                      <span className={tableStyles.numberValue}>{formatUsd(product.cost)}</span>
+                    </td>
+                    <td className={styles.textRight}>
+                      <span className={tableStyles.numberValue}>{formatBs(product.cost)}</span>
+                    </td>
+                    <td className={styles.textRight}>
+                      <span
+                        className={`${tableStyles.numberValue} ${profit >= 0 ? styles.textSuccess : styles.textDanger}`}
+                      >
+                        {formatUsd(profit)}
+                      </span>
+                    </td>
+                    <td className={styles.textRight}>
+                      <span
+                        className={`${tableStyles.numberValue} ${profit >= 0 ? styles.textSuccess : styles.textDanger}`}
+                      >
+                        {formatBs(profit)}
+                      </span>
+                    </td>
+                    <td className={styles.textRight}>
+                      <span className={tableStyles.numberValue}>{product.stock}</span>
+                    </td>
                     <td className={styles.textRight}>{product.minStock}</td>
-                    <td className={styles.textCenter}><span className={`${tableStyles.badge} ${product.stock <= product.minStock ? tableStyles.badgeSaturated : tableStyles.badgeActive}`}>{product.stock <= product.minStock ? 'Stock Bajo' : 'OK'}</span></td>
+                    <td className={styles.textCenter}>
+                      <span
+                        className={`${tableStyles.badge} ${product.stock <= product.minStock ? tableStyles.badgeSaturated : tableStyles.badgeActive}`}
+                      >
+                        {product.stock <= product.minStock ? 'Stock Bajo' : 'OK'}
+                      </span>
+                    </td>
                     <td className={styles.textCenter}>
                       <div className={tableStyles.actions}>
-                        <button className={tableStyles.actionBtn} onClick={() => handleViewDetails(product)} title="Ver Detalles"><Eye size={14} /></button>
-                        {user?.role !== 'cajero' && (<><button className={tableStyles.actionBtn} onClick={() => startEdit(product)} title="Editar"><Edit2 size={14} /></button><button className={`${tableStyles.actionBtn} danger`} onClick={() => handleDelete(product.id, product.name)} title="Eliminar"><Trash2 size={14} /></button></>)}
+                        <button
+                          className={tableStyles.actionBtn}
+                          onClick={() => handleViewDetails(product)}
+                          title="Ver Detalles"
+                        >
+                          <Eye size={14} />
+                        </button>
+                        {user?.role !== 'cajero' && (
+                          <>
+                            <button
+                              className={tableStyles.actionBtn}
+                              onClick={() => startEdit(product)}
+                              title="Editar"
+                            >
+                              <Edit2 size={14} />
+                            </button>
+                            <button
+                              className={`${tableStyles.actionBtn} danger`}
+                              onClick={() => handleDelete(product.id, product.name)}
+                              title="Eliminar"
+                            >
+                              <Trash2 size={14} />
+                            </button>
+                          </>
+                        )}
                       </div>
                     </td>
                   </tr>
@@ -296,18 +693,29 @@ export function ProductsTab() {
               })}
             </tbody>
           </table>
-          {filteredProducts.length === 0 && <p className={styles.emptyState}>No hay productos registrados</p>}
+          {filteredProducts.length === 0 && (
+            <p className={styles.emptyState}>No hay productos registrados</p>
+          )}
         </div>
       )}
 
-      <ImportModal open={showImport} onClose={() => setShowImport(false)} title="Productos" columns={PRODUCT_COLUMNS} templateFilename="plantilla_productos" onImport={handleImportProducts} />
+      <ImportModal
+        open={showImport}
+        onClose={() => setShowImport(false)}
+        title="Productos"
+        columns={PRODUCT_COLUMNS}
+        templateFilename="plantilla_productos"
+        onImport={handleImportProducts}
+      />
 
       <ConfirmModal
         open={!!deleteConfirm}
         onClose={() => setDeleteConfirm(null)}
         onConfirm={confirmDelete}
         title="Eliminar producto"
-        message={deleteConfirm ? `¿Estás seguro de que deseas eliminar "${deleteConfirm.name}"?` : ''}
+        message={
+          deleteConfirm ? `¿Estás seguro de que deseas eliminar "${deleteConfirm.name}"?` : ''
+        }
         confirmText="Eliminar"
         cancelText="Cancelar"
         type="danger"

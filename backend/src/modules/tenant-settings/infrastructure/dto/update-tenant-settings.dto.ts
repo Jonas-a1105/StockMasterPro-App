@@ -1,4 +1,12 @@
-import { IsOptional, IsDecimal, Min, Max, IsString, IsIn, IsNumber } from 'class-validator';
+import {
+  IsOptional,
+  IsDecimal,
+  Min,
+  Max,
+  IsString,
+  IsIn,
+  IsNumber,
+} from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class UpdateTenantSettingsDto {

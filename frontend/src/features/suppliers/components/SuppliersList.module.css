@@ -1,3 +1,11 @@
-.textCenter { text-align: center; }
-.textMuted { color: var(--text-muted); }
-.emptyState { text-align: center; padding: 40px; color: var(--text-muted); }
+.textCenter {
+  text-align: center;
+}
+.textMuted {
+  color: var(--text-muted);
+}
+.emptyState {
+  text-align: center;
+  padding: 40px;
+  color: var(--text-muted);
+}

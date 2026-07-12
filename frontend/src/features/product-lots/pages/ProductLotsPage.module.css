@@ -54,11 +54,24 @@
   border-color: var(--color-primary);
 }
 
-.textRight { text-align: right; }
-.textCenter { text-align: center; }
-.emptyRow { text-align: center; padding: 40px; color: var(--text-muted); }
-.justifyCenter { justify-content: center; }
-.badgeDynamic { background: var(--st-bg); color: var(--st-color); }
+.textRight {
+  text-align: right;
+}
+.textCenter {
+  text-align: center;
+}
+.emptyRow {
+  text-align: center;
+  padding: 40px;
+  color: var(--text-muted);
+}
+.justifyCenter {
+  justify-content: center;
+}
+.badgeDynamic {
+  background: var(--st-bg);
+  color: var(--st-color);
+}
 
 .modalActions {
   display: flex;

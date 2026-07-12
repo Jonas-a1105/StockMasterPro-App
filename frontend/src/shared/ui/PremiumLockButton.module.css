@@ -21,7 +21,7 @@
 .lockSvg {
   width: 100%;
   height: 100%;
-  color: var(--text-muted, #f1f5f9);
+  color: var(--color-text-muted);
 }
 
 .shackle {
@@ -37,7 +37,7 @@
   position: relative;
   width: 100%;
   height: 100%;
-  background-color: var(--color-primary, #f05a28);
+  background-color: var(--color-primary);
   color: var(--text-on-primary, #fff);
   border: none;
   opacity: 0.6;

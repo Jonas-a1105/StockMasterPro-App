@@ -1,15 +1,20 @@
-import { Controller, Get, Post, Patch, Body, Param, Query, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Patch,
+  Body,
+  Param,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { CurrentUser } from '@shared/infrastructure/decorators/current-user.decorator';
 import { Roles } from '@shared/infrastructure/decorators/roles.decorator';
 import { AuthenticatedUser } from '@shared/infrastructure/types/authenticated-user';
 
-import {
-  CreateInventoryCountUseCase,
-} from '@modules/inventory-counts/application/use-cases/create-inventory-count.use-case';
-import {
-  FindInventoryCountUseCase,
-} from '@modules/inventory-counts/application/use-cases/find-inventory-count.use-case';
+import { CreateInventoryCountUseCase } from '@modules/inventory-counts/application/use-cases/create-inventory-count.use-case';
+import { FindInventoryCountUseCase } from '@modules/inventory-counts/application/use-cases/find-inventory-count.use-case';
 import {
   StartInventoryCountUseCase,
   CompleteInventoryCountUseCase,
@@ -17,14 +22,14 @@ import {
   CancelInventoryCountUseCase,
   UpdateInventoryCountUseCase,
 } from '@modules/inventory-counts/application/use-cases/update-inventory-count.use-case';
-import {
-  UpdateInventoryCountItemUseCase,
-} from '@modules/inventory-counts/application/use-cases/update-inventory-count-item.use-case';
-import {
-  ApplyInventoryCountAdjustmentsUseCase,
-} from '@modules/inventory-counts/application/use-cases/apply-inventory-count-adjustments.use-case';
+import { UpdateInventoryCountItemUseCase } from '@modules/inventory-counts/application/use-cases/update-inventory-count-item.use-case';
+import { ApplyInventoryCountAdjustmentsUseCase } from '@modules/inventory-counts/application/use-cases/apply-inventory-count-adjustments.use-case';
 
-import { CreateInventoryCountDto, InventoryCountFiltersDto, UpdateCountItemDto } from '@modules/inventory-counts/infrastructure/dto/inventory-count.dto';
+import {
+  CreateInventoryCountDto,
+  InventoryCountFiltersDto,
+  UpdateCountItemDto,
+} from '@modules/inventory-counts/infrastructure/dto/inventory-count.dto';
 
 @ApiTags('Inventory Counts')
 @ApiBearerAuth()
@@ -63,17 +68,22 @@ export class InventoryCountController {
   @Get()
   @Roles('admin', 'gerente')
   @ApiOperation({ summary: 'Listar conteos de inventario' })
-  async findAll(
-    @Query() filters: any,
-    @CurrentUser() user: AuthenticatedUser,
-  ) {
-    return this.findUseCase.findAll(user.tenantId, filters, filters.limit, filters.offset);
+  async findAll(@Query() filters: any, @CurrentUser() user: AuthenticatedUser) {
+    return this.findUseCase.findAll(
+      user.tenantId,
+      filters,
+      filters.limit,
+      filters.offset,
+    );
   }
 
   @Get(':id')
   @Roles('admin', 'gerente')
   @ApiOperation({ summary: 'Obtener conteo por ID' })
-  async findOne(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser) {
+  async findOne(
+    @Param('id') id: string,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
     return this.findUseCase.findById(id, user.tenantId);
   }
 
@@ -102,21 +112,37 @@ export class InventoryCountController {
   @Patch(':id/complete')
   @Roles('admin', 'gerente')
   @ApiOperation({ summary: 'Completar conteo (in_progress -> completed)' })
-  async complete(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser) {
-    return this.completeUseCase.execute({ countId: id, tenantId: user.tenantId });
+  async complete(
+    @Param('id') id: string,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
+    return this.completeUseCase.execute({
+      countId: id,
+      tenantId: user.tenantId,
+    });
   }
 
   @Patch(':id/approve')
   @Roles('admin', 'gerente')
   @ApiOperation({ summary: 'Aprobar conteo (completed -> approved)' })
-  async approve(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser) {
-    return this.approveUseCase.execute({ countId: id, tenantId: user.tenantId, approverId: user.id });
+  async approve(
+    @Param('id') id: string,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
+    return this.approveUseCase.execute({
+      countId: id,
+      tenantId: user.tenantId,
+      approverId: user.id,
+    });
   }
 
   @Patch(':id/cancel')
   @Roles('admin', 'gerente')
   @ApiOperation({ summary: 'Cancelar conteo' })
-  async cancel(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser) {
+  async cancel(
+    @Param('id') id: string,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
     return this.cancelUseCase.execute({ countId: id, tenantId: user.tenantId });
   }
 
@@ -141,7 +167,10 @@ export class InventoryCountController {
   @Post(':id/apply-adjustments')
   @Roles('admin', 'gerente')
   @ApiOperation({ summary: 'Aplicar ajustes de stock desde conteo aprobado' })
-  async applyAdjustments(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser) {
+  async applyAdjustments(
+    @Param('id') id: string,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
     return this.applyAdjustmentsUseCase.execute({
       countId: id,
       tenantId: user.tenantId,

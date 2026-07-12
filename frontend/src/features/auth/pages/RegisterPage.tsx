@@ -75,27 +75,43 @@ export function RegisterPage() {
     <div className={styles.authContainer}>
       {/* CONTENEDOR DE ENCABEZADO CENTRAL */}
       <div className={`${styles.authHeader} ${styles.flexInline} ${styles.mb8}`}>
-          <svg viewBox="0 0 240 240" fill="none" width="84" height="84" className={styles.overflowVisible}>
-            <path
-              d="M 65 90 C 40 90, 40 115, 60 120 C 80 125, 80 150, 55 150 L 85 85 L 105 125 L 125 85 L 125 150 H 185 V 115 H 135 V 150"
-              fill="none"
-              stroke="#ffffff"
-              strokeWidth="5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <path
-              d="M 145 110 L 140 97 L 151 102 L 160 88 L 169 102 L 180 97 L 175 110 Z"
-              fill="none"
-              stroke="#9ee63c"
-              strokeWidth="3"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <text x="144" y="141" fill="#9ee63c" fontSize="16" fontWeight="900" fontFamily="system-ui, -apple-system, sans-serif" letterSpacing="0.05em">PRO</text>
-          </svg>
-        </div>
-        <h1 className={styles.headerTitle}>¡Bienvenido!</h1>
+        <svg
+          viewBox="0 0 240 240"
+          fill="none"
+          width="84"
+          height="84"
+          className={styles.overflowVisible}
+        >
+          <path
+            d="M 65 90 C 40 90, 40 115, 60 120 C 80 125, 80 150, 55 150 L 85 85 L 105 125 L 125 85 L 125 150 H 185 V 115 H 135 V 150"
+            fill="none"
+            stroke="#ffffff"
+            strokeWidth="5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M 145 110 L 140 97 L 151 102 L 160 88 L 169 102 L 180 97 L 175 110 Z"
+            fill="none"
+            stroke="#9ee63c"
+            strokeWidth="3"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <text
+            x="144"
+            y="141"
+            fill="#9ee63c"
+            fontSize="16"
+            fontWeight="900"
+            fontFamily="system-ui, -apple-system, sans-serif"
+            letterSpacing="0.05em"
+          >
+            PRO
+          </text>
+        </svg>
+      </div>
+      <h1 className={styles.headerTitle}>¡Bienvenido!</h1>
 
       <div className={`${styles.authCard} ${styles.borderColor222}`}>
         <div className={styles.sectionHeader}>
@@ -111,13 +127,15 @@ export function RegisterPage() {
         <form onSubmit={handleSubmit} className={styles.flexColumnGap16}>
           {/* Nombre de la Empresa */}
           <div className={styles.field}>
-            <label className={`${styles.fontSize10} ${styles.fontMono} ${styles.colorMuted} ${styles.textTransformNone} ${styles.letterSpacing05}`}>
+            <label
+              className={`${styles.fontSize10} ${styles.fontMono} ${styles.colorMuted} ${styles.textTransformNone} ${styles.letterSpacing05}`}
+            >
               Nombre de la Empresa
             </label>
             <input
               type="text"
               value={tenantName}
-              onChange={e => setTenantName(e.target.value)}
+              onChange={(e) => setTenantName(e.target.value)}
               required
               className={styles.input}
               placeholder="Mi Tienda"
@@ -126,13 +144,15 @@ export function RegisterPage() {
 
           {/* Nombre del Operador */}
           <div className={styles.field}>
-            <label className={`${styles.fontSize10} ${styles.fontMono} ${styles.colorMuted} ${styles.textTransformNone} ${styles.letterSpacing05}`}>
+            <label
+              className={`${styles.fontSize10} ${styles.fontMono} ${styles.colorMuted} ${styles.textTransformNone} ${styles.letterSpacing05}`}
+            >
               Nombre del Operador
             </label>
             <input
               type="text"
               value={name}
-              onChange={e => setName(e.target.value)}
+              onChange={(e) => setName(e.target.value)}
               required
               className={styles.input}
               placeholder="Ej. Jonás Mendoza"
@@ -141,13 +161,15 @@ export function RegisterPage() {
 
           {/* Correo Institucional */}
           <div className={styles.field}>
-            <label className={`${styles.fontSize10} ${styles.fontMono} ${styles.colorMuted} ${styles.textTransformNone} ${styles.letterSpacing05}`}>
+            <label
+              className={`${styles.fontSize10} ${styles.fontMono} ${styles.colorMuted} ${styles.textTransformNone} ${styles.letterSpacing05}`}
+            >
               Correo Institucional
             </label>
             <input
               type="email"
               value={email}
-              onChange={e => setEmail(e.target.value)}
+              onChange={(e) => setEmail(e.target.value)}
               required
               className={styles.input}
               placeholder="operador@empresa.com"
@@ -156,14 +178,16 @@ export function RegisterPage() {
 
           {/* Establecer Contraseña Maestra */}
           <div className={styles.field}>
-            <label className={`${styles.fontSize10} ${styles.fontMono} ${styles.colorMuted} ${styles.textTransformNone} ${styles.letterSpacing05}`}>
+            <label
+              className={`${styles.fontSize10} ${styles.fontMono} ${styles.colorMuted} ${styles.textTransformNone} ${styles.letterSpacing05}`}
+            >
               Establecer Contraseña Maestra
             </label>
             <div className={styles.inputWrap}>
               <input
                 type={showPassword ? 'text' : 'password'}
                 value={password}
-                onChange={e => setPassword(e.target.value)}
+                onChange={(e) => setPassword(e.target.value)}
                 required
                 className={styles.input}
                 placeholder="••••••••"
@@ -183,7 +207,9 @@ export function RegisterPage() {
           <div className={`${styles.field} ${styles.mb8}`}>
             <div className={styles.strengthHeader}>
               <span>Seguridad de Clave</span>
-              <span className={`${styles.fontWeightBold} ${styles.colorSuccess}`}>{strengthLabel}</span>
+              <span className={`${styles.fontWeightBold} ${styles.colorSuccess}`}>
+                {strengthLabel}
+              </span>
             </div>
             <div className={styles.strengthBarContainer}>
               <div
@@ -195,7 +221,9 @@ export function RegisterPage() {
 
           {/* Lista de Requisitos */}
           <div className={styles.requirementsList}>
-            <div className={`${styles.requirementRow} ${checks.length ? styles.requirementRowActive : ''}`}>
+            <div
+              className={`${styles.requirementRow} ${checks.length ? styles.requirementRowActive : ''}`}
+            >
               <div className={styles.reqIcon}>
                 {checks.length ? (
                   <Check size={12} className={styles.colorSuccess} />
@@ -206,7 +234,9 @@ export function RegisterPage() {
               <span>Mínimo 8 caracteres obligatorios</span>
             </div>
 
-            <div className={`${styles.requirementRow} ${checks.upper ? styles.requirementRowActive : ''}`}>
+            <div
+              className={`${styles.requirementRow} ${checks.upper ? styles.requirementRowActive : ''}`}
+            >
               <div className={styles.reqIcon}>
                 {checks.upper ? (
                   <Check size={12} className={styles.colorSuccess} />
@@ -217,7 +247,9 @@ export function RegisterPage() {
               <span>Incluir al menos una letra mayúscula</span>
             </div>
 
-            <div className={`${styles.requirementRow} ${checks.number ? styles.requirementRowActive : ''}`}>
+            <div
+              className={`${styles.requirementRow} ${checks.number ? styles.requirementRowActive : ''}`}
+            >
               <div className={styles.reqIcon}>
                 {checks.number ? (
                   <Check size={12} className={styles.colorSuccess} />
@@ -235,11 +267,7 @@ export function RegisterPage() {
             disabled={loading}
             className={`${styles.submitBtn} ${styles.submitBtnRegister} ${styles.btnShimmer}`}
           >
-            {loading ? (
-              <ButtonLoader />
-            ) : (
-              'Dar de Alta Operador ➔'
-            )}
+            {loading ? <ButtonLoader /> : 'Dar de Alta Operador ➔'}
           </button>
         </form>
       </div>
@@ -248,12 +276,17 @@ export function RegisterPage() {
       <div className={styles.footerLinks}>
         <p className={`${styles.m0} ${styles.fontSize11} ${styles.colorMuted}`}>
           ¿Ya tienes una cuenta?{' '}
-          <Link to="/login" className={`${styles.footerLinkAccent} ${styles.footerLinkAccentLogin}`}>
+          <Link
+            to="/login"
+            className={`${styles.footerLinkAccent} ${styles.footerLinkAccentLogin}`}
+          >
             Inicia Sesión
           </Link>
         </p>
         <p className={`${styles.mt12} ${styles.fontSize11}`}>
-          <Link to="/" className={`${styles.colorMuted} ${styles.textDecorationNone}`}>➔ Volver al Inicio (Landing)</Link>
+          <Link to="/" className={`${styles.colorMuted} ${styles.textDecorationNone}`}>
+            ➔ Volver al Inicio (Landing)
+          </Link>
         </p>
       </div>
     </div>

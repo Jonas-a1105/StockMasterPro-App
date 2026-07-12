@@ -167,4 +167,6 @@
   font-size: var(--font-size-sm);
 }
 
-.mb12 { margin-bottom: 12px; }
+.mb12 {
+  margin-bottom: 12px;
+}

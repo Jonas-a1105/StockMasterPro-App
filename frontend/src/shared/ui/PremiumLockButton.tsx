@@ -101,7 +101,16 @@ export function PremiumLockButton({
             strokeLinejoin="round"
           />
           {/* Cuerpo Rectangular */}
-          <rect x="6" y="13" width="20" height="15" rx="3.5" stroke="currentColor" strokeWidth="2.2" fill="none" />
+          <rect
+            x="6"
+            y="13"
+            width="20"
+            height="15"
+            rx="3.5"
+            stroke="currentColor"
+            strokeWidth="2.2"
+            fill="none"
+          />
           {/* Ojo de la cerradura */}
           <circle cx="16" cy="19" r="2" stroke="currentColor" strokeWidth="2.2" fill="none" />
           <path d="M16 21V24" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
@@ -109,16 +118,16 @@ export function PremiumLockButton({
       </div>
 
       {/* Button */}
-      <button
-        type="button"
-        className={`${styles.button} ${isPressing ? styles.buttonActive : ''}`}
-      >
+      <button type="button" className={`${styles.button} ${isPressing ? styles.buttonActive : ''}`}>
         <span className={styles.label}>{label}</span>
         <span className={styles.sublabel}>
           {isUnlocked ? '¡Desbloqueado!' : isPressing ? 'Cargando...' : sublabel}
         </span>
         {/* Progress bar overlay */}
-        <div className={styles.progress} style={{ '--plb-progress': `${progress}%` } as React.CSSProperties} />
+        <div
+          className={styles.progress}
+          style={{ '--plb-progress': `${progress}%` } as React.CSSProperties}
+        />
       </button>
     </div>
   );

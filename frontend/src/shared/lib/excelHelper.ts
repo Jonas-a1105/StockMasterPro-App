@@ -20,9 +20,9 @@ export function exportToExcel(
   format: 'xlsx' | 'csv' = 'xlsx'
 ) {
   // Map internal keys to user-facing headers
-  const worksheetData = data.map(item => {
+  const worksheetData = data.map((item) => {
     const row: any = {};
-    columns.forEach(col => {
+    columns.forEach((col) => {
       row[col.header] = item[col.key] !== undefined && item[col.key] !== null ? item[col.key] : '';
     });
     return row;
@@ -52,7 +52,7 @@ export function downloadTemplate(
 ) {
   const exampleRow: any = {};
 
-  columns.forEach(col => {
+  columns.forEach((col) => {
     // Provide nice examples
     if (col.key === 'name') exampleRow[col.header] = 'Producto Ejemplo';
     else if (col.key === 'barcode') exampleRow[col.header] = '123456789';
@@ -97,14 +97,18 @@ export function parseExcelFile(
       try {
         const data = e.target?.result;
         if (!data) {
-          resolve({ success: false, data: [], errors: ['No se pudieron leer los datos del archivo.'] });
+          resolve({
+            success: false,
+            data: [],
+            errors: ['No se pudieron leer los datos del archivo.'],
+          });
           return;
         }
 
         const workbook = XLSX.read(data, { type: 'binary' });
         const sheetName = workbook.SheetNames[0];
         const worksheet = workbook.Sheets[sheetName];
-        
+
         // Parse rows
         const rawRows = XLSX.utils.sheet_to_json<any>(worksheet);
         if (rawRows.length === 0) {
@@ -116,14 +120,14 @@ export function parseExcelFile(
         const parsedData: any[] = [];
         const errors: string[] = [];
 
-        rawRows.forEach(row => {
+        rawRows.forEach((row) => {
           const mappedRow: any = {};
           let hasData = false;
 
-          columns.forEach(col => {
+          columns.forEach((col) => {
             // Find key in row (case-insensitive check)
             const matchedKey = Object.keys(row).find(
-              k => k.trim().toLowerCase() === col.header.trim().toLowerCase()
+              (k) => k.trim().toLowerCase() === col.header.trim().toLowerCase()
             );
 
             if (matchedKey) {
@@ -137,7 +141,8 @@ export function parseExcelFile(
               } else if (col.type === 'boolean') {
                 mappedRow[col.key] = String(value).toLowerCase() === 'true' || value === 1;
               } else {
-                mappedRow[col.key] = value !== undefined && value !== null ? String(value).trim() : '';
+                mappedRow[col.key] =
+                  value !== undefined && value !== null ? String(value).trim() : '';
               }
             } else {
               // Missing column

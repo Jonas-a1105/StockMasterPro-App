@@ -48,9 +48,7 @@ const mockCartItem: CartItem = {
   quantity: 2,
 };
 
-const mockCustomers = [
-  { id: 'cust-1', name: 'Customer A' },
-];
+const mockCustomers = [{ id: 'cust-1', name: 'Customer A' }];
 
 describe('useCheckout', () => {
   beforeEach(() => {
@@ -72,16 +70,7 @@ describe('useCheckout', () => {
     const { result } = renderHook(() => useCheckout());
 
     await act(async () => {
-      await result.current.checkout(
-        [mockCartItem],
-        'cash',
-        200,
-        32,
-        232,
-        '',
-        mockCustomers,
-        true,
-      );
+      await result.current.checkout([mockCartItem], 'cash', 200, 32, 232, '', mockCustomers, true);
     });
 
     expect(processSale).toHaveBeenCalledWith({
@@ -103,16 +92,7 @@ describe('useCheckout', () => {
     const { showToast } = useToast();
 
     await act(async () => {
-      await result.current.checkout(
-        [mockCartItem],
-        'cash',
-        200,
-        32,
-        232,
-        '',
-        mockCustomers,
-        true,
-      );
+      await result.current.checkout([mockCartItem], 'cash', 200, 32, 232, '', mockCustomers, true);
     });
 
     expect(showToast).toHaveBeenCalledWith('Error de conexión', 'error');
@@ -124,16 +104,7 @@ describe('useCheckout', () => {
     const { result } = renderHook(() => useCheckout());
 
     await act(async () => {
-      await result.current.checkout(
-        [mockCartItem],
-        'cash',
-        200,
-        32,
-        232,
-        '',
-        mockCustomers,
-        false,
-      );
+      await result.current.checkout([mockCartItem], 'cash', 200, 32, 232, '', mockCustomers, false);
     });
 
     expect(db.offlineSales.add).toHaveBeenCalledWith(
@@ -145,7 +116,7 @@ describe('useCheckout', () => {
         synced: false,
         idempotencyKey: expect.any(String),
         retryCount: 0,
-      }),
+      })
     );
     expect(result.current.lastSale).toBeTruthy();
     expect(result.current.showSuccess).toBe(true);
@@ -167,7 +138,7 @@ describe('useCheckout', () => {
         232,
         'cust-1',
         mockCustomers,
-        true,
+        true
       );
     });
 
@@ -175,7 +146,7 @@ describe('useCheckout', () => {
       expect.objectContaining({
         customerId: 'cust-1',
         paymentMethod: 'credit',
-      }),
+      })
     );
     expect(result.current.lastSale!.customerName).toBe('Customer A');
   });

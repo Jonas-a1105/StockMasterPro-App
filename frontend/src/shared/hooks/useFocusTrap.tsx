@@ -4,37 +4,40 @@ export function useFocusTrap(enabled = true) {
   const containerRef = useRef<HTMLDivElement>(null);
   const previousActiveElement = useRef<HTMLElement | null>(null);
 
-  const handleKeyDown = useCallback((e: KeyboardEvent) => {
-    if (!enabled || e.key !== 'Tab') return;
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent) => {
+      if (!enabled || e.key !== 'Tab') return;
 
-    const container = containerRef.current;
-    if (!container) return;
+      const container = containerRef.current;
+      if (!container) return;
 
-    const focusableElements = container.querySelectorAll<HTMLElement>(
-      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-    );
+      const focusableElements = container.querySelectorAll<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
 
-    const focusableArray = Array.from(focusableElements).filter(
-      el => !el.hasAttribute('disabled') && el.offsetParent !== null
-    );
+      const focusableArray = Array.from(focusableElements).filter(
+        (el) => !el.hasAttribute('disabled') && el.offsetParent !== null
+      );
 
-    if (focusableArray.length === 0) return;
+      if (focusableArray.length === 0) return;
 
-    const firstElement = focusableArray[0];
-    const lastElement = focusableArray[focusableArray.length - 1];
+      const firstElement = focusableArray[0];
+      const lastElement = focusableArray[focusableArray.length - 1];
 
-    if (e.shiftKey) {
-      if (document.activeElement === firstElement) {
-        e.preventDefault();
-        lastElement.focus();
+      if (e.shiftKey) {
+        if (document.activeElement === firstElement) {
+          e.preventDefault();
+          lastElement.focus();
+        }
+      } else {
+        if (document.activeElement === lastElement) {
+          e.preventDefault();
+          firstElement.focus();
+        }
       }
-    } else {
-      if (document.activeElement === lastElement) {
-        e.preventDefault();
-        firstElement.focus();
-      }
-    }
-  }, [enabled]);
+    },
+    [enabled]
+  );
 
   useEffect(() => {
     if (!enabled) return;
@@ -63,10 +66,14 @@ export function useFocusTrap(enabled = true) {
   return containerRef;
 }
 
-export function FocusTrap({ children, enabled = true, onEscape }: { 
-  children: React.ReactNode; 
-  enabled?: boolean; 
-  onEscape?: () => void; 
+export function FocusTrap({
+  children,
+  enabled = true,
+  onEscape,
+}: {
+  children: React.ReactNode;
+  enabled?: boolean;
+  onEscape?: () => void;
 }) {
   const containerRef = useFocusTrap(enabled);
 

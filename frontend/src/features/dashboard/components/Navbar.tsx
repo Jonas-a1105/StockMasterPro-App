@@ -32,13 +32,16 @@ export function Navbar({ onToggleSidebar }: { onToggleSidebar: () => void }) {
   const notifModalRef = useRef<HTMLDivElement>(null);
   const bellBtnRef = useRef<HTMLButtonElement>(null);
 
-  const unreadCount = notifications.filter(n => n.unread).length;
+  const unreadCount = notifications.filter((n) => n.unread).length;
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (notifModalRef.current && bellBtnRef.current &&
-          !notifModalRef.current.contains(event.target as Node) &&
-          !bellBtnRef.current.contains(event.target as Node)) {
+      if (
+        notifModalRef.current &&
+        bellBtnRef.current &&
+        !notifModalRef.current.contains(event.target as Node) &&
+        !bellBtnRef.current.contains(event.target as Node)
+      ) {
         setShowNotifModal(false);
       }
     }
@@ -59,11 +62,17 @@ export function Navbar({ onToggleSidebar }: { onToggleSidebar: () => void }) {
   }, [showNotifModal]);
 
   const handleMarkAsRead = async (id: string) => {
-    try { await markAsRead(id); setNotifications(prev => prev.map(n => n.id === id ? { ...n, unread: false } : n)); } catch {}
+    try {
+      await markAsRead(id);
+      setNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, unread: false } : n)));
+    } catch {}
   };
 
   const handleMarkAllAsRead = async () => {
-    try { await markAllAsRead(); setNotifications(prev => prev.map(n => ({ ...n, unread: false }))); } catch {}
+    try {
+      await markAllAsRead();
+      setNotifications((prev) => prev.map((n) => ({ ...n, unread: false })));
+    } catch {}
   };
 
   const handleNotificationClick = (n: Notification) => {
@@ -81,22 +90,37 @@ export function Navbar({ onToggleSidebar }: { onToggleSidebar: () => void }) {
   return (
     <nav className={styles.navbar}>
       <div className={styles.navbarLeft}>
-        <button id="nav-toggle" className={styles.menuToggle} onClick={onToggleSidebar} aria-label="Abrir Menú">
+        <button
+          id="nav-toggle"
+          className={styles.menuToggle}
+          onClick={onToggleSidebar}
+          aria-label="Abrir Menú"
+        >
           <Menu size={24} />
         </button>
       </div>
 
       <div className={styles.actions}>
         {loading ? (
-          <div className={`${styles.dolarWidget} ${styles.cursorDefault} ${styles.bgTransparent} ${styles.borderTransparent}`}>
+          <div
+            className={`${styles.dolarWidget} ${styles.cursorDefault} ${styles.bgTransparent} ${styles.borderTransparent}`}
+          >
             <Skeleton width={110} height={20} borderRadius={4} />
           </div>
-        ) : rate > 0 && (
-          <div className={styles.dolarWidget} onClick={() => setShowWidget(true)} title={`1 USD = ${rate.toLocaleString('es-VE', { minimumFractionDigits: 2 })} Bs. Click para abrir widget.`}>
-            <span className={styles.dolarSign}>$</span>
-            <span className={styles.dolarValue}>{config.symbol} {rate.toLocaleString('de-DE', { minimumFractionDigits: 2 })}</span>
-            <span className={styles.dolarTag}>BCV</span>
-          </div>
+        ) : (
+          rate > 0 && (
+            <div
+              className={styles.dolarWidget}
+              onClick={() => setShowWidget(true)}
+              title={`1 USD = ${rate.toLocaleString('es-VE', { minimumFractionDigits: 2 })} Bs. Click para abrir widget.`}
+            >
+              <span className={styles.dolarSign}>$</span>
+              <span className={styles.dolarValue}>
+                {config.symbol} {rate.toLocaleString('de-DE', { minimumFractionDigits: 2 })}
+              </span>
+              <span className={styles.dolarTag}>BCV</span>
+            </div>
+          )
         )}
 
         <div className={styles.notifWrapper}>
@@ -136,7 +160,7 @@ export function Navbar({ onToggleSidebar }: { onToggleSidebar: () => void }) {
                     <span>No tienes notificaciones</span>
                   </div>
                 ) : (
-                  notifications.slice(0, 10).map(n => {
+                  notifications.slice(0, 10).map((n) => {
                     const Icon = notifIconMap[n.type] || MessageSquare;
                     return (
                       <button
@@ -151,7 +175,9 @@ export function Navbar({ onToggleSidebar }: { onToggleSidebar: () => void }) {
                         <div className={styles.notifModalDetails}>
                           <span className={styles.notifModalTitleText}>{n.title}</span>
                           <span className={styles.notifModalMessage}>{n.message}</span>
-                          <span className={styles.notifModalTime}>{n.time} • {n.category}</span>
+                          <span className={styles.notifModalTime}>
+                            {n.time} • {n.category}
+                          </span>
                         </div>
                       </button>
                     );
@@ -160,7 +186,13 @@ export function Navbar({ onToggleSidebar }: { onToggleSidebar: () => void }) {
               </div>
 
               <div className={styles.notifModalFooter}>
-                <button className={styles.notifModalViewAll} onClick={() => { setShowNotifModal(false); navigate('/notifications'); }}>
+                <button
+                  className={styles.notifModalViewAll}
+                  onClick={() => {
+                    setShowNotifModal(false);
+                    navigate('/notifications');
+                  }}
+                >
                   Ver todas las alertas
                 </button>
               </div>
@@ -174,7 +206,12 @@ export function Navbar({ onToggleSidebar }: { onToggleSidebar: () => void }) {
         </div>
       </div>
 
-      {showWidget && <ExchangeRateWidget onClose={() => setShowWidget(false)} onOpenAnalytics={() => setShowAnalytics(true)} />}
+      {showWidget && (
+        <ExchangeRateWidget
+          onClose={() => setShowWidget(false)}
+          onOpenAnalytics={() => setShowAnalytics(true)}
+        />
+      )}
       {showAnalytics && <AnalyticsModal onClose={() => setShowAnalytics(false)} />}
     </nav>
   );

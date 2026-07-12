@@ -93,7 +93,9 @@
   font-size: var(--font-size-sm);
   font-weight: var(--btn-font-weight, 700);
   cursor: pointer;
-  transition: filter var(--transition-smooth), transform var(--transition-smooth);
+  transition:
+    filter var(--transition-smooth),
+    transform var(--transition-smooth);
 }
 
 .generateBtn:hover:not(:disabled) {
@@ -141,7 +143,9 @@
   font-size: var(--font-size-caption);
   font-weight: var(--font-weight-semibold);
   cursor: pointer;
-  transition: border-color var(--transition-smooth), color var(--transition-smooth);
+  transition:
+    border-color var(--transition-smooth),
+    color var(--transition-smooth);
 }
 
 .copyBtn:hover {

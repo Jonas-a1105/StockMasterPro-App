@@ -22,17 +22,23 @@ const DEFAULTS: CurrencyConfig = {
 export function loadConfig(): CurrencyConfig {
   return {
     symbol: localStorage.getItem(STORAGE_KEYS.symbol) || DEFAULTS.symbol,
-    position: (localStorage.getItem(STORAGE_KEYS.position) as CurrencyConfig['position']) || DEFAULTS.position,
+    position:
+      (localStorage.getItem(STORAGE_KEYS.position) as CurrencyConfig['position']) ||
+      DEFAULTS.position,
     decimals: Number(localStorage.getItem(STORAGE_KEYS.decimals)) || DEFAULTS.decimals,
-    displayCurrency: (localStorage.getItem(STORAGE_KEYS.displayCurrency) as CurrencyConfig['displayCurrency']) || DEFAULTS.displayCurrency,
+    displayCurrency:
+      (localStorage.getItem(STORAGE_KEYS.displayCurrency) as CurrencyConfig['displayCurrency']) ||
+      DEFAULTS.displayCurrency,
   };
 }
 
 export function saveConfig(config: Partial<CurrencyConfig>) {
   if (config.symbol !== undefined) localStorage.setItem(STORAGE_KEYS.symbol, config.symbol);
   if (config.position !== undefined) localStorage.setItem(STORAGE_KEYS.position, config.position);
-  if (config.decimals !== undefined) localStorage.setItem(STORAGE_KEYS.decimals, String(config.decimals));
-  if (config.displayCurrency !== undefined) localStorage.setItem(STORAGE_KEYS.displayCurrency, config.displayCurrency);
+  if (config.decimals !== undefined)
+    localStorage.setItem(STORAGE_KEYS.decimals, String(config.decimals));
+  if (config.displayCurrency !== undefined)
+    localStorage.setItem(STORAGE_KEYS.displayCurrency, config.displayCurrency);
 }
 
 export interface FormatPriceOptions {
@@ -51,12 +57,15 @@ export function formatPrice(
   amount: number | null | undefined,
   rate: number,
   config: CurrencyConfig,
-  options?: FormatPriceOptions,
+  options?: FormatPriceOptions
 ): string {
   if (amount === null || amount === undefined) return '—';
 
   const fmt = (n: number, symbol: string, pos: 'before' | 'after', dec: number) => {
-    const formatted = n.toLocaleString('es-VE', { minimumFractionDigits: dec, maximumFractionDigits: dec });
+    const formatted = n.toLocaleString('es-VE', {
+      minimumFractionDigits: dec,
+      maximumFractionDigits: dec,
+    });
     return pos === 'before' ? `${symbol} ${formatted}` : `${formatted} ${symbol}`;
   };
 
@@ -65,7 +74,10 @@ export function formatPrice(
   const bsAmount = amount * rate;
   const bsStr = fmt(bsAmount, config.symbol, config.position, dec);
 
-  if (options?.showBoth || (!options?.showUsd && !options?.showLocal && config.displayCurrency === 'both')) {
+  if (
+    options?.showBoth ||
+    (!options?.showUsd && !options?.showLocal && config.displayCurrency === 'both')
+  ) {
     return `${usdStr}  ·  ${bsStr}`;
   }
 
@@ -79,10 +91,17 @@ export function formatPrice(
 /**
  * Formats only the Bs portion for a given USD amount
  */
-export function formatBs(amount: number | null | undefined, rate: number, decimals: number = 2): string {
+export function formatBs(
+  amount: number | null | undefined,
+  rate: number,
+  decimals: number = 2
+): string {
   if (amount === null || amount === undefined) return '—';
   const bsAmount = amount * rate;
-  const formatted = bsAmount.toLocaleString('es-VE', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
+  const formatted = bsAmount.toLocaleString('es-VE', {
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals,
+  });
   return `Bs ${formatted}`;
 }
 
@@ -91,6 +110,9 @@ export function formatBs(amount: number | null | undefined, rate: number, decima
  */
 export function formatUsd(amount: number | null | undefined): string {
   if (amount === null || amount === undefined) return '—';
-  const formatted = amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const formatted = amount.toLocaleString('en-US', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
   return `$ ${formatted}`;
 }

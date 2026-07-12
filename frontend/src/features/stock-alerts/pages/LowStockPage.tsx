@@ -25,7 +25,9 @@ export function LowStockPage() {
   const { showToast } = useToast();
   const { config } = useTheme();
 
-  useEffect(() => { loadLowStock(); }, []);
+  useEffect(() => {
+    loadLowStock();
+  }, []);
 
   async function loadLowStock() {
     setLoading(true);
@@ -39,32 +41,51 @@ export function LowStockPage() {
     }
   }
 
-  if (loading) return config.skeletonEnabled ? <SkeletonTablePage rows={8} cols={6} kpi={3} /> : <LoadingDots text="Verificando stock..." />;
+  if (loading)
+    return config.skeletonEnabled ? (
+      <SkeletonTablePage rows={8} cols={6} kpi={3} />
+    ) : (
+      <LoadingDots text="Verificando stock..." />
+    );
 
   const criticalCount = products.filter((p: any) => p.stock === 0).length;
   const lowCount = products.filter((p: any) => p.stock > 0 && p.stock <= p.minStock / 2).length;
   const totalAlerts = products.length;
 
-  const filteredProducts = products.filter(p =>
-    !search ||
-    p.name.toLowerCase().includes(search.toLowerCase()) ||
-    (p.barcode || '').toLowerCase().includes(search.toLowerCase())
+  const filteredProducts = products.filter(
+    (p) =>
+      !search ||
+      p.name.toLowerCase().includes(search.toLowerCase()) ||
+      (p.barcode || '').toLowerCase().includes(search.toLowerCase())
   );
 
   return (
     <div className={styles.container}>
       <TabNav
-        tabs={[
-          { key: 'low-stock', label: 'Alertas de Stock', icon: <AlertTriangle size={16} /> },
-        ]}
+        tabs={[{ key: 'low-stock', label: 'Alertas de Stock', icon: <AlertTriangle size={16} /> }]}
         activeTab={activeTab}
         onTabChange={setActiveTab}
       />
       <KpiGrid
         items={[
-          { icon: <AlertTriangle size={18} />, value: totalAlerts, label: 'Productos con Alerta', color: '#eb8c00' },
-          { icon: <PackageX size={18} />, value: criticalCount, label: 'Stock Cero', color: '#dc2626' },
-          { icon: <Package size={18} />, value: lowCount, label: 'Stock Bajo', color: '#f05a28' },
+          {
+            icon: <AlertTriangle size={18} />,
+            value: totalAlerts,
+            label: 'Productos con Alerta',
+            color: 'var(--color-warning)',
+          },
+          {
+            icon: <PackageX size={18} />,
+            value: criticalCount,
+            label: 'Stock Cero',
+            color: 'var(--color-danger)',
+          },
+          {
+            icon: <Package size={18} />,
+            value: lowCount,
+            label: 'Stock Bajo',
+            color: 'var(--color-primary)',
+          },
         ]}
       />
 
@@ -96,18 +117,30 @@ export function LowStockPage() {
                 const status = statusInfo(p.stock, p.minStock);
                 return (
                   <tr key={p.id}>
-                    <td><span className={tableStyles.nameText}>{p.name}</span></td>
-                    <td><span className={tableStyles.code}>{p.barcode || '—'}</span></td>
-                    <td className={styles.textRight}><span className={tableStyles.numberValue}>{p.stock}</span></td>
+                    <td>
+                      <span className={tableStyles.nameText}>{p.name}</span>
+                    </td>
+                    <td>
+                      <span className={tableStyles.code}>{p.barcode || '—'}</span>
+                    </td>
+                    <td className={styles.textRight}>
+                      <span className={tableStyles.numberValue}>{p.stock}</span>
+                    </td>
                     <td className={styles.textRight}>{p.minStock}</td>
                     <td className={styles.textCenter}>
-                      <span className={`${tableStyles.badge} ${status.className === 'critical' ? tableStyles.badgeSaturated : status.className === 'low' ? tableStyles.badgeWarning : tableStyles.badgeActive}`}>
+                      <span
+                        className={`${tableStyles.badge} ${status.className === 'critical' ? tableStyles.badgeSaturated : status.className === 'low' ? tableStyles.badgeWarning : tableStyles.badgeActive}`}
+                      >
                         {status.label}
                       </span>
                     </td>
                     <td className={styles.textCenter}>
                       <div className={`${tableStyles.actions} ${styles.justifyCenter}`}>
-                        <button className={tableStyles.actionBtn} onClick={() => window.location.href = `/inventory?edit=${p.id}`} title="Ir al producto">
+                        <button
+                          className={tableStyles.actionBtn}
+                          onClick={() => (window.location.href = `/inventory?edit=${p.id}`)}
+                          title="Ir al producto"
+                        >
                           <Eye size={14} />
                         </button>
                       </div>

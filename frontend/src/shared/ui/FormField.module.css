@@ -7,19 +7,19 @@
 .label {
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-main, #0f172a);
+  color: var(--color-text);
 }
 
 .required {
-  color: var(--color-danger, #e5484d);
+  color: var(--color-danger);
 }
 
 .error {
   font-size: var(--font-size-caption);
-  color: var(--color-danger, #e5484d);
+  color: var(--color-danger);
 }
 
 .helper {
   font-size: var(--font-size-caption);
-  color: var(--text-light, #64748b);
+  color: var(--color-text-light);
 }

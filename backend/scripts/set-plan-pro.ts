@@ -20,18 +20,22 @@ const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
 
 async function updateToPro() {
-  console.log('Cambiando planType de todos los tenants a "pro" para un desbloqueo inmediato...');
+  console.log(
+    'Cambiando planType de todos los tenants a "pro" para un desbloqueo inmediato...',
+  );
   const result = await prisma.tenant.updateMany({
     data: {
       planType: 'pro',
     },
   });
 
-  console.log(`Se actualizaron ${result.count} empresas al plan "pro" con éxito.`);
+  console.log(
+    `Se actualizaron ${result.count} empresas al plan "pro" con éxito.`,
+  );
 }
 
 updateToPro()
-  .catch(e => console.error(e))
+  .catch((e) => console.error(e))
   .finally(async () => {
     await prisma.$disconnect();
     await pool.end();

@@ -24,7 +24,9 @@ export function Button({
     styles[`size${size.charAt(0).toUpperCase() + size.slice(1)}`],
     loading ? styles.loading : '',
     className,
-  ].filter(Boolean).join(' ');
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   return (
     <button className={classes} disabled={disabled || loading} {...props}>

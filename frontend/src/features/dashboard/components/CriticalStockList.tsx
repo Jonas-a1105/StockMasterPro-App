@@ -19,14 +19,18 @@ export function CriticalStockList({ products }: { products: any[] }) {
                 </tr>
               </thead>
               <tbody>
-                {products.slice(0, 10).map(p => {
+                {products.slice(0, 10).map((p) => {
                   const isBelowMin = p.stock < p.minStock;
                   return (
                     <tr key={p.id}>
                       <td>{p.name}</td>
                       <td>{p.barcode || '—'}</td>
                       <td>{p.minStock} u.</td>
-                      <td className={isBelowMin ? styles.stockValueDanger : styles.stockValueWarning}>{p.stock} u.</td>
+                      <td
+                        className={isBelowMin ? styles.stockValueDanger : styles.stockValueWarning}
+                      >
+                        {p.stock} u.
+                      </td>
                     </tr>
                   );
                 })}

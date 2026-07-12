@@ -264,9 +264,25 @@
   border-top: 1px solid var(--border-color);
 }
 
-.textCenter { text-align: center; }
-.textRight { text-align: right; }
-.textMuted { color: var(--text-muted); }
-.fontMono { font-family: monospace; }
-.emptyRow { text-align: center; padding: 40px; color: var(--text-muted); }
-.sectionTitle { font-size: var(--font-size-md); font-weight: var(--font-weight-bold); margin: 20px 0 10px; }
+.textCenter {
+  text-align: center;
+}
+.textRight {
+  text-align: right;
+}
+.textMuted {
+  color: var(--text-muted);
+}
+.fontMono {
+  font-family: monospace;
+}
+.emptyRow {
+  text-align: center;
+  padding: 40px;
+  color: var(--text-muted);
+}
+.sectionTitle {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-bold);
+  margin: 20px 0 10px;
+}

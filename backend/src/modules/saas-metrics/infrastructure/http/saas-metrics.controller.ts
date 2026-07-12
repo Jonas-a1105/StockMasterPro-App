@@ -1,10 +1,20 @@
 import { Controller, Get, Query, UseGuards } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiBearerAuth,
+  ApiQuery,
+} from '@nestjs/swagger';
 import { Roles } from '@shared/infrastructure/decorators/roles.decorator';
 import { CurrentUser } from '@shared/infrastructure/decorators/current-user.decorator';
 import { AuthenticatedUser } from '@shared/infrastructure/types/authenticated-user';
 import { SaasMetricsService } from '../../application/saas-metrics.service';
-import { MRRMetrics, ChurnMetrics, LTVMetrics, CohortMetrics } from '../../application/saas-metrics.service';
+import {
+  MRRMetrics,
+  ChurnMetrics,
+  LTVMetrics,
+  CohortMetrics,
+} from '../../application/saas-metrics.service';
 
 @ApiTags('SaaS Metrics')
 @ApiBearerAuth()
@@ -36,7 +46,12 @@ export class SaasMetricsController {
   @Get('cohorts')
   @Roles('admin', 'gerente')
   @ApiOperation({ summary: 'Obtener análisis de cohortes' })
-  @ApiQuery({ name: 'months', required: false, type: Number, description: 'Meses de historial (default 12)' })
+  @ApiQuery({
+    name: 'months',
+    required: false,
+    type: Number,
+    description: 'Meses de historial (default 12)',
+  })
   async getCohorts(@Query('months') months?: number): Promise<CohortMetrics[]> {
     return this.metricsService.getCohortMetrics(months ?? 12);
   }

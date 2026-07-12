@@ -24,7 +24,14 @@ interface ToolbarProps {
   children?: ReactNode;
 }
 
-export function Toolbar({ search, searchExtra, addBtn, onExport, onImport, children }: ToolbarProps) {
+export function Toolbar({
+  search,
+  searchExtra,
+  addBtn,
+  onExport,
+  onImport,
+  children,
+}: ToolbarProps) {
   const [showTools, setShowTools] = useState(false);
   const toolsRef = useRef<HTMLDivElement>(null);
 
@@ -51,7 +58,7 @@ export function Toolbar({ search, searchExtra, addBtn, onExport, onImport, child
               className="global-search-input"
               placeholder={search.placeholder || 'Buscar...'}
               value={search.value}
-              onChange={e => search.onChange(e.target.value)}
+              onChange={(e) => search.onChange(e.target.value)}
             />
             {search.value && (
               <button className={styles.clearBtn} onClick={() => search.onChange('')}>
@@ -86,7 +93,10 @@ export function Toolbar({ search, searchExtra, addBtn, onExport, onImport, child
                   {onExport && (
                     <button
                       className={styles.toolsMenuItem}
-                      onClick={() => { onExport(); setShowTools(false); }}
+                      onClick={() => {
+                        onExport();
+                        setShowTools(false);
+                      }}
                     >
                       <Download size={14} className={styles.toolsMenuIcon} />
                       <span>Exportar Excel</span>
@@ -95,7 +105,10 @@ export function Toolbar({ search, searchExtra, addBtn, onExport, onImport, child
                   {onImport && (
                     <button
                       className={styles.toolsMenuItem}
-                      onClick={() => { onImport(); setShowTools(false); }}
+                      onClick={() => {
+                        onImport();
+                        setShowTools(false);
+                      }}
                     >
                       <Upload size={14} className={styles.toolsMenuIcon} />
                       <span>Importar Archivo</span>

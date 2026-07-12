@@ -1,1 +1,3 @@
-.skeletonChatItem { pointer-events: none; }
+.skeletonChatItem {
+  pointer-events: none;
+}

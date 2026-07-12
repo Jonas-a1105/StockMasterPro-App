@@ -24,15 +24,22 @@ export function MixedPaymentModal({
 }: {
   open: boolean;
   onClose: () => void;
-  onSubmit: (payments: { paymentMethod: PaymentMethod; amount: number; exchangeRate?: number; reference?: string }[]) => Promise<void>;
+  onSubmit: (
+    payments: {
+      paymentMethod: PaymentMethod;
+      amount: number;
+      exchangeRate?: number;
+      reference?: string;
+    }[]
+  ) => Promise<void>;
   total: number;
   loading: boolean;
   paymentMethod?: PaymentMethod;
 }) {
   const { formatPrice } = useExchangeRate();
-  const [payments, setPayments] = useState<{ paymentMethod: PaymentMethod; amount: number; exchangeRate?: number; reference?: string }[]>([
-    { paymentMethod: 'cash', amount: 0 },
-  ]);
+  const [payments, setPayments] = useState<
+    { paymentMethod: PaymentMethod; amount: number; exchangeRate?: number; reference?: string }[]
+  >([{ paymentMethod: 'cash', amount: 0 }]);
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -45,8 +52,8 @@ export function MixedPaymentModal({
   const paidTotal = payments.reduce((sum, p) => sum + (p.amount || 0), 0);
   const remaining = total - paidTotal;
 
-  const updatePayment = (idx: number, field: keyof typeof payments[0], value: any) => {
-    setPayments(p => {
+  const updatePayment = (idx: number, field: keyof (typeof payments)[0], value: any) => {
+    setPayments((p) => {
       const next = [...p];
       next[idx] = { ...next[idx], [field]: value };
       return next;
@@ -55,12 +62,12 @@ export function MixedPaymentModal({
 
   const addPayment = () => {
     if (paidTotal >= total) return;
-    setPayments(p => [...p, { paymentMethod: 'cash', amount: 0 }]);
+    setPayments((p) => [...p, { paymentMethod: 'cash', amount: 0 }]);
   };
 
   const removePayment = (idx: number) => {
     if (payments.length <= 1) return;
-    setPayments(p => p.filter((_, i) => i !== idx));
+    setPayments((p) => p.filter((_, i) => i !== idx));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -69,11 +76,13 @@ export function MixedPaymentModal({
 
     const totalPaid = payments.reduce((sum, p) => sum + (p.amount || 0), 0);
     if (Math.abs(totalPaid - total) > 0.01) {
-      setError(`El total pagado (${paidTotal.toFixed(2)}) debe ser igual al total (${total.toFixed(2)})`);
+      setError(
+        `El total pagado (${paidTotal.toFixed(2)}) debe ser igual al total (${total.toFixed(2)})`
+      );
       return;
     }
 
-    if (payments.some(p => (p.amount || 0) <= 0)) {
+    if (payments.some((p) => (p.amount || 0) <= 0)) {
       setError('Todos los pagos deben tener un monto mayor a 0');
       return;
     }
@@ -81,8 +90,18 @@ export function MixedPaymentModal({
     await onSubmit(payments);
   };
 
-  const paidStyle = paidTotal > total ? styles.paymentSummaryDanger : paidTotal === total ? styles.paymentSummarySuccess : styles.paymentSummaryWarning;
-  const remStyle = remaining > 0 ? styles.paymentSummaryWarning : remaining < 0 ? styles.paymentSummaryDanger : styles.paymentSummarySuccess;
+  const paidStyle =
+    paidTotal > total
+      ? styles.paymentSummaryDanger
+      : paidTotal === total
+        ? styles.paymentSummarySuccess
+        : styles.paymentSummaryWarning;
+  const remStyle =
+    remaining > 0
+      ? styles.paymentSummaryWarning
+      : remaining < 0
+        ? styles.paymentSummaryDanger
+        : styles.paymentSummarySuccess;
 
   if (!open) return null;
 
@@ -90,9 +109,16 @@ export function MixedPaymentModal({
     <Modal open={open} onClose={onClose} title="Pago Mixto" wide>
       <form onSubmit={handleSubmit}>
         <p className={styles.paymentSummary}>
-          Total a pagar: <strong className={styles.paymentSummaryStrong}>{formatPrice(total)}</strong> &nbsp;|&nbsp;
-          Pagado: <strong className={`${styles.paymentSummaryStrong} ${paidStyle}`}>{formatPrice(paidTotal)}</strong> &nbsp;|&nbsp;
-          Pendiente: <strong className={`${styles.paymentSummaryStrong} ${remStyle}`}>{formatPrice(Math.max(0, remaining))}</strong>
+          Total a pagar:{' '}
+          <strong className={styles.paymentSummaryStrong}>{formatPrice(total)}</strong>{' '}
+          &nbsp;|&nbsp; Pagado:{' '}
+          <strong className={`${styles.paymentSummaryStrong} ${paidStyle}`}>
+            {formatPrice(paidTotal)}
+          </strong>{' '}
+          &nbsp;|&nbsp; Pendiente:{' '}
+          <strong className={`${styles.paymentSummaryStrong} ${remStyle}`}>
+            {formatPrice(Math.max(0, remaining))}
+          </strong>
         </p>
 
         {error && <div className={styles.paymentError}>{error}</div>}
@@ -115,11 +141,16 @@ export function MixedPaymentModal({
                   <td>
                     <select
                       value={payment.paymentMethod}
-                      onChange={e => updatePayment(idx, 'paymentMethod', e.target.value)}
+                      onChange={(e) => updatePayment(idx, 'paymentMethod', e.target.value)}
                       className={styles.selectField}
                     >
                       {Object.entries(METHOD_CONFIG).map(([key, m]) => (
-                        <option key={key} value={key} className={styles.optionBg} style={{ '--option-bg': m.bg } as React.CSSProperties}>
+                        <option
+                          key={key}
+                          value={key}
+                          className={styles.optionBg}
+                          style={{ '--option-bg': m.bg } as React.CSSProperties}
+                        >
                           {m.icon} {m.label}
                         </option>
                       ))}
@@ -132,7 +163,9 @@ export function MixedPaymentModal({
                       min="0"
                       max={total}
                       value={payment.amount || ''}
-                      onChange={e => updatePayment(idx, 'amount', parseFloat(e.target.value) || 0)}
+                      onChange={(e) =>
+                        updatePayment(idx, 'amount', parseFloat(e.target.value) || 0)
+                      }
                       className={`${styles.inputField} ${styles.inputFieldRight}`}
                     />
                   </td>
@@ -143,7 +176,13 @@ export function MixedPaymentModal({
                         step="0.0001"
                         min="0"
                         value={payment.exchangeRate || ''}
-                        onChange={e => updatePayment(idx, 'exchangeRate', parseFloat(e.target.value) || undefined)}
+                        onChange={(e) =>
+                          updatePayment(
+                            idx,
+                            'exchangeRate',
+                            parseFloat(e.target.value) || undefined
+                          )
+                        }
                         placeholder="Tasa"
                         className={`${styles.inputField} ${styles.inputFieldRight}`}
                       />
@@ -155,14 +194,18 @@ export function MixedPaymentModal({
                     <input
                       type="text"
                       value={payment.reference || ''}
-                      onChange={e => updatePayment(idx, 'reference', e.target.value)}
+                      onChange={(e) => updatePayment(idx, 'reference', e.target.value)}
                       placeholder="Ref/Últ. 4 díg."
                       className={`${styles.inputField} ${styles.inputFieldCenter}`}
                     />
                   </td>
                   <td className={styles.textCenter}>
                     {payments.length > 1 && (
-                      <button type="button" onClick={() => removePayment(idx)} className={styles.removeBtn}>
+                      <button
+                        type="button"
+                        onClick={() => removePayment(idx)}
+                        className={styles.removeBtn}
+                      >
                         ✕
                       </button>
                     )}
@@ -175,12 +218,15 @@ export function MixedPaymentModal({
 
         {paidTotal < total && (
           <button type="button" className={styles.addPaymentBtn} onClick={addPayment}>
-            <Plus size={16} /> Agregar otro método de pago (Pendiente: {formatPrice(Math.max(0, remaining))})
+            <Plus size={16} /> Agregar otro método de pago (Pendiente:{' '}
+            {formatPrice(Math.max(0, remaining))})
           </button>
         )}
 
         <div className={styles.formActions}>
-          <button type="button" className={styles.cancelBtn} onClick={onClose}>Cancelar</button>
+          <button type="button" className={styles.cancelBtn} onClick={onClose}>
+            Cancelar
+          </button>
           <button type="submit" className={styles.saveBtn} disabled={loading}>
             {loading ? <span className={styles.spinnerInline} /> : 'Cobrar'}
           </button>

@@ -66,7 +66,7 @@
 }
 
 .closeBtn:hover {
-  background-color: var(--bg-hover, rgb(0,0,0,0.04));
+  background-color: var(--bg-hover, rgb(0, 0, 0, 0.04));
   color: var(--text-dark, #333);
 }
 
@@ -94,7 +94,7 @@
 }
 
 .sectionHeader:hover {
-  background-color: var(--bg-hover, rgb(0,0,0,0.04));
+  background-color: var(--bg-hover, rgb(0, 0, 0, 0.04));
 }
 
 .sectionTitle {
@@ -151,7 +151,8 @@
 .colorText {
   width: 80px;
   padding: 4px 8px;
-  border-color: var(--border-color); border-style: solid;
+  border-color: var(--border-color);
+  border-style: solid;
   border-radius: var(--input-radius, 4px);
   font-size: var(--font-size-xs);
   font-family: monospace;
@@ -218,7 +219,7 @@
   border-radius: 50%;
   background-color: white;
   transition: transform 0.2s ease;
-  box-shadow: 0 1px 3px rgb(0,0,0,0.2);
+  box-shadow: 0 1px 3px rgb(0, 0, 0, 0.2);
 }
 
 .toggleOn .toggleKnob {
@@ -228,7 +229,8 @@
 .select {
   width: 100%;
   padding: 6px 10px;
-  border-color: var(--border-color); border-style: solid;
+  border-color: var(--border-color);
+  border-style: solid;
   border-radius: var(--input-radius, 4px);
   background-color: var(--bg-input, #fff);
   color: var(--text-dark, #333);
@@ -239,7 +241,8 @@
 .textInput {
   flex: 1;
   padding: 6px 10px;
-  border-color: var(--border-color); border-style: solid;
+  border-color: var(--border-color);
+  border-style: solid;
   border-radius: var(--input-radius, 4px);
   background-color: var(--bg-input, #fff);
   color: var(--text-dark, #333);
@@ -297,7 +300,8 @@
 .presetApply {
   flex: 1;
   padding: 6px 10px;
-  border-color: var(--border-color); border-style: solid;
+  border-color: var(--border-color);
+  border-style: solid;
   border-radius: var(--input-radius, 4px);
   background-color: var(--bg-input, #fff);
   color: var(--text-dark, #333);
@@ -317,7 +321,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-color: var(--border-color); border-style: solid;
+  border-color: var(--border-color);
+  border-style: solid;
   border-radius: var(--input-radius, 4px);
   background: none;
   color: var(--text-muted, #888);
@@ -384,7 +389,8 @@
   justify-content: center;
   gap: 8px;
   padding: 8px;
-  border-color: var(--border-color); border-style: solid;
+  border-color: var(--border-color);
+  border-style: solid;
   border-radius: var(--btn-radius, 4px);
   background: none;
   color: var(--text-dark, #333);
@@ -395,7 +401,7 @@
 }
 
 .darkToggle:hover {
-  background-color: var(--bg-hover, rgb(0,0,0,0.04));
+  background-color: var(--bg-hover, rgb(0, 0, 0, 0.04));
 }
 
 .oledToggle {
@@ -404,7 +410,8 @@
   justify-content: center;
   gap: 8px;
   padding: 8px;
-  border-color: var(--border-color); border-style: solid;
+  border-color: var(--border-color);
+  border-style: solid;
   border-radius: var(--btn-radius, 4px);
   background: none;
   color: var(--text-dark, #333);
@@ -415,7 +422,7 @@
 }
 
 .oledToggle:hover {
-  background-color: var(--bg-hover, rgb(0,0,0,0.04));
+  background-color: var(--bg-hover, rgb(0, 0, 0, 0.04));
 }
 
 .oledToggleOn {
@@ -434,7 +441,8 @@
   justify-content: center;
   gap: 6px;
   padding: 8px;
-  border-color: var(--border-color); border-style: solid;
+  border-color: var(--border-color);
+  border-style: solid;
   border-radius: var(--btn-radius, 4px);
   background: none;
   color: var(--color-danger, #d9534f);
@@ -450,17 +458,44 @@
 }
 
 /* ── Utility classes for inline style replacement ── */
-.flexRow { display: flex; flex-direction: row; align-items: center; gap: 8px; }
-.flexCol { display: flex; flex-direction: column; }
-.flexGap8 { display: flex; gap: 8px; }
-.itemsCenter { align-items: center; }
-.justifyCenter { justify-content: center; }
-.w16 { width: 16px; }
-.h16 { height: 16px; }
-.w24 { width: 24px; }
-.h24 { height: 24px; }
-.bgRadial { background: radial-gradient(circle at 30% 30%, #fff, #888); }
-.roundedCard { border-radius: var(--card-radius, 4px); }
+.flexRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+.flexCol {
+  display: flex;
+  flex-direction: column;
+}
+.flexGap8 {
+  display: flex;
+  gap: 8px;
+}
+.itemsCenter {
+  align-items: center;
+}
+.justifyCenter {
+  justify-content: center;
+}
+.w16 {
+  width: 16px;
+}
+.h16 {
+  height: 16px;
+}
+.w24 {
+  width: 24px;
+}
+.h24 {
+  height: 24px;
+}
+.bgRadial {
+  background: radial-gradient(circle at 30% 30%, #fff, #888);
+}
+.roundedCard {
+  border-radius: var(--card-radius, 4px);
+}
 
 .swatch {
   width: 18px;

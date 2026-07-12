@@ -12,7 +12,11 @@ const PLAN_OPTIONS = ['free', 'pro', 'enterprise'];
 
 function formatDate(d: string | Date | null) {
   if (!d) return '—';
-  return new Date(d).toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
+  return new Date(d).toLocaleDateString('es-ES', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  });
 }
 
 export function AdminTenantsPage() {
@@ -24,7 +28,11 @@ export function AdminTenantsPage() {
   const [actionLoading, setActionLoading] = useState<string | null>(null);
   const [extendModal, setExtendModal] = useState<{ id: string; name: string } | null>(null);
   const [extendDays, setExtendDays] = useState(30);
-  const [planModal, setPlanModal] = useState<{ id: string; name: string; currentPlan: string } | null>(null);
+  const [planModal, setPlanModal] = useState<{
+    id: string;
+    name: string;
+    currentPlan: string;
+  } | null>(null);
   const [newPlan, setNewPlan] = useState('pro');
 
   const fetchTenants = async () => {
@@ -145,17 +153,23 @@ export function AdminTenantsPage() {
                 </tr>
               </thead>
               <tbody>
-                {tenants.map(t => {
+                {tenants.map((t) => {
                   const isExpired = new Date(t.licenseExpiresAt) < new Date();
                   const isCanceled = t.subscriptionStatus === 'canceled';
-                  const statusClass = isCanceled ? styles.statusCanceled : isExpired ? styles.statusExpired : styles.statusActive;
+                  const statusClass = isCanceled
+                    ? styles.statusCanceled
+                    : isExpired
+                      ? styles.statusExpired
+                      : styles.statusActive;
                   return (
                     <tr key={t.id} className={t.isBlocked ? styles.rowBlocked : ''}>
                       <td>
                         <div className={styles.cellName}>{t.name}</div>
                       </td>
                       <td>
-                        <span className={`${styles.badge} ${t.planType === 'enterprise' ? styles.badgeEnterprise : t.planType === 'pro' ? styles.badgePro : styles.badgeFree}`}>
+                        <span
+                          className={`${styles.badge} ${t.planType === 'enterprise' ? styles.badgeEnterprise : t.planType === 'pro' ? styles.badgePro : styles.badgeFree}`}
+                        >
                           {t.planType}
                         </span>
                       </td>
@@ -175,18 +189,42 @@ export function AdminTenantsPage() {
                       <td className={styles.actionsCol}>
                         <div className={styles.actions}>
                           {t.isBlocked ? (
-                            <button className={styles.actionBtn} onClick={() => handleUnblock(t.id)} disabled={actionLoading === t.id} title="Desbloquear">
+                            <button
+                              className={styles.actionBtn}
+                              onClick={() => handleUnblock(t.id)}
+                              disabled={actionLoading === t.id}
+                              title="Desbloquear"
+                            >
                               <CheckCircle size={13} /> Desbloquear
                             </button>
                           ) : (
-                            <button className={`${styles.actionBtn} ${styles.actionDanger}`} onClick={() => handleBlock(t.id)} disabled={actionLoading === t.id} title="Bloquear">
+                            <button
+                              className={`${styles.actionBtn} ${styles.actionDanger}`}
+                              onClick={() => handleBlock(t.id)}
+                              disabled={actionLoading === t.id}
+                              title="Bloquear"
+                            >
                               <XCircle size={13} /> Bloquear
                             </button>
                           )}
-                          <button className={styles.actionBtn} onClick={() => { setExtendModal({ id: t.id, name: t.name }); setExtendDays(30); }} title="Extender licencia">
+                          <button
+                            className={styles.actionBtn}
+                            onClick={() => {
+                              setExtendModal({ id: t.id, name: t.name });
+                              setExtendDays(30);
+                            }}
+                            title="Extender licencia"
+                          >
                             <Plus size={13} /> Extender
                           </button>
-                          <button className={styles.actionBtn} onClick={() => { setPlanModal({ id: t.id, name: t.name, currentPlan: t.planType }); setNewPlan(t.planType); }} title="Cambiar plan">
+                          <button
+                            className={styles.actionBtn}
+                            onClick={() => {
+                              setPlanModal({ id: t.id, name: t.name, currentPlan: t.planType });
+                              setNewPlan(t.planType);
+                            }}
+                            title="Cambiar plan"
+                          >
                             <Minus size={13} /> Plan
                           </button>
                         </div>
@@ -204,14 +242,15 @@ export function AdminTenantsPage() {
         {extendModal && (
           <div className={styles.modalForm}>
             <p className={styles.modalFormText}>
-              Extender licencia de <strong className={styles.modalFormStrong}>{extendModal.name}</strong>
+              Extender licencia de{' '}
+              <strong className={styles.modalFormStrong}>{extendModal.name}</strong>
             </p>
             <div>
               <label className={styles.modalFormLabel}>Días a extender</label>
               <input
                 type="number"
                 value={extendDays}
-                onChange={e => setExtendDays(Math.max(1, Number(e.target.value)))}
+                onChange={(e) => setExtendDays(Math.max(1, Number(e.target.value)))}
                 min={1}
                 className={styles.modalFormInput}
               />
@@ -237,11 +276,13 @@ export function AdminTenantsPage() {
               <label className={styles.modalFormLabel}>Nuevo plan</label>
               <select
                 value={newPlan}
-                onChange={e => setNewPlan(e.target.value)}
+                onChange={(e) => setNewPlan(e.target.value)}
                 className={styles.modalFormInput}
               >
-                {PLAN_OPTIONS.map(p => (
-                  <option key={p} value={p}>{p.charAt(0).toUpperCase() + p.slice(1)}</option>
+                {PLAN_OPTIONS.map((p) => (
+                  <option key={p} value={p}>
+                    {p.charAt(0).toUpperCase() + p.slice(1)}
+                  </option>
                 ))}
               </select>
             </div>

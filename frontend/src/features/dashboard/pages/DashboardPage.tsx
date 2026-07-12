@@ -17,7 +17,18 @@ import trendingUpData from '@assets/lottie/trending-up.json';
 import styles from './DashboardPage.module.css';
 
 export function DashboardPage() {
-  const { summary, products, loading, lowStockProducts, recentActivity, totalStock, salesChartData, bestSellersData, netProfit, todaySales } = useDashboard();
+  const {
+    summary,
+    products,
+    loading,
+    lowStockProducts,
+    recentActivity,
+    totalStock,
+    salesChartData,
+    bestSellersData,
+    netProfit,
+    todaySales,
+  } = useDashboard();
   const { formatPrice } = useExchangeRate();
   const { config } = useTheme();
 
@@ -26,20 +37,60 @@ export function DashboardPage() {
       <>
         <SkeletonKPI count={6} />
         <div className={`${styles.grid} ${styles.mt16}`}>
-          <div className={styles.card}><SkeletonChart height={250} /></div>
-          <div className={styles.card}><SkeletonChart height={250} /></div>
+          <div className={styles.card}>
+            <SkeletonChart height={250} />
+          </div>
+          <div className={styles.card}>
+            <SkeletonChart height={250} />
+          </div>
         </div>
       </>
     );
   }
 
   const kpis = [
-    { key: 'total', cls: styles.total, icon: walletData, title: 'Ventas hoy', value: formatPrice(summary.total) },
-    { key: 'views', cls: styles.views, icon: creditCardData, title: 'Transacciones', value: summary.count },
-    { key: 'visitors', cls: styles.visitors, icon: shoppingBagData, title: 'Productos', value: products.length },
-    { key: 'shares', cls: styles.shares, icon: analyticsData, title: 'Stock total', value: totalStock },
-    { key: 'low', cls: styles.low, icon: warningData, title: 'Stock bajo', value: lowStockProducts.length },
-    { key: 'profit', cls: styles.profit, icon: trendingUpData, title: 'Utilidad neta', value: formatPrice(netProfit) },
+    {
+      key: 'total',
+      cls: styles.total,
+      icon: walletData,
+      title: 'Ventas hoy',
+      value: formatPrice(summary.total),
+    },
+    {
+      key: 'views',
+      cls: styles.views,
+      icon: creditCardData,
+      title: 'Transacciones',
+      value: summary.count,
+    },
+    {
+      key: 'visitors',
+      cls: styles.visitors,
+      icon: shoppingBagData,
+      title: 'Productos',
+      value: products.length,
+    },
+    {
+      key: 'shares',
+      cls: styles.shares,
+      icon: analyticsData,
+      title: 'Stock total',
+      value: totalStock,
+    },
+    {
+      key: 'low',
+      cls: styles.low,
+      icon: warningData,
+      title: 'Stock bajo',
+      value: lowStockProducts.length,
+    },
+    {
+      key: 'profit',
+      cls: styles.profit,
+      icon: trendingUpData,
+      title: 'Utilidad neta',
+      value: formatPrice(netProfit),
+    },
   ];
 
   return (

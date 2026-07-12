@@ -16,7 +16,9 @@ interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
 export const Select = forwardRef<HTMLSelectElement, SelectProps>(
   ({ error, label, options, placeholder, className = '', id, ...props }, ref) => {
     const selectId = id || `select-${props.name || Math.random().toString(36).slice(2, 9)}`;
-    const classes = [styles.select, error ? styles.selectError : '', className].filter(Boolean).join(' ');
+    const classes = [styles.select, error ? styles.selectError : '', className]
+      .filter(Boolean)
+      .join(' ');
 
     return (
       <div className={styles.wrapper}>
@@ -36,7 +38,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
         {error && <span className={styles.error}>{error}</span>}
       </div>
     );
-  },
+  }
 );
 
 Select.displayName = 'Select';

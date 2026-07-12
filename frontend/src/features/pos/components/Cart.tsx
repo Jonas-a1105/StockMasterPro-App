@@ -35,13 +35,22 @@ export function Cart({
         <button className={`${styles.cartTab} ${styles.cartTabActive}`}>
           <ShoppingCart size={14} /> Carrito Actual
         </button>
-        {carts.map(pc => (
+        {carts.map((pc) => (
           <div key={pc.id} className={styles.cartTab}>
             <button className={styles.cartTabBtn} onClick={() => onResumeOrder(pc)}>
               <PauseCircle size={14} /> {pc.name}
             </button>
             <button className={styles.cartTabClose} onClick={() => onDiscardCart(pc.id)}>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+              <svg
+                width="12"
+                height="12"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <path d="M18 6L6 18M6 6l12 12" />
+              </svg>
             </button>
           </div>
         ))}
@@ -70,8 +79,13 @@ export function Cart({
       </div>
 
       <div className={styles.cartItems}>
-        {items.map(item => (
-          <CartItemRow key={item.product.id} item={item} onUpdateQty={onUpdateQty} onRemove={onRemove} />
+        {items.map((item) => (
+          <CartItemRow
+            key={item.product.id}
+            item={item}
+            onUpdateQty={onUpdateQty}
+            onRemove={onRemove}
+          />
         ))}
         {items.length === 0 && (
           <p className={styles.emptyCart}>Selecciona productos para agregar al carrito</p>

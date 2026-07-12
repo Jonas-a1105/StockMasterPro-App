@@ -6,10 +6,17 @@ import type { PurchaseOrder, Product } from '@types';
 import styles from '@features/inventory/pages/InventoryPage.module.css';
 
 export function ReceiveModal({
-  open, order, onClose, onSubmit, loading,
+  open,
+  order,
+  onClose,
+  onSubmit,
+  loading,
 }: {
-  open: boolean; order: PurchaseOrder | null; onClose: () => void;
-  onSubmit: (id: string, items: { productId: string; quantity: number }[]) => Promise<void>; loading: boolean;
+  open: boolean;
+  order: PurchaseOrder | null;
+  onClose: () => void;
+  onSubmit: (id: string, items: { productId: string; quantity: number }[]) => Promise<void>;
+  loading: boolean;
 }) {
   const { formatPrice } = useExchangeRate();
   const [quantities, setQuantities] = useState<Record<string, number>>({});
@@ -29,21 +36,23 @@ export function ReceiveModal({
 
   const updateQty = (itemId: string, item: PurchaseOrder['items'][0], val: number) => {
     const remaining = item.quantity - item.receivedQty;
-    setQuantities(p => ({ ...p, [itemId]: Math.max(0, Math.min(val, remaining)) }));
+    setQuantities((p) => ({ ...p, [itemId]: Math.max(0, Math.min(val, remaining)) }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!order) return;
     const items = order.items
-      .filter(i => (quantities[i.id] ?? 0) > 0)
-      .map(i => ({ productId: i.productId, quantity: quantities[i.id] ?? 0 }));
+      .filter((i) => (quantities[i.id] ?? 0) > 0)
+      .map((i) => ({ productId: i.productId, quantity: quantities[i.id] ?? 0 }));
     if (items.length === 0) return;
     await onSubmit(order.id, items);
     setQuantities({});
   };
 
-  const total = order ? order.items.reduce((sum, i) => sum + (quantities[i.id] ?? 0) * Number(i.cost), 0) : 0;
+  const total = order
+    ? order.items.reduce((sum, i) => sum + (quantities[i.id] ?? 0) * Number(i.cost), 0)
+    : 0;
 
   if (!order) return null;
 
@@ -66,7 +75,7 @@ export function ReceiveModal({
             </tr>
           </thead>
           <tbody>
-            {order.items.map(item => {
+            {order.items.map((item) => {
               const remaining = item.quantity - item.receivedQty;
               return (
                 <tr key={item.id}>
@@ -76,14 +85,18 @@ export function ReceiveModal({
                   <td className={styles.textCenter}>{remaining}</td>
                   <td className={styles.textCenter}>
                     <input
-                      type="number" min={0} max={remaining}
+                      type="number"
+                      min={0}
+                      max={remaining}
                       value={quantities[item.id] ?? 0}
-                      onChange={e => updateQty(item.id, item, Number(e.target.value))}
+                      onChange={(e) => updateQty(item.id, item, Number(e.target.value))}
                       className={`${styles.w70} ${styles.p4px8} ${styles.rounded6} ${styles.borderBorder} ${styles.textCenter}`}
                     />
                   </td>
                   <td className={styles.textRight}>{formatPrice(item.cost)}</td>
-                  <td className={styles.textRight}>{formatPrice((quantities[item.id] ?? 0) * Number(item.cost))}</td>
+                  <td className={styles.textRight}>
+                    {formatPrice((quantities[item.id] ?? 0) * Number(item.cost))}
+                  </td>
                 </tr>
               );
             })}
@@ -97,8 +110,14 @@ export function ReceiveModal({
           </tfoot>
         </table>
         <div className={styles.formActions}>
-          <button type="button" className={styles.cancelBtn} onClick={onClose}>Cancelar</button>
-          <button type="submit" className={styles.saveBtn} disabled={loading || Object.values(quantities).every(v => v <= 0)}>
+          <button type="button" className={styles.cancelBtn} onClick={onClose}>
+            Cancelar
+          </button>
+          <button
+            type="submit"
+            className={styles.saveBtn}
+            disabled={loading || Object.values(quantities).every((v) => v <= 0)}
+          >
             {loading ? <ButtonLoader /> : 'Recibir'}
           </button>
         </div>

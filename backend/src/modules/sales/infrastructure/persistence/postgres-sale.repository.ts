@@ -11,7 +11,11 @@ import {
   CreditLimitExceededException,
   InvalidSaleOperationException,
 } from '../../domain/sales.errors';
-import { Sale as PrismaSale, SaleItem as PrismaSaleItem, SalePayment as PrismaSalePayment } from '@prisma/client';
+import {
+  Sale as PrismaSale,
+  SaleItem as PrismaSaleItem,
+  SalePayment as PrismaSalePayment,
+} from '@prisma/client';
 
 type PrismaSaleWithItems = PrismaSale & {
   items?: PrismaSaleItem[];
@@ -119,10 +123,24 @@ export class PostgresSaleRepo implements SaleRepository {
     return this.prisma.sale.count({ where });
   }
 
-  async create(sale: Sale, offlineId?: string, payments?: { paymentMethod: string; amount: number; exchangeRate?: number; reference?: string }[]): Promise<Sale> {
-    const paymentList = payments ?? [{ paymentMethod: sale.paymentMethod, amount: sale.total }];
+  async create(
+    sale: Sale,
+    offlineId?: string,
+    payments?: {
+      paymentMethod: string;
+      amount: number;
+      exchangeRate?: number;
+      reference?: string;
+    }[],
+  ): Promise<Sale> {
+    const paymentList = payments ?? [
+      { paymentMethod: sale.paymentMethod, amount: sale.total },
+    ];
     const created = await this.prisma.$transaction(async (tx) => {
-      if (sale.paymentMethod === 'credit' || paymentList.some(p => p.paymentMethod === 'credit')) {
+      if (
+        sale.paymentMethod === 'credit' ||
+        paymentList.some((p) => p.paymentMethod === 'credit')
+      ) {
         if (!sale.customerId) {
           throw new InvalidSaleOperationException(
             'Debe seleccionar un cliente para ventas a crédito.',
@@ -138,7 +156,7 @@ export class PostgresSaleRepo implements SaleRepository {
         }
 
         const creditAmount = paymentList
-          .filter(p => p.paymentMethod === 'credit')
+          .filter((p) => p.paymentMethod === 'credit')
           .reduce((sum, p) => sum + p.amount, 0);
 
         const currentBalance = Number(customer.balance);

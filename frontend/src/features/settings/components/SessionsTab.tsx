@@ -21,7 +21,9 @@ export function SessionsTab() {
     }
   };
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => {
+    load();
+  }, []);
 
   const logoutDevice = async (deviceId: string) => {
     try {
@@ -64,28 +66,38 @@ export function SessionsTab() {
       <div className={styles.list}>
         {sessions.length === 0 ? (
           <p className={styles.emptyText}>No hay sesiones activas</p>
-        ) : sessions.map((s: any) => {
-          const ua = s.userAgent || '';
-          const isMobile = /mobile|android|iphone|ipad/i.test(ua);
-          return (
-            <div key={s.id || s.deviceId} className={styles.sessionCard}>
-              {getDeviceIcon(ua)}
-              <div className={styles.sessionInfo}>
-                <div className={styles.sessionName}>
-                  {isMobile ? 'Dispositivo móvil' : 'Navegador web'}
-                  {s.isCurrent && <span className={styles.currentBadge}>(actual)</span>}
+        ) : (
+          sessions.map((s: any) => {
+            const ua = s.userAgent || '';
+            const isMobile = /mobile|android|iphone|ipad/i.test(ua);
+            return (
+              <div key={s.id || s.deviceId} className={styles.sessionCard}>
+                {getDeviceIcon(ua)}
+                <div className={styles.sessionInfo}>
+                  <div className={styles.sessionName}>
+                    {isMobile ? 'Dispositivo móvil' : 'Navegador web'}
+                    {s.isCurrent && <span className={styles.currentBadge}>(actual)</span>}
+                  </div>
+                  <div className={styles.sessionMeta}>
+                    {s.ipAddress ? `IP: ${s.ipAddress}` : ''}
+                    {s.lastActivity
+                      ? ` · Última actividad: ${new Date(s.lastActivity).toLocaleString()}`
+                      : ''}
+                  </div>
                 </div>
-                <div className={styles.sessionMeta}>
-                  {s.ipAddress ? `IP: ${s.ipAddress}` : ''}
-                  {s.lastActivity ? ` · Última actividad: ${new Date(s.lastActivity).toLocaleString()}` : ''}
-                </div>
+                {!s.isCurrent && (
+                  <button
+                    onClick={() => logoutDevice(s.deviceId)}
+                    className={styles.logoutBtn}
+                    title="Cerrar sesión"
+                  >
+                    <XCircle size={16} />
+                  </button>
+                )}
               </div>
-              {!s.isCurrent && (
-                <button onClick={() => logoutDevice(s.deviceId)} className={styles.logoutBtn} title="Cerrar sesión"><XCircle size={16} /></button>
-              )}
-            </div>
-          );
-        })}
+            );
+          })
+        )}
       </div>
     </div>
   );

@@ -4,7 +4,6 @@
   gap: 20px;
 }
 
-
 .tableCard {
   background-color: var(--bg-card, #fff);
   border-radius: var(--card-radius, 4px);
@@ -74,7 +73,8 @@
 
 .statusBtn {
   padding: 4px 10px;
-  border-color: var(--border-color); border-style: solid;
+  border-color: var(--border-color);
+  border-style: solid;
   border-radius: var(--btn-radius);
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);
@@ -112,7 +112,8 @@
   justify-content: center;
   width: 30px;
   height: 30px;
-  border-color: var(--border-color); border-style: solid;
+  border-color: var(--border-color);
+  border-style: solid;
   border-radius: var(--card-radius, 4px);
   background: none;
   cursor: pointer;
@@ -164,7 +165,8 @@
 .field input,
 .field select {
   padding: 10px 12px;
-  border-color: var(--border-color); border-style: solid;
+  border-color: var(--border-color);
+  border-style: solid;
   border-radius: var(--card-radius, 4px);
   font-size: var(--font-size-sm);
   outline: none;
@@ -192,7 +194,8 @@
 
 .cancelBtn {
   padding: 10px 20px;
-  border-color: var(--border-color); border-style: solid;
+  border-color: var(--border-color);
+  border-style: solid;
   border-radius: var(--card-radius, 4px);
   background: none;
   font-size: var(--font-size-sm);
@@ -242,8 +245,20 @@
   font-size: var(--font-size-sm);
 }
 
-.textCenter { text-align: center; }
-.textMuted { color: var(--text-muted); }
-.cursorPointer { cursor: pointer; }
-.justifyCenter { justify-content: center; }
-.emptyRow { text-align: center; padding: 40px; color: var(--text-muted); }
+.textCenter {
+  text-align: center;
+}
+.textMuted {
+  color: var(--text-muted);
+}
+.cursorPointer {
+  cursor: pointer;
+}
+.justifyCenter {
+  justify-content: center;
+}
+.emptyRow {
+  text-align: center;
+  padding: 40px;
+  color: var(--text-muted);
+}

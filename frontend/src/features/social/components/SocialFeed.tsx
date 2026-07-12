@@ -1,6 +1,16 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useAuth } from '@contexts/AuthContext';
-import { Heart, MessageCircle, Send, Bookmark, MoreHorizontal, ChevronLeft, ChevronRight, ChevronDown, ArrowLeft } from 'lucide-react';
+import {
+  Heart,
+  MessageCircle,
+  Send,
+  Bookmark,
+  MoreHorizontal,
+  ChevronLeft,
+  ChevronRight,
+  ChevronDown,
+  ArrowLeft,
+} from 'lucide-react';
 import { Skeleton } from '@shared/ui/Skeleton';
 import { api } from '@shared/lib/http/client';
 import type { SocialPost, FeedResponse } from '@types';
@@ -8,7 +18,12 @@ import { SocialComments } from './SocialComments';
 import styles from './SocialFeed.module.css';
 
 const reactionEmojis: Record<string, string> = {
-  like: '👍', love: '❤️', haha: '😂', wow: '😮', sad: '😢', angry: '😡',
+  like: '👍',
+  love: '❤️',
+  haha: '😂',
+  wow: '😮',
+  sad: '😢',
+  angry: '😡',
 };
 
 function PostSkeleton() {
@@ -46,23 +61,23 @@ export function SocialFeed() {
   const [activeImageIndices, setActiveImageIndices] = useState<Record<string, number>>({});
 
   const handleNextImage = (postId: string, max: number) => {
-    setActiveImageIndices(prev => ({
+    setActiveImageIndices((prev) => ({
       ...prev,
-      [postId]: ((prev[postId] || 0) + 1) % max
+      [postId]: ((prev[postId] || 0) + 1) % max,
     }));
   };
 
   const handlePrevImage = (postId: string, max: number) => {
-    setActiveImageIndices(prev => ({
+    setActiveImageIndices((prev) => ({
       ...prev,
-      [postId]: ((prev[postId] || 0) - 1 + max) % max
+      [postId]: ((prev[postId] || 0) - 1 + max) % max,
     }));
   };
 
   const handleSetImageIndex = (postId: string, index: number) => {
-    setActiveImageIndices(prev => ({
+    setActiveImageIndices((prev) => ({
       ...prev,
-      [postId]: index
+      [postId]: index,
     }));
   };
 
@@ -71,28 +86,35 @@ export function SocialFeed() {
     try {
       const data: FeedResponse = await api.getFeed(p);
       if (p === 1) setPosts(data.posts);
-      else setPosts(prev => [...prev, ...data.posts]);
+      else setPosts((prev) => [...prev, ...data.posts]);
       setTotalPages(data.totalPages);
-    } catch {} finally { setLoading(false); }
+    } catch {
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
-  useEffect(() => { loadFeed(1); }, [loadFeed]);
+  useEffect(() => {
+    loadFeed(1);
+  }, [loadFeed]);
 
   const handleReaction = async (postId: string, type: string) => {
     try {
       await api.toggleSocialReaction({ postId, type });
       setReactionPicker(null);
-      setPosts(prev => prev.map(p => {
-        if (p.id === postId) {
-          const hadReaction = p.reactions && p.reactions.length > 0;
-          return {
-            ...p,
-            _count: { ...p._count, reactions: p._count.reactions + (hadReaction ? -1 : 1) },
-            reactions: hadReaction ? [] : [{ type }],
-          };
-        }
-        return p;
-      }));
+      setPosts((prev) =>
+        prev.map((p) => {
+          if (p.id === postId) {
+            const hadReaction = p.reactions && p.reactions.length > 0;
+            return {
+              ...p,
+              _count: { ...p._count, reactions: p._count.reactions + (hadReaction ? -1 : 1) },
+              reactions: hadReaction ? [] : [{ type }],
+            };
+          }
+          return p;
+        })
+      );
     } catch {}
   };
 
@@ -144,15 +166,17 @@ export function SocialFeed() {
   return (
     <div className="ig-feed-layout">
       <div className="ig-feed-column">
-
         <div className="ig-stories-wrapper">
           {showLeftScroll && (
-            <button className="ig-stories-scroll ig-stories-scroll-left" onClick={() => scrollStories('left')}>
+            <button
+              className="ig-stories-scroll ig-stories-scroll-left"
+              onClick={() => scrollStories('left')}
+            >
               <ChevronLeft size={16} />
             </button>
           )}
           <div className="ig-stories" ref={storiesRef}>
-            {stories.map(story => (
+            {stories.map((story) => (
               <div key={story.id} className="ig-story-node">
                 <div className={`ig-story-ring ${story.isOwn ? 'own' : ''}`}>
                   <div className="ig-story-avatar">{story.img}</div>
@@ -162,7 +186,10 @@ export function SocialFeed() {
             ))}
           </div>
           {showRightScroll && (
-            <button className="ig-stories-scroll ig-stories-scroll-right" onClick={() => scrollStories('right')}>
+            <button
+              className="ig-stories-scroll ig-stories-scroll-right"
+              onClick={() => scrollStories('right')}
+            >
               <ChevronRight size={16} />
             </button>
           )}
@@ -175,7 +202,7 @@ export function SocialFeed() {
             <PostSkeleton />
           </>
         ) : (
-          posts.map(post => {
+          posts.map((post) => {
             const userReaction = getUserReaction(post);
             const isLiked = userReaction !== null;
             const activeIndex = activeImageIndices[post.id] || 0;
@@ -184,7 +211,9 @@ export function SocialFeed() {
                 <div className="ig-post-header">
                   <div className="ig-post-user">
                     <div className="ig-avatar-xs">
-                      {(post.user.socialProfile?.displayName || post.user.name || 'U')[0].toUpperCase()}
+                      {(post.user.socialProfile?.displayName ||
+                        post.user.name ||
+                        'U')[0].toUpperCase()}
                     </div>
                     <strong>{post.user.socialProfile?.displayName || post.user.name}</strong>
                   </div>
@@ -194,17 +223,28 @@ export function SocialFeed() {
                 <div className="ig-post-media">
                   {post.images.length > 0 ? (
                     <div className="ig-carousel-container">
-                      <div className={`ig-carousel-track ${styles.carouselTrack}`} style={{ '--tx': `translateX(-${activeIndex * 100}%)` } as React.CSSProperties}>
+                      <div
+                        className={`ig-carousel-track ${styles.carouselTrack}`}
+                        style={
+                          { '--tx': `translateX(-${activeIndex * 100}%)` } as React.CSSProperties
+                        }
+                      >
                         {post.images.map((img, idx) => (
                           <img key={idx} src={img} alt="" draggable="false" />
                         ))}
                       </div>
                       {post.images.length > 1 && (
                         <>
-                          <button className="ig-carousel-btn prev" onClick={() => handlePrevImage(post.id, post.images.length)}>
+                          <button
+                            className="ig-carousel-btn prev"
+                            onClick={() => handlePrevImage(post.id, post.images.length)}
+                          >
                             <ChevronLeft size={20} />
                           </button>
-                          <button className="ig-carousel-btn next" onClick={() => handleNextImage(post.id, post.images.length)}>
+                          <button
+                            className="ig-carousel-btn next"
+                            onClick={() => handleNextImage(post.id, post.images.length)}
+                          >
                             <ChevronRight size={20} />
                           </button>
                         </>
@@ -217,23 +257,38 @@ export function SocialFeed() {
 
                 <div className="ig-post-actions">
                   <div className="ig-actions-left">
-                    <button className={`ig-action-btn ${isLiked ? 'liked' : ''}`} onClick={() => {
-                      if (isLiked) handleReaction(post.id, userReaction!);
-                      else setReactionPicker(reactionPicker === post.id ? null : post.id);
-                    }}>
-                      {isLiked ? <Heart size={22} fill="#ff3040" color="#ff3040" /> : <Heart size={22} />}
+                    <button
+                      className={`ig-action-btn ${isLiked ? 'liked' : ''}`}
+                      onClick={() => {
+                        if (isLiked) handleReaction(post.id, userReaction!);
+                        else setReactionPicker(reactionPicker === post.id ? null : post.id);
+                      }}
+                    >
+                      {isLiked ? (
+                        <Heart size={22} fill="#ff3040" color="#ff3040" />
+                      ) : (
+                        <Heart size={22} />
+                      )}
                     </button>
                     {reactionPicker === post.id && (
                       <div className="ig-reaction-picker">
                         {Object.entries(reactionEmojis).map(([key, emoji]) => (
-                          <button key={key} onClick={() => handleReaction(post.id, key)} className="ig-reaction-option">{emoji}</button>
+                          <button
+                            key={key}
+                            onClick={() => handleReaction(post.id, key)}
+                            className="ig-reaction-option"
+                          >
+                            {emoji}
+                          </button>
                         ))}
                       </div>
                     )}
                     <button className="ig-action-btn" onClick={() => setOpenComments(post.id)}>
                       <MessageCircle size={22} />
                     </button>
-                    <button className="ig-action-btn"><Send size={22} /></button>
+                    <button className="ig-action-btn">
+                      <Send size={22} />
+                    </button>
                   </div>
                   {post.images.length > 1 && (
                     <div className="ig-actions-center">
@@ -247,16 +302,23 @@ export function SocialFeed() {
                       ))}
                     </div>
                   )}
-                  <button className="ig-action-btn"><Bookmark size={22} /></button>
+                  <button className="ig-action-btn">
+                    <Bookmark size={22} />
+                  </button>
                 </div>
 
                 <div className="ig-post-body">
-                  <div className="ig-post-likes">{post._count.reactions.toLocaleString()} Me gusta</div>
+                  <div className="ig-post-likes">
+                    {post._count.reactions.toLocaleString()} Me gusta
+                  </div>
                   <p className="ig-post-caption">
                     <strong>{post.user.socialProfile?.displayName || post.user.name}</strong>
                     {post.content}
                   </p>
-                  <button className="ig-post-comments-link" onClick={() => setOpenComments(post.id)}>
+                  <button
+                    className="ig-post-comments-link"
+                    onClick={() => setOpenComments(post.id)}
+                  >
                     Ver los {post._count.comments} comentarios
                   </button>
                 </div>
@@ -266,11 +328,15 @@ export function SocialFeed() {
         )}
 
         {page < totalPages && (
-          <button className="ig-load-more" onClick={async () => {
-            const next = page + 1;
-            setPage(next);
-            await loadFeed(next);
-          }} disabled={loading}>
+          <button
+            className="ig-load-more"
+            onClick={async () => {
+              const next = page + 1;
+              setPage(next);
+              await loadFeed(next);
+            }}
+            disabled={loading}
+          >
             {loading ? 'Cargando...' : 'Cargar más'}
           </button>
         )}
@@ -308,12 +374,17 @@ export function SocialFeed() {
       </aside>
 
       {/* Sliding comments drawer */}
-      <div className={`ig-comments-drawer-backdrop ${openComments ? 'active' : ''}`} onClick={() => setOpenComments(null)} />
+      <div
+        className={`ig-comments-drawer-backdrop ${openComments ? 'active' : ''}`}
+        onClick={() => setOpenComments(null)}
+      />
       <div className={`ig-comments-drawer ${openComments ? 'active' : ''}`}>
         <div className="ig-drawer-handle" onClick={() => setOpenComments(null)} />
         <div className="ig-drawer-header">
           <h3>Comentarios</h3>
-          <button className="ig-drawer-close" onClick={() => setOpenComments(null)}>&times;</button>
+          <button className="ig-drawer-close" onClick={() => setOpenComments(null)}>
+            &times;
+          </button>
         </div>
         {openComments && (
           <div className="ig-drawer-content">

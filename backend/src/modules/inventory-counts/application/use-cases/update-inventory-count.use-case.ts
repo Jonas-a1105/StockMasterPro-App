@@ -1,5 +1,14 @@
-import { Inject, Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
-import { InventoryCount, InventoryCountNotFoundException, InventoryCountInvalidStateException } from '@modules/inventory-counts';
+import {
+  Inject,
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
+import {
+  InventoryCount,
+  InventoryCountNotFoundException,
+  InventoryCountInvalidStateException,
+} from '@modules/inventory-counts';
 import {
   InventoryCountRepository,
   INVENTORY_COUNT_REPOSITORY,
@@ -25,7 +34,9 @@ export class UpdateInventoryCountUseCase {
     if (!count) throw new NotFoundException('Conteo no encontrado');
 
     if (!count.canEdit()) {
-      throw new BadRequestException('No se puede editar un conteo en estado ' + count.status);
+      throw new BadRequestException(
+        'No se puede editar un conteo en estado ' + count.status,
+      );
     }
 
     if (input.name !== undefined) count.name = input.name;
@@ -53,7 +64,9 @@ export class StartInventoryCountUseCase {
     if (!count) throw new NotFoundException('Conteo no encontrado');
 
     if (count.status !== 'draft') {
-      throw new BadRequestException('Solo se pueden iniciar conteos en estado borrador');
+      throw new BadRequestException(
+        'Solo se pueden iniciar conteos en estado borrador',
+      );
     }
 
     count.start();
@@ -78,7 +91,9 @@ export class CompleteInventoryCountUseCase {
     if (!count) throw new NotFoundException('Conteo no encontrado');
 
     if (count.status !== 'in_progress') {
-      throw new BadRequestException('Solo se pueden completar conteos en progreso');
+      throw new BadRequestException(
+        'Solo se pueden completar conteos en progreso',
+      );
     }
 
     count.complete();
@@ -104,7 +119,9 @@ export class ApproveInventoryCountUseCase {
     if (!count) throw new NotFoundException('Conteo no encontrado');
 
     if (count.status !== 'completed') {
-      throw new BadRequestException('Solo se pueden aprobar conteos completados');
+      throw new BadRequestException(
+        'Solo se pueden aprobar conteos completados',
+      );
     }
 
     count.approve(input.approverId);

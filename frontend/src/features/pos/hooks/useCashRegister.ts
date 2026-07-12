@@ -53,8 +53,12 @@ export function useCashRegister(): UseCashRegisterReturn {
           setCashOpening(Number(session.openingBalance));
 
           const txns = await api.getCashSessionTransactions(session.id);
-          const sales = txns.filter((t: any) => t.type === 'sale').reduce((s: number, t: any) => s + Number(t.amount), 0);
-          const expenses = txns.filter((t: any) => t.type === 'expense').reduce((s: number, t: any) => s + Number(t.amount), 0);
+          const sales = txns
+            .filter((t: any) => t.type === 'sale')
+            .reduce((s: number, t: any) => s + Number(t.amount), 0);
+          const expenses = txns
+            .filter((t: any) => t.type === 'expense')
+            .reduce((s: number, t: any) => s + Number(t.amount), 0);
           setCashSalesTotal(sales);
           setCashExpensesTotal(expenses);
         }
@@ -95,8 +99,12 @@ export function useCashRegister(): UseCashRegisterReturn {
         setCurrentSessionId(session.id);
         setCashOpening(Number(session.openingBalance));
         const txns = await api.getCashSessionTransactions(session.id);
-        const sales = txns.filter((t: any) => t.type === 'sale').reduce((s: number, t: any) => s + Number(t.amount), 0);
-        const expenses = txns.filter((t: any) => t.type === 'expense').reduce((s: number, t: any) => s + Number(t.amount), 0);
+        const sales = txns
+          .filter((t: any) => t.type === 'sale')
+          .reduce((s: number, t: any) => s + Number(t.amount), 0);
+        const expenses = txns
+          .filter((t: any) => t.type === 'expense')
+          .reduce((s: number, t: any) => s + Number(t.amount), 0);
         setCashSalesTotal(sales);
         setCashExpensesTotal(expenses);
       }
@@ -126,10 +134,15 @@ export function useCashRegister(): UseCashRegisterReturn {
       const expected = cashOpening + cashSalesTotal - cashExpensesTotal;
       const diff = declared - expected;
       const closing: CashClosing = {
-        opening: cashOpening, sales: cashSalesTotal, expenses: cashExpensesTotal,
-        expected, declared, difference: diff, date: new Date().toISOString(),
+        opening: cashOpening,
+        sales: cashSalesTotal,
+        expenses: cashExpensesTotal,
+        expected,
+        declared,
+        difference: diff,
+        date: new Date().toISOString(),
       };
-      setCashClosings(prev => [...prev, closing]);
+      setCashClosings((prev) => [...prev, closing]);
       setCurrentSessionId(null);
       setCashOpening(0);
       setCashSalesTotal(0);
@@ -145,14 +158,18 @@ export function useCashRegister(): UseCashRegisterReturn {
   };
 
   const addClosing = (closing: CashClosing) => {
-    setCashClosings(prev => [...prev, closing]);
+    setCashClosings((prev) => [...prev, closing]);
   };
 
   const addExpense = async (amount: number, reason: string) => {
     if (!currentSessionId) return;
     try {
-      await api.addCashTransaction(currentSessionId, { amount, type: 'expense', description: reason });
-      setCashExpensesTotal(prev => prev + amount);
+      await api.addCashTransaction(currentSessionId, {
+        amount,
+        type: 'expense',
+        description: reason,
+      });
+      setCashExpensesTotal((prev) => prev + amount);
       setShowExpenseModal(false);
       showToast('Gasto registrado', 'success');
     } catch (err: any) {
@@ -161,16 +178,22 @@ export function useCashRegister(): UseCashRegisterReturn {
   };
 
   return {
-    showCashModal, setShowCashModal,
-    cashOpening, setCashOpening,
+    showCashModal,
+    setShowCashModal,
+    cashOpening,
+    setCashOpening,
     cashSalesTotal: cashSalesTotal - cashExpensesTotal,
     setCashSalesTotal,
-    declaredAmount, setDeclaredAmount,
+    declaredAmount,
+    setDeclaredAmount,
     isTodayOpen,
     currentSessionId,
-    cashClosings, addClosing,
-    openCash, closeCash,
-    showExpenseModal, setShowExpenseModal,
+    cashClosings,
+    addClosing,
+    openCash,
+    closeCash,
+    showExpenseModal,
+    setShowExpenseModal,
     addExpense,
   };
 }

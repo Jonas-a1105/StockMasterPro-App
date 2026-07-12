@@ -16,7 +16,7 @@ interface TabNavProps {
 export function TabNav({ tabs, activeTab, onTabChange }: TabNavProps) {
   return (
     <div className={styles.tabs}>
-      {tabs.map(tab => (
+      {tabs.map((tab) => (
         <button
           key={tab.key}
           className={`${styles.tab} ${activeTab === tab.key ? styles.tabActive : ''}`}

@@ -9,7 +9,7 @@ export function useDragScroll(ref: React.RefObject<HTMLDivElement | null>) {
     velocity: 0,
     lastTime: 0,
     animationFrameId: 0,
-    hasDragged: false
+    hasDragged: false,
   });
 
   useEffect(() => {
@@ -47,7 +47,7 @@ export function useDragScroll(ref: React.RefObject<HTMLDivElement | null>) {
       if (!dragState.current.isDown) return;
 
       const deltaY = e.pageY - dragState.current.startY;
-      
+
       // Determine if it was a real drag (threshold of 5px)
       if (Math.abs(deltaY) > 5) {
         dragState.current.hasDragged = true;
@@ -93,7 +93,7 @@ export function useDragScroll(ref: React.RefObject<HTMLDivElement | null>) {
       if (Math.abs(velocity) > 0.5) {
         const momentumScroll = () => {
           if (dragState.current.isDown) return; // Stop if user clicks down again
-          
+
           el.scrollTop -= velocity;
           velocity *= 0.95; // decay factor (friction)
 

@@ -35,20 +35,27 @@ export function GlobalSearchModal() {
   const resultsRef = useRef<HTMLDivElement>(null);
   const { config } = useTheme();
   const { search: doSearch, debouncedSearch, loading, results } = useGlobalSearch();
-  
+
   const debouncedQuery = useMemo(() => query, [query]);
-  const debouncedSearch = useMemo(() => useDebounce((q: string) => {
-    if (q.length >= 2) {
-      doSearch(q, 8);
-    } else {
-      setResults([]);
-    }
-  }, 150), [doSearch]);
+  const debouncedSearch = useMemo(
+    () =>
+      useDebounce((q: string) => {
+        if (q.length >= 2) {
+          doSearch(q, 8);
+        } else {
+          setResults([]);
+        }
+      }, 150),
+    [doSearch]
+  );
 
   const [results, setResults] = useState<GlobalSearchResult[]>([]);
 
   useKeyboardShortcut('k', true, () => {
-    if (document.activeElement?.tagName !== 'INPUT' && document.activeElement?.tagName !== 'TEXTAREA') {
+    if (
+      document.activeElement?.tagName !== 'INPUT' &&
+      document.activeElement?.tagName !== 'TEXTAREA'
+    ) {
       setOpen(true);
     }
   });
@@ -72,7 +79,9 @@ export function GlobalSearchModal() {
     } else {
       document.body.style.overflow = '';
     }
-    return () => { document.body.style.overflow = ''; };
+    return () => {
+      document.body.style.overflow = '';
+    };
   }, [open]);
 
   useEffect(() => {
@@ -83,28 +92,31 @@ export function GlobalSearchModal() {
     }
   }, [query, debouncedSearch, open]);
 
-  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
-    const maxIndex = results.length - 1;
-    switch (e.key) {
-      case 'ArrowDown':
-        e.preventDefault();
-        setSelectedIndex(i => Math.min(i + 1, maxIndex));
-        break;
-      case 'ArrowUp':
-        e.preventDefault();
-        setSelectedIndex(i => Math.max(i - 1, 0));
-        break;
-      case 'Enter':
-        e.preventDefault();
-        if (results[selectedIndex]) {
-          handleResultClick(results[selectedIndex]);
-        }
-        break;
-      case 'Escape':
-        close();
-        break;
-    }
-  }, [results, selectedIndex]);
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      const maxIndex = results.length - 1;
+      switch (e.key) {
+        case 'ArrowDown':
+          e.preventDefault();
+          setSelectedIndex((i) => Math.min(i + 1, maxIndex));
+          break;
+        case 'ArrowUp':
+          e.preventDefault();
+          setSelectedIndex((i) => Math.max(i - 1, 0));
+          break;
+        case 'Enter':
+          e.preventDefault();
+          if (results[selectedIndex]) {
+            handleResultClick(results[selectedIndex]);
+          }
+          break;
+        case 'Escape':
+          close();
+          break;
+      }
+    },
+    [results, selectedIndex]
+  );
 
   const close = useCallback(() => {
     setOpen(false);
@@ -143,7 +155,13 @@ export function GlobalSearchModal() {
 
   return createPortal(
     <div className={styles.overlay} onClick={() => setOpen(false)}>
-      <div className={styles.modal} onClick={e => e.stopPropagation()} role="dialog" aria-modal="true" aria-label="Búsqueda global">
+      <div
+        className={styles.modal}
+        onClick={(e) => e.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Búsqueda global"
+      >
         <header className={styles.header}>
           <div className={styles.headerLeft}>
             <Search className={styles.searchIcon} />
@@ -153,7 +171,7 @@ export function GlobalSearchModal() {
               type="search"
               placeholder="Buscar productos, clientes, ventas, proveedores..."
               value={query}
-              onChange={e => setQuery(e.target.value)}
+              onChange={(e) => setQuery(e.target.value)}
               autoComplete="off"
               autoFocus
               aria-label="Búsqueda global"
@@ -170,14 +188,18 @@ export function GlobalSearchModal() {
 
         {loading && <div className={styles.loadingBar} />}
 
-        <div 
-          id="search-results" 
-          ref={resultsRef} 
-          className={styles.results} 
-          role="listbox" 
+        <div
+          id="search-results"
+          ref={resultsRef}
+          className={styles.results}
+          role="listbox"
           aria-label="Resultados de búsqueda"
         >
-          {loading && <div className={styles.loading}><Loader2 className={styles.spinner} /> Buscando...</div>}
+          {loading && (
+            <div className={styles.loading}>
+              <Loader2 className={styles.spinner} /> Buscando...
+            </div>
+          )}
           {!loading && results.length === 0 && query.length >= 2 && (
             <div className={styles.empty}>No se encontraron resultados para "{query}"</div>
           )}
@@ -195,9 +217,11 @@ export function GlobalSearchModal() {
                 onClick={() => handleResultClick(result)}
                 onMouseEnter={() => setSelectedIndex(index)}
               >
-                <span 
-                  className={styles.typeBadge} 
-                  style={{ '--badge-bg': TYPE_CONFIG[result.type as any]?.color } as React.CSSProperties}
+                <span
+                  className={styles.typeBadge}
+                  style={
+                    { '--badge-bg': TYPE_CONFIG[result.type as any]?.color } as React.CSSProperties
+                  }
                 >
                   {TYPE_CONFIG[result.type as any]?.icon || '📦'}
                   {TYPE_CONFIG[result.type as any]?.label}
@@ -214,7 +238,8 @@ export function GlobalSearchModal() {
 
         {!loading && results.length === 0 && query.length < 2 && (
           <div className={styles.hint}>
-            <kbd className={styles.shortcut}>⌘</kbd> + <kbd className={styles.shortcut}>K</kbd> para abrir búsqueda
+            <kbd className={styles.shortcut}>⌘</kbd> + <kbd className={styles.shortcut}>K</kbd> para
+            abrir búsqueda
           </div>
         )}
       </div>

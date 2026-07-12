@@ -1,7 +1,15 @@
 import { useState, useMemo } from 'react';
 import {
-  LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid,
-  Tooltip as ChartTooltip, ResponsiveContainer, Cell
+  LineChart,
+  Line,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip as ChartTooltip,
+  ResponsiveContainer,
+  Cell,
 } from 'recharts';
 import { Package } from 'lucide-react';
 import { useExchangeRate } from '@contexts/ExchangeRateContext';
@@ -16,7 +24,12 @@ interface ProductDetailPanelProps {
   getCategoryName: (id: string | null) => string;
 }
 
-export function ProductDetailPanel({ product, movements, loadingMovements, getCategoryName }: ProductDetailPanelProps) {
+export function ProductDetailPanel({
+  product,
+  movements,
+  loadingMovements,
+  getCategoryName,
+}: ProductDetailPanelProps) {
   const { rate, formatBs, formatUsd } = useExchangeRate();
   const [activeTab, setActiveTab] = useState<'general' | 'kardex'>('general');
   const [apiRate, setApiRate] = useState(rate || 652.97);
@@ -76,11 +89,7 @@ export function ProductDetailPanel({ product, movements, loadingMovements, getCa
 
     return sorted.map((m) => {
       runningBalance += m.quantity;
-      const desc =
-        m.notes ||
-        (m.reference ? `${m.reference}` : '') ||
-        m.type ||
-        'Movimiento';
+      const desc = m.notes || (m.reference ? `${m.reference}` : '') || m.type || 'Movimiento';
       return {
         date: new Date(m.createdAt).toLocaleDateString('es-ES', {
           day: '2-digit',
@@ -136,11 +145,7 @@ export function ProductDetailPanel({ product, movements, loadingMovements, getCa
             <div className={styles.flexColumnGap16}>
               <div className={styles.card}>
                 {product.imageUrl ? (
-                  <img
-                    src={product.imageUrl}
-                    alt={product.name}
-                    className={styles.image}
-                  />
+                  <img src={product.imageUrl} alt={product.name} className={styles.image} />
                 ) : (
                   <div className={styles.imagePlaceholder}>
                     <Package size={40} />
@@ -172,9 +177,7 @@ export function ProductDetailPanel({ product, movements, loadingMovements, getCa
                     <span className={styles.label}>STOCK ACTUAL</span>
                     <span className={styles.valueStock}>
                       {product.stock}{' '}
-                      <span className={styles.stockMin}>
-                        (mín: {product.minStock})
-                      </span>
+                      <span className={styles.stockMin}>(mín: {product.minStock})</span>
                     </span>
                   </div>
                 </div>
@@ -226,37 +229,25 @@ export function ProductDetailPanel({ product, movements, loadingMovements, getCa
                 </div>
                 <hr className={styles.financialDivider} />
                 <div className={styles.financialRow}>
-                  <span className={styles.financialLabel}>
-                    Precio Venta Estimado:
-                  </span>
+                  <span className={styles.financialLabel}>Precio Venta Estimado:</span>
                   <span className={styles.financialValue}>
                     {formatUsd(refPrice)}{' '}
-                    <span className={styles.financialValueSecondary}>
-                      / {formatBs(saleBS)}
-                    </span>
+                    <span className={styles.financialValueSecondary}>/ {formatBs(saleBS)}</span>
                   </span>
                 </div>
                 <hr className={styles.profitDivider} />
                 <div className={styles.profitRow}>
-                  <span className={styles.profitLabel}>
-                    GANANCIA ESTIMADA:
-                  </span>
+                  <span className={styles.profitLabel}>GANANCIA ESTIMADA:</span>
                   <div className={styles.profitValue}>
                     <span
                       className={
-                        profitUSD >= 0
-                          ? styles.profitAmountPositive
-                          : styles.profitAmountNegative
+                        profitUSD >= 0 ? styles.profitAmountPositive : styles.profitAmountNegative
                       }
                     >
                       {formatUsd(profitUSD)}
                     </span>
                     <span
-                      className={
-                        profitUSD >= 0
-                          ? styles.profitBsPositive
-                          : styles.profitBsNegative
-                      }
+                      className={profitUSD >= 0 ? styles.profitBsPositive : styles.profitBsNegative}
                     >
                       {formatBs(profitBS)}
                     </span>
@@ -268,9 +259,7 @@ export function ProductDetailPanel({ product, movements, loadingMovements, getCa
             {/* Columna Análisis de Margen Visual */}
             <div className={styles.cardColumn}>
               <div>
-                <span className={styles.sectionTitle}>
-                  ANÁLISIS DE MARGEN VISUAL
-                </span>
+                <span className={styles.sectionTitle}>ANÁLISIS DE MARGEN VISUAL</span>
                 <p className={styles.sectionSubtitle}>
                   Métrica corporativa del rendimiento financiero.
                 </p>
@@ -287,7 +276,6 @@ export function ProductDetailPanel({ product, movements, loadingMovements, getCa
                     <YAxis
                       tick={{ fontSize: 10, fill: 'var(--text-muted, #888)' }}
                       axisLine={{ stroke: 'var(--border-color, #333)' }}
-                      
                     />
                     <ChartTooltip
                       contentStyle={{
@@ -310,25 +298,18 @@ export function ProductDetailPanel({ product, movements, loadingMovements, getCa
 
           {/* Stock History Chart */}
           <div className={styles.cardColumn}>
-            <span className={styles.sectionTitle}>
-              TENDENCIA DEL HISTORIAL DE STOCK
-            </span>
+            <span className={styles.sectionTitle}>TENDENCIA DEL HISTORIAL DE STOCK</span>
             {loadingMovements ? (
               <div className={styles.padding20Y}>
                 <Skeleton height={200} borderRadius={6} />
               </div>
             ) : stockChartData.length <= 1 && product.stock === 0 ? (
-              <div className={styles.emptyState}>
-                Sin movimientos registrados para graficar.
-              </div>
+              <div className={styles.emptyState}>Sin movimientos registrados para graficar.</div>
             ) : (
               <div className={styles.stockChartContainer}>
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={stockChartData}>
-                    <CartesianGrid
-                      strokeDasharray="3 3"
-                      stroke="var(--border-color, #1c1c1c)"
-                    />
+                    <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color, #1c1c1c)" />
                     <XAxis
                       dataKey="date"
                       tick={{ fontSize: 11, fill: 'var(--text-muted, #888)' }}
@@ -351,7 +332,12 @@ export function ProductDetailPanel({ product, movements, loadingMovements, getCa
                       dataKey="stock"
                       stroke="var(--color-orange-red, #f97316)"
                       strokeWidth={2}
-                      dot={{ r: 3.5, fill: '#fff', stroke: 'var(--color-orange-red, #f97316)', strokeWidth: 1.5 }}
+                      dot={{
+                        r: 3.5,
+                        fill: '#fff',
+                        stroke: 'var(--color-orange-red, #f97316)',
+                        strokeWidth: 1.5,
+                      }}
                       name="Stock"
                       animationDuration={1200}
                       animationBegin={200}
@@ -368,9 +354,7 @@ export function ProductDetailPanel({ product, movements, loadingMovements, getCa
       {activeTab === 'kardex' && (
         <div className={styles.cardColumn}>
           <div className={styles.kardexHeader}>
-            <span className={styles.kardexTitle}>
-              Kardex Completo de Inventario
-            </span>
+            <span className={styles.kardexTitle}>Kardex Completo de Inventario</span>
             <p className={styles.kardexSubtitle}>
               Registro histórico de transacciones y movimientos físicos en bodega.
             </p>
@@ -381,9 +365,7 @@ export function ProductDetailPanel({ product, movements, loadingMovements, getCa
               <SkeletonTable rows={4} cols={5} />
             </div>
           ) : !movements.length ? (
-            <div className={styles.emptyState}>
-              Sin movimientos registrados para este producto.
-            </div>
+            <div className={styles.emptyState}>Sin movimientos registrados para este producto.</div>
           ) : (
             <div className={styles.kardexGrid}>
               <div className={styles.tableWrapper}>
@@ -416,16 +398,11 @@ export function ProductDetailPanel({ product, movements, loadingMovements, getCa
               </div>
 
               <div className={styles.kardexChartCard}>
-                <span className={styles.kardexChartTitle}>
-                  Flujo de Movimientos
-                </span>
+                <span className={styles.kardexChartTitle}>Flujo de Movimientos</span>
                 <div className={styles.kardexChartContainer}>
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={kardexChartData}>
-                      <CartesianGrid
-                        strokeDasharray="3 3"
-                        stroke="var(--border-color, #222)"
-                      />
+                      <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color, #222)" />
                       <XAxis
                         dataKey="date"
                         tick={{ fontSize: 10, fill: 'var(--text-muted, #888)' }}
@@ -443,18 +420,8 @@ export function ProductDetailPanel({ product, movements, loadingMovements, getCa
                         }}
                         labelStyle={{ color: 'var(--text-dark, #e5e5e5)' }}
                       />
-                      <Bar
-                        dataKey="entries"
-                        name="Entradas"
-                        fill="#10b981"
-                        maxBarSize={12}
-                      />
-                      <Bar
-                        dataKey="exits"
-                        name="Salidas"
-                        fill="#f43f5e"
-                        maxBarSize={12}
-                      />
+                      <Bar dataKey="entries" name="Entradas" fill="#10b981" maxBarSize={12} />
+                      <Bar dataKey="exits" name="Salidas" fill="#f43f5e" maxBarSize={12} />
                     </BarChart>
                   </ResponsiveContainer>
                 </div>

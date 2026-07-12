@@ -30,7 +30,9 @@ export function SocialMessages() {
   const [showInbox, setShowInbox] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => { loadThreads(); }, []);
+  useEffect(() => {
+    loadThreads();
+  }, []);
 
   useEffect(() => {
     if (activeThread) {
@@ -68,7 +70,7 @@ export function SocialMessages() {
     if (!newMessage.trim() || !activeThread) return;
     try {
       const msg = await api.sendSocialMessage({ content: newMessage, threadId: activeThread.id });
-      setMessages(prev => [...prev, msg]);
+      setMessages((prev) => [...prev, msg]);
       setNewMessage('');
       loadThreads();
     } catch (err) {
@@ -78,7 +80,10 @@ export function SocialMessages() {
 
   const handleSearchUsers = async (q: string) => {
     setSearchQuery(q);
-    if (q.length < 2) { setSearchResults([]); return; }
+    if (q.length < 2) {
+      setSearchResults([]);
+      return;
+    }
     try {
       const results = await api.searchSocialProfiles(q);
       setSearchResults(results || []);
@@ -86,11 +91,16 @@ export function SocialMessages() {
   };
 
   const handleStartThread = async (targetUserId: string) => {
-    const existing = threads.find(t => !t.isGroup && t.members.some(m => m.userId === targetUserId));
-    if (existing) { setActiveThread(existing); return; }
+    const existing = threads.find(
+      (t) => !t.isGroup && t.members.some((m) => m.userId === targetUserId)
+    );
+    if (existing) {
+      setActiveThread(existing);
+      return;
+    }
     try {
       const thread = await api.createSocialThread({ memberIds: [targetUserId] });
-      setThreads(prev => [thread, ...prev]);
+      setThreads((prev) => [thread, ...prev]);
       setActiveThread(thread);
       setSearchQuery('');
       setSearchResults([]);
@@ -99,12 +109,16 @@ export function SocialMessages() {
 
   const getThreadName = (thread: SocialThread): string => {
     if (thread.title) return thread.title;
-    const others = thread.members.filter(m => m.userId !== user?.id);
-    return others.map(m => (m.user as any).socialProfile?.displayName || (m.user as any).name).join(', ') || 'Sin nombre';
+    const others = thread.members.filter((m) => m.userId !== user?.id);
+    return (
+      others
+        .map((m) => (m.user as any).socialProfile?.displayName || (m.user as any).name)
+        .join(', ') || 'Sin nombre'
+    );
   };
 
   const getThreadAvatar = (thread: SocialThread): string => {
-    const other = thread.members.find(m => m.userId !== user?.id);
+    const other = thread.members.find((m) => m.userId !== user?.id);
     return other?.user.name?.[0]?.toUpperCase() || '?';
   };
 
@@ -116,14 +130,24 @@ export function SocialMessages() {
           <strong>{user?.name || 'Usuario'}</strong>
           <div className="ig-dm-search">
             <Search size={16} />
-            <input placeholder="Buscar" value={searchQuery} onChange={e => handleSearchUsers(e.target.value)} />
+            <input
+              placeholder="Buscar"
+              value={searchQuery}
+              onChange={(e) => handleSearchUsers(e.target.value)}
+            />
           </div>
         </div>
         {searchResults.length > 0 && (
           <div className="ig-dm-search-results">
-            {searchResults.map(p => (
-              <button key={p.id} className="ig-dm-search-item" onClick={() => handleStartThread(p.userId)}>
-                <div className="ig-avatar-xs">{(p.displayName || p.user?.name || '?')[0].toUpperCase()}</div>
+            {searchResults.map((p) => (
+              <button
+                key={p.id}
+                className="ig-dm-search-item"
+                onClick={() => handleStartThread(p.userId)}
+              >
+                <div className="ig-avatar-xs">
+                  {(p.displayName || p.user?.name || '?')[0].toUpperCase()}
+                </div>
                 <span>{p.displayName || p.user?.name}</span>
               </button>
             ))}
@@ -131,10 +155,19 @@ export function SocialMessages() {
         )}
         <div className="ig-dm-chats">
           {loading ? (
-            <><ThreadSkeleton /><ThreadSkeleton /><ThreadSkeleton /><ThreadSkeleton /></>
+            <>
+              <ThreadSkeleton />
+              <ThreadSkeleton />
+              <ThreadSkeleton />
+              <ThreadSkeleton />
+            </>
           ) : (
-            threads.map(thread => (
-              <button key={thread.id} className={`ig-dm-chat-item ${activeThread?.id === thread.id ? 'active' : ''}`} onClick={() => setActiveThread(thread)}>
+            threads.map((thread) => (
+              <button
+                key={thread.id}
+                className={`ig-dm-chat-item ${activeThread?.id === thread.id ? 'active' : ''}`}
+                onClick={() => setActiveThread(thread)}
+              >
                 <div className="ig-dm-chat-avatar">{getThreadAvatar(thread)}</div>
                 <div className="ig-dm-chat-info">
                   <strong>{getThreadName(thread)}</strong>
@@ -143,7 +176,9 @@ export function SocialMessages() {
               </button>
             ))
           )}
-          {!loading && threads.length === 0 && <div className="ig-dm-empty">No hay conversaciones</div>}
+          {!loading && threads.length === 0 && (
+            <div className="ig-dm-empty">No hay conversaciones</div>
+          )}
         </div>
       </div>
 
@@ -152,7 +187,13 @@ export function SocialMessages() {
         {activeThread ? (
           <>
             <div className="ig-dm-window-header">
-              <button className="ig-back-btn" onClick={() => { setShowInbox(true); setActiveThread(null); }}>
+              <button
+                className="ig-back-btn"
+                onClick={() => {
+                  setShowInbox(true);
+                  setActiveThread(null);
+                }}
+              >
                 <ArrowLeft size={20} />
               </button>
               <div className="ig-dm-window-user">
@@ -161,8 +202,11 @@ export function SocialMessages() {
               </div>
             </div>
             <div className="ig-dm-messages">
-              {messages.map(msg => (
-                <div key={msg.id} className={`ig-msg-bubble ${msg.senderId === user?.id ? 'outbound' : 'inbound'}`}>
+              {messages.map((msg) => (
+                <div
+                  key={msg.id}
+                  className={`ig-msg-bubble ${msg.senderId === user?.id ? 'outbound' : 'inbound'}`}
+                >
                   <p>{msg.content}</p>
                   <span className="ig-msg-time">{formatMsgTime(msg.createdAt)}</span>
                 </div>
@@ -170,7 +214,14 @@ export function SocialMessages() {
               <div ref={messagesEndRef} />
             </div>
             <div className="ig-dm-input">
-              <input placeholder="Mensaje..." value={newMessage} onChange={e => setNewMessage(e.target.value)} onKeyDown={e => { if (e.key === 'Enter') handleSend(); }} />
+              <input
+                placeholder="Mensaje..."
+                value={newMessage}
+                onChange={(e) => setNewMessage(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') handleSend();
+                }}
+              />
               <button onClick={handleSend} disabled={!newMessage.trim()}>
                 <Send size={18} />
               </button>

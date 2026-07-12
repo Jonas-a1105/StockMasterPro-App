@@ -56,7 +56,9 @@ export function AccountsPayablePage() {
     }
   };
 
-  useEffect(() => { loadData(); }, []);
+  useEffect(() => {
+    loadData();
+  }, []);
 
   const openCreate = () => {
     setForm({ supplierId: '', totalAmount: 0, dueDate: '', notes: '' });
@@ -84,7 +86,11 @@ export function AccountsPayablePage() {
     if (!payingPayable || payAmount <= 0) return;
     setSaving(true);
     try {
-      await api.payAccountsPayable({ accountPayableId: payingPayable.id, amount: payAmount, paymentMethod: payMethod });
+      await api.payAccountsPayable({
+        accountPayableId: payingPayable.id,
+        amount: payAmount,
+        paymentMethod: payMethod,
+      });
       setShowPayModal(false);
       setPayingPayable(null);
       setPayAmount(0);
@@ -98,31 +104,58 @@ export function AccountsPayablePage() {
   };
 
   const statusBadge = (status: string, dueDate: string) => {
-    if (status === 'paid') return <span className={`${styles.badge} ${styles.badgePaid}`}>Pagada</span>;
-    if (status === 'pending' && new Date() > new Date(dueDate)) return <span className={`${styles.badge} ${styles.badgeOverdue}`}>Vencida</span>;
+    if (status === 'paid')
+      return <span className={`${styles.badge} ${styles.badgePaid}`}>Pagada</span>;
+    if (status === 'pending' && new Date() > new Date(dueDate))
+      return <span className={`${styles.badge} ${styles.badgeOverdue}`}>Vencida</span>;
     return <span className={`${styles.badge} ${styles.badgePending}`}>Pendiente</span>;
   };
 
-  const filteredPayables = payables.filter(p =>
-    !search ||
-    (p.supplier?.name || '').toLowerCase().includes(search.toLowerCase()) ||
-    (p.notes || '').toLowerCase().includes(search.toLowerCase())
+  const filteredPayables = payables.filter(
+    (p) =>
+      !search ||
+      (p.supplier?.name || '').toLowerCase().includes(search.toLowerCase()) ||
+      (p.notes || '').toLowerCase().includes(search.toLowerCase())
   );
 
   const totalPending = payables.reduce((sum, p) => sum + (p.pendingAmount || 0), 0);
   const totalAmount = payables.reduce((sum, p) => sum + (p.totalAmount || 0), 0);
-  const overdueCount = payables.filter(p => p.status === 'overdue' || (p.status === 'pending' && new Date(p.dueDate) < new Date())).length;
+  const overdueCount = payables.filter(
+    (p) => p.status === 'overdue' || (p.status === 'pending' && new Date(p.dueDate) < new Date())
+  ).length;
 
-  if (loading) return config.skeletonEnabled ? <SkeletonTablePage rows={6} cols={6} tabs={0} kpi={3} /> : <LoadingDots text="Cargando cuentas por pagar" />;
+  if (loading)
+    return config.skeletonEnabled ? (
+      <SkeletonTablePage rows={6} cols={6} tabs={0} kpi={3} />
+    ) : (
+      <LoadingDots text="Cargando cuentas por pagar" />
+    );
 
   return (
     <div className={styles.container}>
-      <TabNav tabs={[{ key: 'main', label: 'Cuentas por Pagar', icon: <DollarSign size={16} /> }]} activeTab="main" onTabChange={() => {}} />
+      <TabNav
+        tabs={[{ key: 'main', label: 'Cuentas por Pagar', icon: <DollarSign size={16} /> }]}
+        activeTab="main"
+        onTabChange={() => {}}
+      />
       <KpiGrid
         items={[
-          { icon: <DollarSign size={18} />, value: formatPrice(totalPending), label: 'Total Pendiente' },
-          { icon: <DollarSign size={18} />, value: formatPrice(totalAmount), label: 'Total Cuentas' },
-          { icon: <Calendar size={18} />, value: overdueCount, label: 'Vencidas', color: overdueCount > 0 ? '#dc2626' : '#16a34a' },
+          {
+            icon: <DollarSign size={18} />,
+            value: formatPrice(totalPending),
+            label: 'Total Pendiente',
+          },
+          {
+            icon: <DollarSign size={18} />,
+            value: formatPrice(totalAmount),
+            label: 'Total Cuentas',
+          },
+          {
+            icon: <Calendar size={18} />,
+            value: overdueCount,
+            label: 'Vencidas',
+            color: overdueCount > 0 ? 'var(--color-danger)' : 'var(--color-success)',
+          },
         ]}
       />
 
@@ -144,14 +177,20 @@ export function AccountsPayablePage() {
             </tr>
           </thead>
           <tbody>
-            {filteredPayables.map(p => {
+            {filteredPayables.map((p) => {
               const isOverdue = p.status === 'pending' && new Date() > new Date(p.dueDate);
               return (
                 <tr key={p.id}>
-                  <td><span className={tableStyles.nameText}>{p.supplier?.name || '—'}</span></td>
-                  <td className={styles.textRight}><span className={tableStyles.numberValue}>{formatPrice(p.totalAmount)}</span></td>
+                  <td>
+                    <span className={tableStyles.nameText}>{p.supplier?.name || '—'}</span>
+                  </td>
                   <td className={styles.textRight}>
-                    <span className={`${tableStyles.numberValue} ${p.pendingAmount > 0 ? styles.textWarning : styles.textSuccess}`}>
+                    <span className={tableStyles.numberValue}>{formatPrice(p.totalAmount)}</span>
+                  </td>
+                  <td className={styles.textRight}>
+                    <span
+                      className={`${tableStyles.numberValue} ${p.pendingAmount > 0 ? styles.textWarning : styles.textSuccess}`}
+                    >
                       {formatPrice(p.pendingAmount)}
                     </span>
                   </td>
@@ -160,7 +199,16 @@ export function AccountsPayablePage() {
                   <td className={styles.textCenter}>
                     <div className={`${styles.actions} ${styles.actionsCenter}`}>
                       {p.status !== 'paid' && (
-                        <button className={tableStyles.actionBtn} onClick={() => { setPayingPayable(p); setPayAmount(0); setPayMethod('cash'); setShowPayModal(true); }} title="Abonar">
+                        <button
+                          className={tableStyles.actionBtn}
+                          onClick={() => {
+                            setPayingPayable(p);
+                            setPayAmount(0);
+                            setPayMethod('cash');
+                            setShowPayModal(true);
+                          }}
+                          title="Abonar"
+                        >
                           <DollarSign size={14} />
                         </button>
                       )}
@@ -171,7 +219,9 @@ export function AccountsPayablePage() {
             })}
             {filteredPayables.length === 0 && (
               <tr>
-                <td colSpan={6} className={styles.emptyRow}>No hay cuentas por pagar</td>
+                <td colSpan={6} className={styles.emptyRow}>
+                  No hay cuentas por pagar
+                </td>
               </tr>
             )}
           </tbody>
@@ -179,33 +229,69 @@ export function AccountsPayablePage() {
       </div>
 
       {showCreateModal && (
-        <Modal open={showCreateModal} onClose={() => setShowCreateModal(false)} title="Nueva Cuenta por Pagar">
+        <Modal
+          open={showCreateModal}
+          onClose={() => setShowCreateModal(false)}
+          title="Nueva Cuenta por Pagar"
+        >
           <div className={styles.modalContent}>
             <form onSubmit={handleCreate} className={styles.form}>
               {error && <div className={styles.error}>{error}</div>}
               <div className={styles.field}>
                 <label>Proveedor</label>
-                <select value={form.supplierId} onChange={e => setForm(f => ({ ...f, supplierId: e.target.value }))} required>
+                <select
+                  value={form.supplierId}
+                  onChange={(e) => setForm((f) => ({ ...f, supplierId: e.target.value }))}
+                  required
+                >
                   <option value="">Seleccionar proveedor</option>
-                  {suppliers.map(s => (
-                    <option key={s.id} value={s.id}>{s.name}</option>
+                  {suppliers.map((s) => (
+                    <option key={s.id} value={s.id}>
+                      {s.name}
+                    </option>
                   ))}
                 </select>
               </div>
               <div className={styles.field}>
                 <label>Monto Total ($)</label>
-                <input type="number" min="0.01" step="0.01" value={form.totalAmount || ''} onChange={e => setForm(f => ({ ...f, totalAmount: parseFloat(e.target.value) || 0 }))} required placeholder="0.00" />
+                <input
+                  type="number"
+                  min="0.01"
+                  step="0.01"
+                  value={form.totalAmount || ''}
+                  onChange={(e) =>
+                    setForm((f) => ({ ...f, totalAmount: parseFloat(e.target.value) || 0 }))
+                  }
+                  required
+                  placeholder="0.00"
+                />
               </div>
               <div className={styles.field}>
                 <label>Fecha de Vencimiento</label>
-                <input type="date" value={form.dueDate} onChange={e => setForm(f => ({ ...f, dueDate: e.target.value }))} required />
+                <input
+                  type="date"
+                  value={form.dueDate}
+                  onChange={(e) => setForm((f) => ({ ...f, dueDate: e.target.value }))}
+                  required
+                />
               </div>
               <div className={styles.field}>
                 <label>Notas (opcional)</label>
-                <textarea value={form.notes} onChange={e => setForm(f => ({ ...f, notes: e.target.value }))} rows={3} placeholder="Notas adicionales..." />
+                <textarea
+                  value={form.notes}
+                  onChange={(e) => setForm((f) => ({ ...f, notes: e.target.value }))}
+                  rows={3}
+                  placeholder="Notas adicionales..."
+                />
               </div>
               <div className={styles.modalActions}>
-                <button type="button" className={styles.cancelBtn} onClick={() => setShowCreateModal(false)}>Cancelar</button>
+                <button
+                  type="button"
+                  className={styles.cancelBtn}
+                  onClick={() => setShowCreateModal(false)}
+                >
+                  Cancelar
+                </button>
                 <button type="submit" className={styles.saveBtn} disabled={saving}>
                   {saving ? 'Guardando...' : 'Crear Cuenta'}
                 </button>
@@ -216,7 +302,14 @@ export function AccountsPayablePage() {
       )}
 
       {showPayModal && payingPayable && (
-        <Modal open={showPayModal} onClose={() => { setShowPayModal(false); setPayingPayable(null); }} title={`Abonar a ${payingPayable.supplier?.name || 'proveedor'}`}>
+        <Modal
+          open={showPayModal}
+          onClose={() => {
+            setShowPayModal(false);
+            setPayingPayable(null);
+          }}
+          title={`Abonar a ${payingPayable.supplier?.name || 'proveedor'}`}
+        >
           <div className={styles.modalContent}>
             <div className={styles.payInfo}>
               <div className={styles.payRow}>
@@ -230,19 +323,41 @@ export function AccountsPayablePage() {
             </div>
             <div className={styles.field}>
               <label>Monto a abonar</label>
-              <input type="number" min="0.01" step="0.01" max={payingPayable.pendingAmount} value={payAmount || ''} onChange={e => setPayAmount(parseFloat(e.target.value) || 0)} autoFocus placeholder="Monto a abonar" />
+              <input
+                type="number"
+                min="0.01"
+                step="0.01"
+                max={payingPayable.pendingAmount}
+                value={payAmount || ''}
+                onChange={(e) => setPayAmount(parseFloat(e.target.value) || 0)}
+                autoFocus
+                placeholder="Monto a abonar"
+              />
             </div>
             <div className={styles.field}>
               <label>Método de pago</label>
-              <select value={payMethod} onChange={e => setPayMethod(e.target.value as any)}>
+              <select value={payMethod} onChange={(e) => setPayMethod(e.target.value as any)}>
                 <option value="cash">Efectivo</option>
                 <option value="card">Tarjeta</option>
                 <option value="transfer">Transferencia</option>
               </select>
             </div>
             <div className={styles.modalActions}>
-              <button type="button" className={styles.cancelBtn} onClick={() => { setShowPayModal(false); setPayingPayable(null); }}>Cancelar</button>
-              <button className={styles.saveBtn} onClick={handlePay} disabled={saving || payAmount <= 0}>
+              <button
+                type="button"
+                className={styles.cancelBtn}
+                onClick={() => {
+                  setShowPayModal(false);
+                  setPayingPayable(null);
+                }}
+              >
+                Cancelar
+              </button>
+              <button
+                className={styles.saveBtn}
+                onClick={handlePay}
+                disabled={saving || payAmount <= 0}
+              >
                 {saving ? 'Procesando...' : 'Registrar Abono'}
               </button>
             </div>

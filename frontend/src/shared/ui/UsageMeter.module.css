@@ -1,6 +1,6 @@
 .card {
-  background: var(--bg-card, #fff);
-  border: 1px solid var(--border-color, #eee);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
   padding: 20px;
   margin-bottom: 20px;
 }
@@ -25,7 +25,7 @@
   font-family: monospace;
   font-weight: var(--font-weight-bold);
   letter-spacing: 1px;
-  background: var(--color-primary, #f05a28);
+  background: var(--color-primary);
   color: var(--color-black, #000);
   padding: 2px 8px;
 }
@@ -60,7 +60,7 @@
   display: flex;
   justify-content: space-between;
   font-size: var(--font-size-xs);
-  color: var(--text-muted, #888);
+  color: var(--color-text-muted);
 }
 
 .barCount {
@@ -70,14 +70,14 @@
 
 .barTrack {
   height: 6px;
-  background: var(--border-color, #eee);
+  background: var(--color-border);
   overflow: hidden;
 }
 
 .barFill {
   height: 100%;
   width: var(--bar-fill-pct, 0%);
-  background: var(--color-primary, #f05a28);
+  background: var(--color-primary);
   transition: width 0.5s ease;
 }
 
@@ -86,17 +86,22 @@
 }
 
 .barFill.danger {
-  background: var(--color-danger, #dc2626);
+  background: var(--color-danger);
 }
 
 .skeleton {
   height: 200px;
-  background: var(--border-color, #eee);
+  background: var(--color-border);
   margin-bottom: 20px;
   animation: pulse 1.5s infinite;
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 0.5; }
-  50% { opacity: 1; }
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
 }

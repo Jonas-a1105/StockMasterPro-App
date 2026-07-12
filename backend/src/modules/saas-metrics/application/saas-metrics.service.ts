@@ -21,7 +21,10 @@ export interface LTVMetrics {
   ltv: number;
   averageRevenuePerUser: number;
   averageLifespanMonths: number;
-  byPlan: Record<string, { ltv: number; avgRevenue: number; lifespanMonths: number }>;
+  byPlan: Record<
+    string,
+    { ltv: number; avgRevenue: number; lifespanMonths: number }
+  >;
 }
 
 export interface CohortMetrics {
@@ -45,8 +48,16 @@ export class SaasMetricsService {
   async getMRRMetrics(): Promise<MRRMetrics> {
     const now = new Date();
     const firstDayThisMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-    const firstDayLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
-    const firstDayNextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+    const firstDayLastMonth = new Date(
+      now.getFullYear(),
+      now.getMonth() - 1,
+      1,
+    );
+    const firstDayNextMonth = new Date(
+      now.getFullYear(),
+      now.getMonth() + 1,
+      1,
+    );
 
     // Get all active subscriptions with their plans
     const tenants = await this.prisma.tenant.findMany({
@@ -84,7 +95,8 @@ export class SaasMetricsService {
 
     // Calculate growth (simplified - compare active subs this month vs last month)
     const thisMonthActive = tenants.filter(
-      t => t.createdAt < firstDayNextMonth && t.subscriptionStatus !== 'cancelled',
+      (t) =>
+        t.createdAt < firstDayNextMonth && t.subscriptionStatus !== 'cancelled',
     ).length;
 
     const lastMonthActive = await this.prisma.tenant.count({
@@ -95,9 +107,10 @@ export class SaasMetricsService {
       },
     });
 
-    const growthRate = lastMonthActive > 0
-      ? ((thisMonthActive - lastMonthActive) / lastMonthActive) * 100
-      : 0;
+    const growthRate =
+      lastMonthActive > 0
+        ? ((thisMonthActive - lastMonthActive) / lastMonthActive) * 100
+        : 0;
 
     return {
       mrr,
@@ -115,13 +128,20 @@ export class SaasMetricsService {
   async getChurnMetrics(): Promise<ChurnMetrics> {
     const now = new Date();
     const firstDayThisMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-    const firstDayLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+    const firstDayLastMonth = new Date(
+      now.getFullYear(),
+      now.getMonth() - 1,
+      1,
+    );
 
     // Cancelled this month
     const cancelledThisMonth = await this.prisma.tenant.count({
       where: {
         subscriptionStatus: 'cancelled',
-        updatedAt: { gte: firstDayThisMonth, lt: new Date(now.getFullYear(), now.getMonth() + 1, 1) },
+        updatedAt: {
+          gte: firstDayThisMonth,
+          lt: new Date(now.getFullYear(), now.getMonth() + 1, 1),
+        },
       },
     });
 
@@ -142,9 +162,10 @@ export class SaasMetricsService {
       },
     });
 
-    const churnRate = startOfMonthActive > 0
-      ? (cancelledThisMonth / startOfMonthActive) * 100
-      : 0;
+    const churnRate =
+      startOfMonthActive > 0
+        ? (cancelledThisMonth / startOfMonthActive) * 100
+        : 0;
 
     // By plan
     const cancelledByPlan = await this.prisma.tenant.groupBy({
@@ -168,12 +189,19 @@ export class SaasMetricsService {
     }
 
     // Revenue churn (simplified)
-    const planPrices: Record<string, number> = { free: 0, pro: 2900, enterprise: 9900 };
+    const planPrices: Record<string, number> = {
+      free: 0,
+      pro: 2900,
+      enterprise: 9900,
+    };
     let lostMRR = 0;
     let totalMRR = 0;
 
     const activeTenants = await this.prisma.tenant.findMany({
-      where: { subscriptionStatus: { in: ['active', 'trialing', 'past_due'] }, isBlocked: false },
+      where: {
+        subscriptionStatus: { in: ['active', 'trialing', 'past_due'] },
+        isBlocked: false,
+      },
       select: { planType: true },
     });
 
@@ -182,7 +210,10 @@ export class SaasMetricsService {
     }
 
     const cancelledTenants = await this.prisma.tenant.findMany({
-      where: { subscriptionStatus: 'cancelled', updatedAt: { gte: firstDayThisMonth } },
+      where: {
+        subscriptionStatus: 'cancelled',
+        updatedAt: { gte: firstDayThisMonth },
+      },
       select: { planType: true },
     });
 
@@ -202,15 +233,23 @@ export class SaasMetricsService {
   }
 
   async getLTVMetrics(): Promise<LTVMetrics> {
-    const planPrices: Record<string, number> = { free: 0, pro: 2900, enterprise: 9900 };
+    const planPrices: Record<string, number> = {
+      free: 0,
+      pro: 2900,
+      enterprise: 9900,
+    };
 
     // Average lifespan estimation (months before cancellation)
     // Simplified: based on historical churn
     const churnMetrics = await this.getChurnMetrics();
     const monthlyChurnRate = churnMetrics.churnRate / 100;
-    const averageLifespanMonths = monthlyChurnRate > 0 ? 1 / monthlyChurnRate : 24;
+    const averageLifespanMonths =
+      monthlyChurnRate > 0 ? 1 / monthlyChurnRate : 24;
 
-    const byPlan: Record<string, { ltv: number; avgRevenue: number; lifespanMonths: number }> = {};
+    const byPlan: Record<
+      string,
+      { ltv: number; avgRevenue: number; lifespanMonths: number }
+    > = {};
 
     const plans = ['free', 'pro', 'enterprise'];
     for (const plan of plans) {
@@ -218,16 +257,26 @@ export class SaasMetricsService {
       const avgRevenue = price / 100; // in dollars
       const lifespan = averageLifespanMonths;
       const ltv = avgRevenue * lifespan;
-      byPlan[plan] = { ltv, avgRevenue, lifespanMonths: Math.round(lifespan * 100) / 100 };
+      byPlan[plan] = {
+        ltv,
+        avgRevenue,
+        lifespanMonths: Math.round(lifespan * 100) / 100,
+      };
     }
 
     const activeTenants = await this.prisma.tenant.count({
-      where: { subscriptionStatus: { in: ['active', 'trialing', 'past_due'] }, isBlocked: false },
+      where: {
+        subscriptionStatus: { in: ['active', 'trialing', 'past_due'] },
+        isBlocked: false,
+      },
     });
 
     const planCounts = await this.prisma.tenant.groupBy({
       by: ['planType'],
-      where: { subscriptionStatus: { in: ['active', 'trialing', 'past_due'] }, isBlocked: false },
+      where: {
+        subscriptionStatus: { in: ['active', 'trialing', 'past_due'] },
+        isBlocked: false,
+      },
       _count: { planType: true },
     });
 
@@ -237,7 +286,8 @@ export class SaasMetricsService {
       totalWeightedRevenue += (planPrices[pc.planType] || 0) * count;
     }
 
-    const avgRevenuePerUser = activeTenants > 0 ? totalWeightedRevenue / activeTenants / 100 : 0;
+    const avgRevenuePerUser =
+      activeTenants > 0 ? totalWeightedRevenue / activeTenants / 100 : 0;
     const ltv = avgRevenuePerUser * averageLifespanMonths;
 
     return {
@@ -269,8 +319,16 @@ export class SaasMetricsService {
       const revenue: Record<number, number> = {};
 
       for (let m = 0; m <= i; m++) {
-        const monthStart = new Date(now.getFullYear(), now.getMonth() - i + m, 1);
-        const monthEnd = new Date(now.getFullYear(), now.getMonth() - i + m + 1, 1);
+        const monthStart = new Date(
+          now.getFullYear(),
+          now.getMonth() - i + m,
+          1,
+        );
+        const monthEnd = new Date(
+          now.getFullYear(),
+          now.getMonth() - i + m + 1,
+          1,
+        );
 
         // Active subscribers from this cohort at month m
         const activeInMonth = await this.prisma.tenant.count({
@@ -282,9 +340,10 @@ export class SaasMetricsService {
           },
         });
 
-        retention[m] = initialSubscribers > 0
-          ? Math.round((activeInMonth / initialSubscribers) * 10000) / 100
-          : 0;
+        retention[m] =
+          initialSubscribers > 0
+            ? Math.round((activeInMonth / initialSubscribers) * 10000) / 100
+            : 0;
 
         // Revenue in this month from this cohort
         const cohortTenants = await this.prisma.tenant.findMany({
@@ -297,12 +356,16 @@ export class SaasMetricsService {
           select: { planType: true },
         });
 
-        const planPrices: Record<string, number> = { free: 0, pro: 2900, enterprise: 9900 };
+        const planPrices: Record<string, number> = {
+          free: 0,
+          pro: 2900,
+          enterprise: 9900,
+        };
         let monthRevenue = 0;
         for (const t of cohortTenants) {
           monthRevenue += planPrices[t.planType] || 0;
         }
-        revenue[m] = Math.round(monthRevenue / 100 * 100) / 100;
+        revenue[m] = Math.round((monthRevenue / 100) * 100) / 100;
       }
 
       cohorts.push({

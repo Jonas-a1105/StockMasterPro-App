@@ -20,7 +20,7 @@ const REFUND_METHODS = [
   { value: 'transfer', label: 'Transferencia' },
 ];
 
-const methodLabel = (v: string) => REFUND_METHODS.find(m => m.value === v)?.label || v;
+const methodLabel = (v: string) => REFUND_METHODS.find((m) => m.value === v)?.label || v;
 
 export function CreditNotesPage() {
   const { showToast } = useToast();
@@ -61,39 +61,42 @@ export function CreditNotesPage() {
     }
   };
 
-  useEffect(() => { loadData(); }, []);
+  useEffect(() => {
+    loadData();
+  }, []);
 
-  const filteredNotes = notes.filter(n =>
-    !search ||
-    (n.customer?.name || '').toLowerCase().includes(search.toLowerCase()) ||
-    (n.reason || '').toLowerCase().includes(search.toLowerCase()) ||
-    (n.id || '').includes(search)
+  const filteredNotes = notes.filter(
+    (n) =>
+      !search ||
+      (n.customer?.name || '').toLowerCase().includes(search.toLowerCase()) ||
+      (n.reason || '').toLowerCase().includes(search.toLowerCase()) ||
+      (n.id || '').includes(search)
   );
 
   const totalNotes = notes.length;
   const totalRefunded = notes.reduce((sum, n) => sum + (n.total || 0), 0);
-  const pendingCount = notes.filter(n => n.status === 'pending').length;
+  const pendingCount = notes.filter((n) => n.status === 'pending').length;
 
   const handleItemChange = (index: number, field: string, value: any) => {
     const items = [...form.items];
     items[index] = { ...items[index], [field]: value };
     if (field === 'productId') {
-      const prod = products.find(p => p.id === value);
+      const prod = products.find((p) => p.id === value);
       if (prod) items[index].price = Number(prod.price);
     }
     const total = items.reduce((sum, it) => sum + (it.price || 0) * (it.quantity || 0), 0);
-    setForm(f => ({ ...f, items, total }));
+    setForm((f) => ({ ...f, items, total }));
   };
 
   const addItem = () => {
-    setForm(f => ({ ...f, items: [...f.items, { productId: '', quantity: 1, price: 0 }] }));
+    setForm((f) => ({ ...f, items: [...f.items, { productId: '', quantity: 1, price: 0 }] }));
   };
 
   const removeItem = (index: number) => {
     if (form.items.length <= 1) return;
     const items = form.items.filter((_, i) => i !== index);
     const total = items.reduce((sum, it) => sum + (it.price || 0) * (it.quantity || 0), 0);
-    setForm(f => ({ ...f, items, total }));
+    setForm((f) => ({ ...f, items, total }));
   };
 
   const handleCreate = async (e: React.FormEvent) => {
@@ -115,28 +118,54 @@ export function CreditNotesPage() {
     }
   };
 
-  if (loading) return config.skeletonEnabled ? <SkeletonTablePage rows={6} cols={7} kpi={3} /> : <LoadingDots text="Cargando notas de crédito" />;
+  if (loading)
+    return config.skeletonEnabled ? (
+      <SkeletonTablePage rows={6} cols={7} kpi={3} />
+    ) : (
+      <LoadingDots text="Cargando notas de crédito" />
+    );
 
   return (
     <div className={styles.container}>
       <TabNav
-        tabs={[
-          { key: 'credit-notes', label: 'Notas de Crédito', icon: <RefreshCw size={16} /> },
-        ]}
+        tabs={[{ key: 'credit-notes', label: 'Notas de Crédito', icon: <RefreshCw size={16} /> }]}
         activeTab={activeTab}
         onTabChange={setActiveTab}
       />
       <KpiGrid
         items={[
           { icon: <RefreshCw size={18} />, value: totalNotes, label: 'Total Notas' },
-          { icon: <DollarSign size={18} />, value: formatPrice(totalRefunded), label: 'Total Reembolsado', color: '#dc2626' },
-          { icon: <Users size={18} />, value: pendingCount, label: 'Pendientes', color: pendingCount > 0 ? '#eb8c00' : '#16a34a' },
+          {
+            icon: <DollarSign size={18} />,
+            value: formatPrice(totalRefunded),
+            label: 'Total Reembolsado',
+            color: 'var(--color-danger)',
+          },
+          {
+            icon: <Users size={18} />,
+            value: pendingCount,
+            label: 'Pendientes',
+            color: pendingCount > 0 ? 'var(--color-warning)' : 'var(--color-success)',
+          },
         ]}
       />
 
       <Toolbar
         search={{ value: search, onChange: setSearch, placeholder: 'Buscar notas de crédito...' }}
-        addBtn={{ label: 'Nueva Devolución', onClick: () => { setShowCreate(true); setForm({ saleId: '', customerId: '', reason: '', total: 0, refundMethod: 'cash', items: [] }); } }}
+        addBtn={{
+          label: 'Nueva Devolución',
+          onClick: () => {
+            setShowCreate(true);
+            setForm({
+              saleId: '',
+              customerId: '',
+              reason: '',
+              total: 0,
+              refundMethod: 'cash',
+              items: [],
+            });
+          },
+        }}
       />
 
       <div className={tableStyles.container}>
@@ -153,21 +182,31 @@ export function CreditNotesPage() {
             </tr>
           </thead>
           <tbody>
-            {filteredNotes.map(n => (
+            {filteredNotes.map((n) => (
               <tr key={n.id}>
                 <td>{new Date(n.createdAt).toLocaleDateString()}</td>
-                <td><span className={tableStyles.nameText}>{n.customer?.name || '—'}</span></td>
+                <td>
+                  <span className={tableStyles.nameText}>{n.customer?.name || '—'}</span>
+                </td>
                 <td className={styles.textMuted}>{n.reason}</td>
-                <td className={styles.textRight}><span className={tableStyles.numberValue}>{formatPrice(Number(n.total))}</span></td>
+                <td className={styles.textRight}>
+                  <span className={tableStyles.numberValue}>{formatPrice(Number(n.total))}</span>
+                </td>
                 <td>{methodLabel(n.refundMethod)}</td>
                 <td className={styles.textCenter}>
-                  <span className={`${tableStyles.badge} ${n.status === 'active' ? tableStyles.badgeActive : tableStyles.badgeInactive}`}>
+                  <span
+                    className={`${tableStyles.badge} ${n.status === 'active' ? tableStyles.badgeActive : tableStyles.badgeInactive}`}
+                  >
                     {n.status === 'active' ? 'Activa' : 'Anulada'}
                   </span>
                 </td>
                 <td className={styles.textCenter}>
                   <div className={`${tableStyles.actions} ${styles.flexCenter}`}>
-                    <button className={tableStyles.actionBtn} onClick={() => setViewNote(n)} title="Ver detalle">
+                    <button
+                      className={tableStyles.actionBtn}
+                      onClick={() => setViewNote(n)}
+                      title="Ver detalle"
+                    >
                       <Eye size={14} />
                     </button>
                   </div>
@@ -176,7 +215,9 @@ export function CreditNotesPage() {
             ))}
             {filteredNotes.length === 0 && (
               <tr>
-                <td colSpan={7} className={styles.emptyCell}>No hay notas de crédito registradas</td>
+                <td colSpan={7} className={styles.emptyCell}>
+                  No hay notas de crédito registradas
+                </td>
               </tr>
             )}
           </tbody>
@@ -193,16 +234,21 @@ export function CreditNotesPage() {
                   <input
                     type="text"
                     value={form.saleId}
-                    onChange={e => setForm(f => ({ ...f, saleId: e.target.value }))}
+                    onChange={(e) => setForm((f) => ({ ...f, saleId: e.target.value }))}
                     placeholder="ID de la venta"
                   />
                 </div>
                 <div className={styles.field}>
                   <label>Cliente</label>
-                  <select value={form.customerId} onChange={e => setForm(f => ({ ...f, customerId: e.target.value }))}>
+                  <select
+                    value={form.customerId}
+                    onChange={(e) => setForm((f) => ({ ...f, customerId: e.target.value }))}
+                  >
                     <option value="">Sin cliente</option>
-                    {customers.map(c => (
-                      <option key={c.id} value={c.id}>{c.name}</option>
+                    {customers.map((c) => (
+                      <option key={c.id} value={c.id}>
+                        {c.name}
+                      </option>
                     ))}
                   </select>
                 </div>
@@ -211,15 +257,25 @@ export function CreditNotesPage() {
               <div className={styles.fieldRow}>
                 <div className={styles.field}>
                   <label>Método de Reembolso</label>
-                  <select value={form.refundMethod} onChange={e => setForm(f => ({ ...f, refundMethod: e.target.value }))}>
-                    {REFUND_METHODS.map(m => (
-                      <option key={m.value} value={m.value}>{m.label}</option>
+                  <select
+                    value={form.refundMethod}
+                    onChange={(e) => setForm((f) => ({ ...f, refundMethod: e.target.value }))}
+                  >
+                    {REFUND_METHODS.map((m) => (
+                      <option key={m.value} value={m.value}>
+                        {m.label}
+                      </option>
                     ))}
                   </select>
                 </div>
                 <div className={styles.field}>
                   <label>Total</label>
-                  <input type="number" value={formatUsd(form.total)} readOnly className={styles.totalField} />
+                  <input
+                    type="number"
+                    value={formatUsd(form.total)}
+                    readOnly
+                    className={styles.totalField}
+                  />
                 </div>
               </div>
 
@@ -227,7 +283,7 @@ export function CreditNotesPage() {
                 <label>Motivo de la devolución</label>
                 <textarea
                   value={form.reason}
-                  onChange={e => setForm(f => ({ ...f, reason: e.target.value }))}
+                  onChange={(e) => setForm((f) => ({ ...f, reason: e.target.value }))}
                   required
                   rows={3}
                   placeholder="Ej: Producto defectuoso, cambio de talla..."
@@ -245,19 +301,23 @@ export function CreditNotesPage() {
                   <div key={idx} className={styles.itemRow}>
                     <select
                       value={item.productId}
-                      onChange={e => handleItemChange(idx, 'productId', e.target.value)}
+                      onChange={(e) => handleItemChange(idx, 'productId', e.target.value)}
                       required
                     >
                       <option value="">Seleccionar producto</option>
-                      {products.map(p => (
-                        <option key={p.id} value={p.id}>{p.name} — {formatPrice(Number(p.price))}</option>
+                      {products.map((p) => (
+                        <option key={p.id} value={p.id}>
+                          {p.name} — {formatPrice(Number(p.price))}
+                        </option>
                       ))}
                     </select>
                     <input
                       type="number"
                       min={1}
                       value={item.quantity}
-                      onChange={e => handleItemChange(idx, 'quantity', parseInt(e.target.value) || 0)}
+                      onChange={(e) =>
+                        handleItemChange(idx, 'quantity', parseInt(e.target.value) || 0)
+                      }
                       className={styles.qtyInput}
                       required
                     />
@@ -265,12 +325,21 @@ export function CreditNotesPage() {
                       type="number"
                       step="0.01"
                       value={item.price}
-                      onChange={e => handleItemChange(idx, 'price', parseFloat(e.target.value) || 0)}
+                      onChange={(e) =>
+                        handleItemChange(idx, 'price', parseFloat(e.target.value) || 0)
+                      }
                       className={styles.priceInput}
                       required
                     />
-                    <span className={styles.itemSubtotal}>{formatPrice(item.price * item.quantity)}</span>
-                    <button type="button" className={styles.removeBtn} onClick={() => removeItem(idx)} disabled={form.items.length <= 1}>
+                    <span className={styles.itemSubtotal}>
+                      {formatPrice(item.price * item.quantity)}
+                    </span>
+                    <button
+                      type="button"
+                      className={styles.removeBtn}
+                      onClick={() => removeItem(idx)}
+                      disabled={form.items.length <= 1}
+                    >
                       ✕
                     </button>
                   </div>
@@ -278,7 +347,13 @@ export function CreditNotesPage() {
               </div>
 
               <div className={styles.modalActions}>
-                <button type="button" className={styles.cancelBtn} onClick={() => setShowCreate(false)}>Cancelar</button>
+                <button
+                  type="button"
+                  className={styles.cancelBtn}
+                  onClick={() => setShowCreate(false)}
+                >
+                  Cancelar
+                </button>
                 <button type="submit" className={styles.saveBtn} disabled={saving}>
                   {saving ? 'Guardando...' : 'Crear Nota de Crédito'}
                 </button>
@@ -289,7 +364,11 @@ export function CreditNotesPage() {
       )}
 
       {viewNote && (
-        <Modal open={!!viewNote} onClose={() => setViewNote(null)} title="Detalle de Nota de Crédito">
+        <Modal
+          open={!!viewNote}
+          onClose={() => setViewNote(null)}
+          title="Detalle de Nota de Crédito"
+        >
           <div className={styles.modalContent}>
             <div className={styles.detailGrid}>
               <div className={styles.detailField}>
@@ -314,7 +393,9 @@ export function CreditNotesPage() {
               </div>
               <div className={styles.detailField}>
                 <span className={styles.detailLabel}>Estado</span>
-                <span className={`${styles.statusBadge} ${viewNote.status === 'active' ? styles.active : styles.voided}`}>
+                <span
+                  className={`${styles.statusBadge} ${viewNote.status === 'active' ? styles.active : styles.voided}`}
+                >
                   {viewNote.status === 'active' ? 'Activa' : 'Anulada'}
                 </span>
               </div>
@@ -335,9 +416,19 @@ export function CreditNotesPage() {
                   {viewNote.items?.map((it: any) => (
                     <tr key={it.id}>
                       <td>{it.product?.name || it.productId}</td>
-                      <td className={styles.textRight}><span className={tableStyles.numberValue}>{it.quantity}</span></td>
-                      <td className={styles.textRight}><span className={tableStyles.numberValue}>{formatPrice(Number(it.price))}</span></td>
-                      <td className={styles.textRight}><span className={tableStyles.numberValue}>{formatPrice(Number(it.subtotal))}</span></td>
+                      <td className={styles.textRight}>
+                        <span className={tableStyles.numberValue}>{it.quantity}</span>
+                      </td>
+                      <td className={styles.textRight}>
+                        <span className={tableStyles.numberValue}>
+                          {formatPrice(Number(it.price))}
+                        </span>
+                      </td>
+                      <td className={styles.textRight}>
+                        <span className={tableStyles.numberValue}>
+                          {formatPrice(Number(it.subtotal))}
+                        </span>
+                      </td>
                     </tr>
                   ))}
                 </tbody>

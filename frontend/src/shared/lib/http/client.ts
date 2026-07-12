@@ -29,7 +29,7 @@ class ApiClient {
     try {
       const payload = JSON.parse(atob(this.token.split('.')[1]));
       // 30s buffer to avoid edge-case where token expires mid-flight
-      return (payload.exp * 1000) < (Date.now() + 30_000);
+      return payload.exp * 1000 < Date.now() + 30_000;
     } catch {
       return true;
     }
@@ -48,7 +48,10 @@ class ApiClient {
   }
 
   async patch<T = any>(path: string, data?: any): Promise<T> {
-    return this.request<T>(path, { method: 'PATCH', body: data ? JSON.stringify(data) : undefined });
+    return this.request<T>(path, {
+      method: 'PATCH',
+      body: data ? JSON.stringify(data) : undefined,
+    });
   }
 
   async delete<T = any>(path: string): Promise<T> {
@@ -149,11 +152,17 @@ class ApiClient {
     return (json.data ?? json) as T;
   }
   register(data: { tenantName: string; email: string; password: string; name: string }) {
-    return this.requestAuth<{ accessToken: string; refreshToken: string; user: any }>('/auth/register', { method: 'POST', body: JSON.stringify(data) });
+    return this.requestAuth<{ accessToken: string; refreshToken: string; user: any }>(
+      '/auth/register',
+      { method: 'POST', body: JSON.stringify(data) }
+    );
   }
 
   login(data: { email: string; password: string }) {
-    return this.requestAuth<{ accessToken: string; refreshToken: string; user: any }>('/auth/login', { method: 'POST', body: JSON.stringify(data) });
+    return this.requestAuth<{ accessToken: string; refreshToken: string; user: any }>(
+      '/auth/login',
+      { method: 'POST', body: JSON.stringify(data) }
+    );
   }
 
   private async requestAuth<T>(path: string, options: RequestInit = {}): Promise<T> {
@@ -205,9 +214,14 @@ class ApiClient {
   }
 
   getSales(params?: {
-    page?: number; limit?: number; search?: string;
-    startDate?: string; endDate?: string; customerId?: string;
-    paymentMethod?: string; status?: string;
+    page?: number;
+    limit?: number;
+    search?: string;
+    startDate?: string;
+    endDate?: string;
+    customerId?: string;
+    paymentMethod?: string;
+    status?: string;
   }) {
     const q = new URLSearchParams();
     if (params) {
@@ -236,48 +250,82 @@ class ApiClient {
   }
 
   // Suppliers
-  getSuppliers() { return this.request<any[]>('/suppliers'); }
-  createSupplier(data: any) { return this.request<any>('/suppliers', { method: 'POST', body: JSON.stringify(data) }); }
-  updateSupplier(id: string, data: any) { return this.request<any>(`/suppliers/${id}`, { method: 'PATCH', body: JSON.stringify(data) }); }
-  deleteSupplier(id: string) { return this.request<void>(`/suppliers/${id}`, { method: 'DELETE' }); }
+  getSuppliers() {
+    return this.request<any[]>('/suppliers');
+  }
+  createSupplier(data: any) {
+    return this.request<any>('/suppliers', { method: 'POST', body: JSON.stringify(data) });
+  }
+  updateSupplier(id: string, data: any) {
+    return this.request<any>(`/suppliers/${id}`, { method: 'PATCH', body: JSON.stringify(data) });
+  }
+  deleteSupplier(id: string) {
+    return this.request<void>(`/suppliers/${id}`, { method: 'DELETE' });
+  }
 
   // Purchase Orders
-  getPurchaseOrders() { return this.request<any[]>('/purchase-orders'); }
-  createPurchaseOrder(data: any) { return this.request<any>('/purchase-orders', { method: 'POST', body: JSON.stringify(data) }); }
+  getPurchaseOrders() {
+    return this.request<any[]>('/purchase-orders');
+  }
+  createPurchaseOrder(data: any) {
+    return this.request<any>('/purchase-orders', { method: 'POST', body: JSON.stringify(data) });
+  }
 
   // Inventory Adjustments
-  adjustStock(id: string, data: any) { return this.request<any>(`/inventory/${id}/adjust`, { method: 'POST', body: JSON.stringify(data) }); }
+  adjustStock(id: string, data: any) {
+    return this.request<any>(`/inventory/${id}/adjust`, {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
   async getAdjustments(params?: { limit?: number; offset?: number }): Promise<any> {
     const q = params ? '?' + new URLSearchParams(params as any).toString() : '';
     return this.request(`/inventory/adjustments${q}`);
   }
 
   // Inventory Movements (Kardex)
-  getMovements(id: string) { return this.request<any[]>(`/inventory/${id}/movements`); }
+  getMovements(id: string) {
+    return this.request<any[]>(`/inventory/${id}/movements`);
+  }
 
   // Users (Admin)
-  getUsers() { return this.request<any[]>('/users'); }
-  getUser(id: string) { return this.request<any>(`/users/${id}`); }
+  getUsers() {
+    return this.request<any[]>('/users');
+  }
+  getUser(id: string) {
+    return this.request<any>(`/users/${id}`);
+  }
   createUser(data: { email: string; password: string; name: string; role?: string }) {
     return this.request<any>('/users', { method: 'POST', body: JSON.stringify(data) });
   }
   updateUser(id: string, data: any) {
     return this.request<any>(`/users/${id}`, { method: 'PATCH', body: JSON.stringify(data) });
   }
-  deleteUser(id: string) { return this.request<void>(`/users/${id}`, { method: 'DELETE' }); }
+  deleteUser(id: string) {
+    return this.request<void>(`/users/${id}`, { method: 'DELETE' });
+  }
 
   // Licenses
   getLicenseStatus() {
-    return this.request<{ tier: string; status: string; expiresAt: string; activatedAt: string; isBlocked: boolean }>('/licenses/status');
+    return this.request<{
+      tier: string;
+      status: string;
+      expiresAt: string;
+      activatedAt: string;
+      isBlocked: boolean;
+    }>('/licenses/status');
   }
   getLicenseUsage() {
     return this.request<any>('/licenses/usage');
   }
   createSubscription(planType: string) {
-    return this.request<{ subscriptionId: string; clientSecret: string; planType: string }>('/licenses/create-subscription', {
-      method: 'POST',
-      body: JSON.stringify({ planType }),
-    });
+    return this.request<{ subscriptionId: string; clientSecret: string; planType: string }>(
+      '/licenses/create-subscription',
+      {
+        method: 'POST',
+        body: JSON.stringify({ planType }),
+      }
+    );
   }
   getCustomerPortalSession() {
     return this.request<{ url: string }>('/licenses/customer-portal', {
@@ -285,34 +333,68 @@ class ApiClient {
     });
   }
   upgradePlan(planType: string) {
-    return this.request<{ message: string; planType: string }>('/licenses/upgrade', { method: 'POST', body: JSON.stringify({ planType }) });
+    return this.request<{ message: string; planType: string }>('/licenses/upgrade', {
+      method: 'POST',
+      body: JSON.stringify({ planType }),
+    });
   }
   generateLicense(data: { days: number; tier?: string; targetTenantId?: string }) {
-    return this.request<{ code: string; expiresIn: string }>('/licenses/generate', { method: 'POST', body: JSON.stringify(data) });
+    return this.request<{ code: string; expiresIn: string }>('/licenses/generate', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
   }
   activateLicense(code: string) {
-    return this.request<{ message: string; expiresAt: string }>('/licenses/activate', { method: 'POST', body: JSON.stringify({ code }) });
+    return this.request<{ message: string; expiresAt: string }>('/licenses/activate', {
+      method: 'POST',
+      body: JSON.stringify({ code }),
+    });
   }
   cancelSubscription() {
     return this.request<{ message: string }>('/licenses/cancel', { method: 'POST' });
   }
   reactivateLicense() {
-    return this.request<{ message: string; expiresAt: string }>('/licenses/reactivate', { method: 'POST' });
+    return this.request<{ message: string; expiresAt: string }>('/licenses/reactivate', {
+      method: 'POST',
+    });
   }
 
   // Customers
-  getCustomers() { return this.request<any[]>('/customers'); }
-  getCustomer(id: string) { return this.request<any>(`/customers/${id}`); }
-  createCustomer(data: any) { return this.request<any>('/customers', { method: 'POST', body: JSON.stringify(data) }); }
-  updateCustomer(id: string, data: any) { return this.request<any>(`/customers/${id}`, { method: 'PATCH', body: JSON.stringify(data) }); }
-  deleteCustomer(id: string) { return this.request<void>(`/customers/${id}`, { method: 'DELETE' }); }
-  payCustomerCredit(id: string, amount: number) { return this.request<any>(`/customers/${id}/pay`, { method: 'POST', body: JSON.stringify({ amount }) }); }
+  getCustomers() {
+    return this.request<any[]>('/customers');
+  }
+  getCustomer(id: string) {
+    return this.request<any>(`/customers/${id}`);
+  }
+  createCustomer(data: any) {
+    return this.request<any>('/customers', { method: 'POST', body: JSON.stringify(data) });
+  }
+  updateCustomer(id: string, data: any) {
+    return this.request<any>(`/customers/${id}`, { method: 'PATCH', body: JSON.stringify(data) });
+  }
+  deleteCustomer(id: string) {
+    return this.request<void>(`/customers/${id}`, { method: 'DELETE' });
+  }
+  payCustomerCredit(id: string, amount: number) {
+    return this.request<any>(`/customers/${id}/pay`, {
+      method: 'POST',
+      body: JSON.stringify({ amount }),
+    });
+  }
 
   // Categories
-  getCategories() { return this.request<any[]>('/categories'); }
-  createCategory(data: { name: string }) { return this.request<any>('/categories', { method: 'POST', body: JSON.stringify(data) }); }
-  updateCategory(id: string, data: { name: string }) { return this.request<any>(`/categories/${id}`, { method: 'PATCH', body: JSON.stringify(data) }); }
-  deleteCategory(id: string) { return this.request<void>(`/categories/${id}`, { method: 'DELETE' }); }
+  getCategories() {
+    return this.request<any[]>('/categories');
+  }
+  createCategory(data: { name: string }) {
+    return this.request<any>('/categories', { method: 'POST', body: JSON.stringify(data) });
+  }
+  updateCategory(id: string, data: { name: string }) {
+    return this.request<any>(`/categories/${id}`, { method: 'PATCH', body: JSON.stringify(data) });
+  }
+  deleteCategory(id: string) {
+    return this.request<void>(`/categories/${id}`, { method: 'DELETE' });
+  }
 
   // Accounts Payable
   async getAccountsPayable(): Promise<any> {
@@ -325,7 +407,10 @@ class ApiClient {
     return this.request<any>('/accounts-payable', { method: 'POST', body: JSON.stringify(data) });
   }
   async payAccountsPayable(data: any): Promise<any> {
-    return this.request<any>('/accounts-payable/pay', { method: 'POST', body: JSON.stringify(data) });
+    return this.request<any>('/accounts-payable/pay', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
   }
   async getPayablePayments(id: string): Promise<any> {
     return this.request<any[]>(`/accounts-payable/${id}/payments`);
@@ -342,17 +427,27 @@ class ApiClient {
     return this.request<any[]>(`/accounts-receivable/customer/${customerId}`);
   }
   async createAccountsReceivable(data: any): Promise<any> {
-    return this.request<any>('/accounts-receivable', { method: 'POST', body: JSON.stringify(data) });
+    return this.request<any>('/accounts-receivable', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
   }
   async payAccountsReceivable(id: string, data: any): Promise<any> {
-    return this.request<any>(`/accounts-receivable/${id}/pay`, { method: 'POST', body: JSON.stringify(data) });
+    return this.request<any>(`/accounts-receivable/${id}/pay`, {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
   }
   async getReceivablePayments(id: string): Promise<any> {
     return this.request<any[]>(`/accounts-receivable/${id}/payments`);
   }
 
   // Expenses
-  async getExpenses(params?: { category?: string; startDate?: string; endDate?: string }): Promise<any> {
+  async getExpenses(params?: {
+    category?: string;
+    startDate?: string;
+    endDate?: string;
+  }): Promise<any> {
     const query = params ? '?' + new URLSearchParams(params as any).toString() : '';
     return this.request(`/expenses${query}`);
   }
@@ -378,10 +473,16 @@ class ApiClient {
   async openCashSession(data: { openingBalance: number; notes?: string }): Promise<any> {
     return this.post('/cash-register/open', data);
   }
-  async closeCashSession(id: string, data: { actualBalance: number; notes?: string }): Promise<any> {
+  async closeCashSession(
+    id: string,
+    data: { actualBalance: number; notes?: string }
+  ): Promise<any> {
     return this.post(`/cash-register/${id}/close`, data);
   }
-  async addCashTransaction(id: string, data: { amount: number; type: 'income' | 'expense' | 'sale' | 'refund'; description: string }): Promise<any> {
+  async addCashTransaction(
+    id: string,
+    data: { amount: number; type: 'income' | 'expense' | 'sale' | 'refund'; description: string }
+  ): Promise<any> {
     return this.post(`/cash-register/${id}/transaction`, data);
   }
   async getCurrentCashSession(): Promise<any> {
@@ -420,7 +521,11 @@ class ApiClient {
     const query = year ? `?year=${year}` : '';
     return this.request(`/reports/monthly-profit${query}`);
   }
-  async getBestSellers(params?: { limit?: number; startDate?: string; endDate?: string }): Promise<any> {
+  async getBestSellers(params?: {
+    limit?: number;
+    startDate?: string;
+    endDate?: string;
+  }): Promise<any> {
     const filtered: Record<string, string> = {};
     if (params) {
       if (params.limit !== undefined) filtered.limit = String(params.limit);
@@ -442,7 +547,10 @@ class ApiClient {
 
   // Bulk sync
   syncSales(data: any[]) {
-    return this.request<any>('/sales/bulk', { method: 'POST', body: JSON.stringify({ sales: data }) });
+    return this.request<any>('/sales/bulk', {
+      method: 'POST',
+      body: JSON.stringify({ sales: data }),
+    });
   }
 
   // Notifications
@@ -471,7 +579,18 @@ class ApiClient {
   async getTenantSettings(): Promise<any> {
     return this.request('/tenant-settings');
   }
-  async updateTenantSettings(data: { taxRate?: number; taxName?: string; currencySymbol?: string; currencyPosition?: string; decimalPlaces?: number; displayCurrency?: string; manualExchangeRate?: number; companyTaxId?: string; companyFiscalAddress?: string; companyPhone?: string }): Promise<any> {
+  async updateTenantSettings(data: {
+    taxRate?: number;
+    taxName?: string;
+    currencySymbol?: string;
+    currencyPosition?: string;
+    decimalPlaces?: number;
+    displayCurrency?: string;
+    manualExchangeRate?: number;
+    companyTaxId?: string;
+    companyFiscalAddress?: string;
+    companyPhone?: string;
+  }): Promise<any> {
     return this.request('/tenant-settings', { method: 'PATCH', body: JSON.stringify(data) });
   }
 
@@ -487,7 +606,12 @@ class ApiClient {
   async getWarehouseTransfer(id: string): Promise<any> {
     return this.get(`/warehouse-transfers/${id}`);
   }
-  async createWarehouseTransfer(data: { fromWarehouseId: string; toWarehouseId: string; notes?: string; items: { productId: string; quantity: number }[] }): Promise<any> {
+  async createWarehouseTransfer(data: {
+    fromWarehouseId: string;
+    toWarehouseId: string;
+    notes?: string;
+    items: { productId: string; quantity: number }[];
+  }): Promise<any> {
     return this.post('/warehouse-transfers', data);
   }
   async updateWarehouseTransferStatus(id: string, status: string, notes?: string): Promise<any> {
@@ -501,10 +625,19 @@ class ApiClient {
   async getProductLot(id: string): Promise<any> {
     return this.get(`/product-lots/${id}`);
   }
-  async createProductLot(data: { productId: string; lotNumber: string; quantity: number; expiryDate?: string; manufactureDate?: string }): Promise<any> {
+  async createProductLot(data: {
+    productId: string;
+    lotNumber: string;
+    quantity: number;
+    expiryDate?: string;
+    manufactureDate?: string;
+  }): Promise<any> {
     return this.post('/product-lots', data);
   }
-  async updateProductLot(id: string, data: { quantity?: number; expiryDate?: string; manufactureDate?: string }): Promise<any> {
+  async updateProductLot(
+    id: string,
+    data: { quantity?: number; expiryDate?: string; manufactureDate?: string }
+  ): Promise<any> {
     return this.patch(`/product-lots/${id}`, data);
   }
   async deleteProductLot(id: string): Promise<any> {
@@ -517,8 +650,12 @@ class ApiClient {
     return this.request(`/events${q}`);
   }
   async createEvent(data: {
-    title: string; description?: string; startDate: string;
-    endDate?: string; allDay?: boolean; color?: string;
+    title: string;
+    description?: string;
+    startDate: string;
+    endDate?: string;
+    allDay?: boolean;
+    color?: string;
   }): Promise<any> {
     return this.post('/events', data);
   }
@@ -532,28 +669,51 @@ class ApiClient {
   // ── Social ──────────────────────────────────────────────────────────────
 
   // Profile
-  async getSocialProfile(): Promise<any> { return this.get('/social/profile'); }
-  async updateSocialProfile(data: any): Promise<any> { return this.patch('/social/profile', data); }
-  async getSocialUserProfile(userId: string): Promise<any> { return this.get(`/social/profile/${userId}`); }
-  async searchSocialProfiles(q: string): Promise<any[]> { return this.get(`/social/profiles/search?q=${encodeURIComponent(q)}`); }
-  async getSocialStats(): Promise<any> { return this.get('/social/stats'); }
+  async getSocialProfile(): Promise<any> {
+    return this.get('/social/profile');
+  }
+  async updateSocialProfile(data: any): Promise<any> {
+    return this.patch('/social/profile', data);
+  }
+  async getSocialUserProfile(userId: string): Promise<any> {
+    return this.get(`/social/profile/${userId}`);
+  }
+  async searchSocialProfiles(q: string): Promise<any[]> {
+    return this.get(`/social/profiles/search?q=${encodeURIComponent(q)}`);
+  }
+  async getSocialStats(): Promise<any> {
+    return this.get('/social/stats');
+  }
 
   // Posts
-  async createSocialPost(data: { content: string; images?: string[]; videos?: string[]; tags?: string[] }): Promise<any> {
+  async createSocialPost(data: {
+    content: string;
+    images?: string[];
+    videos?: string[];
+    tags?: string[];
+  }): Promise<any> {
     return this.post('/social/posts', data);
   }
   async getFeed(page = 1, limit = 20): Promise<any> {
     return this.get(`/social/feed?page=${page}&limit=${limit}`);
   }
-  async getSocialPost(id: string): Promise<any> { return this.get(`/social/posts/${id}`); }
+  async getSocialPost(id: string): Promise<any> {
+    return this.get(`/social/posts/${id}`);
+  }
   async getUserPosts(userId: string, page = 1, limit = 20): Promise<any> {
     return this.get(`/social/users/${userId}/posts?page=${page}&limit=${limit}`);
   }
-  async updateSocialPost(id: string, data: any): Promise<any> { return this.patch(`/social/posts/${id}`, data); }
-  async deleteSocialPost(id: string): Promise<any> { return this.delete(`/social/posts/${id}`); }
+  async updateSocialPost(id: string, data: any): Promise<any> {
+    return this.patch(`/social/posts/${id}`, data);
+  }
+  async deleteSocialPost(id: string): Promise<any> {
+    return this.delete(`/social/posts/${id}`);
+  }
 
   // Catalogs
-  async createSocialCatalog(data: any): Promise<any> { return this.post('/social/catalogs', data); }
+  async createSocialCatalog(data: any): Promise<any> {
+    return this.post('/social/catalogs', data);
+  }
   async getMyCatalogs(page = 1, limit = 20, status?: string): Promise<any> {
     let url = `/social/catalogs?page=${page}&limit=${limit}`;
     if (status) url += `&status=${status}`;
@@ -562,21 +722,43 @@ class ApiClient {
   async getPublicCatalogs(page = 1, limit = 20): Promise<any> {
     return this.get(`/social/catalogs/public?page=${page}&limit=${limit}`);
   }
-  async getSocialCatalog(id: string): Promise<any> { return this.get(`/social/catalogs/${id}`); }
-  async updateSocialCatalog(id: string, data: any): Promise<any> { return this.patch(`/social/catalogs/${id}`, data); }
-  async deleteSocialCatalog(id: string): Promise<any> { return this.delete(`/social/catalogs/${id}`); }
-  async publishSocialCatalog(id: string): Promise<any> { return this.post(`/social/catalogs/${id}/publish`, {}); }
+  async getSocialCatalog(id: string): Promise<any> {
+    return this.get(`/social/catalogs/${id}`);
+  }
+  async updateSocialCatalog(id: string, data: any): Promise<any> {
+    return this.patch(`/social/catalogs/${id}`, data);
+  }
+  async deleteSocialCatalog(id: string): Promise<any> {
+    return this.delete(`/social/catalogs/${id}`);
+  }
+  async publishSocialCatalog(id: string): Promise<any> {
+    return this.post(`/social/catalogs/${id}/publish`, {});
+  }
 
   // Catalog Items
-  async addCatalogItem(catalogId: string, data: any): Promise<any> { return this.post(`/social/catalogs/${catalogId}/items`, data); }
-  async updateCatalogItem(catalogId: string, itemId: string, data: any): Promise<any> { return this.patch(`/social/catalogs/${catalogId}/items/${itemId}`, data); }
-  async deleteCatalogItem(catalogId: string, itemId: string): Promise<any> { return this.delete(`/social/catalogs/${catalogId}/items/${itemId}`); }
-  async reorderCatalogItems(catalogId: string, items: { id: string; sortOrder: number }[]): Promise<any> {
+  async addCatalogItem(catalogId: string, data: any): Promise<any> {
+    return this.post(`/social/catalogs/${catalogId}/items`, data);
+  }
+  async updateCatalogItem(catalogId: string, itemId: string, data: any): Promise<any> {
+    return this.patch(`/social/catalogs/${catalogId}/items/${itemId}`, data);
+  }
+  async deleteCatalogItem(catalogId: string, itemId: string): Promise<any> {
+    return this.delete(`/social/catalogs/${catalogId}/items/${itemId}`);
+  }
+  async reorderCatalogItems(
+    catalogId: string,
+    items: { id: string; sortOrder: number }[]
+  ): Promise<any> {
     return this.post(`/social/catalogs/${catalogId}/items/reorder`, { items });
   }
 
   // Comments
-  async createSocialComment(data: { content: string; postId?: string; catalogId?: string; parentId?: string }): Promise<any> {
+  async createSocialComment(data: {
+    content: string;
+    postId?: string;
+    catalogId?: string;
+    parentId?: string;
+  }): Promise<any> {
     return this.post('/social/comments', data);
   }
   async getPostComments(postId: string, page = 1, limit = 20): Promise<any> {
@@ -585,10 +767,17 @@ class ApiClient {
   async getCatalogComments(catalogId: string, page = 1, limit = 20): Promise<any> {
     return this.get(`/social/catalogs/${catalogId}/comments?page=${page}&limit=${limit}`);
   }
-  async deleteSocialComment(id: string): Promise<any> { return this.delete(`/social/comments/${id}`); }
+  async deleteSocialComment(id: string): Promise<any> {
+    return this.delete(`/social/comments/${id}`);
+  }
 
   // Reactions
-  async toggleSocialReaction(data: { postId?: string; commentId?: string; catalogId?: string; type?: string }): Promise<any> {
+  async toggleSocialReaction(data: {
+    postId?: string;
+    commentId?: string;
+    catalogId?: string;
+    type?: string;
+  }): Promise<any> {
     return this.post('/social/reactions', data);
   }
   async getSocialReactions(postId?: string, commentId?: string, catalogId?: string): Promise<any> {
@@ -600,35 +789,60 @@ class ApiClient {
   }
 
   // Follows
-  async toggleFollow(userId: string): Promise<any> { return this.post(`/social/follow/${userId}`, {}); }
+  async toggleFollow(userId: string): Promise<any> {
+    return this.post(`/social/follow/${userId}`, {});
+  }
   async getFollowers(userId: string, page = 1, limit = 50): Promise<any> {
     return this.get(`/social/followers/${userId}?page=${page}&limit=${limit}`);
   }
   async getFollowing(userId: string, page = 1, limit = 50): Promise<any> {
     return this.get(`/social/following/${userId}?page=${page}&limit=${limit}`);
   }
-  async isFollowing(userId: string): Promise<any> { return this.get(`/social/follow/${userId}/status`); }
-  async getFollowCounts(): Promise<any> { return this.get('/social/follow/counts'); }
+  async isFollowing(userId: string): Promise<any> {
+    return this.get(`/social/follow/${userId}/status`);
+  }
+  async getFollowCounts(): Promise<any> {
+    return this.get('/social/follow/counts');
+  }
 
   // Notifications
   async getSocialNotifications(page = 1, limit = 50): Promise<any> {
     return this.get(`/social/notifications?page=${page}&limit=${limit}`);
   }
-  async getUnreadNotificationCount(): Promise<any> { return this.get('/social/notifications/unread-count'); }
-  async markNotificationRead(id: string): Promise<any> { return this.patch(`/social/notifications/${id}/read`, {}); }
-  async markAllNotificationsRead(): Promise<any> { return this.post('/social/notifications/read-all', {}); }
+  async getUnreadNotificationCount(): Promise<any> {
+    return this.get('/social/notifications/unread-count');
+  }
+  async markNotificationRead(id: string): Promise<any> {
+    return this.patch(`/social/notifications/${id}/read`, {});
+  }
+  async markAllNotificationsRead(): Promise<any> {
+    return this.post('/social/notifications/read-all', {});
+  }
 
   // Messages
-  async createSocialThread(data: { title?: string; memberIds: string[] }): Promise<any> { return this.post('/social/threads', data); }
-  async getUserThreads(): Promise<any[]> { return this.get('/social/threads'); }
-  async sendSocialMessage(data: { content: string; threadId?: string; recipientId?: string; images?: string[] }): Promise<any> {
+  async createSocialThread(data: { title?: string; memberIds: string[] }): Promise<any> {
+    return this.post('/social/threads', data);
+  }
+  async getUserThreads(): Promise<any[]> {
+    return this.get('/social/threads');
+  }
+  async sendSocialMessage(data: {
+    content: string;
+    threadId?: string;
+    recipientId?: string;
+    images?: string[];
+  }): Promise<any> {
     return this.post('/social/messages', data);
   }
   async getThreadMessages(threadId: string, page = 1, limit = 50): Promise<any> {
     return this.get(`/social/threads/${threadId}/messages?page=${page}&limit=${limit}`);
   }
-  async markThreadAsRead(threadId: string): Promise<any> { return this.post(`/social/threads/${threadId}/read`, {}); }
-  async getUnreadMessageCount(): Promise<any> { return this.get('/social/messages/unread-count'); }
+  async markThreadAsRead(threadId: string): Promise<any> {
+    return this.post(`/social/threads/${threadId}/read`, {});
+  }
+  async getUnreadMessageCount(): Promise<any> {
+    return this.get('/social/messages/unread-count');
+  }
 
   // Upload
   async uploadImage(file: File): Promise<{ url: string }> {

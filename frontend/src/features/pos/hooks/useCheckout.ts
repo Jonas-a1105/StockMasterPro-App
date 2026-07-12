@@ -40,17 +40,18 @@ export function useCheckout() {
     selectedCustomerId: string,
     customers: { id: string; name: string }[],
     isOnline: boolean,
-    payments?: SalePayment[],
+    payments?: SalePayment[]
   ) => {
     if (items.length === 0) return;
     setIsProcessing(true);
 
-    const salePayments = payments && payments.length > 0
-      ? payments
-      : [{ paymentMethod: paymentMethod as any, amount: total }];
+    const salePayments =
+      payments && payments.length > 0
+        ? payments
+        : [{ paymentMethod: paymentMethod as any, amount: total }];
 
     const saleData: any = {
-      items: items.map(item => ({ productId: item.product.id, quantity: item.quantity })),
+      items: items.map((item) => ({ productId: item.product.id, quantity: item.quantity })),
       paymentMethod,
       payments: salePayments,
       taxRate: 16,
@@ -59,9 +60,10 @@ export function useCheckout() {
       saleData.customerId = selectedCustomerId;
     }
 
-    const customerName = paymentMethod === 'credit'
-      ? customers.find(c => c.id === selectedCustomerId)?.name
-      : undefined;
+    const customerName =
+      paymentMethod === 'credit'
+        ? customers.find((c) => c.id === selectedCustomerId)?.name
+        : undefined;
 
     try {
       if (isOnline) {
@@ -71,7 +73,9 @@ export function useCheckout() {
         await db.offlineSales.add({
           tenantId: user!.tenantId,
           userId: user!.id,
-          items: JSON.stringify(items.map(item => ({ productId: item.product.id, quantity: item.quantity }))),
+          items: JSON.stringify(
+            items.map((item) => ({ productId: item.product.id, quantity: item.quantity }))
+          ),
           total,
           paymentMethod,
           payments: JSON.stringify(salePayments),
@@ -82,7 +86,16 @@ export function useCheckout() {
         });
       }
 
-      setLastSale({ items: [...items], subtotal, tax, total, paymentMethod, payments: salePayments, date: new Date(), customerName });
+      setLastSale({
+        items: [...items],
+        subtotal,
+        tax,
+        total,
+        paymentMethod,
+        payments: salePayments,
+        date: new Date(),
+        customerName,
+      });
       setShowSuccess(true);
 
       if (isOnline) {

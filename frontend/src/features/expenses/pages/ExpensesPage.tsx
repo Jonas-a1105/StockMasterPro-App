@@ -62,7 +62,14 @@ export function ExpensesPage() {
   const [showModal, setShowModal] = useState(false);
   const [categoryFilter, setCategoryFilter] = useState('');
   const [dateRange, setDateRange] = useState({ start: '', end: '' });
-  const [form, setForm] = useState({ description: '', amount: 0, category: 'other', paymentMethod: 'cash', expenseDate: '', notes: '' });
+  const [form, setForm] = useState({
+    description: '',
+    amount: 0,
+    category: 'other',
+    paymentMethod: 'cash',
+    expenseDate: '',
+    notes: '',
+  });
   const [saving, setSaving] = useState(false);
   const [showImport, setShowImport] = useState(false);
   const [search, setSearch] = useState('');
@@ -82,7 +89,9 @@ export function ExpensesPage() {
     }
   };
 
-  useEffect(() => { loadExpenses(); }, [categoryFilter, dateRange.start, dateRange.end]);
+  useEffect(() => {
+    loadExpenses();
+  }, [categoryFilter, dateRange.start, dateRange.end]);
 
   const handleExportExpenses = () => {
     exportToExcel(expenses, EXPENSE_COLUMNS, 'gastos', 'xlsx');
@@ -100,14 +109,18 @@ export function ExpensesPage() {
     const mapCategory = (val: string) => {
       if (!val) return 'other';
       const clean = val.trim().toLowerCase();
-      const found = CATEGORIES.find(c => c.label.toLowerCase() === clean || c.value.toLowerCase() === clean);
+      const found = CATEGORIES.find(
+        (c) => c.label.toLowerCase() === clean || c.value.toLowerCase() === clean
+      );
       return found ? found.value : 'other';
     };
 
     const mapPaymentMethod = (val: string) => {
       if (!val) return 'cash';
       const clean = val.trim().toLowerCase();
-      const found = PAYMENT_METHODS.find(p => p.label.toLowerCase() === clean || p.value.toLowerCase() === clean);
+      const found = PAYMENT_METHODS.find(
+        (p) => p.label.toLowerCase() === clean || p.value.toLowerCase() === clean
+      );
       return found ? found.value : 'cash';
     };
 
@@ -115,14 +128,17 @@ export function ExpensesPage() {
       const row = data[i];
       try {
         if (!row.description) throw new Error('La descripción es obligatoria.');
-        if (!row.amount || isNaN(Number(row.amount))) throw new Error('El monto debe ser un número válido.');
+        if (!row.amount || isNaN(Number(row.amount)))
+          throw new Error('El monto debe ser un número válido.');
 
         const payload = {
           description: row.description,
           amount: Number(row.amount),
           category: mapCategory(row.category),
           paymentMethod: mapPaymentMethod(row.paymentMethod),
-          expenseDate: row.expenseDate ? new Date(row.expenseDate).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
+          expenseDate: row.expenseDate
+            ? new Date(row.expenseDate).toISOString().split('T')[0]
+            : new Date().toISOString().split('T')[0],
           notes: row.notes || '',
         };
 
@@ -131,7 +147,9 @@ export function ExpensesPage() {
         successCount++;
       } catch (err: any) {
         errorCount++;
-        details.push(`Error fila ${i + 1} (${row.description || 'Sin Descripción'}): ${err.message}`);
+        details.push(
+          `Error fila ${i + 1} (${row.description || 'Sin Descripción'}): ${err.message}`
+        );
       }
       onProgress(i + 1, data.length);
     }
@@ -140,7 +158,14 @@ export function ExpensesPage() {
   };
 
   const openCreateModal = () => {
-    setForm({ description: '', amount: 0, category: 'other', paymentMethod: 'cash', expenseDate: '', notes: '' });
+    setForm({
+      description: '',
+      amount: 0,
+      category: 'other',
+      paymentMethod: 'cash',
+      expenseDate: '',
+      notes: '',
+    });
     setShowModal(true);
   };
 
@@ -170,30 +195,59 @@ export function ExpensesPage() {
     }
   };
 
-  const categoryLabel = (value: string) => CATEGORIES.find(c => c.value === value)?.label || value;
+  const categoryLabel = (value: string) =>
+    CATEGORIES.find((c) => c.value === value)?.label || value;
 
-  const paymentLabel = (value: string) => PAYMENT_METHODS.find(p => p.value === value)?.label || value;
+  const paymentLabel = (value: string) =>
+    PAYMENT_METHODS.find((p) => p.value === value)?.label || value;
 
-  const filteredExpenses = expenses.filter(e =>
-    (!search || e.description.toLowerCase().includes(search.toLowerCase()) || (e.category || '').toLowerCase().includes(search.toLowerCase())) &&
-    (categoryFilter === '' || e.category === categoryFilter) &&
-    (!dateRange.start || new Date(e.expenseDate) >= new Date(dateRange.start)) &&
-    (!dateRange.end || new Date(e.expenseDate) <= new Date(dateRange.end))
+  const filteredExpenses = expenses.filter(
+    (e) =>
+      (!search ||
+        e.description.toLowerCase().includes(search.toLowerCase()) ||
+        (e.category || '').toLowerCase().includes(search.toLowerCase())) &&
+      (categoryFilter === '' || e.category === categoryFilter) &&
+      (!dateRange.start || new Date(e.expenseDate) >= new Date(dateRange.start)) &&
+      (!dateRange.end || new Date(e.expenseDate) <= new Date(dateRange.end))
   );
 
   const totalExpenses = filteredExpenses.reduce((sum, e) => sum + e.amount, 0);
   const expenseCount = filteredExpenses.length;
 
-  if (loading) return config.skeletonEnabled ? <SkeletonTablePage rows={8} cols={6} kpi={3} /> : <LoadingDots text="Cargando gastos" />;
+  if (loading)
+    return config.skeletonEnabled ? (
+      <SkeletonTablePage rows={8} cols={6} kpi={3} />
+    ) : (
+      <LoadingDots text="Cargando gastos" />
+    );
 
   return (
     <div className={styles.container}>
-      <TabNav tabs={[{ key: 'main', label: 'Gastos', icon: <TrendingDown size={16} /> }]} activeTab="main" onTabChange={() => {}} />
+      <TabNav
+        tabs={[{ key: 'main', label: 'Gastos', icon: <TrendingDown size={16} /> }]}
+        activeTab="main"
+        onTabChange={() => {}}
+      />
       <KpiGrid
         items={[
-          { icon: <Receipt size={18} />, value: expenseCount, label: 'Gastos Filtrados', color: 'var(--color-blue)' },
-          { icon: <TrendingDown size={18} />, value: formatPrice(totalExpenses), label: 'Total Filtrado', color: 'var(--color-red)' },
-          { icon: <Tag size={18} />, value: expenses.length, label: 'Total Gastos', color: 'var(--color-purple)' },
+          {
+            icon: <Receipt size={18} />,
+            value: expenseCount,
+            label: 'Gastos Filtrados',
+            color: 'var(--color-blue)',
+          },
+          {
+            icon: <TrendingDown size={18} />,
+            value: formatPrice(totalExpenses),
+            label: 'Total Filtrado',
+            color: 'var(--color-red)',
+          },
+          {
+            icon: <Tag size={18} />,
+            value: expenses.length,
+            label: 'Total Gastos',
+            color: 'var(--color-purple)',
+          },
         ]}
       />
 
@@ -202,12 +256,14 @@ export function ExpensesPage() {
         searchExtra={
           <select
             value={categoryFilter}
-            onChange={e => setCategoryFilter(e.target.value)}
+            onChange={(e) => setCategoryFilter(e.target.value)}
             className={`${styles.filterSelect} global-search-select`}
           >
             <option value="">Todas las categorías</option>
-            {[...new Set(expenses.map(e => e.category).filter(Boolean))].map(cat => (
-              <option key={cat} value={cat}>{cat}</option>
+            {[...new Set(expenses.map((e) => e.category).filter(Boolean))].map((cat) => (
+              <option key={cat} value={cat}>
+                {cat}
+              </option>
             ))}
           </select>
         }
@@ -216,12 +272,32 @@ export function ExpensesPage() {
         addBtn={{ label: 'Nuevo Gasto', onClick: openCreateModal }}
       >
         <div className={styles.flexRowWrapCenter}>
-          <span className={`${styles.fontSize12} ${styles.colorMuted} ${styles.fontWeight600}`}>Desde:</span>
-          <input type="date" value={dateRange.start} onChange={e => setDateRange(p => ({ ...p, start: e.target.value }))} className={styles.dateInput} />
-          <span className={`${styles.fontSize12} ${styles.colorMuted} ${styles.fontWeight600}`}>Hasta:</span>
-          <input type="date" value={dateRange.end} onChange={e => setDateRange(p => ({ ...p, end: e.target.value }))} className={styles.dateInput} />
+          <span className={`${styles.fontSize12} ${styles.colorMuted} ${styles.fontWeight600}`}>
+            Desde:
+          </span>
+          <input
+            type="date"
+            value={dateRange.start}
+            onChange={(e) => setDateRange((p) => ({ ...p, start: e.target.value }))}
+            className={styles.dateInput}
+          />
+          <span className={`${styles.fontSize12} ${styles.colorMuted} ${styles.fontWeight600}`}>
+            Hasta:
+          </span>
+          <input
+            type="date"
+            value={dateRange.end}
+            onChange={(e) => setDateRange((p) => ({ ...p, end: e.target.value }))}
+            className={styles.dateInput}
+          />
           {(categoryFilter || dateRange.start || dateRange.end) && (
-            <button onClick={() => { setCategoryFilter(''); setDateRange({ start: '', end: '' }); }} className={styles.clearFiltersBtn}>
+            <button
+              onClick={() => {
+                setCategoryFilter('');
+                setDateRange({ start: '', end: '' });
+              }}
+              className={styles.clearFiltersBtn}
+            >
               Limpiar filtros
             </button>
           )}
@@ -241,16 +317,26 @@ export function ExpensesPage() {
             </tr>
           </thead>
           <tbody>
-            {filteredExpenses.map(e => (
+            {filteredExpenses.map((e) => (
               <tr key={e.id}>
                 <td>{new Date(e.expenseDate).toLocaleDateString()}</td>
                 <td className={styles.colorMuted}>{e.description}</td>
-                <td><span className={`${tableStyles.badge} ${tableStyles.badgeWarning}`}>{categoryLabel(e.category)}</span></td>
-                <td className={styles.textRight}><span className={tableStyles.numberValue}>{formatPrice(Number(e.amount))}</span></td>
+                <td>
+                  <span className={`${tableStyles.badge} ${tableStyles.badgeWarning}`}>
+                    {categoryLabel(e.category)}
+                  </span>
+                </td>
+                <td className={styles.textRight}>
+                  <span className={tableStyles.numberValue}>{formatPrice(Number(e.amount))}</span>
+                </td>
                 <td>{paymentLabel(e.paymentMethod)}</td>
                 <td className={styles.textCenter}>
                   <div className={`${tableStyles.actions} ${styles.justifyCenter}`}>
-                    <button className={`${tableStyles.actionBtn} danger`} onClick={() => handleDelete(e.id)} title="Eliminar">
+                    <button
+                      className={`${tableStyles.actionBtn} danger`}
+                      onClick={() => handleDelete(e.id)}
+                      title="Eliminar"
+                    >
                       <Trash2 size={14} />
                     </button>
                   </div>
@@ -259,7 +345,12 @@ export function ExpensesPage() {
             ))}
             {filteredExpenses.length === 0 && (
               <tr>
-                <td colSpan={6} className={`${styles.textCenter} ${styles.p40} ${styles.colorMuted}`}>No hay gastos registrados</td>
+                <td
+                  colSpan={6}
+                  className={`${styles.textCenter} ${styles.p40} ${styles.colorMuted}`}
+                >
+                  No hay gastos registrados
+                </td>
               </tr>
             )}
           </tbody>
@@ -275,7 +366,7 @@ export function ExpensesPage() {
                 <input
                   type="text"
                   value={form.description}
-                  onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
+                  onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))}
                   required
                   placeholder="Ej: Compra de útiles de oficina"
                 />
@@ -288,7 +379,9 @@ export function ExpensesPage() {
                     min="0.01"
                     step="0.01"
                     value={form.amount || ''}
-                    onChange={e => setForm(f => ({ ...f, amount: parseFloat(e.target.value) || 0 }))}
+                    onChange={(e) =>
+                      setForm((f) => ({ ...f, amount: parseFloat(e.target.value) || 0 }))
+                    }
                     required
                     placeholder="0.00"
                   />
@@ -298,7 +391,7 @@ export function ExpensesPage() {
                   <input
                     type="date"
                     value={form.expenseDate}
-                    onChange={e => setForm(f => ({ ...f, expenseDate: e.target.value }))}
+                    onChange={(e) => setForm((f) => ({ ...f, expenseDate: e.target.value }))}
                     required
                   />
                 </div>
@@ -306,17 +399,27 @@ export function ExpensesPage() {
               <div className={styles.fieldRow}>
                 <div className={styles.field}>
                   <label>Categoría</label>
-                  <select value={form.category} onChange={e => setForm(f => ({ ...f, category: e.target.value }))}>
-                    {CATEGORIES.map(c => (
-                      <option key={c.value} value={c.value}>{c.label}</option>
+                  <select
+                    value={form.category}
+                    onChange={(e) => setForm((f) => ({ ...f, category: e.target.value }))}
+                  >
+                    {CATEGORIES.map((c) => (
+                      <option key={c.value} value={c.value}>
+                        {c.label}
+                      </option>
                     ))}
                   </select>
                 </div>
                 <div className={styles.field}>
                   <label>Método de Pago</label>
-                  <select value={form.paymentMethod} onChange={e => setForm(f => ({ ...f, paymentMethod: e.target.value }))}>
-                    {PAYMENT_METHODS.map(p => (
-                      <option key={p.value} value={p.value}>{p.label}</option>
+                  <select
+                    value={form.paymentMethod}
+                    onChange={(e) => setForm((f) => ({ ...f, paymentMethod: e.target.value }))}
+                  >
+                    {PAYMENT_METHODS.map((p) => (
+                      <option key={p.value} value={p.value}>
+                        {p.label}
+                      </option>
                     ))}
                   </select>
                 </div>
@@ -325,13 +428,19 @@ export function ExpensesPage() {
                 <label>Notas (opcional)</label>
                 <textarea
                   value={form.notes}
-                  onChange={e => setForm(f => ({ ...f, notes: e.target.value }))}
+                  onChange={(e) => setForm((f) => ({ ...f, notes: e.target.value }))}
                   rows={3}
                   placeholder="Notas adicionales..."
                 />
               </div>
               <div className={styles.modalActions}>
-                <button type="button" className={styles.cancelBtn} onClick={() => setShowModal(false)}>Cancelar</button>
+                <button
+                  type="button"
+                  className={styles.cancelBtn}
+                  onClick={() => setShowModal(false)}
+                >
+                  Cancelar
+                </button>
                 <button type="submit" className={styles.saveBtn} disabled={saving}>
                   {saving ? 'Guardando...' : 'Registrar Gasto'}
                 </button>

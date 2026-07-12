@@ -27,7 +27,9 @@ export function CategoriesPage() {
     }
   };
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => {
+    load();
+  }, []);
 
   const handleCreate = async () => {
     if (!name.trim()) return;
@@ -76,13 +78,17 @@ export function CategoriesPage() {
     }
   };
 
-  const filtered = categories.filter(c =>
-    !search || c.name.toLowerCase().includes(search.toLowerCase())
+  const filtered = categories.filter(
+    (c) => !search || c.name.toLowerCase().includes(search.toLowerCase())
   );
 
   const renderModal = () => {
     const isEdit = !!showEdit;
-    const onClose = () => { setShowCreate(false); setShowEdit(null); setName(''); };
+    const onClose = () => {
+      setShowCreate(false);
+      setShowEdit(null);
+      setName('');
+    };
     const onSave = isEdit ? handleEdit : handleCreate;
     const title = isEdit ? 'Editar categoría' : 'Nueva categoría';
 
@@ -90,24 +96,28 @@ export function CategoriesPage() {
 
     return (
       <div className={styles.overlay} onClick={onClose}>
-        <div className={styles.modal} onClick={e => e.stopPropagation()}>
+        <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
           <div className={styles.modalHeader}>
             <h3 className={styles.modalTitle}>{title}</h3>
-            <button className={styles.closeBtn} onClick={onClose}><X size={18} /></button>
+            <button className={styles.closeBtn} onClick={onClose}>
+              <X size={18} />
+            </button>
           </div>
           <div className={styles.modalBody}>
             <label className={styles.label}>Nombre</label>
             <input
               className={styles.input}
               value={name}
-              onChange={e => setName(e.target.value)}
-              onKeyDown={e => e.key === 'Enter' && onSave()}
+              onChange={(e) => setName(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && onSave()}
               placeholder="Nombre de la categoría"
               autoFocus
             />
           </div>
           <div className={styles.modalFooter}>
-            <button className={styles.cancelBtn} onClick={onClose}>Cancelar</button>
+            <button className={styles.cancelBtn} onClick={onClose}>
+              Cancelar
+            </button>
             <button className={styles.saveBtn} onClick={onSave} disabled={!name.trim() || saving}>
               {saving ? 'Guardando...' : 'Guardar'}
             </button>
@@ -122,13 +132,17 @@ export function CategoriesPage() {
     const productCount = showDelete._count?.products || 0;
     return (
       <div className={styles.overlay} onClick={() => setShowDelete(null)}>
-        <div className={styles.modal} onClick={e => e.stopPropagation()}>
+        <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
           <div className={styles.modalHeader}>
             <h3 className={styles.modalTitle}>Eliminar categoría</h3>
-            <button className={styles.closeBtn} onClick={() => setShowDelete(null)}><X size={18} /></button>
+            <button className={styles.closeBtn} onClick={() => setShowDelete(null)}>
+              <X size={18} />
+            </button>
           </div>
           <div className={styles.modalBody}>
-            <p className={styles.m0}>¿Eliminar <strong>{showDelete.name}</strong>?</p>
+            <p className={styles.m0}>
+              ¿Eliminar <strong>{showDelete.name}</strong>?
+            </p>
             {productCount > 0 && (
               <p className={styles.warningText}>
                 <Package size={14} className={styles.inlineIcon} />
@@ -137,7 +151,9 @@ export function CategoriesPage() {
             )}
           </div>
           <div className={styles.modalFooter}>
-            <button className={styles.cancelBtn} onClick={() => setShowDelete(null)}>Cancelar</button>
+            <button className={styles.cancelBtn} onClick={() => setShowDelete(null)}>
+              Cancelar
+            </button>
             <button className={styles.deleteBtn} onClick={handleDelete} disabled={saving}>
               {saving ? 'Eliminando...' : 'Eliminar'}
             </button>
@@ -152,9 +168,17 @@ export function CategoriesPage() {
       <div className={styles.header}>
         <div>
           <h2 className={styles.title}>Categorías</h2>
-          <p className={styles.subtitle}>{categories.length} categoría{categories.length !== 1 ? 's' : ''} registradas</p>
+          <p className={styles.subtitle}>
+            {categories.length} categoría{categories.length !== 1 ? 's' : ''} registradas
+          </p>
         </div>
-        <button className={styles.addBtn} onClick={() => { setName(''); setShowCreate(true); }}>
+        <button
+          className={styles.addBtn}
+          onClick={() => {
+            setName('');
+            setShowCreate(true);
+          }}
+        >
           <Plus size={18} /> Nueva categoría
         </button>
       </div>
@@ -164,11 +188,13 @@ export function CategoriesPage() {
         <input
           className={styles.searchInput}
           value={search}
-          onChange={e => setSearch(e.target.value)}
+          onChange={(e) => setSearch(e.target.value)}
           placeholder="Buscar categorías..."
         />
         {search && (
-          <button className={styles.clearBtn} onClick={() => setSearch('')}><X size={16} /></button>
+          <button className={styles.clearBtn} onClick={() => setSearch('')}>
+            <X size={16} />
+          </button>
         )}
       </div>
 
@@ -184,13 +210,19 @@ export function CategoriesPage() {
           </thead>
           <tbody>
             {loading ? (
-              <tr><td colSpan={4} className={styles.emptyCell}>Cargando...</td></tr>
+              <tr>
+                <td colSpan={4} className={styles.emptyCell}>
+                  Cargando...
+                </td>
+              </tr>
             ) : filtered.length === 0 ? (
-              <tr><td colSpan={4} className={styles.emptyCell}>
-                {search ? 'Sin resultados' : 'No hay categorías. Crea la primera.'}
-              </td></tr>
+              <tr>
+                <td colSpan={4} className={styles.emptyCell}>
+                  {search ? 'Sin resultados' : 'No hay categorías. Crea la primera.'}
+                </td>
+              </tr>
             ) : (
-              filtered.map(c => (
+              filtered.map((c) => (
                 <tr key={c.id}>
                   <td>
                     <div className={styles.cellName}>
@@ -202,10 +234,21 @@ export function CategoriesPage() {
                   <td>{new Date(c.createdAt).toLocaleDateString()}</td>
                   <td className={styles.textCenter}>
                     <div className={styles.actions}>
-                      <button className={styles.actionBtn} onClick={() => { setShowEdit(c); setName(c.name); }} title="Editar">
+                      <button
+                        className={styles.actionBtn}
+                        onClick={() => {
+                          setShowEdit(c);
+                          setName(c.name);
+                        }}
+                        title="Editar"
+                      >
                         <Pencil size={14} />
                       </button>
-                      <button className={styles.actionBtn} onClick={() => setShowDelete(c)} title="Eliminar">
+                      <button
+                        className={styles.actionBtn}
+                        onClick={() => setShowDelete(c)}
+                        title="Eliminar"
+                      >
                         <Trash2 size={14} />
                       </button>
                     </div>

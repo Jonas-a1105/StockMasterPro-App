@@ -1,7 +1,16 @@
 import { useState, useEffect } from 'react';
 import { useExchangeRate } from '@contexts/ExchangeRateContext';
 import { X } from 'lucide-react';
-import { XAxis, YAxis, CartesianGrid, ResponsiveContainer, Tooltip, Area, AreaChart, Legend } from 'recharts';
+import {
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  ResponsiveContainer,
+  Tooltip,
+  Area,
+  AreaChart,
+  Legend,
+} from 'recharts';
 import styles from './AnalyticsModal.module.css';
 import { LottieIcon } from '@shared/ui/LottieIcon';
 import creditCardData from '@assets/lottie/credit-card.json';
@@ -9,7 +18,10 @@ import analyticsData from '@assets/lottie/analytics.json';
 import warningData from '@assets/lottie/warning.json';
 import trendingUpData from '@assets/lottie/trending-up.json';
 
-const formatterVES = new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const formatterVES = new Intl.NumberFormat('de-DE', {
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+});
 
 const assets = [
   { name: 'Inventarios Generales', usd: 15000 },
@@ -36,19 +48,24 @@ export function AnalyticsModal({ onClose }: { onClose: () => void }) {
   }, [onClose]);
 
   const chartData = [
-    { label: '28/06', tasa: 651.20, techo: 654.00, suelo: 648.00 },
-    { label: '29/06', tasa: 650.60, techo: 653.50, suelo: 647.20 },
-    { label: '30/06', tasa: 649.80, techo: 652.80, suelo: 646.00 },
-    { label: '01/07', tasa: 655.10, techo: 658.00, suelo: 651.00 },
-    { label: '02/07', tasa: 650.20, techo: 654.00, suelo: 646.50 },
-    { label: '03/07 (Actual)', tasa: currentRate, techo: +(currentRate * 1.013).toFixed(2), suelo: +(currentRate * 0.987).toFixed(2) },
+    { label: '28/06', tasa: 651.2, techo: 654.0, suelo: 648.0 },
+    { label: '29/06', tasa: 650.6, techo: 653.5, suelo: 647.2 },
+    { label: '30/06', tasa: 649.8, techo: 652.8, suelo: 646.0 },
+    { label: '01/07', tasa: 655.1, techo: 658.0, suelo: 651.0 },
+    { label: '02/07', tasa: 650.2, techo: 654.0, suelo: 646.5 },
+    {
+      label: '03/07 (Actual)',
+      tasa: currentRate,
+      techo: +(currentRate * 1.013).toFixed(2),
+      suelo: +(currentRate * 0.987).toFixed(2),
+    },
   ];
 
   const totalConverted = usdInput * currentRate;
 
   return (
     <div className={styles.overlay} onClick={onClose}>
-      <div className={styles.modal} onClick={e => e.stopPropagation()}>
+      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
         {/* Header */}
         <div className={styles.header}>
           <div>
@@ -57,7 +74,8 @@ export function AnalyticsModal({ onClose }: { onClose: () => void }) {
               <span className={styles.headerBadge}>BCV API LIVE</span>
             </div>
             <p className={styles.headerSubtitle}>
-              Auditoría cambiaria, evaluación de volatilidad y estimaciones de riesgo de devaluación para el ejercicio 2026.
+              Auditoría cambiaria, evaluación de volatilidad y estimaciones de riesgo de devaluación
+              para el ejercicio 2026.
             </p>
           </div>
           <div className={styles.headerControls}>
@@ -67,7 +85,7 @@ export function AnalyticsModal({ onClose }: { onClose: () => void }) {
                 type="number"
                 className={styles.rateInput}
                 value={currentRate}
-                onChange={e => setCurrentRate(parseFloat(e.target.value) || 0)}
+                onChange={(e) => setCurrentRate(parseFloat(e.target.value) || 0)}
                 step="0.01"
               />
               <span className={styles.rateInputUnit}>VES</span>
@@ -95,7 +113,9 @@ export function AnalyticsModal({ onClose }: { onClose: () => void }) {
                 <span className={styles.kpiValuePrefix}>Bs.</span>
                 <span>{formatterVES.format(currentRate)}</span>
               </div>
-              <span className={styles.kpiChange}>▲ +0.24% <span className={styles.kpiChangeSub}>Variación diaria</span></span>
+              <span className={styles.kpiChange}>
+                ▲ +0.24% <span className={styles.kpiChangeSub}>Variación diaria</span>
+              </span>
             </div>
           </div>
           <div
@@ -131,7 +151,9 @@ export function AnalyticsModal({ onClose }: { onClose: () => void }) {
                 <span className={styles.kpiValueNum}>3.15%</span>
                 <span className={styles.kpiValueTag}>Vs Paralelo</span>
               </div>
-              <span className={styles.kpiSub}>Diferencial operativo para asignación de precios.</span>
+              <span className={styles.kpiSub}>
+                Diferencial operativo para asignación de precios.
+              </span>
             </div>
           </div>
           <div
@@ -157,23 +179,70 @@ export function AnalyticsModal({ onClose }: { onClose: () => void }) {
         <div className={styles.row2}>
           <div className={styles.chartPanel}>
             <div className={styles.chartPanelHeader}>
-              <span className={styles.chartPanelTitle}>CURVA DE TENDENCIA Y INTERVALOS DE ESTIMACIÓN</span>
-              <p className={styles.chartPanelSub}>Historial acumulado y bandas estadísticas predictivas (Techo/Suelo) para los próximos periodos.</p>
+              <span className={styles.chartPanelTitle}>
+                CURVA DE TENDENCIA Y INTERVALOS DE ESTIMACIÓN
+              </span>
+              <p className={styles.chartPanelSub}>
+                Historial acumulado y bandas estadísticas predictivas (Techo/Suelo) para los
+                próximos periodos.
+              </p>
             </div>
             <div className={styles.chartBox}>
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={chartData}>
                   <CartesianGrid stroke="#222" strokeDasharray="2 2" />
-                  <XAxis dataKey="label" tick={{ fill: '#666', fontSize: 10 }} axisLine={false} tickLine={false} />
-                  <YAxis domain={['dataMin - 2', 'dataMax + 2']} tick={{ fill: '#666', fontSize: 10 }} axisLine={false} tickLine={false} tickFormatter={(v: number) => `Bs. ${v.toFixed(1)}`} />
+                  <XAxis
+                    dataKey="label"
+                    tick={{ fill: '#666', fontSize: 10 }}
+                    axisLine={false}
+                    tickLine={false}
+                  />
+                  <YAxis
+                    domain={['dataMin - 2', 'dataMax + 2']}
+                    tick={{ fill: '#666', fontSize: 10 }}
+                    axisLine={false}
+                    tickLine={false}
+                    tickFormatter={(v: number) => `Bs. ${v.toFixed(1)}`}
+                  />
                   <Tooltip
-                    contentStyle={{ backgroundColor: '#1c1c1c', border: '1px solid #333', borderRadius: 0, fontSize: 12 }}
+                    contentStyle={{
+                      backgroundColor: '#1c1c1c',
+                      border: '1px solid #333',
+                      borderRadius: 0,
+                      fontSize: 12,
+                    }}
                     labelStyle={{ color: '#aaa' }}
                   />
                   <Legend wrapperStyle={{ fontSize: 10, color: '#aaa' }} />
-                  <Area type="monotone" dataKey="suelo" stroke="#3b82f6" strokeWidth={1.2} strokeDasharray="4 4" fill="transparent" dot={false} name="Suelo Estimado (Soporte)" />
-                  <Area type="monotone" dataKey="tasa" stroke="#10b981" strokeWidth={2.5} fill="rgba(16, 185, 129, 0.03)" dot={{ fill: '#fff', r: 3 }} name="Tasa Efectiva BCV" />
-                  <Area type="monotone" dataKey="techo" stroke="#ef4444" strokeWidth={1.2} strokeDasharray="4 4" fill="transparent" dot={false} name="Techo Estimado (Resistencia)" />
+                  <Area
+                    type="monotone"
+                    dataKey="suelo"
+                    stroke="#3b82f6"
+                    strokeWidth={1.2}
+                    strokeDasharray="4 4"
+                    fill="transparent"
+                    dot={false}
+                    name="Suelo Estimado (Soporte)"
+                  />
+                  <Area
+                    type="monotone"
+                    dataKey="tasa"
+                    stroke="#10b981"
+                    strokeWidth={2.5}
+                    fill="rgba(16, 185, 129, 0.03)"
+                    dot={{ fill: '#fff', r: 3 }}
+                    name="Tasa Efectiva BCV"
+                  />
+                  <Area
+                    type="monotone"
+                    dataKey="techo"
+                    stroke="#ef4444"
+                    strokeWidth={1.2}
+                    strokeDasharray="4 4"
+                    fill="transparent"
+                    dot={false}
+                    name="Techo Estimado (Resistencia)"
+                  />
                 </AreaChart>
               </ResponsiveContainer>
             </div>
@@ -188,13 +257,17 @@ export function AnalyticsModal({ onClose }: { onClose: () => void }) {
                   type="number"
                   className={styles.converterInput}
                   value={usdInput}
-                  onChange={e => setUsdInput(parseFloat(e.target.value) || 0)}
+                  onChange={(e) => setUsdInput(parseFloat(e.target.value) || 0)}
                 />
               </div>
               <div className={styles.converterDivider} />
               <div>
-                <label className={styles.converterLabelResult}>Contravalor Cambiario (VES Bs.)</label>
-                <div className={styles.converterResult}>{formatterVES.format(totalConverted)} Bs.</div>
+                <label className={styles.converterLabelResult}>
+                  Contravalor Cambiario (VES Bs.)
+                </label>
+                <div className={styles.converterResult}>
+                  {formatterVES.format(totalConverted)} Bs.
+                </div>
               </div>
             </div>
 
@@ -202,11 +275,15 @@ export function AnalyticsModal({ onClose }: { onClose: () => void }) {
               <span className={styles.arbitrageTitle}>Márgenes de Resguardo POS</span>
               <div className={styles.arbitrageRow}>
                 <span>Precio de Compra (+2%):</span>
-                <span className={styles.arbitrageValue}>Bs. {formatterVES.format(currentRate * 1.02)}</span>
+                <span className={styles.arbitrageValue}>
+                  Bs. {formatterVES.format(currentRate * 1.02)}
+                </span>
               </div>
               <div className={styles.arbitrageRow}>
                 <span>Precio de Protección (+5%):</span>
-                <span className={styles.arbitrageValue}>Bs. {formatterVES.format(currentRate * 1.05)}</span>
+                <span className={styles.arbitrageValue}>
+                  Bs. {formatterVES.format(currentRate * 1.05)}
+                </span>
               </div>
             </div>
           </div>
@@ -216,11 +293,15 @@ export function AnalyticsModal({ onClose }: { onClose: () => void }) {
         <div className={styles.row3}>
           <div className={styles.projectionPanel}>
             <div className={styles.projectionTitle}>INDICADOR DE PROYECCIÓN DE TENDENCIA</div>
-            <p className={styles.projectionSub}>Cálculo de probabilidad matemática para el próximo cierre de tasas.</p>
+            <p className={styles.projectionSub}>
+              Cálculo de probabilidad matemática para el próximo cierre de tasas.
+            </p>
             <div className={styles.projectionBars}>
               <div className={styles.projectionBarGroup}>
                 <div className={styles.projectionBarLabel}>
-                  <span className={styles.projectionBarText}>Probabilidad de Alza (Riesgo Almofada)</span>
+                  <span className={styles.projectionBarText}>
+                    Probabilidad de Alza (Riesgo Almofada)
+                  </span>
                   <span className={styles.projectionBarPctRed}>74.2%</span>
                 </div>
                 <div className={styles.projectionBarTrack}>
@@ -229,7 +310,9 @@ export function AnalyticsModal({ onClose }: { onClose: () => void }) {
               </div>
               <div className={styles.projectionBarGroup}>
                 <div className={styles.projectionBarLabel}>
-                  <span className={styles.projectionBarText}>Probabilidad de Estabilidad o Baja</span>
+                  <span className={styles.projectionBarText}>
+                    Probabilidad de Estabilidad o Baja
+                  </span>
                   <span className={styles.projectionBarPctGreen}>25.8%</span>
                 </div>
                 <div className={styles.projectionBarTrack}>
@@ -240,18 +323,25 @@ export function AnalyticsModal({ onClose }: { onClose: () => void }) {
             <div className={styles.supportResistance}>
               <div className={styles.supportCard}>
                 <span className={styles.supportLabel}>Resistencia Techo (R1)</span>
-                <span className={styles.supportValueRed}>Bs. {formatterVES.format(currentRate * 1.013)}</span>
+                <span className={styles.supportValueRed}>
+                  Bs. {formatterVES.format(currentRate * 1.013)}
+                </span>
               </div>
               <div className={styles.supportCard}>
                 <span className={styles.supportLabel}>Soporte Suelo (S1)</span>
-                <span className={styles.supportValueGreen}>Bs. {formatterVES.format(currentRate * 0.987)}</span>
+                <span className={styles.supportValueGreen}>
+                  Bs. {formatterVES.format(currentRate * 0.987)}
+                </span>
               </div>
             </div>
           </div>
 
           <div className={styles.indexPanel}>
             <div className={styles.indexTitle}>VALORACIÓN PATRIMONIAL INDEXADA</div>
-            <p className={styles.indexSub}>Revaluación patrimonial automática de activos circulantes basada en la tasa de cambio simulada.</p>
+            <p className={styles.indexSub}>
+              Revaluación patrimonial automática de activos circulantes basada en la tasa de cambio
+              simulada.
+            </p>
             <div className={styles.indexTable}>
               <div className={styles.indexTableHeader}>
                 <span className={styles.indexColAsset}>Activo Financiero</span>
@@ -259,14 +349,18 @@ export function AnalyticsModal({ onClose }: { onClose: () => void }) {
                 <span className={styles.indexColVesInit}>Valor Inicial (VES)</span>
                 <span className={styles.indexColVesReval}>Valor Revaluado (VES)</span>
               </div>
-              {assets.map(a => {
+              {assets.map((a) => {
                 const initialVes = a.usd * currentRate;
                 return (
                   <div key={a.name} className={styles.indexTableRow}>
                     <span className={styles.indexColAsset}>{a.name}</span>
                     <span className={styles.indexColUsd}>$ {formatterVES.format(a.usd)}</span>
-                    <span className={styles.indexColVesInit}>Bs. {formatterVES.format(initialVes)}</span>
-                    <span className={styles.indexColVesReval}>Bs. {formatterVES.format(initialVes)}</span>
+                    <span className={styles.indexColVesInit}>
+                      Bs. {formatterVES.format(initialVes)}
+                    </span>
+                    <span className={styles.indexColVesReval}>
+                      Bs. {formatterVES.format(initialVes)}
+                    </span>
                   </div>
                 );
               })}

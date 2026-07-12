@@ -30,7 +30,8 @@ export function useCreateCustomer() {
 export function useUpdateCustomer() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, data }: { id: string; data: any }) => api.patch<any>(`/customers/${id}`, data),
+    mutationFn: ({ id, data }: { id: string; data: any }) =>
+      api.patch<any>(`/customers/${id}`, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.customers.all });
     },

@@ -12,10 +12,10 @@
   width: 100%;
   text-align: center;
   padding: 40px 32px;
-  background: var(--bg-card, white);
-  border: 1px solid var(--border-color, #eee);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: var(--border-radius-xl);
-  box-shadow: 0 4px 24px rgb(0,0,0,0.08);
+  box-shadow: 0 4px 24px rgb(0, 0, 0, 0.08);
 }
 
 .iconWrapper {
@@ -23,8 +23,8 @@
   width: 90px;
   height: 90px;
   border-radius: 50%;
-  background: var(--color-primary, #f05a28);
-  background: linear-gradient(135deg, var(--color-primary, #f05a28) 0%, #ea580c 100%);
+  background: var(--color-primary);
+  background: linear-gradient(135deg, var(--color-primary) 0%, #ea580c 100%);
   align-items: center;
   justify-content: center;
   margin: 0 auto 24px;
@@ -35,7 +35,14 @@
   animation: spin 1s linear infinite;
 }
 
-@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
 
 .title {
   font-size: var(--font-size-3xl);
@@ -46,7 +53,7 @@
 
 .message {
   font-size: var(--font-size-md-plus);
-  color: var(--text-muted, #888);
+  color: var(--color-text-muted);
   margin: 0 0 24px;
   line-height: 1.5;
 }
@@ -91,23 +98,25 @@
   padding: 14px 28px;
   border: none;
   border-radius: var(--border-radius-lg);
-  background: var(--color-primary, #f05a28);
+  background: var(--color-primary);
   color: white;
   font-size: var(--font-size-md-plus);
   font-weight: var(--font-weight-semibold);
   cursor: pointer;
   transition: filter 0.2s;
 }
-.btnPrimary:hover { filter: brightness(1.1); }
+.btnPrimary:hover {
+  filter: brightness(1.1);
+}
 
 .btnSecondary {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   padding: 14px 28px;
-  border: 1px solid var(--border-color, #ddd);
+  border: 1px solid var(--color-border);
   border-radius: var(--border-radius-lg);
-  background: var(--bg-card, white);
+  background: var(--color-surface);
   color: var(--text-dark, #333);
   font-size: var(--font-size-md-plus);
   font-weight: var(--font-weight-semibold);
@@ -115,5 +124,5 @@
   transition: all 0.2s;
 }
 .btnSecondary:hover {
-  background: var(--bg-hover, #f0f0f0);
+  background: var(--color-bg-hover);
 }

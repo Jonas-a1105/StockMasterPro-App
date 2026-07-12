@@ -1,9 +1,18 @@
-import { Inject, Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import {
   InventoryCountRepository,
   INVENTORY_COUNT_REPOSITORY,
 } from '../ports/inventory-count.repository.interface';
-import { InventoryCount, InventoryCountNotFoundException, InventoryCountInvalidStateException } from '@modules/inventory-counts';
+import {
+  InventoryCount,
+  InventoryCountNotFoundException,
+  InventoryCountInvalidStateException,
+} from '@modules/inventory-counts';
 
 interface UpdateCountItemInput {
   countId: string;
@@ -25,7 +34,9 @@ export class UpdateInventoryCountItemUseCase {
     if (!count) throw new NotFoundException('Conteo no encontrado');
 
     if (!count.canEdit()) {
-      throw new BadRequestException('No se puede editar un conteo en estado ' + count.status);
+      throw new BadRequestException(
+        'No se puede editar un conteo en estado ' + count.status,
+      );
     }
 
     const item = await this.countRepo.getItem(input.itemId, input.tenantId);

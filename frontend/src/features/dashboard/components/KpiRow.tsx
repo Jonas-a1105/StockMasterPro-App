@@ -2,12 +2,16 @@ import { LottieIcon } from '@shared/ui/LottieIcon';
 import { useState } from 'react';
 import styles from '../pages/DashboardPage.module.css';
 
-export function KpiRow({ kpis }: { kpis: { key: string; cls: string; icon: any; title: string; value: any }[] }) {
+export function KpiRow({
+  kpis,
+}: {
+  kpis: { key: string; cls: string; icon: any; title: string; value: any }[];
+}) {
   const [hoveredKpi, setHoveredKpi] = useState<string | null>(null);
 
   return (
     <div className={styles.kpiContainer} onMouseLeave={() => setHoveredKpi(null)}>
-      {kpis.map(k => (
+      {kpis.map((k) => (
         <div
           key={k.key}
           className={`${styles.kpiCard} ${k.cls}`}

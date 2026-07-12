@@ -1,11 +1,39 @@
 import { useState, useEffect, useMemo } from 'react';
 import {
-  ResponsiveContainer, BarChart, CartesianGrid, XAxis, YAxis, Tooltip, Bar,
-  LineChart, Legend, Line, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis,
-  Radar, ComposedChart, ScatterChart, Scatter, Cell, PieChart, Pie,
-  AreaChart, Area
+  ResponsiveContainer,
+  BarChart,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Bar,
+  LineChart,
+  Legend,
+  Line,
+  RadarChart,
+  PolarGrid,
+  PolarAngleAxis,
+  PolarRadiusAxis,
+  Radar,
+  ComposedChart,
+  ScatterChart,
+  Scatter,
+  Cell,
+  PieChart,
+  Pie,
+  AreaChart,
+  Area,
 } from 'recharts';
-import { Activity, DollarSign, TrendingUp, AlertTriangle, BarChart3, Package, ShoppingCart, Download } from 'lucide-react';
+import {
+  Activity,
+  DollarSign,
+  TrendingUp,
+  AlertTriangle,
+  BarChart3,
+  Package,
+  ShoppingCart,
+  Download,
+} from 'lucide-react';
 import { api } from '@shared/lib/http/client';
 import { LoadingDots } from '@shared/ui/LoadingDots';
 import { SkeletonReports } from '@shared/ui/Skeleton';
@@ -21,9 +49,13 @@ import tableStyles from '@shared/ui/TableList.module.css';
 export const COLORS = ['#ea580c', '#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899'];
 
 export const CHART_PROPS = {
-  contentStyle: { backgroundColor: 'var(--bg-card, #1e1e1e)', borderColor: 'var(--border-color, #2d2d2d)', borderRadius: '6px' },
+  contentStyle: {
+    backgroundColor: 'var(--bg-card, #1e1e1e)',
+    borderColor: 'var(--border-color, #2d2d2d)',
+    borderRadius: '6px',
+  },
   itemStyle: { fontSize: '12px', color: 'var(--text-main)' },
-  labelStyle: { fontSize: '11px', fontWeight: 'bold', color: 'var(--text-muted)' }
+  labelStyle: { fontSize: '11px', fontWeight: 'bold', color: 'var(--text-muted)' },
 };
 
 export const TAB_ITEMS = [
@@ -31,12 +63,12 @@ export const TAB_ITEMS = [
   { key: 'finanzas', label: 'Finanzas', icon: <DollarSign size={16} /> },
   { key: 'logistica', label: 'Logística', icon: <Package size={16} /> },
   { key: 'operaciones', label: 'Operaciones', icon: <ShoppingCart size={16} /> },
-  { key: 'analitica', label: 'Analítica', icon: <TrendingUp size={16} /> }
+  { key: 'analitica', label: 'Analítica', icon: <TrendingUp size={16} /> },
 ];
 
 function groupSalesByDate(sales: any[], days = 30) {
   const map: Record<string, number> = {};
-  sales.forEach(s => {
+  sales.forEach((s) => {
     const date = s.createdAt?.split('T')[0];
     if (date) map[date] = (map[date] || 0) + s.total;
   });
@@ -48,7 +80,7 @@ function groupSalesByDate(sales: any[], days = 30) {
 
 function getPaymentMethodData(sales: any[]) {
   const map: Record<string, number> = {};
-  sales.forEach(s => {
+  sales.forEach((s) => {
     const method = s.paymentMethod || 'unknown';
     map[method] = (map[method] || 0) + s.total;
   });
@@ -57,27 +89,29 @@ function getPaymentMethodData(sales: any[]) {
       name: name.charAt(0).toUpperCase() + name.slice(1),
       value: Math.round(value * 100) / 100,
     }))
-    .filter(d => d.value > 0);
+    .filter((d) => d.value > 0);
 }
 
 function getTopProducts(sales: any[], products: any[]) {
   const map: Record<string, { name: string; qty: number; total: number }> = {};
-  sales.forEach(s => {
+  sales.forEach((s) => {
     (s.items || []).forEach((item: any) => {
       const key = item.productId;
-      const prod = products.find(p => p.id === key);
+      const prod = products.find((p) => p.id === key);
       const label = prod?.name || item.productName || 'Producto Eliminado';
       if (!map[key]) map[key] = { name: label, qty: 0, total: 0 };
       map[key].qty += item.quantity;
       map[key].total += item.subtotal;
     });
   });
-  return Object.values(map).sort((a, b) => b.qty - a.qty).slice(0, 10);
+  return Object.values(map)
+    .sort((a, b) => b.qty - a.qty)
+    .slice(0, 10);
 }
 
 function getMonthlyProfit(sales: any[]) {
   const map: Record<string, { revenue: number; cost: number }> = {};
-  sales.forEach(s => {
+  sales.forEach((s) => {
     const date = s.createdAt?.split('T')[0];
     if (!date) return;
     const month = date.slice(0, 7);
@@ -87,10 +121,25 @@ function getMonthlyProfit(sales: any[]) {
       map[month].cost += (i.cost || 0) * i.quantity;
     });
   });
-  const monthKeys = ['01','02','03','04','05','06','07','08','09','10','11','12'];
-  const monthNames: Record<string, string> = { '01': 'Ene','02': 'Feb','03': 'Mar','04': 'Abr','05': 'May','06': 'Jun','07': 'Jul','08': 'Ago','09': 'Sep','10': 'Oct','11': 'Nov','12': 'Dic' };
-  return monthKeys.map(key => {
-    const d = map[`2024-${key}`] || map[`2025-${key}`] || map[`2026-${key}`] || { revenue: 0, cost: 0 };
+  const monthKeys = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
+  const monthNames: Record<string, string> = {
+    '01': 'Ene',
+    '02': 'Feb',
+    '03': 'Mar',
+    '04': 'Abr',
+    '05': 'May',
+    '06': 'Jun',
+    '07': 'Jul',
+    '08': 'Ago',
+    '09': 'Sep',
+    '10': 'Oct',
+    '11': 'Nov',
+    '12': 'Dic',
+  };
+  return monthKeys.map((key) => {
+    const d = map[`2024-${key}`] ||
+      map[`2025-${key}`] ||
+      map[`2026-${key}`] || { revenue: 0, cost: 0 };
     const profit = Math.round((d.revenue - d.cost) * 100) / 100;
     return {
       month: monthNames[key],
@@ -124,14 +173,14 @@ export const demoExpenses = [
 
 export const demoDeviation = [
   { volume: 10, rate: 652.97, group: 'Cobertura Óptima' },
-  { volume: 25, rate: 653.40, group: 'Cobertura Óptima' },
-  { volume: 40, rate: 652.80, group: 'Cobertura Óptima' },
-  { volume: 15, rate: 664.20, group: 'Pérdida por Spread' },
-  { volume: 50, rate: 668.00, group: 'Pérdida por Spread' },
+  { volume: 25, rate: 653.4, group: 'Cobertura Óptima' },
+  { volume: 40, rate: 652.8, group: 'Cobertura Óptima' },
+  { volume: 15, rate: 664.2, group: 'Pérdida por Spread' },
+  { volume: 50, rate: 668.0, group: 'Pérdida por Spread' },
 ];
 
-export const demoDeviationOptimal = demoDeviation.filter(d => d.group === 'Cobertura Óptima');
-export const demoDeviationLoss = demoDeviation.filter(d => d.group === 'Pérdida por Spread');
+export const demoDeviationOptimal = demoDeviation.filter((d) => d.group === 'Cobertura Óptima');
+export const demoDeviationLoss = demoDeviation.filter((d) => d.group === 'Pérdida por Spread');
 
 export const demoBubble = [
   { x: 15, y: 2, z: 120, name: 'Cebolla', group: 'Clase A' },
@@ -225,7 +274,13 @@ export const renderTooltip = (props: any) => {
     <div className={`${styles.tooltipBox}`}>
       <div className={`${styles.tooltipLabel}`}>{label}</div>
       {payload.map((p: any, i: number) => (
-        <div key={i} className={`${styles.tooltipValue}`} style={{ '--tooltip-color': p.color } as React.CSSProperties}>{p.name}: {typeof p.value === 'number' ? formatUsd(p.value) : p.value}</div>
+        <div
+          key={i}
+          className={`${styles.tooltipValue}`}
+          style={{ '--tooltip-color': p.color } as React.CSSProperties}
+        >
+          {p.name}: {typeof p.value === 'number' ? formatUsd(p.value) : p.value}
+        </div>
       ))}
     </div>
   );
@@ -242,7 +297,7 @@ export function ReportsPage() {
   const paymentData = useMemo(() => getPaymentMethodData(sales), [sales]);
   const topProducts = useMemo(() => getTopProducts(sales, products), [sales, products]);
   const monthlyProfit = useMemo(() => getMonthlyProfit(sales), [sales]);
-  const lowStockProducts = useMemo(() => products.filter(p => p.stock <= p.minStock), [products]);
+  const lowStockProducts = useMemo(() => products.filter((p) => p.stock <= p.minStock), [products]);
 
   const profitData = monthlyProfit.length >= 3 ? monthlyProfit : demoFinancialCore;
 
@@ -250,21 +305,31 @@ export function ReportsPage() {
     const totalRevenue = profitData.reduce((s, m) => s + m.revenue, 0);
     const totalCost = profitData.reduce((s, m) => s + m.cost, 0);
     const totalProfit = profitData.reduce((s, m) => s + m.profit, 0);
-    return [...profitData, { month: 'TOTAL', revenue: totalRevenue, cost: totalCost, profit: totalProfit }];
+    return [
+      ...profitData,
+      { month: 'TOTAL', revenue: totalRevenue, cost: totalCost, profit: totalProfit },
+    ];
   }, [profitData]);
 
-  const profitTotals = useMemo(() => ({
-    revenue: profitData.reduce((s, m) => s + m.revenue, 0),
-    cost: profitData.reduce((s, m) => s + m.cost, 0),
-    profit: profitData.reduce((s, m) => s + m.profit, 0),
-  }), [profitData]);
-
-
+  const profitTotals = useMemo(
+    () => ({
+      revenue: profitData.reduce((s, m) => s + m.revenue, 0),
+      cost: profitData.reduce((s, m) => s + m.cost, 0),
+      profit: profitData.reduce((s, m) => s + m.profit, 0),
+    }),
+    [profitData]
+  );
 
   useEffect(() => {
     Promise.all([
-      api.getSales(500).then(setSales).catch(() => {}),
-      api.getProducts().then(setProducts).catch(() => {}),
+      api
+        .getSales(500)
+        .then(setSales)
+        .catch(() => {}),
+      api
+        .getProducts()
+        .then(setProducts)
+        .catch(() => {}),
     ]).finally(() => setLoading(false));
   }, []);
 
@@ -276,7 +341,7 @@ export function ReportsPage() {
       { header: 'Utilidad Neta', key: 'profit' },
       { header: 'Margen %', key: 'margin', type: 'number' },
     ];
-    const data = profitDataWithTotal.map(m => ({
+    const data = profitDataWithTotal.map((m) => ({
       ...m,
       margin: m.revenue > 0 ? Math.round((m.profit / m.revenue) * 10000) / 100 : 0,
     }));
@@ -303,7 +368,7 @@ export function ReportsPage() {
       { header: 'Utilidad Neta', key: 'profit' },
       { header: 'Margen %', key: 'margin' },
     ];
-    const data = profitDataWithTotal.map(m => ({
+    const data = profitDataWithTotal.map((m) => ({
       ...m,
       margin: m.revenue > 0 ? Math.round((m.profit / m.revenue) * 10000) / 100 : 0,
     }));
@@ -322,7 +387,12 @@ export function ReportsPage() {
     exportToPdf(lowStockProducts, columns, 'Reporte - Stock Bajo', 'reporte_stock_bajo');
   };
 
-  if (loading) return config.skeletonEnabled ? <SkeletonReports chartCount={6} /> : <LoadingDots text="Cargando reportes..." />;
+  if (loading)
+    return config.skeletonEnabled ? (
+      <SkeletonReports chartCount={6} />
+    ) : (
+      <LoadingDots text="Cargando reportes..." />
+    );
 
   return (
     <div className={styles.container}>
@@ -332,7 +402,9 @@ export function ReportsPage() {
         <>
           <div className={styles.grid2}>
             <div className={styles.card}>
-              <div className={styles.cardTitle}><Activity size={14} /> Ventas diarias (últimos 30 días)</div>
+              <div className={styles.cardTitle}>
+                <Activity size={14} /> Ventas diarias (últimos 30 días)
+              </div>
               <div className={styles.cardBody}>
                 {dailySalesData.length === 0 ? (
                   <p className={styles.muted}>No hay datos de ventas.</p>
@@ -341,15 +413,35 @@ export function ReportsPage() {
                     <AreaChart data={dailySalesData}>
                       <defs>
                         <linearGradient id="salesGradReports" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="var(--color-orange-red, #f05a28)" stopOpacity={0.25}/>
-                          <stop offset="95%" stopColor="var(--color-orange-red, #f05a28)" stopOpacity={0.0}/>
+                          <stop
+                            offset="5%"
+                            stopColor="var(--color-orange-red, #f05a28)"
+                            stopOpacity={0.25}
+                          />
+                          <stop
+                            offset="95%"
+                            stopColor="var(--color-orange-red, #f05a28)"
+                            stopOpacity={0.0}
+                          />
                         </linearGradient>
                       </defs>
                       <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color, #eee)" />
-                      <XAxis dataKey="date" tick={{ fontSize: 11 }} stroke="var(--text-muted, #888)" />
+                      <XAxis
+                        dataKey="date"
+                        tick={{ fontSize: 11 }}
+                        stroke="var(--text-muted, #888)"
+                      />
                       <YAxis tick={{ fontSize: 11 }} stroke="var(--text-muted, #888)" />
                       <Tooltip {...CHART_PROPS} />
-                      <Area type="monotone" dataKey="total" stroke="var(--color-orange-red, #f05a28)" strokeWidth={2} fillOpacity={1} fill="url(#salesGradReports)" dot={false} />
+                      <Area
+                        type="monotone"
+                        dataKey="total"
+                        stroke="var(--color-orange-red, #f05a28)"
+                        strokeWidth={2}
+                        fillOpacity={1}
+                        fill="url(#salesGradReports)"
+                        dot={false}
+                      />
                     </AreaChart>
                   </ResponsiveContainer>
                 )}
@@ -357,7 +449,9 @@ export function ReportsPage() {
             </div>
 
             <div className={styles.card}>
-              <div className={styles.cardTitle}><DollarSign size={14} /> Distribución por método de pago</div>
+              <div className={styles.cardTitle}>
+                <DollarSign size={14} /> Distribución por método de pago
+              </div>
               <div className={styles.cardBody}>
                 {paymentData.length === 0 ? (
                   <p className={styles.muted}>No hay datos de ventas.</p>
@@ -365,8 +459,25 @@ export function ReportsPage() {
                   <div className={styles.pieWrapper}>
                     <ResponsiveContainer width="100%" height={280}>
                       <PieChart>
-                        <Pie data={paymentData} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={60} outerRadius={90} paddingAngle={4} cornerRadius={6} label={({ name, percent }) => (percent ?? 0) > 0.01 ? `${name} ${((percent ?? 0) * 100).toFixed(0)}%` : ''}>
-                          {paymentData.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
+                        <Pie
+                          data={paymentData}
+                          dataKey="value"
+                          nameKey="name"
+                          cx="50%"
+                          cy="50%"
+                          innerRadius={60}
+                          outerRadius={90}
+                          paddingAngle={4}
+                          cornerRadius={6}
+                          label={({ name, percent }) =>
+                            (percent ?? 0) > 0.01
+                              ? `${name} ${((percent ?? 0) * 100).toFixed(0)}%`
+                              : ''
+                          }
+                        >
+                          {paymentData.map((_, i) => (
+                            <Cell key={i} fill={COLORS[i % COLORS.length]} />
+                          ))}
                         </Pie>
                         <Tooltip {...CHART_PROPS} />
                       </PieChart>
@@ -379,7 +490,9 @@ export function ReportsPage() {
 
           <div className={styles.grid2}>
             <div className={styles.card}>
-              <div className={styles.cardTitle}><TrendingUp size={14} /> Top 10 productos más vendidos</div>
+              <div className={styles.cardTitle}>
+                <TrendingUp size={14} /> Top 10 productos más vendidos
+              </div>
               <div className={styles.cardBody}>
                 {topProducts.length === 0 ? (
                   <p className={styles.muted}>No hay datos de ventas.</p>
@@ -387,8 +500,19 @@ export function ReportsPage() {
                   <ResponsiveContainer width="100%" height={300}>
                     <BarChart data={topProducts} layout="vertical">
                       <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color, #eee)" />
-                      <XAxis type="number" tick={{ fontSize: 11 }} stroke="var(--text-muted, #888)" />
-                      <YAxis dataKey="name" type="category" width={120} tick={{ fontSize: 11 }} stroke="var(--text-muted, #888)" tickFormatter={v => v.length > 16 ? v.slice(0, 14) + '...' : v} />
+                      <XAxis
+                        type="number"
+                        tick={{ fontSize: 11 }}
+                        stroke="var(--text-muted, #888)"
+                      />
+                      <YAxis
+                        dataKey="name"
+                        type="category"
+                        width={120}
+                        tick={{ fontSize: 11 }}
+                        stroke="var(--text-muted, #888)"
+                        tickFormatter={(v) => (v.length > 16 ? v.slice(0, 14) + '...' : v)}
+                      />
                       <Tooltip {...CHART_PROPS} />
                       <Bar dataKey="qty" fill="var(--color-orange, #eb8c00)" />
                     </BarChart>
@@ -397,19 +521,48 @@ export function ReportsPage() {
               </div>
             </div>
             <div className={styles.card}>
-              <div className={styles.cardTitle}><TrendingUp size={14} /> Utilidad neta - detalle mensual de rendimiento</div>
-              <div className={styles.cardSub}>Métrica corporativa del rendimiento financiero. Ingresos Brutos vs Costos de Venta vs Utilidad Neta.</div>
+              <div className={styles.cardTitle}>
+                <TrendingUp size={14} /> Utilidad neta - detalle mensual de rendimiento
+              </div>
+              <div className={styles.cardSub}>
+                Métrica corporativa del rendimiento financiero. Ingresos Brutos vs Costos de Venta
+                vs Utilidad Neta.
+              </div>
               <div className={styles.cardBody}>
                 <ResponsiveContainer width="100%" height={300}>
                   <ComposedChart data={profitDataWithTotal}>
                     <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color, #eee)" />
-                    <XAxis dataKey="month" tick={{ fontSize: 11 }} stroke="var(--text-muted, #888)" />
+                    <XAxis
+                      dataKey="month"
+                      tick={{ fontSize: 11 }}
+                      stroke="var(--text-muted, #888)"
+                    />
                     <YAxis tick={{ fontSize: 11 }} stroke="var(--text-muted, #888)" />
                     <Tooltip {...CHART_PROPS} />
-                    <Legend iconType="rect" wrapperStyle={{ fontSize: 11, color: 'var(--text-muted, #888)' }} />
-                    <Bar dataKey="revenue" fill="var(--color-blue, #3b82f6)" barSize={18} name="Ingresos Brutos" />
-                    <Bar dataKey="cost" fill="var(--list-accent-color, #f97316)" barSize={18} name="Costos de Venta" />
-                    <Line type="monotone" dataKey="profit" stroke="var(--color-success, #16a34a)" strokeWidth={2.5} name="Utilidad Neta" dot={{ r: 3, fill: 'var(--color-success, #16a34a)' }} />
+                    <Legend
+                      iconType="rect"
+                      wrapperStyle={{ fontSize: 11, color: 'var(--text-muted, #888)' }}
+                    />
+                    <Bar
+                      dataKey="revenue"
+                      fill="var(--color-blue, #3b82f6)"
+                      barSize={18}
+                      name="Ingresos Brutos"
+                    />
+                    <Bar
+                      dataKey="cost"
+                      fill="var(--list-accent-color, #f97316)"
+                      barSize={18}
+                      name="Costos de Venta"
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="profit"
+                      stroke="var(--color-success, #16a34a)"
+                      strokeWidth={2.5}
+                      name="Utilidad Neta"
+                      dot={{ r: 3, fill: 'var(--color-success, #16a34a)' }}
+                    />
                   </ComposedChart>
                 </ResponsiveContainer>
               </div>
@@ -418,11 +571,25 @@ export function ReportsPage() {
 
           <div className={styles.card}>
             <div className={styles.cardTitle}>
-            <TrendingUp size={14} /> Detalle de utilidad neta mensual
-            <button className={styles.exportBtn} onClick={handleExportNetProfit} title="Exportar a Excel"><Download size={14} /></button>
-            <button className={styles.exportBtn} onClick={handleExportNetProfitPdf} title="Exportar a PDF"><Download size={14} /></button>
-          </div>
-            <div className={styles.cardSub}>Métrica detallada del rendimiento financiero consolidado por mes.</div>
+              <TrendingUp size={14} /> Detalle de utilidad neta mensual
+              <button
+                className={styles.exportBtn}
+                onClick={handleExportNetProfit}
+                title="Exportar a Excel"
+              >
+                <Download size={14} />
+              </button>
+              <button
+                className={styles.exportBtn}
+                onClick={handleExportNetProfitPdf}
+                title="Exportar a PDF"
+              >
+                <Download size={14} />
+              </button>
+            </div>
+            <div className={styles.cardSub}>
+              Métrica detallada del rendimiento financiero consolidado por mes.
+            </div>
             <div className={`${styles.reportTableWrap} ${styles.mt16}`}>
               <table className={styles.reportTable}>
                 <thead>
@@ -433,40 +600,62 @@ export function ReportsPage() {
                     <th className={styles.textRight}>Utilidad Neta</th>
                   </tr>
                 </thead>
-<tbody>
-              {profitData.map(m => (
-                <tr key={m.month}>
-                  <td><span className={tableStyles.nameText}>{m.month}</span></td>
-                  <td className={styles.textRight}><span className={tableStyles.numberValue}>{formatUsd(m.revenue)}</span></td>
-                  <td className={styles.textRight}><span className={tableStyles.numberValue}>{formatUsd(m.cost)}</span></td>
-                  <td className={styles.textRight}>
-                    <span className={`${tableStyles.numberValue} ${m.profit >= 0 ? styles.textSuccess : styles.textDanger}`}>
-                      {formatUsd(m.profit)}
-                    </span>
-                  </td>
-                </tr>
-              ))}
-              <tr className={styles.totalRow}>
-                <td className={styles.totalCell}>Total Anual</td>
-                <td className={styles.totalCellRight}>{formatUsd(profitTotals.revenue)}</td>
-                <td className={styles.totalCellRight}>{formatUsd(profitTotals.cost)}</td>
-                <td className={styles.totalProfit}>
-                  <span className={`${styles.totalProfitValue} ${profitTotals.profit >= 0 ? styles.totalProfitPositive : styles.totalProfitNegative}`}>
-                    {formatUsd(profitTotals.profit)}
-                  </span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div className={styles.card}>
-<div className={styles.cardTitle}>
-            <AlertTriangle size={14} />
-            Productos con stock bajo
-            <button className={styles.exportBtn} onClick={handleExportLowStock} title="Exportar a Excel"><Download size={14} /></button>
-            <button className={styles.exportBtn} onClick={handleExportLowStockPdf} title="Exportar a PDF"><Download size={14} /></button>
+                <tbody>
+                  {profitData.map((m) => (
+                    <tr key={m.month}>
+                      <td>
+                        <span className={tableStyles.nameText}>{m.month}</span>
+                      </td>
+                      <td className={styles.textRight}>
+                        <span className={tableStyles.numberValue}>{formatUsd(m.revenue)}</span>
+                      </td>
+                      <td className={styles.textRight}>
+                        <span className={tableStyles.numberValue}>{formatUsd(m.cost)}</span>
+                      </td>
+                      <td className={styles.textRight}>
+                        <span
+                          className={`${tableStyles.numberValue} ${m.profit >= 0 ? styles.textSuccess : styles.textDanger}`}
+                        >
+                          {formatUsd(m.profit)}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                  <tr className={styles.totalRow}>
+                    <td className={styles.totalCell}>Total Anual</td>
+                    <td className={styles.totalCellRight}>{formatUsd(profitTotals.revenue)}</td>
+                    <td className={styles.totalCellRight}>{formatUsd(profitTotals.cost)}</td>
+                    <td className={styles.totalProfit}>
+                      <span
+                        className={`${styles.totalProfitValue} ${profitTotals.profit >= 0 ? styles.totalProfitPositive : styles.totalProfitNegative}`}
+                      >
+                        {formatUsd(profitTotals.profit)}
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
+          <div className={styles.card}>
+            <div className={styles.cardTitle}>
+              <AlertTriangle size={14} />
+              Productos con stock bajo
+              <button
+                className={styles.exportBtn}
+                onClick={handleExportLowStock}
+                title="Exportar a Excel"
+              >
+                <Download size={14} />
+              </button>
+              <button
+                className={styles.exportBtn}
+                onClick={handleExportLowStockPdf}
+                title="Exportar a PDF"
+              >
+                <Download size={14} />
+              </button>
+            </div>
             <div className={styles.cardBody}>
               {lowStockProducts.length === 0 ? (
                 <p className={styles.muted}>No hay productos con stock bajo.</p>
@@ -482,12 +671,18 @@ export function ReportsPage() {
                       </tr>
                     </thead>
                     <tbody>
-                      {lowStockProducts.map(p => (
+                      {lowStockProducts.map((p) => (
                         <tr key={p.id}>
-                          <td><span className="tableStyles.nameText">{p.name}</span></td>
-                          <td className={styles.textRight}><span className="tableStyles.numberValue">{p.stock}</span></td>
+                          <td>
+                            <span className="tableStyles.nameText">{p.name}</span>
+                          </td>
+                          <td className={styles.textRight}>
+                            <span className="tableStyles.numberValue">{p.stock}</span>
+                          </td>
                           <td className={styles.textRight}>{p.minStock}</td>
-                          <td className={styles.textCenter}><span className="tableStyles.badgeSaturated">Crítico</span></td>
+                          <td className={styles.textCenter}>
+                            <span className="tableStyles.badgeSaturated">Crítico</span>
+                          </td>
                         </tr>
                       ))}
                     </tbody>
@@ -499,7 +694,7 @@ export function ReportsPage() {
         </>
       )}
 
-{activeTab === 'finanzas' && (
+      {activeTab === 'finanzas' && (
         <div className={styles.grid2}>
           <div className={`${styles.card} ${styles.colSpanFull}`}>
             <div className={styles.cardTitle}>Curva analítica de márgenes operativos</div>
@@ -509,10 +704,30 @@ export function ReportsPage() {
                 <XAxis dataKey="month" tick={{ fontSize: 11 }} stroke="var(--text-muted, #888)" />
                 <YAxis tick={{ fontSize: 11 }} stroke="var(--text-muted, #888)" />
                 <Tooltip content={renderTooltip} />
-                <Legend iconType="rect" wrapperStyle={{ fontSize: 11, color: 'var(--text-muted, #888)' }} />
-                <Bar dataKey="revenue" fill="var(--color-blue, #3b82f6)" barSize={18} name="Ingresos Brutos" />
-                <Bar dataKey="cost" fill="var(--list-accent-color, #f97316)" barSize={18} name="Costos de Venta" />
-                <Line type="monotone" dataKey="profit" stroke="var(--color-success, #16a34a)" strokeWidth={2.5} name="Utilidad Neta" dot={{ r: 3 }} />
+                <Legend
+                  iconType="rect"
+                  wrapperStyle={{ fontSize: 11, color: 'var(--text-muted, #888)' }}
+                />
+                <Bar
+                  dataKey="revenue"
+                  fill="var(--color-blue, #3b82f6)"
+                  barSize={18}
+                  name="Ingresos Brutos"
+                />
+                <Bar
+                  dataKey="cost"
+                  fill="var(--list-accent-color, #f97316)"
+                  barSize={18}
+                  name="Costos de Venta"
+                />
+                <Line
+                  type="monotone"
+                  dataKey="profit"
+                  stroke="var(--color-success, #16a34a)"
+                  strokeWidth={2.5}
+                  name="Utilidad Neta"
+                  dot={{ r: 3 }}
+                />
               </ComposedChart>
             </ResponsiveContainer>
           </div>
@@ -523,12 +738,36 @@ export function ReportsPage() {
               <BarChart data={demoAging} layout="vertical" barSize={14}>
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color, #2d2d2d)" />
                 <XAxis type="number" tick={{ fontSize: 11 }} stroke="var(--text-muted, #888)" />
-                <YAxis dataKey="name" type="category" width={110} tick={{ fontSize: 11 }} stroke="var(--text-muted, #888)" />
+                <YAxis
+                  dataKey="name"
+                  type="category"
+                  width={110}
+                  tick={{ fontSize: 11 }}
+                  stroke="var(--text-muted, #888)"
+                />
                 <Tooltip content={renderTooltip} />
-                <Legend iconType="rect" wrapperStyle={{ fontSize: 11, color: 'var(--text-muted, #888)' }} />
-                <Bar dataKey="current" stackId="a" fill="var(--color-success, #16a34a)" name="Al Día" />
-                <Bar dataKey="days30" stackId="a" fill="var(--color-blue, #3b82f6)" name="0-30 Días" />
-                <Bar dataKey="days60" stackId="a" fill="var(--color-red, #dc2626)" name="+60 Días" />
+                <Legend
+                  iconType="rect"
+                  wrapperStyle={{ fontSize: 11, color: 'var(--text-muted, #888)' }}
+                />
+                <Bar
+                  dataKey="current"
+                  stackId="a"
+                  fill="var(--color-success, #16a34a)"
+                  name="Al Día"
+                />
+                <Bar
+                  dataKey="days30"
+                  stackId="a"
+                  fill="var(--color-blue, #3b82f6)"
+                  name="0-30 Días"
+                />
+                <Bar
+                  dataKey="days60"
+                  stackId="a"
+                  fill="var(--color-red, #dc2626)"
+                  name="+60 Días"
+                />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -541,7 +780,10 @@ export function ReportsPage() {
                 <XAxis dataKey="month" tick={{ fontSize: 11 }} stroke="var(--text-muted, #888)" />
                 <YAxis tick={{ fontSize: 11 }} stroke="var(--text-muted, #888)" />
                 <Tooltip content={renderTooltip} />
-                <Legend iconType="rect" wrapperStyle={{ fontSize: 11, color: 'var(--text-muted, #888)' }} />
+                <Legend
+                  iconType="rect"
+                  wrapperStyle={{ fontSize: 11, color: 'var(--text-muted, #888)' }}
+                />
                 <Bar dataKey="payroll" stackId="a" fill="#6366f1" name="Nómina" />
                 <Bar dataKey="logistics" stackId="a" fill="#ec4899" name="Logística" />
                 <Bar dataKey="shrinkage" stackId="a" fill="#f43f5e" name="Mermas/Ajustes" />
@@ -550,16 +792,40 @@ export function ReportsPage() {
           </div>
 
           <div className={styles.card}>
-            <div className={styles.cardTitle}>Dispersión de volatilidad cambiaria vs spread de protección</div>
+            <div className={styles.cardTitle}>
+              Dispersión de volatilidad cambiaria vs spread de protección
+            </div>
             <ResponsiveContainer width="100%" height={260}>
               <ScatterChart>
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color, #2d2d2d)" />
-                <XAxis dataKey="volume" name="Volumen Ope ($)" tick={{ fontSize: 11 }} stroke="var(--text-muted, #888)" />
-                <YAxis dataKey="rate" name="Tasa Registrada (VES)" tick={{ fontSize: 11 }} stroke="var(--text-muted, #888)" domain={[650, 670]} />
+                <XAxis
+                  dataKey="volume"
+                  name="Volumen Ope ($)"
+                  tick={{ fontSize: 11 }}
+                  stroke="var(--text-muted, #888)"
+                />
+                <YAxis
+                  dataKey="rate"
+                  name="Tasa Registrada (VES)"
+                  tick={{ fontSize: 11 }}
+                  stroke="var(--text-muted, #888)"
+                  domain={[650, 670]}
+                />
                 <Tooltip content={renderTooltip} cursor={{ strokeDasharray: '3 3' }} />
-                <Legend iconType="circle" wrapperStyle={{ fontSize: 11, color: 'var(--text-muted, #888)' }} />
-                <Scatter name="Cobertura Óptima" data={demoDeviationOptimal} fill="var(--color-success, #16a34a)" />
-                <Scatter name="Pérdida por Spread" data={demoDeviationLoss} fill="var(--color-red, #dc2626)" />
+                <Legend
+                  iconType="circle"
+                  wrapperStyle={{ fontSize: 11, color: 'var(--text-muted, #888)' }}
+                />
+                <Scatter
+                  name="Cobertura Óptima"
+                  data={demoDeviationOptimal}
+                  fill="var(--color-success, #16a34a)"
+                />
+                <Scatter
+                  name="Pérdida por Spread"
+                  data={demoDeviationLoss}
+                  fill="var(--color-red, #dc2626)"
+                />
               </ScatterChart>
             </ResponsiveContainer>
           </div>
@@ -569,17 +835,47 @@ export function ReportsPage() {
       {activeTab === 'logistica' && (
         <div className={styles.grid2}>
           <div className={`${styles.card} ${styles.colSpanFull}`}>
-            <div className={styles.cardTitle}>Matriz ABC de rotación y densidad patrimonial inmovilizada</div>
+            <div className={styles.cardTitle}>
+              Matriz ABC de rotación y densidad patrimonial inmovilizada
+            </div>
             <ResponsiveContainer width="100%" height={300}>
               <ScatterChart>
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color, #2d2d2d)" />
-                <XAxis dataKey="x" name="Unidades Físicas" tick={{ fontSize: 11 }} stroke="var(--text-muted, #888)" />
-                <YAxis dataKey="y" name="Días de Inmovilización" tick={{ fontSize: 11 }} stroke="var(--text-muted, #888)" />
+                <XAxis
+                  dataKey="x"
+                  name="Unidades Físicas"
+                  tick={{ fontSize: 11 }}
+                  stroke="var(--text-muted, #888)"
+                />
+                <YAxis
+                  dataKey="y"
+                  name="Días de Inmovilización"
+                  tick={{ fontSize: 11 }}
+                  stroke="var(--text-muted, #888)"
+                />
                 <Tooltip content={renderTooltip} cursor={{ strokeDasharray: '3 3' }} />
-                <Legend iconType="circle" wrapperStyle={{ fontSize: 11, color: 'var(--text-muted, #888)' }} />
-                <Scatter name="Clase A (Alta Rotación)" data={demoBubble.filter(d => d.group === 'Clase A')} fill="var(--color-success, #16a34a)" shape="circle" />
-                <Scatter name="Clase B (Media)" data={demoBubble.filter(d => d.group === 'Clase B')} fill="var(--color-blue, #3b82f6)" shape="circle" />
-                <Scatter name="Clase C (Productos Muertos)" data={demoBubble.filter(d => d.group === 'Clase C')} fill="var(--color-red, #dc2626)" shape="circle" />
+                <Legend
+                  iconType="circle"
+                  wrapperStyle={{ fontSize: 11, color: 'var(--text-muted, #888)' }}
+                />
+                <Scatter
+                  name="Clase A (Alta Rotación)"
+                  data={demoBubble.filter((d) => d.group === 'Clase A')}
+                  fill="var(--color-success, #16a34a)"
+                  shape="circle"
+                />
+                <Scatter
+                  name="Clase B (Media)"
+                  data={demoBubble.filter((d) => d.group === 'Clase B')}
+                  fill="var(--color-blue, #3b82f6)"
+                  shape="circle"
+                />
+                <Scatter
+                  name="Clase C (Productos Muertos)"
+                  data={demoBubble.filter((d) => d.group === 'Clase C')}
+                  fill="var(--color-red, #dc2626)"
+                  shape="circle"
+                />
               </ScatterChart>
             </ResponsiveContainer>
           </div>
@@ -589,8 +885,19 @@ export function ReportsPage() {
             <ResponsiveContainer width="100%" height={240}>
               <BarChart data={demoGantt} layout="vertical" barSize={16}>
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color, #2d2d2d)" />
-                <XAxis type="number" domain={[0, 7]} tick={{ fontSize: 11 }} stroke="var(--text-muted, #888)" />
-                <YAxis dataKey="name" type="category" width={140} tick={{ fontSize: 11 }} stroke="var(--text-muted, #888)" />
+                <XAxis
+                  type="number"
+                  domain={[0, 7]}
+                  tick={{ fontSize: 11 }}
+                  stroke="var(--text-muted, #888)"
+                />
+                <YAxis
+                  dataKey="name"
+                  type="category"
+                  width={140}
+                  tick={{ fontSize: 11 }}
+                  stroke="var(--text-muted, #888)"
+                />
                 <Tooltip content={renderTooltip} />
                 <Bar dataKey="start" fill="transparent" stackId="a" />
                 <Bar dataKey="end" fill="var(--list-accent-color, #f97316)" stackId="b" />
@@ -599,16 +906,39 @@ export function ReportsPage() {
           </div>
 
           <div className={styles.card}>
-            <div className={styles.cardTitle}>Desviación y tiempos de entrega de proveedores (lead time)</div>
+            <div className={styles.cardTitle}>
+              Desviación y tiempos de entrega de proveedores (lead time)
+            </div>
             <ResponsiveContainer width="100%" height={240}>
               <LineChart data={demoLeadTime}>
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color, #2d2d2d)" />
                 <XAxis dataKey="lot" tick={{ fontSize: 11 }} stroke="var(--text-muted, #888)" />
-                <YAxis tick={{ fontSize: 11 }} stroke="var(--text-muted, #888)" name="Días de Espera" />
+                <YAxis
+                  tick={{ fontSize: 11 }}
+                  stroke="var(--text-muted, #888)"
+                  name="Días de Espera"
+                />
                 <Tooltip content={renderTooltip} />
-                <Legend iconType="line" wrapperStyle={{ fontSize: 11, color: 'var(--text-muted, #888)' }} />
-                <Line type="monotone" dataKey="proveedor1" stroke="var(--color-blue, #3b82f6)" strokeWidth={2} name="Proveedor Cebollas S.A" dot={{ r: 3 }} />
-                <Line type="monotone" dataKey="proveedor2" stroke="var(--color-red, #dc2626)" strokeWidth={2} name="Fruver Central" dot={{ r: 3 }} />
+                <Legend
+                  iconType="line"
+                  wrapperStyle={{ fontSize: 11, color: 'var(--text-muted, #888)' }}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="proveedor1"
+                  stroke="var(--color-blue, #3b82f6)"
+                  strokeWidth={2}
+                  name="Proveedor Cebollas S.A"
+                  dot={{ r: 3 }}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="proveedor2"
+                  stroke="var(--color-red, #dc2626)"
+                  strokeWidth={2}
+                  name="Fruver Central"
+                  dot={{ r: 3 }}
+                />
               </LineChart>
             </ResponsiveContainer>
           </div>
@@ -618,29 +948,57 @@ export function ReportsPage() {
       {activeTab === 'operaciones' && (
         <div className={styles.grid2}>
           <div className={`${styles.card} ${styles.colSpanFull}`}>
-            <div className={styles.cardTitle}>Análisis cronológico de curva de tráfico y horas pico en POS</div>
+            <div className={styles.cardTitle}>
+              Análisis cronológico de curva de tráfico y horas pico en POS
+            </div>
             <ResponsiveContainer width="100%" height={280}>
               <LineChart data={demoPosHourly}>
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color, #2d2d2d)" />
                 <XAxis dataKey="hour" tick={{ fontSize: 11 }} stroke="var(--text-muted, #888)" />
                 <YAxis tick={{ fontSize: 11 }} stroke="var(--text-muted, #888)" />
                 <Tooltip content={renderTooltip} />
-                <Line type="monotone" dataKey="sales" stroke="var(--list-accent-color, #f97316)" strokeWidth={2.5} name="Facturación ($)" dot={{ r: 4, fill: 'var(--list-accent-color, #f97316)' }} fillOpacity={0.05} />
+                <Line
+                  type="monotone"
+                  dataKey="sales"
+                  stroke="var(--list-accent-color, #f97316)"
+                  strokeWidth={2.5}
+                  name="Facturación ($)"
+                  dot={{ r: 4, fill: 'var(--list-accent-color, #f97316)' }}
+                  fillOpacity={0.05}
+                />
               </LineChart>
             </ResponsiveContainer>
           </div>
 
           <div className={styles.card}>
-            <div className={styles.cardTitle}>Radar multidimensional de competencias del personal</div>
+            <div className={styles.cardTitle}>
+              Radar multidimensional de competencias del personal
+            </div>
             <ResponsiveContainer width="100%" height={300}>
               <RadarChart data={demoRadar}>
                 <PolarGrid stroke="var(--border-color, #2d2d2d)" />
-                <PolarAngleAxis dataKey="metric" tick={{ fontSize: 10, fill: 'var(--text-muted, #888)' }} />
+                <PolarAngleAxis
+                  dataKey="metric"
+                  tick={{ fontSize: 10, fill: 'var(--text-muted, #888)' }}
+                />
                 <PolarRadiusAxis angle={90} domain={[0, 100]} tick={false} axisLine={false} />
                 <Tooltip content={renderTooltip} />
-                <Legend iconType="circle" wrapperStyle={{ fontSize: 11, color: 'var(--text-muted, #888)' }} />
-                <Radar name="Carlos Pérez" dataKey="Carlos" stroke="var(--color-blue, #3b82f6)" fill="rgba(59, 130, 246, 0.04)" />
-                <Radar name="Marta Gómez" dataKey="Marta" stroke="var(--color-purple, #8b5cf6)" fill="rgba(139, 92, 246, 0.04)" />
+                <Legend
+                  iconType="circle"
+                  wrapperStyle={{ fontSize: 11, color: 'var(--text-muted, #888)' }}
+                />
+                <Radar
+                  name="Carlos Pérez"
+                  dataKey="Carlos"
+                  stroke="var(--color-blue, #3b82f6)"
+                  fill="rgba(59, 130, 246, 0.04)"
+                />
+                <Radar
+                  name="Marta Gómez"
+                  dataKey="Marta"
+                  stroke="var(--color-purple, #8b5cf6)"
+                  fill="rgba(139, 92, 246, 0.04)"
+                />
               </RadarChart>
             </ResponsiveContainer>
           </div>
@@ -651,10 +1009,18 @@ export function ReportsPage() {
               <BarChart data={demoFunnel} layout="vertical" barSize={22}>
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color, #2d2d2d)" />
                 <XAxis type="number" tick={{ fontSize: 11 }} stroke="var(--text-muted, #888)" />
-                <YAxis dataKey="name" type="category" width={160} tick={{ fontSize: 11 }} stroke="var(--text-muted, #888)" />
+                <YAxis
+                  dataKey="name"
+                  type="category"
+                  width={160}
+                  tick={{ fontSize: 11 }}
+                  stroke="var(--text-muted, #888)"
+                />
                 <Tooltip content={renderTooltip} />
                 <Bar dataKey="value" fill="var(--color-purple, #8b5cf6)" name="Volumen">
-                  {demoFunnel.map((_, i) => <Cell key={i} fill={[ '#4f46e5', '#8b5cf6', '#10b981' ][i]} />)}
+                  {demoFunnel.map((_, i) => (
+                    <Cell key={i} fill={['#4f46e5', '#8b5cf6', '#10b981'][i]} />
+                  ))}
                 </Bar>
               </BarChart>
             </ResponsiveContainer>
@@ -665,67 +1031,166 @@ export function ReportsPage() {
       {activeTab === 'analitica' && (
         <div className={styles.grid2}>
           <div className={styles.card}>
-            <div className={styles.cardTitle}>Análisis de Pareto 80/20 (best-sellers vs productos muertos)</div>
-            <div className={styles.cardSub}>Corte crítico donde el 20% de los SKUs genera el 80% del volumen de facturación.</div>
+            <div className={styles.cardTitle}>
+              Análisis de Pareto 80/20 (best-sellers vs productos muertos)
+            </div>
+            <div className={styles.cardSub}>
+              Corte crítico donde el 20% de los SKUs genera el 80% del volumen de facturación.
+            </div>
             <ResponsiveContainer width="100%" height={280}>
               <ComposedChart data={demoPareto}>
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color, #2d2d2d)" />
                 <XAxis dataKey="name" tick={{ fontSize: 10 }} stroke="var(--text-muted, #888)" />
                 <YAxis yAxisId="left" tick={{ fontSize: 11 }} stroke="var(--text-muted, #888)" />
-                <YAxis yAxisId="right" orientation="right" domain={[0, 100]} tick={{ fontSize: 11 }} stroke="var(--text-muted, #888)" />
+                <YAxis
+                  yAxisId="right"
+                  orientation="right"
+                  domain={[0, 100]}
+                  tick={{ fontSize: 11 }}
+                  stroke="var(--text-muted, #888)"
+                />
                 <Tooltip content={renderTooltip} />
-                <Legend iconType="rect" wrapperStyle={{ fontSize: 11, color: 'var(--text-muted, #888)' }} />
-                <Bar yAxisId="left" dataKey="volume" fill="var(--color-blue, #3b82f6)" barSize={16} name="Volumen Facturado ($)" />
-                <Line yAxisId="right" type="monotone" dataKey="pct" stroke="var(--color-warning, #f59e0b)" strokeWidth={2} name="Línea de Pareto Acumulada (%)" dot={{ r: 3 }} />
+                <Legend
+                  iconType="rect"
+                  wrapperStyle={{ fontSize: 11, color: 'var(--text-muted, #888)' }}
+                />
+                <Bar
+                  yAxisId="left"
+                  dataKey="volume"
+                  fill="var(--color-blue, #3b82f6)"
+                  barSize={16}
+                  name="Volumen Facturado ($)"
+                />
+                <Line
+                  yAxisId="right"
+                  type="monotone"
+                  dataKey="pct"
+                  stroke="var(--color-warning, #f59e0b)"
+                  strokeWidth={2}
+                  name="Línea de Pareto Acumulada (%)"
+                  dot={{ r: 3 }}
+                />
               </ComposedChart>
             </ResponsiveContainer>
           </div>
 
           <div className={styles.card}>
             <div className={styles.cardTitle}>Previsión de flujo de caja (cash runway)</div>
-            <div className={styles.cardSub}>Cruces cronológicos a 60 días entre promesas de cobro (CxC) y compromisos de pago (CxP).</div>
+            <div className={styles.cardSub}>
+              Cruces cronológicos a 60 días entre promesas de cobro (CxC) y compromisos de pago
+              (CxP).
+            </div>
             <ResponsiveContainer width="100%" height={280}>
               <LineChart data={demoCashRunway}>
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color, #2d2d2d)" />
                 <XAxis dataKey="week" tick={{ fontSize: 11 }} stroke="var(--text-muted, #888)" />
                 <YAxis tick={{ fontSize: 11 }} stroke="var(--text-muted, #888)" />
                 <Tooltip content={renderTooltip} />
-                <Legend iconType="line" wrapperStyle={{ fontSize: 11, color: 'var(--text-muted, #888)' }} />
-                <Line type="monotone" dataKey="cobros" stroke="var(--color-success, #16a34a)" strokeWidth={2} name="Expectativa de Cobros (CxC)" dot={{ r: 3 }} />
-                <Line type="monotone" dataKey="pagos" stroke="var(--color-red, #dc2626)" strokeWidth={2} name="Obligaciones por Pagar (CxP)" dot={{ r: 3 }} strokeDasharray="4 4" />
+                <Legend
+                  iconType="line"
+                  wrapperStyle={{ fontSize: 11, color: 'var(--text-muted, #888)' }}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="cobros"
+                  stroke="var(--color-success, #16a34a)"
+                  strokeWidth={2}
+                  name="Expectativa de Cobros (CxC)"
+                  dot={{ r: 3 }}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="pagos"
+                  stroke="var(--color-red, #dc2626)"
+                  strokeWidth={2}
+                  name="Obligaciones por Pagar (CxP)"
+                  dot={{ r: 3 }}
+                  strokeDasharray="4 4"
+                />
               </LineChart>
             </ResponsiveContainer>
           </div>
 
           <div className={styles.card}>
-            <div className={styles.cardTitle}>Mapa matricial de frecuencia de anomalías en bitácora</div>
-            <div className={styles.cardSub}>Auditoría visual de seguridad de logs críticos fuera de horario.</div>
+            <div className={styles.cardTitle}>
+              Mapa matricial de frecuencia de anomalías en bitácora
+            </div>
+            <div className={styles.cardSub}>
+              Auditoría visual de seguridad de logs críticos fuera de horario.
+            </div>
             <ResponsiveContainer width="100%" height={240}>
               <ScatterChart>
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color, #2d2d2d)" />
-                <XAxis dataKey="day" domain={[0, 8]} ticks={[1, 2, 3, 4, 5, 6, 7]} tick={{ fontSize: 11 }} stroke="var(--text-muted, #888)" name="Día de la Semana" />
-                <YAxis dataKey="hour" domain={[0, 24]} tick={{ fontSize: 11 }} stroke="var(--text-muted, #888)" name="Bloque Horario" />
+                <XAxis
+                  dataKey="day"
+                  domain={[0, 8]}
+                  ticks={[1, 2, 3, 4, 5, 6, 7]}
+                  tick={{ fontSize: 11 }}
+                  stroke="var(--text-muted, #888)"
+                  name="Día de la Semana"
+                />
+                <YAxis
+                  dataKey="hour"
+                  domain={[0, 24]}
+                  tick={{ fontSize: 11 }}
+                  stroke="var(--text-muted, #888)"
+                  name="Bloque Horario"
+                />
                 <Tooltip content={renderTooltip} cursor={{ strokeDasharray: '3 3' }} />
-                <Legend iconType="rect" wrapperStyle={{ fontSize: 11, color: 'var(--text-muted, #888)' }} />
-                <Scatter name="Operaciones Estándar" data={demoHeatmap.filter(d => d.severity === 'normal')} fill="var(--text-muted, #555)" shape="square" />
-                <Scatter name="Anomalías / Acciones Críticas" data={demoHeatmap.filter(d => d.severity === 'anomaly')} fill="var(--color-red, #dc2626)" />
+                <Legend
+                  iconType="rect"
+                  wrapperStyle={{ fontSize: 11, color: 'var(--text-muted, #888)' }}
+                />
+                <Scatter
+                  name="Operaciones Estándar"
+                  data={demoHeatmap.filter((d) => d.severity === 'normal')}
+                  fill="var(--text-muted, #555)"
+                  shape="square"
+                />
+                <Scatter
+                  name="Anomalías / Acciones Críticas"
+                  data={demoHeatmap.filter((d) => d.severity === 'anomaly')}
+                  fill="var(--color-red, #dc2626)"
+                />
               </ScatterChart>
             </ResponsiveContainer>
           </div>
 
           <div className={styles.card}>
             <div className={styles.cardTitle}>Balance de carga tributaria neta por sucursales</div>
-            <div className={styles.cardSub}>Débito Fiscal (Retenciones POS) vs Crédito Fiscal Deducible (Compras).</div>
+            <div className={styles.cardSub}>
+              Débito Fiscal (Retenciones POS) vs Crédito Fiscal Deducible (Compras).
+            </div>
             <ResponsiveContainer width="100%" height={240}>
               <ComposedChart data={demoTaxLiability}>
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color, #2d2d2d)" />
                 <XAxis dataKey="name" tick={{ fontSize: 10 }} stroke="var(--text-muted, #888)" />
                 <YAxis tick={{ fontSize: 11 }} stroke="var(--text-muted, #888)" />
                 <Tooltip content={renderTooltip} />
-                <Legend iconType="rect" wrapperStyle={{ fontSize: 11, color: 'var(--text-muted, #888)' }} />
-                <Bar dataKey="debit" fill="#4f46e5" barSize={14} name="Débito Fiscal (Ventas POS)" />
-                <Bar dataKey="credit" fill="var(--color-blue, #3b82f6)" barSize={14} name="Crédito Fiscal (Compras)" />
-                <Line type="monotone" dataKey="net" stroke="var(--color-purple, #a855f7)" strokeWidth={2} name="Saldo Neto al Fisco" dot={{ r: 4 }} />
+                <Legend
+                  iconType="rect"
+                  wrapperStyle={{ fontSize: 11, color: 'var(--text-muted, #888)' }}
+                />
+                <Bar
+                  dataKey="debit"
+                  fill="#4f46e5"
+                  barSize={14}
+                  name="Débito Fiscal (Ventas POS)"
+                />
+                <Bar
+                  dataKey="credit"
+                  fill="var(--color-blue, #3b82f6)"
+                  barSize={14}
+                  name="Crédito Fiscal (Compras)"
+                />
+                <Line
+                  type="monotone"
+                  dataKey="net"
+                  stroke="var(--color-purple, #a855f7)"
+                  strokeWidth={2}
+                  name="Saldo Neto al Fisco"
+                  dot={{ r: 4 }}
+                />
               </ComposedChart>
             </ResponsiveContainer>
           </div>

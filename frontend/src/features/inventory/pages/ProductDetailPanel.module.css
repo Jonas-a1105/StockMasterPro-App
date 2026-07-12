@@ -403,12 +403,26 @@
   position: relative;
 }
 
-.flexColumnGap16 { display: flex; flex-direction: column; gap: 16px; }
-.flex1 { flex: 1; }
-.padding20Y { padding: 20px 0; }
-.marginTop20 { margin-top: 20px; }
-.thCenter { text-align: center; }
-.thRight { text-align: right; }
+.flexColumnGap16 {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.flex1 {
+  flex: 1;
+}
+.padding20Y {
+  padding: 20px 0;
+}
+.marginTop20 {
+  margin-top: 20px;
+}
+.thCenter {
+  text-align: center;
+}
+.thRight {
+  text-align: right;
+}
 
 .loadingState {
   height: 200px;

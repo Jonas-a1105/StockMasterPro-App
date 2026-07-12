@@ -17,12 +17,12 @@ export async function syncOfflineSales() {
 
   try {
     const pending = await db.offlineSales
-      .filter(s => !s.synced && (s.retryCount || 0) < MAX_RETRIES)
+      .filter((s) => !s.synced && (s.retryCount || 0) < MAX_RETRIES)
       .toArray();
 
     if (pending.length === 0) return;
 
-    const sales = pending.map(s => ({
+    const sales = pending.map((s) => ({
       items: JSON.parse(s.items),
       paymentMethod: s.paymentMethod,
       total: s.total,
@@ -34,9 +34,9 @@ export async function syncOfflineSales() {
 
     await api.syncSales(sales);
 
-    const ids = pending.map(s => s.id!).filter(Boolean);
+    const ids = pending.map((s) => s.id!).filter(Boolean);
     await db.offlineSales.bulkUpdate(
-      ids.map(id => ({ key: id, changes: { synced: true, retryCount: 0 } })),
+      ids.map((id) => ({ key: id, changes: { synced: true, retryCount: 0 } }))
     );
 
     if (retryTimeout) {
@@ -44,9 +44,7 @@ export async function syncOfflineSales() {
       retryTimeout = null;
     }
   } catch {
-    const failed = await db.offlineSales
-      .filter(s => !s.synced)
-      .toArray();
+    const failed = await db.offlineSales.filter((s) => !s.synced).toArray();
 
     for (const sale of failed) {
       const currentRetries = (sale as any).retryCount || 0;
@@ -57,9 +55,7 @@ export async function syncOfflineSales() {
       }
     }
 
-    const minRetry = Math.min(
-      ...failed.map(s => (s as any).retryCount || 0),
-    );
+    const minRetry = Math.min(...failed.map((s) => (s as any).retryCount || 0));
 
     if (minRetry < MAX_RETRIES) {
       const nextDelay = exponentialBackoff(minRetry);

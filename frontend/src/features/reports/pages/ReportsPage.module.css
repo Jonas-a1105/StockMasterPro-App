@@ -82,7 +82,8 @@
 }
 
 @media (max-width: 1200px) {
-  .grid2, .grid3 {
+  .grid2,
+  .grid3 {
     grid-template-columns: 1fr;
   }
 }
@@ -126,7 +127,7 @@
 }
 
 .reportTable tbody tr:hover {
-  background: rgb(255,255,255,0.02);
+  background: rgb(255, 255, 255, 0.02);
 }
 
 .reportTable td {
@@ -174,10 +175,18 @@
   gap: 8px;
 }
 
-.mt4 { margin-top: 4px; }
-.mt8 { margin-top: 8px; }
-.mt16 { margin-top: 16px; }
-.mb8 { margin-bottom: 8px; }
+.mt4 {
+  margin-top: 4px;
+}
+.mt8 {
+  margin-top: 8px;
+}
+.mt16 {
+  margin-top: 16px;
+}
+.mb8 {
+  margin-bottom: 8px;
+}
 
 /* ── Grid column span ── */
 .colSpanFull {
@@ -246,7 +255,7 @@
 }
 
 .reportTable tbody tr:hover {
-  background: rgb(255,255,255,0.02);
+  background: rgb(255, 255, 255, 0.02);
 }
 
 .reportTable td {
@@ -294,10 +303,18 @@
   gap: 8px;
 }
 
-.mt4 { margin-top: 4px; }
-.mt8 { margin-top: 8px; }
-.mt16 { margin-top: 16px; }
-.mb8 { margin-bottom: 8px; }
+.mt4 {
+  margin-top: 4px;
+}
+.mt8 {
+  margin-top: 8px;
+}
+.mt16 {
+  margin-top: 16px;
+}
+.mb8 {
+  margin-bottom: 8px;
+}
 
 .flexCenterFull {
   display: flex;

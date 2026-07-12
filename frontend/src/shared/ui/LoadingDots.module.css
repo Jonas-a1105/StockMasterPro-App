@@ -14,5 +14,5 @@
 
 .text {
   font-size: var(--font-size-sm);
-  color: var(--text-muted, #888);
+  color: var(--color-text-muted);
 }

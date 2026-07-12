@@ -37,7 +37,8 @@ export const queryKeys = {
     netProfit: (params?: Record<string, unknown>) => ['reports', 'net-profit', params] as const,
     monthlyProfit: (year?: number) => ['reports', 'monthly-profit', year] as const,
     bestSellers: (params?: Record<string, unknown>) => ['reports', 'best-sellers', params] as const,
-    deadProducts: (params?: Record<string, unknown>) => ['reports', 'dead-products', params] as const,
+    deadProducts: (params?: Record<string, unknown>) =>
+      ['reports', 'dead-products', params] as const,
   },
   auth: {
     me: ['auth', 'me'] as const,

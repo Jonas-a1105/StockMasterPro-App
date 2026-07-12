@@ -37,7 +37,9 @@ export function UsersPage() {
     }
   };
 
-  useEffect(() => { loadUsers(); }, []);
+  useEffect(() => {
+    loadUsers();
+  }, []);
 
   const openEdit = (u: TenantUser) => {
     setEditingUser(u);
@@ -99,25 +101,29 @@ export function UsersPage() {
     return 'Cajero';
   };
 
-  const filteredUsers = users.filter(u =>
-    !search ||
-    u.name.toLowerCase().includes(search.toLowerCase()) ||
-    u.email.toLowerCase().includes(search.toLowerCase()) ||
-    u.role.toLowerCase().includes(search.toLowerCase())
+  const filteredUsers = users.filter(
+    (u) =>
+      !search ||
+      u.name.toLowerCase().includes(search.toLowerCase()) ||
+      u.email.toLowerCase().includes(search.toLowerCase()) ||
+      u.role.toLowerCase().includes(search.toLowerCase())
   );
 
   const totalUsers = users.length;
-  const adminCount = users.filter(u => u.role === 'admin').length;
-  const activeUsers = users.filter(u => u.isActive !== false).length;
+  const adminCount = users.filter((u) => u.role === 'admin').length;
+  const activeUsers = users.filter((u) => u.isActive !== false).length;
 
-  if (loading) return config.skeletonEnabled ? <SkeletonTablePage rows={8} cols={6} kpi={3} /> : <LoadingDots text="Cargando usuarios" />;
+  if (loading)
+    return config.skeletonEnabled ? (
+      <SkeletonTablePage rows={8} cols={6} kpi={3} />
+    ) : (
+      <LoadingDots text="Cargando usuarios" />
+    );
 
   return (
     <div className={styles.container}>
       <TabNav
-        tabs={[
-          { key: 'usuarios', label: 'Usuarios', icon: <Users size={16} /> },
-        ]}
+        tabs={[{ key: 'usuarios', label: 'Usuarios', icon: <Users size={16} /> }]}
         activeTab="usuarios"
         onTabChange={() => {}}
       />
@@ -125,14 +131,31 @@ export function UsersPage() {
       <KpiGrid
         items={[
           { icon: <Users size={18} />, value: totalUsers, label: 'Total Usuarios' },
-          { icon: <Shield size={18} />, value: adminCount, label: 'Administradores', color: '#f05a28' },
-          { icon: <UserCheck size={18} />, value: activeUsers, label: 'Activos', color: '#16a34a' },
+          {
+            icon: <Shield size={18} />,
+            value: adminCount,
+            label: 'Administradores',
+            color: 'var(--color-primary)',
+          },
+          {
+            icon: <UserCheck size={18} />,
+            value: activeUsers,
+            label: 'Activos',
+            color: 'var(--color-success)',
+          },
         ]}
       />
 
       <Toolbar
         search={{ value: search, onChange: setSearch, placeholder: 'Buscar usuarios...' }}
-        addBtn={{ label: 'Nuevo Usuario', onClick: () => { setShowModal(true); setEditingUser(null); setForm({ name: '', email: '', password: '', role: 'cajero' }); } }}
+        addBtn={{
+          label: 'Nuevo Usuario',
+          onClick: () => {
+            setShowModal(true);
+            setEditingUser(null);
+            setForm({ name: '', email: '', password: '', role: 'cajero' });
+          },
+        }}
       />
 
       <div className={tableStyles.container}>
@@ -148,13 +171,19 @@ export function UsersPage() {
             </tr>
           </thead>
           <tbody>
-            {filteredUsers.map(u => (
+            {filteredUsers.map((u) => (
               <tr key={u.id}>
-                <td><span className={tableStyles.nameText}>{u.name}</span></td>
+                <td>
+                  <span className={tableStyles.nameText}>{u.name}</span>
+                </td>
                 <td className={styles.textMuted}>{u.email}</td>
-                <td><span className={`${tableStyles.badge} ${roleBadgeClass(u.role)}`}>{roleLabel(u.role)}</span></td>
+                <td>
+                  <span className={`${tableStyles.badge} ${roleBadgeClass(u.role)}`}>
+                    {roleLabel(u.role)}
+                  </span>
+                </td>
                 <td className={styles.textCenter}>
-                  <span 
+                  <span
                     className={`${tableStyles.badge} ${u.isActive ? tableStyles.badgeActive : tableStyles.badgeInactive} ${styles.cursorPointer}`}
                     onClick={() => handleToggleActive(u)}
                     title="Click para cambiar estado"
@@ -165,11 +194,19 @@ export function UsersPage() {
                 <td>{new Date(u.createdAt).toLocaleDateString()}</td>
                 <td className={styles.textCenter}>
                   <div className={`${tableStyles.actions} ${styles.justifyCenter}`}>
-                    <button className={tableStyles.actionBtn} onClick={() => openEdit(u)} title="Editar">
+                    <button
+                      className={tableStyles.actionBtn}
+                      onClick={() => openEdit(u)}
+                      title="Editar"
+                    >
                       <Pencil size={14} />
                     </button>
                     {u.role !== 'admin' && (
-                      <button className={`${tableStyles.actionBtn} danger`} onClick={() => handleDelete(u.id)} title="Eliminar">
+                      <button
+                        className={`${tableStyles.actionBtn} danger`}
+                        onClick={() => handleDelete(u.id)}
+                        title="Eliminar"
+                      >
                         <Trash2 size={14} />
                       </button>
                     )}
@@ -179,7 +216,9 @@ export function UsersPage() {
             ))}
             {filteredUsers.length === 0 && (
               <tr>
-                <td colSpan={6} className={styles.emptyRow}>No hay usuarios registrados</td>
+                <td colSpan={6} className={styles.emptyRow}>
+                  No hay usuarios registrados
+                </td>
               </tr>
             )}
           </tbody>
@@ -187,24 +226,44 @@ export function UsersPage() {
       </div>
 
       {showModal && (
-        <Modal open={showModal} onClose={() => setShowModal(false)} title={editingUser ? 'Editar Usuario' : 'Nuevo Usuario'}>
+        <Modal
+          open={showModal}
+          onClose={() => setShowModal(false)}
+          title={editingUser ? 'Editar Usuario' : 'Nuevo Usuario'}
+        >
           <div className={styles.modalContent}>
             <form onSubmit={handleSave} className={styles.form}>
               {error && <div className={styles.error}>{error}</div>}
               <div className={styles.field}>
                 <label>Nombre</label>
-                <input value={form.name} onChange={e => setForm(p => ({ ...p, name: e.target.value }))} required placeholder="Nombre del usuario" />
+                <input
+                  value={form.name}
+                  onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))}
+                  required
+                  placeholder="Nombre del usuario"
+                />
               </div>
               <div className={styles.field}>
                 <label>Email</label>
-                <input type="email" value={form.email} onChange={e => setForm(p => ({ ...p, email: e.target.value }))} required placeholder="usuario@gmail.com" />
+                <input
+                  type="email"
+                  value={form.email}
+                  onChange={(e) => setForm((p) => ({ ...p, email: e.target.value }))}
+                  required
+                  placeholder="usuario@gmail.com"
+                />
               </div>
               <div className={styles.field}>
-                <label>Contraseña {editingUser && <span className={styles.optional}>(dejar vacío para no cambiar)</span>}</label>
+                <label>
+                  Contraseña{' '}
+                  {editingUser && (
+                    <span className={styles.optional}>(dejar vacío para no cambiar)</span>
+                  )}
+                </label>
                 <input
                   type="password"
                   value={form.password}
-                  onChange={e => setForm(p => ({ ...p, password: e.target.value }))}
+                  onChange={(e) => setForm((p) => ({ ...p, password: e.target.value }))}
                   required={!editingUser}
                   minLength={6}
                   placeholder="Mínimo 6 caracteres"
@@ -212,16 +271,25 @@ export function UsersPage() {
               </div>
               <div className={styles.field}>
                 <label>Rol</label>
-                <select value={form.role} onChange={e => setForm(p => ({ ...p, role: e.target.value }))}>
+                <select
+                  value={form.role}
+                  onChange={(e) => setForm((p) => ({ ...p, role: e.target.value }))}
+                >
                   <option value="cajero">Cajero</option>
                   <option value="gerente">Gerente</option>
                   <option value="admin">Admin</option>
                 </select>
               </div>
               <div className={styles.modalActions}>
-                <button type="button" className={styles.cancelBtn} onClick={() => setShowModal(false)}>Cancelar</button>
+                <button
+                  type="button"
+                  className={styles.cancelBtn}
+                  onClick={() => setShowModal(false)}
+                >
+                  Cancelar
+                </button>
                 <button type="submit" className={styles.saveBtn} disabled={saving}>
-                  {saving ? <ButtonLoader /> : (editingUser ? 'Actualizar' : 'Crear Usuario')}
+                  {saving ? <ButtonLoader /> : editingUser ? 'Actualizar' : 'Crear Usuario'}
                 </button>
               </div>
             </form>

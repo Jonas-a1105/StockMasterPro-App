@@ -16,7 +16,7 @@ const REFUND_METHODS = [
   { value: 'transfer', label: 'Transferencia' },
 ] as const;
 
-const methodLabel = (v: string) => REFUND_METHODS.find(m => m.value === v)?.label || v;
+const methodLabel = (v: string) => REFUND_METHODS.find((m) => m.value === v)?.label || v;
 
 export function ReturnsPage() {
   const { showToast } = useToast();
@@ -31,7 +31,9 @@ export function ReturnsPage() {
   const [refundMethod, setRefundMethod] = useState<'credit' | 'cash' | 'transfer'>('credit');
   const [saving, setSaving] = useState(false);
 
-  useEffect(() => { loadSales(); }, []);
+  useEffect(() => {
+    loadSales();
+  }, []);
 
   const loadSales = async () => {
     setLoading(true);
@@ -45,15 +47,20 @@ export function ReturnsPage() {
     }
   };
 
-  const filteredSales = useMemo(() => sales.filter(s =>
-    !search ||
-    (s.customer?.name || '').toLowerCase().includes(search.toLowerCase()) ||
-    s.id.slice(0, 8).includes(search) ||
-    (s.total || 0).toString().includes(search)
-  ), [sales, search]);
+  const filteredSales = useMemo(
+    () =>
+      sales.filter(
+        (s) =>
+          !search ||
+          (s.customer?.name || '').toLowerCase().includes(search.toLowerCase()) ||
+          s.id.slice(0, 8).includes(search) ||
+          (s.total || 0).toString().includes(search)
+      ),
+    [sales, search]
+  );
 
   const handleQtyChange = (itemId: string, delta: number) => {
-    setReturnItems(prev => {
+    setReturnItems((prev) => {
       const current = prev[itemId]?.quantity || 0;
       const maxQty = selectedSale?.items?.find((i: any) => i.id === itemId)?.quantity || 1;
       const next = Math.max(0, Math.min(maxQty, current + delta));
@@ -67,12 +74,17 @@ export function ReturnsPage() {
 
   const createReturn = async () => {
     if (!selectedSale || Object.keys(returnItems).length === 0) return;
-    if (!reason.trim()) { showToast('Ingrese un motivo', 'error'); return; }
+    if (!reason.trim()) {
+      showToast('Ingrese un motivo', 'error');
+      return;
+    }
 
-    const items = Object.entries(returnItems).map(([productId, { quantity }]) => {
-      const item = selectedSale.items.find((i: any) => i.id === productId);
-      return { productId, quantity, price: Number(item?.price || 0) };
-    }).filter(i => i.quantity > 0);
+    const items = Object.entries(returnItems)
+      .map(([productId, { quantity }]) => {
+        const item = selectedSale.items.find((i: any) => i.id === productId);
+        return { productId, quantity, price: Number(item?.price || 0) };
+      })
+      .filter((i) => i.quantity > 0);
 
     const total = items.reduce((sum, i) => sum + i.quantity * i.price, 0);
 
@@ -99,9 +111,15 @@ export function ReturnsPage() {
   };
 
   const itemTotal = (item: any) => (returnItems[item.id]?.quantity || 0) * Number(item.price || 0);
-  const returnTotal = selectedSale?.items?.reduce((sum: number, i: any) => sum + itemTotal(i), 0) || 0;
+  const returnTotal =
+    selectedSale?.items?.reduce((sum: number, i: any) => sum + itemTotal(i), 0) || 0;
 
-  if (loading) return config.skeletonEnabled ? <SkeletonTablePage rows={6} cols={6} kpi={2} /> : <LoadingDots text="Cargando ventas..." />;
+  if (loading)
+    return config.skeletonEnabled ? (
+      <SkeletonTablePage rows={6} cols={6} kpi={2} />
+    ) : (
+      <LoadingDots text="Cargando ventas..." />
+    );
 
   return (
     <div className={styles.container}>
@@ -115,22 +133,37 @@ export function ReturnsPage() {
         <input
           type="text"
           value={search}
-          onChange={e => setSearch(e.target.value)}
+          onChange={(e) => setSearch(e.target.value)}
           placeholder="Buscar venta por cliente, ID o monto..."
         />
       </div>
 
       {selectedSale ? (
         <div className={styles.returnForm}>
-          <div className={styles.backBtn} onClick={() => { setSelectedSale(null); setReturnItems({}); setReason(''); }}>
+          <div
+            className={styles.backBtn}
+            onClick={() => {
+              setSelectedSale(null);
+              setReturnItems({});
+              setReason('');
+            }}
+          >
             <ArrowLeft size={18} /> Volver a lista de ventas
           </div>
 
           <div className={styles.saleInfo}>
-            <div className={styles.saleRow}><strong>Venta:</strong> #{selectedSale.id.slice(0, 8)}</div>
-            <div className={styles.saleRow}><strong>Fecha:</strong> {new Date(selectedSale.createdAt).toLocaleDateString()}</div>
-            <div className={styles.saleRow}><strong>Cliente:</strong> {selectedSale.customer?.name || 'Consumidor final'}</div>
-            <div className={styles.saleRow}><strong>Total original:</strong> {formatPrice(selectedSale.total)}</div>
+            <div className={styles.saleRow}>
+              <strong>Venta:</strong> #{selectedSale.id.slice(0, 8)}
+            </div>
+            <div className={styles.saleRow}>
+              <strong>Fecha:</strong> {new Date(selectedSale.createdAt).toLocaleDateString()}
+            </div>
+            <div className={styles.saleRow}>
+              <strong>Cliente:</strong> {selectedSale.customer?.name || 'Consumidor final'}
+            </div>
+            <div className={styles.saleRow}>
+              <strong>Total original:</strong> {formatPrice(selectedSale.total)}
+            </div>
           </div>
 
           <div className={styles.sectionTitle}>Productos a devolver</div>
@@ -152,9 +185,16 @@ export function ReturnsPage() {
                   <span className={styles.textRight}>{formatPrice(item.price)}</span>
                   <span className={styles.textRight}>{formatPrice(itemTotal(item))}</span>
                   <div className={styles.qtyControls}>
-                    <button onClick={() => handleQtyChange(item.id, -1)} disabled={returnQty === 0}><Minus size={16} /></button>
+                    <button onClick={() => handleQtyChange(item.id, -1)} disabled={returnQty === 0}>
+                      <Minus size={16} />
+                    </button>
                     <span className={styles.qtyValue}>{returnQty}</span>
-                    <button onClick={() => handleQtyChange(item.id, 1)} disabled={returnQty >= maxQty}><Plus size={16} /></button>
+                    <button
+                      onClick={() => handleQtyChange(item.id, 1)}
+                      disabled={returnQty >= maxQty}
+                    >
+                      <Plus size={16} />
+                    </button>
                     <span className={styles.maxHint}>máx {maxQty}</span>
                   </div>
                 </div>
@@ -163,14 +203,17 @@ export function ReturnsPage() {
           </div>
 
           <div className={styles.totals}>
-            <div className={styles.totalRow}><span>Total devolución</span><strong>{formatPrice(returnTotal)}</strong></div>
+            <div className={styles.totalRow}>
+              <span>Total devolución</span>
+              <strong>{formatPrice(returnTotal)}</strong>
+            </div>
           </div>
 
           <div className={styles.formGroup}>
             <label>Motivo de la devolución</label>
             <textarea
               value={reason}
-              onChange={e => setReason(e.target.value)}
+              onChange={(e) => setReason(e.target.value)}
               rows={3}
               placeholder="Ej: Producto defectuoso, talla incorrecta, cambio de opinión..."
               required
@@ -179,16 +222,31 @@ export function ReturnsPage() {
 
           <div className={styles.formGroup}>
             <label>Método de reembolso</label>
-            <select value={refundMethod} onChange={e => setRefundMethod(e.target.value as any)}>
-              {REFUND_METHODS.map(m => <option key={m.value} value={m.value}>{m.label}</option>)}
+            <select value={refundMethod} onChange={(e) => setRefundMethod(e.target.value as any)}>
+              {REFUND_METHODS.map((m) => (
+                <option key={m.value} value={m.value}>
+                  {m.label}
+                </option>
+              ))}
             </select>
           </div>
 
           <div className={styles.actions}>
-            <button className={styles.cancelBtn} onClick={() => { setSelectedSale(null); setReturnItems({}); setReason(''); }}>
+            <button
+              className={styles.cancelBtn}
+              onClick={() => {
+                setSelectedSale(null);
+                setReturnItems({});
+                setReason('');
+              }}
+            >
               <X size={16} /> Cancelar
             </button>
-            <button className={styles.createBtn} onClick={createReturn} disabled={saving || Object.keys(returnItems).length === 0}>
+            <button
+              className={styles.createBtn}
+              onClick={createReturn}
+              disabled={saving || Object.keys(returnItems).length === 0}
+            >
               <RotateCcw size={16} /> {saving ? 'Creando...' : 'Crear devolución'}
             </button>
           </div>
@@ -209,18 +267,56 @@ export function ReturnsPage() {
                 </tr>
               </thead>
               <tbody>
-                {filteredSales.map(s => (
-                  <tr key={s.id} onClick={() => { setSelectedSale(s); setReturnItems({}); setReason(''); }}>
+                {filteredSales.map((s) => (
+                  <tr
+                    key={s.id}
+                    onClick={() => {
+                      setSelectedSale(s);
+                      setReturnItems({});
+                      setReason('');
+                    }}
+                  >
                     <td>{new Date(s.createdAt).toLocaleDateString()}</td>
-                    <td><span className={tableStyles.nameText}>{s.customer?.name || 'Consumidor final'}</span></td>
+                    <td>
+                      <span className={tableStyles.nameText}>
+                        {s.customer?.name || 'Consumidor final'}
+                      </span>
+                    </td>
                     <td>{s.items?.length || 0} art.</td>
-                    <td className={styles.textRight}><span className={tableStyles.numberValue}>{formatPrice(s.total)}</span></td>
+                    <td className={styles.textRight}>
+                      <span className={tableStyles.numberValue}>{formatPrice(s.total)}</span>
+                    </td>
                     <td>{s.paymentMethod}</td>
-                    <td className={styles.textCenter}><span className={`${tableStyles.badge} ${s.status === 'completed' ? tableStyles.badgeActive : tableStyles.badgeInactive}`}>{s.status === 'completed' ? 'Completada' : s.status}</span></td>
-                    <td className={styles.textCenter}><button className={tableStyles.actionBtn} onClick={e => { e.stopPropagation(); setSelectedSale(s); setReturnItems({}); setReason(''); }} title="Iniciar devolución"><RotateCcw size={14} /></button></td>
+                    <td className={styles.textCenter}>
+                      <span
+                        className={`${tableStyles.badge} ${s.status === 'completed' ? tableStyles.badgeActive : tableStyles.badgeInactive}`}
+                      >
+                        {s.status === 'completed' ? 'Completada' : s.status}
+                      </span>
+                    </td>
+                    <td className={styles.textCenter}>
+                      <button
+                        className={tableStyles.actionBtn}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedSale(s);
+                          setReturnItems({});
+                          setReason('');
+                        }}
+                        title="Iniciar devolución"
+                      >
+                        <RotateCcw size={14} />
+                      </button>
+                    </td>
                   </tr>
                 ))}
-                {filteredSales.length === 0 && <tr><td colSpan={7} className={styles.emptyCell}>No hay ventas registradas</td></tr>}
+                {filteredSales.length === 0 && (
+                  <tr>
+                    <td colSpan={7} className={styles.emptyCell}>
+                      No hay ventas registradas
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>

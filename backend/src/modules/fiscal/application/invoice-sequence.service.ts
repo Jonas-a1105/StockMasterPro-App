@@ -5,7 +5,10 @@ import { PrismaService } from '@shared/infrastructure/prisma/prisma.service';
 export class InvoiceSequenceService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async getOrCreateSequence(tenantId: string, series = 'FACT'): Promise<{ series: string; nextNumber: number }> {
+  async getOrCreateSequence(
+    tenantId: string,
+    series = 'FACT',
+  ): Promise<{ series: string; nextNumber: number }> {
     let seq = await this.prisma.invoiceSequence.findUnique({
       where: { tenantId_series: { tenantId, series } },
     });
@@ -21,7 +24,8 @@ export class InvoiceSequenceService {
     const seq = await this.prisma.$transaction(async (tx) => {
       const lock = await tx.$queryRawUnsafe<{ next_number: number }[]>(
         `SELECT next_number FROM invoice_sequences WHERE tenant_id = $1 AND series = $2 FOR UPDATE`,
-        tenantId, series,
+        tenantId,
+        series,
       );
 
       if (lock.length === 0) {
@@ -30,7 +34,8 @@ export class InvoiceSequenceService {
         });
         const created = await tx.$queryRawUnsafe<{ next_number: number }[]>(
           `SELECT next_number FROM invoice_sequences WHERE tenant_id = $1 AND series = $2 FOR UPDATE`,
-          tenantId, series,
+          tenantId,
+          series,
         );
         return created[0];
       }
@@ -45,7 +50,11 @@ export class InvoiceSequenceService {
     });
 
     const padded = String(number).padStart(6, '0');
-    return { invoiceNumber: `${series}-${padded}`, sequenceNumber: number, series };
+    return {
+      invoiceNumber: `${series}-${padded}`,
+      sequenceNumber: number,
+      series,
+    };
   }
 
   async resetSequence(tenantId: string, series: string, nextNumber: number) {

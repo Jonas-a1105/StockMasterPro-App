@@ -10,7 +10,7 @@ interface PremiumLockScreenProps {
 
 export function PremiumLockScreen({ sectionName, requiredPlan }: PremiumLockScreenProps) {
   const planLabel = requiredPlan === 'intermedio' ? 'Plan Intermedio' : 'Plan PRO';
-  
+
   return (
     <div className={styles.container}>
       <div className={styles.card}>
@@ -22,7 +22,8 @@ export function PremiumLockScreen({ sectionName, requiredPlan }: PremiumLockScre
           El acceso a <strong>{sectionName}</strong> no está disponible en tu plan actual.
         </p>
         <p className={styles.desc}>
-          Esta característica premium requiere contar con una suscripción activa al <strong>{planLabel}</strong> o superior.
+          Esta característica premium requiere contar con una suscripción activa al{' '}
+          <strong>{planLabel}</strong> o superior.
         </p>
 
         <div className={styles.buttonWrapper}>

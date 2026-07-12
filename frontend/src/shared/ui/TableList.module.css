@@ -171,10 +171,18 @@
   transition: width 0.3s ease;
 }
 
-.progressFill.blue { background-color: var(--color-info); }
-.progressFill.red { background-color: var(--color-danger); }
-.progressFill.green { background-color: var(--color-success); }
-.progressFill.orange { background-color: var(--list-accent-color); }
+.progressFill.blue {
+  background-color: var(--color-info);
+}
+.progressFill.red {
+  background-color: var(--color-danger);
+}
+.progressFill.green {
+  background-color: var(--color-success);
+}
+.progressFill.orange {
+  background-color: var(--list-accent-color);
+}
 
 .progressValue {
   font-family: var(--list-number-font-family) !important;
@@ -183,8 +191,12 @@
   white-space: nowrap;
 }
 
-.progressValue.white { color: var(--color-text-inverse); }
-.progressValue.red { color: var(--color-danger); }
+.progressValue.white {
+  color: var(--color-text-inverse);
+}
+.progressValue.red {
+  color: var(--color-danger);
+}
 
 .badge {
   display: inline-block;
@@ -367,7 +379,7 @@
   filter: brightness(0) invert(0.82);
 }
 
-[data-theme="dark"] .lottieIcon svg,
-[data-theme="oled"] .lottieIcon svg {
+[data-theme='dark'] .lottieIcon svg,
+[data-theme='oled'] .lottieIcon svg {
   filter: brightness(0) invert(0.85);
 }

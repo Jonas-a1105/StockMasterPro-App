@@ -34,7 +34,7 @@ async function check() {
 }
 
 check()
-  .catch(e => console.error(e))
+  .catch((e) => console.error(e))
   .finally(async () => {
     await prisma.$disconnect();
     await pool.end();

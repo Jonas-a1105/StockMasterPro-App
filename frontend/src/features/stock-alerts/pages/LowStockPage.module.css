@@ -1,18 +1,97 @@
-.container { display: flex; flex-direction: column; gap: 20px; }
-.tableContainer { background: var(--bg-card); border-radius: var(--card-radius); box-shadow: var(--shadow-sm); overflow-x: auto; }
-.table { width: 100%; border-collapse: collapse; }
-.table th { padding: 14px 16px; text-align: left; font-size: var(--font-size-xs); color: var(--text-muted); text-transform: none; letter-spacing: 0.5px; font-weight: var(--font-weight-semibold); border-bottom: var(--card-border-width, 1px) solid var(--border-color); }
-.table td { padding: 12px 16px; font-size: var(--font-size-sm); color: var(--text-dark); border-bottom: var(--card-border-width, 1px) solid var(--border-color); }
-.productName { font-weight: var(--font-weight-semibold); }
-.stockCell { font-weight: var(--font-weight-bold); color: var(--color-danger); font-size: var(--font-size-md); }
-.statusBadge { display: inline-block; padding: 4px 10px; border-radius: var(--border-radius-sm, 2px); font-size: var(--font-size-xs); font-weight: var(--font-weight-semibold); text-transform: none; letter-spacing: 0.3px; }
-.critical { background: var(--bg-danger, #fef2f2); color: var(--color-danger); }
-.low { background: var(--bg-warning-light, #fffbeb); color: var(--color-orange); }
-.warning { background: var(--bg-primary-light, #eff6ff); color: var(--color-blue); }
-.emptyState { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px 20px; background: var(--bg-card); border-radius: var(--card-radius); box-shadow: var(--shadow-sm); }
-.emptyIcon { font-size: var(--font-size-hero); margin-bottom: 15px; }
-.emptyState p { color: var(--text-muted); font-size: var(--font-size-md); }
-.actionBtn { padding: 6px 14px; background: var(--color-primary, #f05a28); color: white; border: none; border-radius: var(--btn-radius, var(--card-radius)); font-size: var(--font-size-caption); font-weight: var(--font-weight-semibold); cursor: pointer; }
-.textRight { text-align: right; }
-.textCenter { text-align: center; }
-.justifyCenter { justify-content: center; }
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.tableContainer {
+  background: var(--bg-card);
+  border-radius: var(--card-radius);
+  box-shadow: var(--shadow-sm);
+  overflow-x: auto;
+}
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.table th {
+  padding: 14px 16px;
+  text-align: left;
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  text-transform: none;
+  letter-spacing: 0.5px;
+  font-weight: var(--font-weight-semibold);
+  border-bottom: var(--card-border-width, 1px) solid var(--border-color);
+}
+.table td {
+  padding: 12px 16px;
+  font-size: var(--font-size-sm);
+  color: var(--text-dark);
+  border-bottom: var(--card-border-width, 1px) solid var(--border-color);
+}
+.productName {
+  font-weight: var(--font-weight-semibold);
+}
+.stockCell {
+  font-weight: var(--font-weight-bold);
+  color: var(--color-danger);
+  font-size: var(--font-size-md);
+}
+.statusBadge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: var(--border-radius-sm, 2px);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  text-transform: none;
+  letter-spacing: 0.3px;
+}
+.critical {
+  background: var(--bg-danger, #fef2f2);
+  color: var(--color-danger);
+}
+.low {
+  background: var(--bg-warning-light, #fffbeb);
+  color: var(--color-orange);
+}
+.warning {
+  background: var(--bg-primary-light, #eff6ff);
+  color: var(--color-blue);
+}
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  background: var(--bg-card);
+  border-radius: var(--card-radius);
+  box-shadow: var(--shadow-sm);
+}
+.emptyIcon {
+  font-size: var(--font-size-hero);
+  margin-bottom: 15px;
+}
+.emptyState p {
+  color: var(--text-muted);
+  font-size: var(--font-size-md);
+}
+.actionBtn {
+  padding: 6px 14px;
+  background: var(--color-primary, #f05a28);
+  color: white;
+  border: none;
+  border-radius: var(--btn-radius, var(--card-radius));
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+}
+.textRight {
+  text-align: right;
+}
+.textCenter {
+  text-align: center;
+}
+.justifyCenter {
+  justify-content: center;
+}

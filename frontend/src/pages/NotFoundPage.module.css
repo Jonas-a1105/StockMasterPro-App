@@ -70,7 +70,9 @@
   cursor: pointer;
   transition: filter 0.2s;
 }
-.btnPrimary:hover { filter: brightness(1.1); }
+.btnPrimary:hover {
+  filter: brightness(1.1);
+}
 
 .btnSecondary {
   display: inline-flex;

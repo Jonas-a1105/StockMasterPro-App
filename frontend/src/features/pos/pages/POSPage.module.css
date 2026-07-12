@@ -53,7 +53,9 @@
   flex-direction: column;
   gap: 10px;
   border: none;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .productCard:hover {
@@ -78,8 +80,8 @@
   cursor: pointer;
 }
 
-[data-theme="dark"] .prodImageContainer,
-[data-theme="oled"] .prodImageContainer {
+[data-theme='dark'] .prodImageContainer,
+[data-theme='oled'] .prodImageContainer {
   background-color: var(--color-gray-800, #17181c);
 }
 
@@ -157,7 +159,7 @@
 }
 
 .prodProductName::after {
-  content: "↗";
+  content: '↗';
   font-size: var(--font-size-2xs);
   color: var(--text-muted);
   flex-shrink: 0;
@@ -172,8 +174,8 @@
   gap: 8px;
 }
 
-[data-theme="dark"] .prodBottomCapsule,
-[data-theme="oled"] .prodBottomCapsule {
+[data-theme='dark'] .prodBottomCapsule,
+[data-theme='oled'] .prodBottomCapsule {
   background-color: transparent !important;
 }
 
@@ -209,8 +211,8 @@
   overflow: hidden;
 }
 
-[data-theme="dark"] .prodQtySelector,
-[data-theme="oled"] .prodQtySelector {
+[data-theme='dark'] .prodQtySelector,
+[data-theme='oled'] .prodQtySelector {
   background-color: var(--color-gray-800, #222327);
 }
 
@@ -298,7 +300,8 @@
 
 .warehouseSelector select {
   padding: 6px 10px;
-  border-color: var(--border-color, #eee); border-style: solid;
+  border-color: var(--border-color, #eee);
+  border-style: solid;
   border-radius: var(--card-radius, 4px);
   font-size: var(--font-size-sm);
   background: var(--bg-card, #fff);
@@ -545,11 +548,21 @@
   margin-top: 8px;
 }
 
-.w120 { width: 120px; }
-.w140 { width: 140px; }
-.w50 { width: 50px; }
-.fontSize12 { font-size: var(--font-size-caption); }
-.optionBg { background: var(--option-bg); }
+.w120 {
+  width: 120px;
+}
+.w140 {
+  width: 140px;
+}
+.w50 {
+  width: 50px;
+}
+.fontSize12 {
+  font-size: var(--font-size-caption);
+}
+.optionBg {
+  background: var(--option-bg);
+}
 
 .paymentMethods {
   display: grid;
@@ -595,7 +608,8 @@
 
 .customerSelect {
   padding: 8px 12px;
-  border-color: var(--border-color, #eee); border-style: solid;
+  border-color: var(--border-color, #eee);
+  border-style: solid;
   border-radius: var(--card-radius, 4px);
   background-color: var(--bg-card, #fff);
   color: var(--text-dark, #333);
@@ -626,7 +640,8 @@
 @media (max-width: 768px) {
   .posContainer {
     grid-template-columns: 1fr;
-    padding: var(--layout-padding-top) var(--layout-padding-x-mobile) 0 var(--layout-padding-x-mobile);
+    padding: var(--layout-padding-top) var(--layout-padding-x-mobile) 0
+      var(--layout-padding-x-mobile);
     height: auto;
   }
 
@@ -693,10 +708,12 @@
     min-height: 56px !important;
     max-height: 56px !important;
     z-index: 150 !important;
-    transition: transform 0.2s ease, opacity 0.2s ease !important;
+    transition:
+      transform 0.2s ease,
+      opacity 0.2s ease !important;
   }
 
-  .cartFabContainer[data-hidden="true"] {
+  .cartFabContainer[data-hidden='true'] {
     transform: scale(0);
     opacity: 0;
     pointer-events: none;
@@ -723,155 +740,157 @@
     transform: scale(0.92) !important;
   }
 
-/* ── Payment/Mixed Payment Modal ── */
-.paymentSummary {
-  margin-bottom: 16px;
-  color: var(--text-muted);
-  font-size: var(--font-size-md);
-}
+  /* ── Payment/Mixed Payment Modal ── */
+  .paymentSummary {
+    margin-bottom: 16px;
+    color: var(--text-muted);
+    font-size: var(--font-size-md);
+  }
 
-.paymentSummaryStrong {
-  font-weight: var(--font-weight-bold);
-}
+  .paymentSummaryStrong {
+    font-weight: var(--font-weight-bold);
+  }
 
-.paymentSummaryDanger {
-  color: var(--color-danger);
-}
+  .paymentSummaryDanger {
+    color: var(--color-danger);
+  }
 
-.paymentSummarySuccess {
-  color: var(--color-success);
-}
+  .paymentSummarySuccess {
+    color: var(--color-success);
+  }
 
-.paymentSummaryWarning {
-  color: var(--color-orange);
-}
+  .paymentSummaryWarning {
+    color: var(--color-orange);
+  }
 
-.paymentError {
-  padding: 12px;
-  background: rgb(239,68,68,0.1);
-  border: 1px solid var(--color-danger, #ef4444);
-  border-radius: var(--btn-radius);
-  margin-bottom: 16px;
-  color: var(--color-danger);
-  font-size: var(--font-size-sm);
-}
+  .paymentError {
+    padding: 12px;
+    background: rgb(239, 68, 68, 0.1);
+    border: 1px solid var(--color-danger, #ef4444);
+    border-radius: var(--btn-radius);
+    margin-bottom: 16px;
+    color: var(--color-danger);
+    font-size: var(--font-size-sm);
+  }
 
-.inputField {
-  width: 100% !important;
-  padding: 6px 10px !important;
-  border-radius: var(--border-radius-md) !important;
-  border: 1px solid var(--border) !important;
-  background: var(--bg-secondary) !important;
-  font-size: var(--font-size-md) !important;
-  box-sizing: border-box !important;
-}
+  .inputField {
+    width: 100% !important;
+    padding: 6px 10px !important;
+    border-radius: var(--border-radius-md) !important;
+    border: 1px solid var(--border) !important;
+    background: var(--bg-secondary) !important;
+    font-size: var(--font-size-md) !important;
+    box-sizing: border-box !important;
+  }
 
-.inputFieldRight {
-  text-align: right;
-}
+  .inputFieldRight {
+    text-align: right;
+  }
 
-.inputFieldCenter {
-  text-align: center;
-}
+  .inputFieldCenter {
+    text-align: center;
+  }
 
-.selectField {
-  width: 100px;
-  padding: 6px 10px;
-  border-radius: var(--border-radius-md);
-  border: 1px solid var(--border);
-  background: var(--bg-secondary);
-  font-size: var(--font-size-md);
-  color: var(--text-dark);
-}
+  .selectField {
+    width: 100px;
+    padding: 6px 10px;
+    border-radius: var(--border-radius-md);
+    border: 1px solid var(--border);
+    background: var(--bg-secondary);
+    font-size: var(--font-size-md);
+    color: var(--text-dark);
+  }
 
-.removeBtn {
-  background: none !important;
-  border: none !important;
-  color: var(--color-danger) !important;
-  cursor: pointer !important;
-  font-size: var(--font-size-xl) !important;
-  padding: 4px !important;
-}
+  .removeBtn {
+    background: none !important;
+    border: none !important;
+    color: var(--color-danger) !important;
+    cursor: pointer !important;
+    font-size: var(--font-size-xl) !important;
+    padding: 4px !important;
+  }
 
-.addPaymentBtn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  margin-bottom: 16px;
-  width: 100%;
-  padding: 10px;
-  background: none;
-  border: 1px dashed var(--border-color);
-  border-radius: var(--card-radius);
-  color: var(--text-muted);
-  font-size: var(--font-size-sm);
-  cursor: pointer;
-  transition: all 0.2s;
-}
+  .addPaymentBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 16px;
+    width: 100%;
+    padding: 10px;
+    background: none;
+    border: 1px dashed var(--border-color);
+    border-radius: var(--card-radius);
+    color: var(--text-muted);
+    font-size: var(--font-size-sm);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
 
-.addPaymentBtn:hover {
-  border-color: var(--color-orange-red);
-  color: var(--color-orange-red);
-  background: rgb(240,90,40,0.04);
-}
+  .addPaymentBtn:hover {
+    border-color: var(--color-orange-red);
+    color: var(--color-orange-red);
+    background: rgb(240, 90, 40, 0.04);
+  }
 
-.spinnerInline {
-  width: 16px;
-  height: 16px;
-  border: 2px solid var(--border);
-  border-top-color: var(--brand);
-  border-radius: 50%;
-  animation: inlineSpin 0.8s linear infinite;
-  display: inline-block;
-}
+  .spinnerInline {
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--border);
+    border-top-color: var(--brand);
+    border-radius: 50%;
+    animation: inlineSpin 0.8s linear infinite;
+    display: inline-block;
+  }
 
-@keyframes inlineSpin {
-  to { transform: rotate(360deg); }
-}
+  @keyframes inlineSpin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
 
-.formActions {
-  display: flex;
-  gap: 8px;
-  justify-content: flex-end;
-}
+  .formActions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+  }
 
-.cancelBtn {
-  padding: 10px 20px;
-  border: 1px solid var(--border-color);
-  border-radius: var(--btn-radius, var(--card-radius));
-  background: transparent;
-  color: var(--text-muted);
-  cursor: pointer;
-  font-weight: var(--font-weight-semibold);
-  font-size: var(--font-size-sm);
-  transition: all 0.2s;
-}
+  .cancelBtn {
+    padding: 10px 20px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--btn-radius, var(--card-radius));
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--font-size-sm);
+    transition: all 0.2s;
+  }
 
-.cancelBtn:hover {
-  background: var(--bg-main);
-}
+  .cancelBtn:hover {
+    background: var(--bg-main);
+  }
 
-.saveBtn {
-  padding: 10px 20px;
-  background: var(--color-primary);
-  color: white;
-  border: none;
-  border-radius: var(--btn-radius, var(--card-radius));
-  font-weight: var(--font-weight-semibold);
-  font-size: var(--font-size-sm);
-  cursor: pointer;
-  transition: all 0.2s;
-}
+  .saveBtn {
+    padding: 10px 20px;
+    background: var(--color-primary);
+    color: white;
+    border: none;
+    border-radius: var(--btn-radius, var(--card-radius));
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--font-size-sm);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
 
-.saveBtn:hover:not(:disabled) {
-  filter: brightness(1.08);
-}
+  .saveBtn:hover:not(:disabled) {
+    filter: brightness(1.08);
+  }
 
-.saveBtn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
+  .saveBtn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
 
   .cartFabBadge {
     position: absolute !important;
@@ -970,7 +989,8 @@
 
 .modalInput {
   padding: 10px 12px;
-  border-color: var(--border-color, #eee); border-style: solid;
+  border-color: var(--border-color, #eee);
+  border-style: solid;
   border-width: var(--input-border-width, 1px);
   border-radius: var(--input-radius, var(--card-radius, 4px));
   font-size: var(--font-size-md);
@@ -1081,7 +1101,9 @@
   stroke: #16a34a;
   stroke-miterlimit: 10;
   box-shadow: inset 0 0 0 #16a34a;
-  animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out 0s both;
+  animation:
+    fill 0.4s ease-in-out 0.4s forwards,
+    scale 0.3s ease-in-out 0s both;
 }
 
 .checkmarkCircle {
@@ -1102,16 +1124,25 @@
 }
 
 @keyframes stroke {
-  100% { stroke-dashoffset: 0; }
+  100% {
+    stroke-dashoffset: 0;
+  }
 }
 
 @keyframes scale {
-  0%, 100% { transform: none; }
-  50% { transform: scale3d(1.1, 1.1, 1); }
+  0%,
+  100% {
+    transform: none;
+  }
+  50% {
+    transform: scale3d(1.1, 1.1, 1);
+  }
 }
 
 @keyframes fill {
-  100% { box-shadow: inset 0 0 0 36px rgb(22, 163, 74, 0.1); }
+  100% {
+    box-shadow: inset 0 0 0 36px rgb(22, 163, 74, 0.1);
+  }
 }
 
 .successText {
@@ -1295,7 +1326,8 @@
 
 .customerSelect {
   padding: 8px 12px;
-  border-color: var(--border-color, #eee); border-style: solid;
+  border-color: var(--border-color, #eee);
+  border-style: solid;
   border-radius: var(--card-radius, 4px);
   background-color: var(--bg-card, #fff);
   color: var(--text-dark, #333);
@@ -1363,7 +1395,7 @@
   gap: 6px;
   margin-top: 8px;
   padding: 8px 10px;
-  background-color: rgb(220,38,38,0.1);
+  background-color: rgb(220, 38, 38, 0.1);
   border-left: 3px solid #dc2626;
   font-size: var(--font-size-caption);
   color: var(--color-danger);
@@ -1396,7 +1428,7 @@
   gap: 6px;
   margin-top: 8px;
   padding: 8px 10px;
-  background-color: rgb(220,38,38,0.1);
+  background-color: rgb(220, 38, 38, 0.1);
   border-left: 3px solid #dc2626;
   font-size: var(--font-size-caption);
   color: var(--color-danger);

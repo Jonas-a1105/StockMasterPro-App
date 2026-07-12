@@ -18,7 +18,9 @@ const email = process.env.ADMIN_EMAIL;
 const newPassword = process.env.ADMIN_PASSWORD;
 
 if (!email || !newPassword) {
-  console.error('ERROR: Set ADMIN_EMAIL and ADMIN_PASSWORD in .env before running this script.');
+  console.error(
+    'ERROR: Set ADMIN_EMAIL and ADMIN_PASSWORD in .env before running this script.',
+  );
   process.exit(1);
 }
 
@@ -55,20 +57,22 @@ async function reset() {
       console.log(`Usando tenant existente: ${tenant.name} (${tenant.id})`);
     }
 
-      await prisma.user.create({
-        data: {
-          tenantId: tenant.id,
-          email: email!,
-          passwordHash,
-          name: process.env.ADMIN_NAME || 'Administrador Principal',
-          role: 'admin',
-          isActive: true,
-          isPlatformAdmin: true,
-        },
-      });
+    await prisma.user.create({
+      data: {
+        tenantId: tenant.id,
+        email: email!,
+        passwordHash,
+        name: process.env.ADMIN_NAME || 'Administrador Principal',
+        role: 'admin',
+        isActive: true,
+        isPlatformAdmin: true,
+      },
+    });
     console.log('=== ADMIN CREADO EXITOSAMENTE ===');
   } else {
-    console.log('El usuario admin ya existe. Restableciendo contraseña y asegurando rol...');
+    console.log(
+      'El usuario admin ya existe. Restableciendo contraseña y asegurando rol...',
+    );
     await prisma.user.update({
       where: { id: user.id },
       data: {
@@ -90,7 +94,7 @@ async function reset() {
 }
 
 reset()
-  .catch(e => {
+  .catch((e) => {
     console.error('Error al restablecer el admin:', e);
   })
   .finally(async () => {

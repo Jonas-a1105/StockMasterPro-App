@@ -176,7 +176,6 @@
 .kpiValuePrefix {
   font-size: var(--font-size-xs);
   color: var(--text-muted);
-
 }
 
 .kpiValueNum {
@@ -202,7 +201,6 @@
 
 .kpiChangeSub {
   color: var(--text-muted);
-
 }
 
 .kpiSub {
@@ -347,7 +345,6 @@
   flex-direction: column;
   gap: 8px;
   font-size: var(--font-size-xs);
-
 }
 
 .arbitrageTitle {
@@ -476,7 +473,6 @@
   font-size: var(--font-size-2xs);
   color: var(--text-muted);
   text-transform: none;
-
 }
 
 .supportValueRed {
@@ -594,9 +590,15 @@
 }
 
 /* ── Progress bar width utilities ── */
-.progress74 { width: 74.2%; }
-.progress25 { width: 25.8%; }
-.roundedRadiusVar { border-radius: var(--card-radius); }
+.progress74 {
+  width: 74.2%;
+}
+.progress25 {
+  width: 25.8%;
+}
+.roundedRadiusVar {
+  border-radius: var(--card-radius);
+}
 
 /* KPI Card Flex variants */
 .kpiCardFlex {

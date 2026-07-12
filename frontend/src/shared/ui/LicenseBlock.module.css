@@ -13,14 +13,16 @@
 }
 
 .modal {
-  background-color: var(--bg-card, #fff);
-  border: 1px solid var(--border-color, rgb(0, 0, 0, 0.08));
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: var(--card-radius);
   padding: 36px;
   max-width: 420px;
   width: 90%;
   text-align: center;
-  box-shadow: 0 20px 25px -5px rgb(0, 0, 0, 0.1), 0 10px 10px -5px rgb(0, 0, 0, 0.04);
+  box-shadow:
+    0 20px 25px -5px rgb(0, 0, 0, 0.1),
+    0 10px 10px -5px rgb(0, 0, 0, 0.04);
 }
 
 .modalPlans {
@@ -42,7 +44,7 @@
 
 .modal p {
   font-size: var(--font-size-sm);
-  color: var(--text-muted, #718096);
+  color: var(--color-text-muted);
   margin-bottom: 24px;
   line-height: 1.5;
 }
@@ -67,7 +69,7 @@
   left: 0;
   background: none;
   border: none;
-  color: var(--text-muted, #718096);
+  color: var(--color-text-muted);
   font-size: var(--font-size-caption);
   font-weight: var(--font-weight-semibold);
   cursor: pointer;
@@ -80,13 +82,13 @@
 }
 
 .btnBack:hover {
-  background-color: var(--bg-hover, rgb(0, 0, 0, 0.03));
+  background-color: var(--color-bg-hover);
   color: var(--text-dark, #1a202c);
 }
 
 .desc {
   font-size: var(--font-size-sm);
-  color: var(--text-muted, #718096);
+  color: var(--color-text-muted);
   margin-top: 0;
   margin-bottom: 24px;
   text-align: center;
@@ -109,26 +111,26 @@
 }
 
 .planCard {
-  border: 1px solid var(--border-color, #e2e8f0);
+  border: 1px solid var(--color-border);
   border-radius: var(--card-radius);
   padding: 20px;
   text-align: left;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background-color: var(--bg-card);
+  background-color: var(--color-surface);
   position: relative;
 }
 
 .recommended {
-  border: 2px solid var(--color-orange-red, #f05a28);
+  border: 2px solid var(--color-primary);
 }
 
 .badge {
   position: absolute;
   top: -10px;
   right: 15px;
-  background-color: var(--color-orange-red, #f05a28);
+  background-color: var(--color-primary);
   color: var(--text-on-primary, #fff);
   padding: 2px 8px;
   border-radius: var(--border-radius-sm, 2px);
@@ -146,14 +148,14 @@
 .price {
   font-size: var(--font-size-4xl);
   font-weight: var(--font-weight-extrabold, 800);
-  color: var(--color-orange-red, #f05a28);
+  color: var(--color-primary);
   margin-bottom: 15px;
 }
 
 .price span {
   font-size: var(--font-size-caption);
   font-weight: var(--font-weight-medium);
-  color: var(--text-muted, #718096);
+  color: var(--color-text-muted);
 }
 
 .features {
@@ -167,7 +169,8 @@
   line-height: 1.3;
 }
 
-.btnPay, .btnPayPrimary {
+.btnPay,
+.btnPayPrimary {
   width: 100%;
   padding: 10px;
   font-size: var(--font-size-caption);
@@ -179,17 +182,17 @@
 
 .btnPay {
   background-color: transparent;
-  border: 1.5px solid var(--border-color, #e2e8f0);
-  color: var(--text-muted, #4a5568);
+  border: 1.5px solid var(--color-border);
+  color: var(--color-text-muted);
 }
 
 .btnPay:hover {
-  background-color: var(--bg-hover, rgb(0, 0, 0, 0.03));
+  background-color: var(--color-bg-hover);
   color: var(--text-dark, #1a202c);
 }
 
 .btnPayPrimary {
-  background-color: var(--color-orange-red, #f05a28);
+  background-color: var(--color-primary);
   border: none;
   color: var(--text-on-primary, #fff);
 }
@@ -207,24 +210,24 @@
 
 .input {
   padding: 12px;
-  border: 1.5px solid var(--border-color, #e2e8f0);
+  border: 1.5px solid var(--color-border);
   border-radius: var(--input-radius);
   font-size: var(--font-size-md);
   text-align: center;
   outline: none;
-  background-color: var(--bg-card, #fff);
+  background-color: var(--color-surface);
   color: var(--text-dark, #1a202c);
   transition: all 0.2s ease;
 }
 
 .input:focus {
-  border-color: var(--color-orange-red, #f05a28);
+  border-color: var(--color-primary);
   box-shadow: 0 0 0 3px rgb(240, 90, 40, 0.1);
 }
 
 .btn {
   padding: 12px;
-  background-color: var(--color-orange-red, #f05a28);
+  background-color: var(--color-primary);
   color: white;
   border: none;
   border-radius: var(--btn-radius);
@@ -251,7 +254,7 @@
   display: flex;
   align-items: center;
   text-align: center;
-  color: var(--text-muted, #718096);
+  color: var(--color-text-muted);
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);
   margin: 10px 0;
@@ -261,7 +264,7 @@
 .divider::after {
   content: '';
   flex: 1;
-  border-bottom: 1px solid var(--border-color, #e2e8f0);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .divider:not(:empty)::before {
@@ -275,8 +278,8 @@
 .btnStripe {
   padding: 12px;
   background-color: transparent;
-  border: 1.5px solid var(--color-orange-red, #f05a28);
-  color: var(--color-orange-red, #f05a28);
+  border: 1.5px solid var(--color-primary);
+  color: var(--color-primary);
   border-radius: var(--btn-radius);
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-bold);
@@ -294,7 +297,7 @@
 
 .error {
   background-color: var(--bg-danger, #fef2f2);
-  color: var(--color-danger, #dc2626);
+  color: var(--color-danger);
   padding: 8px;
   border-radius: var(--card-radius);
   font-size: var(--font-size-caption);

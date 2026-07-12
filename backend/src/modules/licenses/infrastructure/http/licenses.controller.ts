@@ -90,9 +90,7 @@ export class LicensesController {
 
   @Post('generate')
   @UseGuards(JwtAuthGuard, PlatformAdminGuard)
-  async generate(
-    @Body() dto: GenerateLicenseDto,
-  ) {
+  async generate(@Body() dto: GenerateLicenseDto) {
     return this.licensesService.generate({
       days: dto.days,
       tier: dto.tier,

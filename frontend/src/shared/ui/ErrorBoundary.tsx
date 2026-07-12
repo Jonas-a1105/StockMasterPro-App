@@ -23,7 +23,12 @@ export class ErrorBoundary extends Component<Props, State> {
 
   render() {
     if (this.state.hasError) {
-      return <ErrorFallback error={this.state.error} reset={() => this.setState({ hasError: false, error: null })} />;
+      return (
+        <ErrorFallback
+          error={this.state.error}
+          reset={() => this.setState({ hasError: false, error: null })}
+        />
+      );
     }
     return this.props.children;
   }

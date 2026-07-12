@@ -33,7 +33,10 @@ export class TaxWithholdingService {
     const islr = {
       baseAmount: params.totalAmount - params.taxAmount,
       rate: islrRate,
-      amount: Math.round((params.totalAmount - params.taxAmount) * (islrRate / 100) * 100) / 100,
+      amount:
+        Math.round(
+          (params.totalAmount - params.taxAmount) * (islrRate / 100) * 100,
+        ) / 100,
     };
 
     return {
@@ -89,18 +92,20 @@ export class TaxWithholdingService {
         where: {
           tenantId,
           status: 'completed',
-          ...(startDate || endDate ? {
-            createdAt: {
-              ...(startDate ? { gte: startDate } : {}),
-              ...(endDate ? { lte: endDate } : {}),
-            },
-          } : {}),
+          ...(startDate || endDate
+            ? {
+                createdAt: {
+                  ...(startDate ? { gte: startDate } : {}),
+                  ...(endDate ? { lte: endDate } : {}),
+                },
+              }
+            : {}),
         },
         include: { customer: true, items: true },
         orderBy: { createdAt: 'desc' },
       });
 
-      return sales.map(s => ({
+      return sales.map((s) => ({
         invoiceNumber: s.invoiceNumber || s.id.slice(0, 8),
         documentType: s.documentType || 'factura',
         date: s.createdAt,
@@ -119,12 +124,14 @@ export class TaxWithholdingService {
         where: {
           tenantId,
           status: { in: ['received', 'completed'] },
-          ...(startDate || endDate ? {
-            createdAt: {
-              ...(startDate ? { gte: startDate } : {}),
-              ...(endDate ? { lte: endDate } : {}),
-            },
-          } : {}),
+          ...(startDate || endDate
+            ? {
+                createdAt: {
+                  ...(startDate ? { gte: startDate } : {}),
+                  ...(endDate ? { lte: endDate } : {}),
+                },
+              }
+            : {}),
         },
         include: { supplier: true },
         orderBy: { createdAt: 'desc' },
@@ -134,17 +141,17 @@ export class TaxWithholdingService {
         where: { tenantId },
       });
 
-      const whMap = new Map<string, typeof withholdings[0][]>();
+      const whMap = new Map<string, (typeof withholdings)[0][]>();
       for (const wh of withholdings) {
         const key = wh.purchaseOrderId || wh.supplierId || '';
         if (!whMap.has(key)) whMap.set(key, []);
         whMap.get(key)!.push(wh);
       }
 
-      return pOrders.map(po => {
+      return pOrders.map((po) => {
         const wh = whMap.get(po.id) || [];
-        const ivaWh = wh.find(w => w.type === 'iva');
-        const islrWh = wh.find(w => w.type === 'islr');
+        const ivaWh = wh.find((w) => w.type === 'iva');
+        const islrWh = wh.find((w) => w.type === 'islr');
 
         const total = Number(po.total);
 

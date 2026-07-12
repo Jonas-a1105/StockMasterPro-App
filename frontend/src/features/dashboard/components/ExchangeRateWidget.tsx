@@ -21,7 +21,7 @@ function generateHistory(rate: number) {
 
 function sparklinePath(data: { value: number }[], W = 246, H = 65) {
   if (data.length < 2) return '';
-  const vals = data.map(d => d.value);
+  const vals = data.map((d) => d.value);
   const min = Math.min(...vals);
   const max = Math.max(...vals);
   const pad = (max - min) * 0.12 || 1;
@@ -35,26 +35,41 @@ function sparklinePath(data: { value: number }[], W = 246, H = 65) {
     y: H - ((d.value - yMin) / yRange) * (H - 8) - 4,
   }));
 
-  const line = points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(' ');
+  const line = points
+    .map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x.toFixed(1)} ${p.y.toFixed(1)}`)
+    .join(' ');
   const area = `${line} L ${points[points.length - 1].x} ${H} L ${points[0].x} ${H} Z`;
   return { line, area };
 }
 
-export function ExchangeRateWidget({ onClose, onOpenAnalytics }: { onClose: () => void; onOpenAnalytics?: () => void }) {
+export function ExchangeRateWidget({
+  onClose,
+  onOpenAnalytics,
+}: {
+  onClose: () => void;
+  onOpenAnalytics?: () => void;
+}) {
   const { rate, updatedAt, source } = useExchangeRate();
   const [activeTab, setActiveTab] = useState<'trend' | 'calc'>('trend');
   const [currentInput, setCurrentInput] = useState('0');
   const [isUsdToVes, setIsUsdToVes] = useState(true);
   const historyRef = useRef<{ date: string; value: number }[]>([]);
 
-  if (historyRef.current.length === 0 || historyRef.current[historyRef.current.length - 1].value !== rate) {
+  if (
+    historyRef.current.length === 0 ||
+    historyRef.current[historyRef.current.length - 1].value !== rate
+  ) {
     historyRef.current = generateHistory(rate);
   }
 
   const paths = sparklinePath(historyRef.current);
-  const lastP = historyRef.current.length > 0
-    ? { value: historyRef.current[historyRef.current.length - 1].value, date: historyRef.current[historyRef.current.length - 1].date }
-    : null;
+  const lastP =
+    historyRef.current.length > 0
+      ? {
+          value: historyRef.current[historyRef.current.length - 1].value,
+          date: historyRef.current[historyRef.current.length - 1].date,
+        }
+      : null;
   const firstP = historyRef.current.length > 0 ? historyRef.current[0] : null;
 
   useEffect(() => {
@@ -70,18 +85,24 @@ export function ExchangeRateWidget({ onClose, onOpenAnalytics }: { onClose: () =
   const calculateConversion = useCallback(() => {
     const numericValue = parseFloat(currentInput) || 0;
     if (isUsdToVes) {
-      return (numericValue * rate).toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      return (numericValue * rate).toLocaleString('de-DE', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
     } else {
-      return (numericValue / rate).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      return (numericValue / rate).toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
     }
   }, [currentInput, isUsdToVes, rate]);
 
   const pressNum = (num: string) => {
-    setCurrentInput(prev => prev === '0' ? num : prev.length < 10 ? prev + num : prev);
+    setCurrentInput((prev) => (prev === '0' ? num : prev.length < 10 ? prev + num : prev));
   };
 
   const pressDot = () => {
-    setCurrentInput(prev => prev.includes('.') ? prev : prev + '.');
+    setCurrentInput((prev) => (prev.includes('.') ? prev : prev + '.'));
   };
 
   const pressClear = () => {
@@ -89,18 +110,18 @@ export function ExchangeRateWidget({ onClose, onOpenAnalytics }: { onClose: () =
   };
 
   const pressDelete = () => {
-    setCurrentInput(prev => prev.length > 1 ? prev.slice(0, -1) : '0');
+    setCurrentInput((prev) => (prev.length > 1 ? prev.slice(0, -1) : '0'));
   };
 
   const toggleMode = () => {
-    setIsUsdToVes(v => !v);
+    setIsUsdToVes((v) => !v);
   };
 
   const result = calculateConversion();
 
   return (
     <div className={styles.overlay} onClick={onClose}>
-      <div className={styles.panel} onClick={e => e.stopPropagation()}>
+      <div className={styles.panel} onClick={(e) => e.stopPropagation()}>
         <div className={styles.panelWrapper}>
           {/* Tabs */}
           <div className={styles.header}>
@@ -130,12 +151,21 @@ export function ExchangeRateWidget({ onClose, onOpenAnalytics }: { onClose: () =
                     <span className={styles.dot} />
                     <span className={styles.titleLabel}>TASA REF / VES</span>
                   </div>
-                  <p className={styles.sourceLabel}>Origen de datos: {source || 've.dolarapi.com'}</p>
+                  <p className={styles.sourceLabel}>
+                    Origen de datos: {source || 've.dolarapi.com'}
+                  </p>
                 </div>
                 <div className={styles.flexRow}>
                   <div className={styles.variationBadge}>+0.24%</div>
                   {onOpenAnalytics && (
-                    <button className={styles.analyticsBtn} onClick={() => { onOpenAnalytics(); onClose(); }} title="Analítica cambiaria">
+                    <button
+                      className={styles.analyticsBtn}
+                      onClick={() => {
+                        onOpenAnalytics();
+                        onClose();
+                      }}
+                      title="Analítica cambiaria"
+                    >
                       <BarChart3 size={14} />
                     </button>
                   )}
@@ -144,7 +174,10 @@ export function ExchangeRateWidget({ onClose, onOpenAnalytics }: { onClose: () =
 
               <div className={styles.rateBlock}>
                 <span className={styles.rateValue}>
-                  {rate.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                  {rate.toLocaleString('de-DE', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })}
                 </span>
                 <span className={styles.rateUnit}>VES / USD</span>
               </div>
@@ -153,9 +186,28 @@ export function ExchangeRateWidget({ onClose, onOpenAnalytics }: { onClose: () =
                 <span className={styles.chartLabel}>Historial Últimos 7 Días</span>
                 <div className={styles.chartBox}>
                   <svg viewBox="0 0 246 65" width="100%" height="100%" preserveAspectRatio="none">
-                    <line x1="0" y1="32" x2="246" y2="32" stroke="#262626" strokeWidth="1" strokeDasharray="4 4" />
-                    {typeof paths === 'object' && paths.area && <path d={paths.area} fill="#10b981" fillOpacity="0.04" />}
-                    {typeof paths === 'object' && paths.line && <path d={paths.line} fill="none" stroke="#10b981" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />}
+                    <line
+                      x1="0"
+                      y1="32"
+                      x2="246"
+                      y2="32"
+                      stroke="#262626"
+                      strokeWidth="1"
+                      strokeDasharray="4 4"
+                    />
+                    {typeof paths === 'object' && paths.area && (
+                      <path d={paths.area} fill="#10b981" fillOpacity="0.04" />
+                    )}
+                    {typeof paths === 'object' && paths.line && (
+                      <path
+                        d={paths.line}
+                        fill="none"
+                        stroke="#10b981"
+                        strokeWidth="1.8"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    )}
                   </svg>
                 </div>
                 <div className={styles.chartDates}>
@@ -196,31 +248,75 @@ export function ExchangeRateWidget({ onClose, onOpenAnalytics }: { onClose: () =
               </div>
 
               <div className={styles.calcGrid}>
-                <button className={styles.key} onClick={() => pressNum('7')}>7</button>
-                <button className={styles.key} onClick={() => pressNum('8')}>8</button>
-                <button className={styles.key} onClick={() => pressNum('9')}>9</button>
-                <button className={styles.keyClear} onClick={pressClear}>C</button>
+                <button className={styles.key} onClick={() => pressNum('7')}>
+                  7
+                </button>
+                <button className={styles.key} onClick={() => pressNum('8')}>
+                  8
+                </button>
+                <button className={styles.key} onClick={() => pressNum('9')}>
+                  9
+                </button>
+                <button className={styles.keyClear} onClick={pressClear}>
+                  C
+                </button>
 
-                <button className={styles.key} onClick={() => pressNum('4')}>4</button>
-                <button className={styles.key} onClick={() => pressNum('5')}>5</button>
-                <button className={styles.key} onClick={() => pressNum('6')}>6</button>
+                <button className={styles.key} onClick={() => pressNum('4')}>
+                  4
+                </button>
+                <button className={styles.key} onClick={() => pressNum('5')}>
+                  5
+                </button>
+                <button className={styles.key} onClick={() => pressNum('6')}>
+                  6
+                </button>
                 <button className={styles.keySwap} onClick={toggleMode} title="Invertir conversión">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
                     <path d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
                   </svg>
                 </button>
 
-                <button className={styles.key} onClick={() => pressNum('1')}>1</button>
-                <button className={styles.key} onClick={() => pressNum('2')}>2</button>
-                <button className={styles.key} onClick={() => pressNum('3')}>3</button>
+                <button className={styles.key} onClick={() => pressNum('1')}>
+                  1
+                </button>
+                <button className={styles.key} onClick={() => pressNum('2')}>
+                  2
+                </button>
+                <button className={styles.key} onClick={() => pressNum('3')}>
+                  3
+                </button>
                 <button className={styles.keyBackspace} onClick={pressDelete}>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
                     <path d="M12 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M3 12l6.414 6.414A2 2 0 0010.828 19H19a2 2 0 002-2V7a2 2 0 00-2-2h-8.172a2 2 0 00-1.414.586L3 12z" />
                   </svg>
                 </button>
 
-                <button className={styles.keyDouble} onClick={() => pressNum('0')}>0</button>
-                <button className={styles.key} onClick={pressDot}>.</button>
+                <button className={styles.keyDouble} onClick={() => pressNum('0')}>
+                  0
+                </button>
+                <button className={styles.key} onClick={pressDot}>
+                  .
+                </button>
               </div>
 
               <button className={styles.calcSubmitBtn} onClick={() => setActiveTab('trend')}>

@@ -1,7 +1,9 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('E2E: Flujo completo de venta', () => {
-  test('login → buscar producto → agregar al carrito → cobrar → verificar stock y venta', async ({ page }) => {
+  test('login → buscar producto → agregar al carrito → cobrar → verificar stock y venta', async ({
+    page,
+  }) => {
     test.skip(true, 'Requiere backend corriendo con usuario de prueba y datos de seed');
 
     await page.goto('/login');
@@ -54,13 +56,13 @@ test.describe('E2E: Cash Register', () => {
 test.describe('E2E: App loads correctly', () => {
   test('frontend carga sin errores de consola', async ({ page }) => {
     const errors: string[] = [];
-    page.on('console', msg => {
+    page.on('console', (msg) => {
       if (msg.type() === 'error') errors.push(msg.text());
     });
 
     await page.goto('/');
     await page.waitForLoadState('networkidle');
 
-    expect(errors.filter(e => !e.includes('favicon') && !e.includes('manifest')).length).toBe(0);
+    expect(errors.filter((e) => !e.includes('favicon') && !e.includes('manifest')).length).toBe(0);
   });
 });
