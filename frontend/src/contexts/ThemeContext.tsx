@@ -177,7 +177,27 @@ function applyConfigToDOM(config: ThemeConfig) {
   const shadowsActive = config.shadowEnabled !== false && config.shadows !== false;
   root.style.setProperty('--card-shadow', shadowsActive ? 'var(--shadow-sm)' : 'none');
   root.style.setProperty('--card-shadow-hover', shadowsActive ? 'var(--shadow-md)' : 'none');
-  root.style.setProperty('--card-radius', borderEnabled ? `${config.cardRadius}px` : '0px');
+  const currentRadius = borderEnabled ? (config.cardRadius !== undefined ? config.cardRadius : 12) : 0;
+  root.style.setProperty('--card-radius', `${currentRadius}px`);
+  root.style.setProperty('--btn-radius', `${Math.min(currentRadius, 8)}px`);
+  root.style.setProperty('--input-radius', `${Math.min(currentRadius, 8)}px`);
+  root.style.setProperty('--modal-radius', `${currentRadius * 1.2}px`);
+  root.style.setProperty('--badge-radius', currentRadius === 0 ? '0px' : '9999px');
+  root.style.setProperty('--kpi-border-radius', `${Math.min(currentRadius, 8)}px`);
+
+  // Dynamically update primitive radius variables so components using primitives also respond!
+  const scale = [
+    { name: 'sm', val: 0.5, max: 4 },
+    { name: 'md', val: 0.75, max: 8 },
+    { name: 'lg', val: 1.0, max: 12 },
+    { name: 'xl', val: 1.2, max: 16 },
+    { name: '2xl', val: 1.5, max: 24 }
+  ];
+  scale.forEach(s => {
+    const calculated = currentRadius === 0 ? 0 : Math.min(currentRadius * s.val, s.max);
+    root.style.setProperty(`--radius-${s.name}`, `${calculated}px`);
+    root.style.setProperty(`--border-radius-${s.name}`, `${calculated}px`);
+  });
   
   // Font weight - lock to 600 as requested by the user, or let it respond
   if (config.fontWeightEnabled === false) {
@@ -212,12 +232,20 @@ function applyConfigToDOM(config: ThemeConfig) {
   if (config.listAccentColor) root.style.setProperty('--list-accent-color', config.listAccentColor);
 
   // Buttons
-  if (config.btnBorderRadius !== undefined) root.style.setProperty('--btn-radius', `${config.btnBorderRadius}px`);
+  if (!borderEnabled) {
+    root.style.setProperty('--btn-radius', '0px');
+  } else if (config.btnBorderRadius !== undefined) {
+    root.style.setProperty('--btn-radius', `${config.btnBorderRadius}px`);
+  }
   if (config.btnBorderWidth !== undefined) root.style.setProperty('--btn-border-width', `${config.btnBorderWidth}px`);
   if (config.btnFontWeight) root.style.setProperty('--btn-font-weight', config.btnFontWeight);
 
   // Inputs
-  if (config.inputBorderRadius !== undefined) root.style.setProperty('--input-radius', `${config.inputBorderRadius}px`);
+  if (!borderEnabled) {
+    root.style.setProperty('--input-radius', '0px');
+  } else if (config.inputBorderRadius !== undefined) {
+    root.style.setProperty('--input-radius', `${config.inputBorderRadius}px`);
+  }
   if (config.inputBorderWidth !== undefined) root.style.setProperty('--input-border-width', `${config.inputBorderWidth}px`);
 
   // Animation control

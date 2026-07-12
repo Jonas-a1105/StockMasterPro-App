@@ -148,10 +148,10 @@
 }
 
 .kpiCard {
-  background-color: var(--color-surface) !important;
-  border: 1px solid var(--color-border) !important;
-  border-radius: var(--card-radius) !important;
-  box-shadow: var(--shadow-sm) !important;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--card-radius);
+  box-shadow: var(--shadow-sm);
   padding: 14px 16px;
   display: flex;
   flex-direction: column;
@@ -616,6 +616,8 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  background-color: color-mix(in srgb, var(--kpi-color, var(--color-primary)) 12%, transparent);
+  color: var(--kpi-color, var(--color-primary));
 }
 
 .kpiContent {

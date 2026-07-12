@@ -2,18 +2,12 @@ import { useDashboard } from '../hooks/useDashboard';
 import { useExchangeRate } from '@contexts/ExchangeRateContext';
 import { useTheme } from '@contexts/ThemeContext';
 import { SkeletonKPI, SkeletonChart } from '@shared/ui/Skeleton';
-import { KpiRow } from '../components/KpiRow';
+import { KpiGrid } from '@shared/ui/KpiGrid';
 import { SalesTrendChart } from '../components/SalesTrendChart';
 import { TopSellersDonut } from '../components/TopSellersDonut';
 import { RecentActivity } from '../components/RecentActivity';
 import { CriticalStockList } from '../components/CriticalStockList';
 import { EventsCalendar } from '../components/EventsCalendar';
-import walletData from '@assets/lottie/wallet.json';
-import creditCardData from '@assets/lottie/credit-card.json';
-import shoppingBagData from '@assets/lottie/shopping-bag.json';
-import analyticsData from '@assets/lottie/analytics.json';
-import warningData from '@assets/lottie/warning.json';
-import trendingUpData from '@assets/lottie/trending-up.json';
 import styles from './DashboardPage.module.css';
 
 export function DashboardPage() {
@@ -48,54 +42,48 @@ export function DashboardPage() {
     );
   }
 
-  const kpis = [
+  const kpiItems = [
     {
-      key: 'total',
-      cls: styles.total,
-      icon: walletData,
-      title: 'Ventas hoy',
       value: formatPrice(summary.total),
+      label: 'Ventas hoy',
+      lottie: 'wallet' as const,
+      color: 'var(--color-primary)',
     },
     {
-      key: 'views',
-      cls: styles.views,
-      icon: creditCardData,
-      title: 'Transacciones',
       value: summary.count,
+      label: 'Transacciones',
+      lottie: 'card' as const,
+      color: 'var(--color-purple)',
     },
     {
-      key: 'visitors',
-      cls: styles.visitors,
-      icon: shoppingBagData,
-      title: 'Productos',
       value: products.length,
+      label: 'Productos',
+      lottie: 'bag' as const,
+      color: 'var(--color-success)',
     },
     {
-      key: 'shares',
-      cls: styles.shares,
-      icon: analyticsData,
-      title: 'Stock total',
       value: totalStock,
+      label: 'Stock total',
+      lottie: 'analytics' as const,
+      color: 'var(--color-teal)',
     },
     {
-      key: 'low',
-      cls: styles.low,
-      icon: warningData,
-      title: 'Stock bajo',
       value: lowStockProducts.length,
+      label: 'Stock bajo',
+      lottie: 'warning' as const,
+      color: 'var(--color-danger)',
     },
     {
-      key: 'profit',
-      cls: styles.profit,
-      icon: trendingUpData,
-      title: 'Utilidad neta',
       value: formatPrice(netProfit),
+      label: 'Utilidad neta',
+      lottie: 'trend' as const,
+      color: 'var(--color-primary)',
     },
   ];
 
   return (
     <div className={styles.container}>
-      <KpiRow kpis={kpis} />
+      <KpiGrid items={kpiItems} />
       <div className={styles.grid}>
         <SalesTrendChart data={salesChartData} />
         <TopSellersDonut data={bestSellersData} />
