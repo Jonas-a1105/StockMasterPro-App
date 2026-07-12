@@ -160,7 +160,7 @@
   color: var(--color-text);
   border: var(--input-border-width) solid var(--color-border);
   border-radius: var(--input-radius);
-  font-family: monospace;
+  font-family: var(--font-family-mono);
   font-size: var(--font-size-caption);
   line-height: 1.5;
   resize: none;

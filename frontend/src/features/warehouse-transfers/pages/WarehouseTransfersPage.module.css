@@ -274,7 +274,7 @@
   color: var(--color-text-muted);
 }
 .fontMono {
-  font-family: monospace;
+  font-family: var(--font-family-mono);
 }
 .emptyRow {
   text-align: center;

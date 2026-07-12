@@ -393,7 +393,7 @@ select.formControl {
   color: var(--color-text-muted);
   min-width: 32px;
   text-align: right;
-  font-family: monospace;
+  font-family: var(--font-family-mono);
 }
 
 .resetThemeBtn {
@@ -1768,7 +1768,7 @@ select.formControl {
 
 .bitIpCell {
   font-size: var(--font-size-sm);
-  font-family: monospace;
+  font-family: var(--font-family-mono);
   color: var(--color-text-muted);
 }
 
@@ -2234,7 +2234,7 @@ select.formControl {
 
 /* Font */
 .fontMono {
-  font-family: monospace;
+  font-family: var(--font-family-mono);
 }
 .fontWeight600 {
   font-weight: var(--font-weight-semibold);
@@ -2888,7 +2888,7 @@ select.formControl {
   color: var(--color-text-muted);
 }
 .fontSize11Monospace {
-  font-family: monospace;
+  font-family: var(--font-family-mono);
   font-size: var(--font-size-xs);
 }
 
@@ -3076,7 +3076,7 @@ select.formControl {
 
 /* ── Monospace ── */
 .fontMono11 {
-  font-family: monospace;
+  font-family: var(--font-family-mono);
   font-size: var(--font-size-xs);
 }
 

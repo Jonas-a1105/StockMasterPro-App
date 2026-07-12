@@ -1651,7 +1651,7 @@
   color: var(--color-primary);
 }
 .fontMono {
-  font-family: monospace;
+  font-family: var(--font-family-mono);
 }
 .fontWeight600 {
   font-weight: var(--font-weight-semibold);
@@ -1986,7 +1986,7 @@
   color: var(--color-primary);
 }
 .fontMono {
-  font-family: monospace;
+  font-family: var(--font-family-mono);
 }
 .fontWeight600 {
   font-weight: var(--font-weight-semibold);
@@ -2105,7 +2105,7 @@
   color: var(--color-text-muted);
 }
 .mono {
-  font-family: monospace;
+  font-family: var(--font-family-mono);
 }
 .fontWeight600 {
   font-weight: var(--font-weight-semibold);

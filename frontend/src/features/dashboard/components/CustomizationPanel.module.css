@@ -155,7 +155,7 @@
   border-style: solid;
   border-radius: var(--input-radius);
   font-size: var(--font-size-xs);
-  font-family: monospace;
+  font-family: var(--font-family-mono);
   background-color: var(--bg-input);
   color: var(--color-text);
 }
@@ -185,7 +185,7 @@
   color: var(--color-text-muted);
   min-width: 35px;
   text-align: right;
-  font-family: monospace;
+  font-family: var(--font-family-mono);
 }
 
 .toggleRow {

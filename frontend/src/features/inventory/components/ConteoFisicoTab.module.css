@@ -177,7 +177,7 @@
   color: var(--color-success);
 }
 .fontMono {
-  font-family: monospace;
+  font-family: var(--font-family-mono);
 }
 .fontWeight700 {
   font-weight: var(--font-weight-bold);
@@ -232,7 +232,7 @@
 
 /* Monospace font for ID column */
 .monoFont {
-  font-family: monospace;
+  font-family: var(--font-family-mono);
   font-weight: var(--font-weight-bold);
   color: var(--color-text-muted);
 }
@@ -290,7 +290,7 @@
   text-align: right;
 }
 .fontMono {
-  font-family: monospace;
+  font-family: var(--font-family-mono);
 }
 .fontWeight700 {
   font-weight: var(--font-weight-bold);
@@ -333,7 +333,7 @@
   text-align: right;
 }
 .tdFontMono {
-  font-family: monospace;
+  font-family: var(--font-family-mono);
   font-weight: var(--font-weight-bold);
 }
 

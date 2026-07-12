@@ -43,7 +43,7 @@
   padding: 3px 8px;
   background: var(--color-bg);
   border-radius: var(--card-radius);
-  font-family: monospace;
+  font-family: var(--font-family-mono);
   font-size: var(--font-size-caption);
 }
 .addressCell {
