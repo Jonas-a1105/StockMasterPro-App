@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { api } from '@shared/lib/http/client';
 import { useToast } from '@contexts/ToastContext';
 import { Modal } from '@shared/ui/Modal';
-import { LoadingDots } from '@shared/ui/LoadingDots';
+
 import { KpiGrid } from '@shared/ui/KpiGrid';
 import { TabNav } from '@shared/ui/TabNav';
 import { Toolbar } from '@shared/ui/Toolbar';
@@ -125,11 +125,7 @@ export function AccountsPayablePage() {
   ).length;
 
   if (loading)
-    return config.skeletonEnabled ? (
-      <SkeletonTablePage rows={6} cols={6} tabs={0} kpi={3} />
-    ) : (
-      <LoadingDots text="Cargando cuentas por pagar" />
-    );
+    return <SkeletonTablePage rows={6} cols={6} tabs={0} kpi={3} />;
 
   return (
     <div className={styles.container}>

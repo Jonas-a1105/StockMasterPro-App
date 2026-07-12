@@ -132,11 +132,7 @@ export function AdminTenantsPage() {
       <div className={styles.card}>
         <div className={styles.cardTitle}>EMPRESAS REGISTRADAS ({tenants.length})</div>
         {loading ? (
-          config.skeletonEnabled ? (
-            <SkeletonTable rows={5} cols={6} />
-          ) : (
-            <p className={styles.muted}>Cargando...</p>
-          )
+          <SkeletonTable rows={5} cols={6} />
         ) : tenants.length === 0 ? (
           <p className={styles.muted}>No hay empresas registradas.</p>
         ) : (

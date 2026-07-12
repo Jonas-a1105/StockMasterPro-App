@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { api } from '@shared/lib/http/client';
 import { useToast } from '@contexts/ToastContext';
-import { LoadingDots } from '@shared/ui/LoadingDots';
+
 import { Modal } from '@shared/ui/Modal';
 import { KpiGrid } from '@shared/ui/KpiGrid';
 import { TabNav } from '@shared/ui/TabNav';
@@ -215,11 +215,7 @@ export function ExpensesPage() {
   const expenseCount = filteredExpenses.length;
 
   if (loading)
-    return config.skeletonEnabled ? (
-      <SkeletonTablePage rows={8} cols={6} kpi={3} />
-    ) : (
-      <LoadingDots text="Cargando gastos" />
-    );
+    return <SkeletonTablePage rows={8} cols={6} kpi={3} />;
 
   return (
     <div className={styles.container}>

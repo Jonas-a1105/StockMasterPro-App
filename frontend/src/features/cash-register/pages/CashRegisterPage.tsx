@@ -121,11 +121,7 @@ export function CashRegisterPage() {
   };
 
   if (loading)
-    return config.skeletonEnabled ? (
-      <SkeletonTablePage />
-    ) : (
-      <LoadingDots text="Cargando módulo de caja..." />
-    );
+    return <SkeletonTablePage />;
 
   const txnIncome = currentSession
     ? transactions

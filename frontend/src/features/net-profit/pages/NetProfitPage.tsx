@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { api } from '@shared/lib/http/client';
 import { useToast } from '@contexts/ToastContext';
-import { LoadingDots } from '@shared/ui/LoadingDots';
+
 import { TabNav } from '@shared/ui/TabNav';
 import { SkeletonReports } from '@shared/ui/Skeleton';
 import { useTheme } from '@contexts/ThemeContext';
@@ -135,11 +135,7 @@ export function NetProfitPage() {
   };
 
   if (loading)
-    return config.skeletonEnabled ? (
-      <SkeletonReports chartCount={2} />
-    ) : (
-      <LoadingDots text="Calculando utilidad..." />
-    );
+    return <SkeletonReports chartCount={2} />;
 
   if (!data) return null;
 

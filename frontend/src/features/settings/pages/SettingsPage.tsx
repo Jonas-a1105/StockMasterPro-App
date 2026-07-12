@@ -57,13 +57,13 @@ import { useToast } from '@contexts/ToastContext';
 import { useExchangeRate } from '@contexts/ExchangeRateContext';
 import { useTheme } from '@contexts/ThemeContext';
 import { useAuth } from '@contexts/AuthContext';
-import { LoadingDots } from '@shared/ui/LoadingDots';
+
 import { PremiumActivationAnimation } from '@shared/ui/PremiumActivationAnimation';
 import { UsageMeter } from '@shared/ui/UsageMeter';
 import { PremiumLockButton } from '@shared/ui/PremiumLockButton';
 import { PremiumLockScreen } from '@shared/ui/PremiumLockScreen';
 import { Lock } from 'lucide-react';
-import { SkeletonTablePage } from '@shared/ui/Skeleton';
+import { SkeletonTablePage, SkeletonForm, SkeletonTable } from '@shared/ui/Skeleton';
 import { StripeCheckoutModal } from '@shared/ui/StripeCheckoutModal';
 import { CreditCard as CardIcon } from 'lucide-react';
 import styles from './SettingsPage.module.css';
@@ -296,7 +296,7 @@ function TaxCurrencyTab() {
     setDisplayCurrency('both');
   };
 
-  if (loading) return <LoadingDots text="Cargando configuración..." />;
+  if (loading) return <SkeletonForm />;
 
   return (
     <div className={styles.bentoGrid}>
@@ -656,7 +656,7 @@ function BranchesTab() {
       </div>
 
       {loading ? (
-        <LoadingDots text="Cargando sucursales..." />
+        <SkeletonTable rows={3} cols={4} />
       ) : warehouses.length === 0 ? (
         <div className={styles.emptyState}>
           <Store size={40} className={styles.emptyIcon} />
@@ -1869,11 +1869,7 @@ function LicensesTab() {
   return (
     <div className={styles.backupContainer}>
       {statusLoading ? (
-        config.skeletonEnabled ? (
-          <SkeletonTablePage rows={3} cols={2} tabs={0} kpi={2} />
-        ) : (
-          <LoadingDots text="Cargando información de licencia..." />
-        )
+        <SkeletonTablePage rows={3} cols={2} tabs={0} kpi={2} />
       ) : (
         <>
           <div className={styles.backupHeader}>

@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { api } from '@shared/lib/http/client';
 import { useToast } from '@contexts/ToastContext';
-import { LoadingDots } from '@shared/ui/LoadingDots';
+
 import { SkeletonTablePage } from '@shared/ui/Skeleton';
 import { useTheme } from '@contexts/ThemeContext';
 import { useExchangeRate } from '@contexts/ExchangeRateContext';
@@ -165,11 +165,7 @@ export function ProductLotsPage() {
     }) || setModal({ type: 'edit', lot });
 
   if (loading)
-    return config.skeletonEnabled ? (
-      <SkeletonTablePage rows={6} cols={7} kpi={4} />
-    ) : (
-      <LoadingDots text="Cargando lotes..." />
-    );
+    return <SkeletonTablePage rows={6} cols={7} kpi={4} />;
 
   return (
     <div className={styles.container}>

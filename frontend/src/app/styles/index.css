@@ -26,7 +26,7 @@ body {
 
 /* ─── Focus Visible (accessible focus) ─── */
 :focus-visible {
-  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline: 2px solid var(--color-primary);
   outline-offset: 2px;
 }
 

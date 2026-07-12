@@ -141,11 +141,7 @@ export function AccountsReceivablePage() {
   ).length;
 
   if (loading)
-    return config.skeletonEnabled ? (
-      <SkeletonTablePage />
-    ) : (
-      <LoadingDots text="Cargando cuentas por cobrar..." />
-    );
+    return <SkeletonTablePage />;
 
   return (
     <>

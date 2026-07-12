@@ -171,11 +171,7 @@ export function WarehouseTransfersPage() {
   const canCancel = (t: any) => t.status === 'pending' || t.status === 'in_transit';
 
   if (loading)
-    return config.skeletonEnabled ? (
-      <SkeletonTablePage rows={6} cols={7} kpi={4} />
-    ) : (
-      <LoadingDots text="Cargando..." />
-    );
+    return <SkeletonTablePage rows={6} cols={7} kpi={4} />;
 
   return (
     <div className={styles.container}>

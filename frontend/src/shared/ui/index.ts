@@ -10,6 +10,7 @@ export { TabNav } from './TabNav';
 export { ErrorBoundary } from './ErrorBoundary';
 export { KpiGrid } from './KpiGrid';
 export { Text } from './Text';
+export { Heading } from './Heading';
 export { Card, CardHeader, CardTitle, CardBody, CardFooter } from './Card';
 export { Badge } from './Badge';
 export { Table, TableContainer } from './Table';

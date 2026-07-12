@@ -38,7 +38,12 @@ export function DashboardLayout() {
 
   return (
     <div className={styles.container}>
-      <Sidebar mode={sidebarMode} onClose={() => setSidebarMode('hidden')} isMobile={isMobile} />
+      <Sidebar
+        mode={sidebarMode}
+        onClose={() => setSidebarMode('hidden')}
+        isMobile={isMobile}
+        onToggleMode={setSidebarMode}
+      />
       <main className={styles.main}>
         <Navbar onToggleSidebar={toggleSidebar} />
         <div className={styles.content}>

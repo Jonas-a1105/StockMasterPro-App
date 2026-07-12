@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { api } from '@shared/lib/http/client';
 import { useToast } from '@contexts/ToastContext';
-import { LoadingDots } from '@shared/ui/LoadingDots';
+
 import { TabNav } from '@shared/ui/TabNav';
 import { KpiGrid } from '@shared/ui/KpiGrid';
 import { Toolbar } from '@shared/ui/Toolbar';
@@ -42,11 +42,7 @@ export function LowStockPage() {
   }
 
   if (loading)
-    return config.skeletonEnabled ? (
-      <SkeletonTablePage rows={8} cols={6} kpi={3} />
-    ) : (
-      <LoadingDots text="Verificando stock..." />
-    );
+    return <SkeletonTablePage rows={8} cols={6} kpi={3} />;
 
   const criticalCount = products.filter((p: any) => p.stock === 0).length;
   const lowCount = products.filter((p: any) => p.stock > 0 && p.stock <= p.minStock / 2).length;

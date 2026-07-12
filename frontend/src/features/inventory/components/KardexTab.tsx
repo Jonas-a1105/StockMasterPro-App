@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { Package } from 'lucide-react';
 import { useTheme } from '@contexts/ThemeContext';
 import { SkeletonTable } from '@shared/ui/Skeleton';
-import { LoadingDots } from '@shared/ui/LoadingDots';
+
 import { DataTable } from '@shared/ui/DataTable';
 import { getInventoryProducts, getInventoryMovements } from '../api/inventory.api';
 import type { Product, InventoryMovement } from '@types';
@@ -131,11 +131,7 @@ export function KardexTab() {
             </span>
           </div>
           {loading ? (
-            config.skeletonEnabled ? (
-              <SkeletonTable rows={5} cols={5} />
-            ) : (
-              <LoadingDots text="Cargando movimientos..." />
-            )
+            <SkeletonTable rows={5} cols={5} />
           ) : (
             <DataTable
               data={movements}

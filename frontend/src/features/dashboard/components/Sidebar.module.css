@@ -362,3 +362,92 @@
     display: inline;
   }
 }
+
+/* ─── Accordion Menu Groupings ─── */
+.accordionSection {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.accordionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 0;
+  color: var(--sidebar-text-muted);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  white-space: nowrap;
+  cursor: pointer;
+  width: 100%;
+  border: none;
+  background: none;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.sidebar.open .accordionHeader {
+  justify-content: flex-start;
+  padding: 10px 24px;
+  gap: 12px;
+}
+
+.accordionHeader:hover {
+  background: rgb(255, 255, 255, 0.03);
+  color: var(--sidebar-text);
+}
+
+.chevron {
+  margin-left: auto;
+  opacity: 0.5;
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+  display: block;
+}
+
+.chevronRotated {
+  transform: rotate(180deg);
+}
+
+.accordionContent {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.subMenuItem {
+  opacity: 0.85;
+}
+
+.sidebar.open .subMenuItem {
+  padding-left: 48px; /* Indent sub items inside grouping */
+}
+
+.activeHeader {
+  color: var(--sidebar-text);
+}
+
+.sidebar.collapsed .accordionHeader span,
+.sidebar.collapsed .chevron {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .sidebar.compact .accordionHeader {
+    justify-content: center;
+    padding: 12px 0;
+  }
+  .sidebar.compact .chevron,
+  .sidebar.compact .sectionText {
+    display: none;
+  }
+  .sidebar.open .accordionHeader {
+    justify-content: flex-start;
+    padding: 12px 20px;
+    gap: 12px;
+  }
+  .sidebar.open .subMenuItem {
+    padding-left: 44px;
+  }
+}

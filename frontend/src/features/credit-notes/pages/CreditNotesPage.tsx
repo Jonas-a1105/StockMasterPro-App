@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { api } from '@shared/lib/http/client';
 import { useToast } from '@contexts/ToastContext';
-import { LoadingDots } from '@shared/ui/LoadingDots';
+
 import { TabNav } from '@shared/ui/TabNav';
 import { Modal } from '@shared/ui/Modal';
 import { SkeletonTablePage } from '@shared/ui/Skeleton';
@@ -119,11 +119,7 @@ export function CreditNotesPage() {
   };
 
   if (loading)
-    return config.skeletonEnabled ? (
-      <SkeletonTablePage rows={6} cols={7} kpi={3} />
-    ) : (
-      <LoadingDots text="Cargando notas de crédito" />
-    );
+    return <SkeletonTablePage rows={6} cols={7} kpi={3} />;
 
   return (
     <div className={styles.container}>

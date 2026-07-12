@@ -12,7 +12,7 @@ import {
 import { api } from '@shared/lib/http/client';
 import { useTheme } from '@contexts/ThemeContext';
 import { useExchangeRate } from '@contexts/ExchangeRateContext';
-import { LoadingDots } from '@shared/ui/LoadingDots';
+
 import { Skeleton } from '@shared/ui/Skeleton';
 import styles from './SuperAdminDashboard.module.css';
 
@@ -82,11 +82,7 @@ export function SuperAdminDashboard() {
   }, [fetchMetrics]);
 
   if (loading) {
-    return config.skeletonEnabled ? (
-      <SkeletonDashboard />
-    ) : (
-      <LoadingDots text="Cargando métricas SaaS..." />
-    );
+    return <SkeletonDashboard />;
   }
 
   if (error)

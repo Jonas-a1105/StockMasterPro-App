@@ -370,7 +370,7 @@ export function ProductsTab() {
         </div>
       </Toolbar>
 
-      {initialLoading && config.skeletonEnabled ? (
+      {initialLoading ? (
         currentViewMode === 'cards' ? <SkeletonCards count={8} /> : <SkeletonTable rows={8} cols={10} />
       ) : currentViewMode === 'cards' ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">

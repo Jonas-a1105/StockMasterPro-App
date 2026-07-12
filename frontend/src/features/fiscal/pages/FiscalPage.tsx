@@ -41,11 +41,7 @@ export function FiscalPage() {
   ];
 
   if (loading)
-    return config.skeletonEnabled ? (
-      <SkeletonTablePage rows={8} cols={6} kpi={0} />
-    ) : (
-      <p className={styles.emptyState}>Cargando...</p>
-    );
+    return <SkeletonTablePage rows={8} cols={6} kpi={0} />;
 
   return (
     <div className={styles.container}>

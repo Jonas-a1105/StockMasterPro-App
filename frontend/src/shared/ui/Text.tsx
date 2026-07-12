@@ -14,6 +14,7 @@ const VARIANT_MAP: Record<string, TextVariant | null> = {
   caption: 'caption',
   label: 'label',
   badge: 'badge',
+  overline: 'overline',
 };
 
 const VARIANTS_AS: Record<string, ElementType> = {
@@ -27,6 +28,7 @@ const VARIANTS_AS: Record<string, ElementType> = {
   caption: 'span',
   label: 'label',
   badge: 'span',
+  overline: 'span',
 };
 
 interface TextProps {

@@ -146,28 +146,34 @@ const ResetPasswordPage = lazy(() =>
   import('@features/auth/pages/ResetPasswordPage').then((m) => ({ default: m.ResetPasswordPage }))
 );
 
+function FullScreenLoader({ text }: { text: string }) {
+  return (
+    <div
+      style={{
+        position: 'fixed',
+        inset: 0,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'var(--color-bg)',
+        zIndex: 99999,
+      }}
+    >
+      <LoadingDots text={text} />
+    </div>
+  );
+}
+
 function ProtectedRoute({ children }: { children: ReactNode }) {
   const { isAuthenticated, isLoading } = useAuth();
-  const { config } = useTheme();
-  if (isLoading)
-    return config.skeletonEnabled ? (
-      <SkeletonKPI count={3} />
-    ) : (
-      <LoadingDots text="Verificando sesión" />
-    );
+  if (isLoading) return <FullScreenLoader text="Verificando sesión" />;
   if (!isAuthenticated) return <Navigate to="/login" replace />;
   return <>{children}</>;
 }
 
 function PublicRoute({ children }: { children: ReactNode }) {
   const { isAuthenticated, isLoading } = useAuth();
-  const { config } = useTheme();
-  if (isLoading)
-    return config.skeletonEnabled ? (
-      <SkeletonKPI count={3} />
-    ) : (
-      <LoadingDots text="Verificando sesión" />
-    );
+  if (isLoading) return <FullScreenLoader text="Verificando sesión" />;
   if (isAuthenticated) return <Navigate to="/dashboard" replace />;
   return <>{children}</>;
 }

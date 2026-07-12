@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Button, Card, CardHeader, CardTitle, CardBody, CardFooter, Badge, Input, Select, Text, Table, TableContainer, ProductCard, DataTable, EmptyState, Toolbar, FormField } from '@shared/ui';
-import { ThemeProvider, FONT_OPTIONS } from '@contexts/ThemeContext';
+import { ThemeProvider } from '@contexts/ThemeContext';
 import styles from './UIDevCatalog.module.css';
 
 const COMPONENTS = [

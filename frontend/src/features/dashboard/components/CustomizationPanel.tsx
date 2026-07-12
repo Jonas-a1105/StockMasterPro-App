@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useTheme, palettes, FONT_OPTIONS } from '@contexts/ThemeContext';
+import { useTheme, palettes } from '@contexts/ThemeContext';
 import {
   X,
   Save,
@@ -155,20 +155,7 @@ export function CustomizationPanel({ open, onClose }: PanelProps) {
           <SectionHeader icon={<Type size={14} />} title="Tipografía" sectionKey="tipografia" />
           {sections.tipografia && (
             <div className={styles.section}>
-              <div className={styles.field}>
-                <label className={styles.fieldLabel}>Familia tipográfica</label>
-                <select
-                  className={styles.select}
-                  value={config.fontFamily}
-                  onChange={(e) => updateConfig({ fontFamily: e.target.value })}
-                >
-                  {FONT_OPTIONS.map((f) => (
-                    <option key={f.value} value={f.value}>
-                      {f.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
+
               <SliderRow
                 label="Tamaño base"
                 value={config.fontSizeBase}
@@ -231,39 +218,7 @@ export function CustomizationPanel({ open, onClose }: PanelProps) {
                 suffix="px"
                 onChange={(v) => updateConfig({ listCellPadding: v })}
               />
-              <div className={styles.field}>
-                <label className={styles.fieldLabel}>Tipografía texto</label>
-                <select
-                  className={styles.select}
-                  value={config.listFontFamily}
-                  onChange={(e) => updateConfig({ listFontFamily: e.target.value })}
-                >
-                  {FONT_OPTIONS.map((f) => (
-                    <option key={f.value} value={f.value}>
-                      {f.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className={styles.field}>
-                <label className={styles.fieldLabel}>Tipografía números</label>
-                <select
-                  className={styles.select}
-                  value={config.listNumberFontFamily}
-                  onChange={(e) => updateConfig({ listNumberFontFamily: e.target.value })}
-                >
-                  {FONT_OPTIONS.map((f) => (
-                    <option key={f.value} value={f.value}>
-                      {f.label}
-                    </option>
-                  ))}
-                  <option value="'Courier New', Courier, monospace">Courier New</option>
-                  <option value="'Consolas', monospace">Consolas</option>
-                  <option value="'Fira Code', monospace">Fira Code</option>
-                  <option value="'JetBrains Mono', monospace">JetBrains Mono</option>
-                  <option value="'Source Code Pro', monospace">Source Code Pro</option>
-                </select>
-              </div>
+
               <div className={styles.field}>
                 <label className={styles.fieldLabel}>Peso encabezados</label>
                 <select

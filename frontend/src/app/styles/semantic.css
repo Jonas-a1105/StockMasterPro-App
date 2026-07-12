@@ -5,7 +5,6 @@
   --color-primary: var(--orange-500);
   --card-radius: var(--radius-lg);
   --density-multiplier: 1;
-  --font-family: var(--font-family);
   --font-size-base: var(--font-size-md);
 }
 
@@ -13,156 +12,228 @@
 :root,
 [data-theme='light'] {
   /* Backgrounds */
-  --color-bg: var(--gray-50);
-  --color-bg-elevated: var(--gray-0);
-  --color-bg-hover: var(--gray-100);
-  --color-bg-active: var(--gray-200);
-  --color-bg-input: var(--gray-0);
-  --color-bg-success: #f0fdf4;
-  --color-bg-danger: #fef2f2;
-  --color-bg-warning: #fffbeb;
+  --color-bg:            var(--gray-50);   /* #f8fafc */
+  --color-bg-elevated:   var(--gray-0);
+  --color-bg-hover:      var(--gray-100);
+  --color-bg-active:     var(--gray-200);
+  --color-bg-input:      var(--gray-0);
 
   /* Surfaces */
-  --color-surface: var(--gray-0);
+  --color-surface:       var(--gray-0);    /* #ffffff */
   --color-surface-hover: var(--gray-50);
   --color-surface-border: var(--gray-200);
 
   /* Text */
-  --color-text: var(--gray-900);
-  --color-text-muted: var(--gray-500);
-  --color-text-light: var(--gray-400);
-  --color-text-inverse: var(--gray-0);
+  --color-text:          var(--gray-900);  /* #0f172a */
+  --color-text-muted:    var(--gray-500);  /* #64748b */
+  --color-text-light:    var(--gray-400);  /* #94a3b8 */
+  --color-text-inverse:  var(--gray-0);
 
-  /* Brand - uses user override or default */
+  /* Brand */
+  --color-primary:       var(--orange-500);
   --color-primary-hover: var(--orange-600);
   --color-primary-light: color-mix(in srgb, var(--color-primary) 8%, transparent);
-  --color-on-primary: var(--gray-0);
+  --color-primary-text:  var(--orange-600);
+  --color-on-primary:    #ffffff;
 
-  /* Feedback */
-  --color-success: var(--green-500);
-  --color-success-bg: var(--color-bg-success);
-  --color-danger: var(--red-500);
-  --color-danger-bg: var(--color-bg-danger);
-  --color-warning: var(--amber-500);
-  --color-warning-bg: var(--color-bg-warning);
-  --color-info: var(--blue-500);
-  --color-info-bg: #eff6ff;
+  /* Feedback Text (legible 600/700 values) */
+  --color-success:       var(--green-600);
+  --color-danger:        var(--red-600);
+  --color-warning:       var(--amber-700);
+  --color-info:          var(--blue-600);
+
+  /* Feedback Backgrounds (tintes claros) */
+  --color-success-bg:    #ecfdf5;
+  --color-danger-bg:     #fef2f2;
+  --color-warning-bg:    #fffbeb;
+  --color-info-bg:       #eff6ff;
+
+  /* Dashboard direct values (success/danger/info aliases) */
+  --color-green:         var(--green-600);
+  --color-red:           var(--red-600);
+  --color-blue:          var(--blue-600);
 
   /* Borders */
-  --color-border: var(--gray-200);
-  --color-border-focus: var(--color-primary);
-  --color-border-input: var(--gray-300);
+  --color-border:        var(--gray-200);  /* #e2e8f0 */
+  --color-border-focus:  var(--color-primary);
+  --color-border-input:  var(--gray-300);
 
   /* Shadows */
-  --shadow-card: var(--shadow-sm);
-  --shadow-card-hover: var(--shadow-md);
-  --shadow-modal: var(--shadow-lg);
+  --shadow-card:         var(--shadow-sm);
+  --shadow-card-hover:   var(--shadow-md);
+  --shadow-modal:        var(--shadow-lg);
 
   /* Layout-specific */
-  --sidebar-bg: var(--gray-800);
-  --sidebar-text: var(--gray-0);
-  --sidebar-text-muted: var(--gray-400);
-  --sidebar-border: var(--gray-700);
+  --sidebar-bg:          var(--gray-800);
+  --sidebar-text:        var(--gray-0);
+  --sidebar-text-muted:  var(--gray-400);
+  --sidebar-border:      var(--gray-700);
 }
 
 /* ─── Dark Theme ─── */
 [data-theme='dark'] {
-  --color-bg: #101010;
-  --color-bg-elevated: #181818;
-  --color-bg-hover: #222222;
-  --color-bg-active: #2a2a2a;
-  --color-bg-input: #181818;
-  --color-bg-success: #0a1a0a;
-  --color-bg-danger: #2a0f0f;
-  --color-bg-warning: #2a1f0a;
+  --color-bg:            #101010;
+  --color-bg-elevated:   #181818;
+  --color-bg-hover:      #222222;
+  --color-bg-active:     #2a2a2a;
+  --color-bg-input:      #181818;
 
-  --color-surface: #181818;
+  --color-surface:       #181818;
   --color-surface-hover: #1f1f1f;
   --color-surface-border: #2f2f2f;
 
-  --color-text: #f0f0f0;
-  --color-text-muted: #8a8a8a;
-  --color-text-light: #666666;
-  --color-text-inverse: #0f0f0f;
+  --color-text:          #f0f0f0;   /* -> 15.8:1 sobre surface ✅ */
+  --color-text-muted:    #a0a0a0;   /* AJUSTADO: 5.3:1 ✅ (antes #8a8a8a = 4.0:1 ⚠) */
+  --color-text-light:    #6b6b6b;   /* deco/disabled */
+  --color-text-inverse:  #0f0f0f;
 
-  --color-primary-hover: var(--orange-400);
+  --color-primary:       var(--orange-500);
+  --color-primary-hover: var(--orange-400);  /* en dark, hover MÁS CLARO */
   --color-primary-light: color-mix(in srgb, var(--color-primary) 15%, transparent);
-  --color-on-primary: #ffffff;
+  --color-primary-text:  var(--orange-400);
+  --color-on-primary:    #ffffff;
 
-  --color-success: var(--green-500);
-  --color-success-bg: var(--color-bg-success);
-  --color-danger: var(--red-500);
-  --color-danger-bg: var(--color-bg-danger);
-  --color-warning: var(--amber-500);
-  --color-warning-bg: var(--color-bg-warning);
-  --color-info: var(--blue-500);
-  --color-info-bg: #0c1a2e;
+  /* En dark usa los 500 (los tintes claros no funcionan sobre oscuro) */
+  --color-success:       var(--green-500);
+  --color-danger:        var(--red-500);
+  --color-warning:       var(--amber-500);
+  --color-info:          var(--blue-500);
 
-  --color-border: #2f2f2f;
-  --color-border-focus: var(--color-primary);
-  --color-border-input: #3a3a3a;
+  --color-success-bg:    #0a1a0a;
+  --color-danger-bg:     #2a0f0f;
+  --color-warning-bg:    #2a1f0a;
+  --color-info-bg:       #0c1a2e;
 
-  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.3);
-  --shadow-card-hover: 0 4px 16px rgba(0, 0, 0, 0.4);
-  --shadow-modal: 0 8px 32px rgba(0, 0, 0, 0.5);
+  /* Dashboard direct values (success/danger/info aliases) */
+  --color-green:         var(--green-500);
+  --color-red:           var(--red-500);
+  --color-blue:          var(--blue-500);
 
-  --sidebar-bg: #0a0a0a;
-  --sidebar-text: #ffffff;
-  --sidebar-text-muted: #666666;
-  --sidebar-border: #1a1a1a;
+  /* Borders */
+  --color-border:        #2f2f2f;
+  --color-border-focus:  var(--color-primary);
+  --color-border-input:  #3a3a3a;
+
+  /* Shadows */
+  --shadow-card:         0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-card-hover:   0 4px 16px rgba(0, 0, 0, 0.4);
+  --shadow-modal:        0 8px 32px rgba(0, 0, 0, 0.5);
+
+  /* Layout-specific */
+  --sidebar-bg:          #0a0a0a;
+  --sidebar-text:        #ffffff;
+  --sidebar-text-muted:  #666666;
+  --sidebar-border:      #1a1a1a;
 }
 
 /* ─── OLED Theme (true black) ─── */
 [data-theme='oled'] {
-  --color-bg: var(--black);
-  --color-bg-elevated: #0a0a0a;
-  --color-bg-hover: #111111;
-  --color-bg-active: #1a1a1a;
-  --color-bg-input: #0a0a0a;
-  --color-bg-success: #001a00;
-  --color-bg-danger: #1a0000;
-  --color-bg-warning: #1a1300;
+  --color-bg:            #000000;
+  --color-bg-elevated:   #0a0a0a;
+  --color-bg-hover:      #111111;
+  --color-bg-active:     #1a1a1a;
+  --color-bg-input:      #0a0a0a;
 
-  --color-surface: #0a0a0a;
+  --color-surface:       #0a0a0a;
   --color-surface-hover: #111111;
-  --color-surface-border: #1a1a1a;
+  --color-surface-border: #242424;   /* AJUSTADO: subir de #1a1a1a para visibilidad */
 
-  --color-text: #f0f0f0;
-  --color-text-muted: #666666;
-  --color-text-light: #444444;
-  --color-text-inverse: #000000;
+  --color-text:          #f0f0f0;
+  --color-text-muted:    #8f8f8f;   /* AJUSTADO: ~4.6:1 sobre negro (antes #666 = 3.0:1 ⚠) */
+  --color-text-light:    #5a5a5a;
+  --color-text-inverse:  #000000;
 
+  --color-primary:       var(--orange-500);
   --color-primary-hover: var(--orange-400);
   --color-primary-light: color-mix(in srgb, var(--color-primary) 12%, transparent);
-  --color-on-primary: #ffffff;
+  --color-primary-text:  var(--orange-400);
+  --color-on-primary:    #ffffff;
 
-  --color-success: var(--green-500);
-  --color-success-bg: var(--color-bg-success);
-  --color-danger: var(--red-500);
-  --color-danger-bg: var(--color-bg-danger);
-  --color-warning: var(--amber-500);
-  --color-warning-bg: var(--color-bg-warning);
-  --color-info: var(--blue-500);
-  --color-info-bg: #000a1a;
+  --color-success:       var(--green-500);
+  --color-danger:        var(--red-500);
+  --color-warning:       var(--amber-500);
+  --color-info:          var(--blue-500);
 
-  --color-border: #1a1a1a;
-  --color-border-focus: var(--color-primary);
-  --color-border-input: #2a2a2a;
+  --color-success-bg:    #001a00;
+  --color-danger-bg:     #1a0000;
+  --color-warning-bg:    #1a1300;
+  --color-info-bg:       #000a1a;
 
-  --shadow-card: none;
-  --shadow-card-hover: none;
-  --shadow-modal: none;
+  /* Dashboard direct values (success/danger/info aliases) */
+  --color-green:         var(--green-500);
+  --color-red:           var(--red-500);
+  --color-blue:          var(--blue-500);
 
-  --sidebar-bg: var(--black);
-  --sidebar-text: #ffffff;
-  --sidebar-text-muted: #555555;
-  --sidebar-border: #1a1a1a;
+  /* Borders */
+  --color-border:        #242424;   /* AJUSTADO: subir de #1a1a1a para visibilidad */
+  --color-border-focus:  var(--color-primary);
+  --color-border-input:  #2a2a2a;
+
+  --shadow-card:         none;
+  --shadow-card-hover:   none;
+  --shadow-modal:        none;
+
+  --sidebar-bg:          var(--black);
+  --sidebar-text:        #ffffff;
+  --sidebar-text-muted:  #555555;
+  --sidebar-border:      #1a1a1a;
 }
 
 /* ─── Component-level semantic tokens (consumed by components) ─── */
 :root {
+  /* ─── H1 / Título de vista (raro, hero interno) ─── */
+  --text-h1-size:   var(--font-size-3xl);   /* 30 */
+  --text-h1-weight: var(--font-weight-bold);
+  --text-h1-lh:     var(--line-height-tight);
+  --text-h1-tracking: var(--tracking-tight);
+
+  /* ─── H2 / Título de página ─── */
+  --text-h2-size:   var(--font-size-2xl);   /* 24 */
+  --text-h2-weight: var(--font-weight-bold);
+  --text-h2-lh:     var(--line-height-tight);
+  --text-h2-tracking: var(--tracking-tight);
+
+  /* ─── H3 / Título de card o sección ─── */
+  --text-h3-size:   var(--font-size-xl);    /* 20 */
+  --text-h3-weight: var(--font-weight-semibold);
+  --text-h3-lh:     var(--line-height-snug);
+
+  /* ─── H4 / Subtítulo ─── */
+  --text-h4-size:   var(--font-size-lg);    /* 17 */
+  --text-h4-weight: var(--font-weight-semibold);
+  --text-h4-lh:     var(--line-height-snug);
+
+  /* ─── Body / Cuerpo (default) ─── */
+  --text-body-size:   var(--font-size-md);  /* 15 */
+  --text-body-weight: var(--font-weight-normal);
+  --text-body-lh:     var(--line-height-normal);
+
+  /* ─── Body-sm / Texto secundario, celdas ─── */
+  --text-body-sm-size:   var(--font-size-sm); /* 13 */
+  --text-body-sm-weight: var(--font-weight-normal);
+  --text-body-sm-lh:     var(--line-height-normal);
+
+  /* ─── Caption / Ayuda, descripciones pequeñas ─── */
+  --text-caption-size:   var(--font-size-xs); /* 12 */
+  --text-caption-weight: var(--font-weight-light);
+  --text-caption-color:  var(--color-text-muted);
+
+  /* ─── Label / Etiquetas de formulario ─── */
+  --text-label-size:   var(--font-size-sm);  /* 13 */
+  --text-label-weight: var(--font-weight-semibold);
+
+  /* ─── Overline / Micro-label MAYÚSCULA (KPI labels, secciones) ─── */
+  --text-overline-size:     var(--font-size-2xs); /* 11 */
+  --text-overline-weight:   var(--font-weight-semibold);
+  --text-overline-tracking: var(--tracking-wide);
+  --text-overline-transform: uppercase;
+
+  /* ─── KPI value / número grande ─── */
+  --text-kpi-size:   var(--font-size-4xl); /* 36 */
+  --text-kpi-weight: var(--font-weight-bold);
+  --text-kpi-lh:     var(--line-height-tight);
+
   /* Card */
-  --card-radius: var(--card-radius);
   --card-padding: calc(var(--space-4) * var(--density-multiplier));
   --card-border-width: var(--border-width);
   --card-bg: var(--color-surface);
@@ -184,7 +255,7 @@
   --btn-secondary-text: var(--color-text);
   --btn-secondary-border: var(--color-border);
   --btn-danger-bg: var(--color-danger);
-  --btn-danger-hover: #dc2626;
+  --btn-danger-hover: var(--red-600);
   --btn-danger-text: var(--color-on-primary);
 
   /* Input */
@@ -221,19 +292,19 @@
   --list-font-family: var(--font-family);
   --list-number-font-family: var(--font-family-mono);
 
-  /* Badge */
+  /* Badge (WCAG AA color-mix based on theme values) */
   --badge-radius: var(--radius-full);
   --badge-padding: calc(var(--space-1) * var(--density-multiplier)) calc(var(--space-2) * var(--density-multiplier));
   --badge-font-size: var(--font-size-2xs);
   --badge-font-weight: var(--font-weight-semibold);
-  --badge-success-bg: rgba(16, 185, 129, 0.1);
-  --badge-success-text: var(--green-500);
-  --badge-danger-bg: rgba(239, 68, 68, 0.1);
-  --badge-danger-text: var(--red-500);
-  --badge-warning-bg: rgba(245, 158, 11, 0.1);
-  --badge-warning-text: var(--amber-500);
-  --badge-info-bg: rgba(59, 130, 246, 0.1);
-  --badge-info-text: var(--blue-500);
+  --badge-success-bg: color-mix(in srgb, var(--color-green) 12%, transparent);
+  --badge-success-text: var(--color-green);
+  --badge-danger-bg: color-mix(in srgb, var(--color-red) 12%, transparent);
+  --badge-danger-text: var(--color-red);
+  --badge-warning-bg: color-mix(in srgb, var(--color-warning) 15%, transparent);
+  --badge-warning-text: var(--color-warning);
+  --badge-info-bg: color-mix(in srgb, var(--color-blue) 12%, transparent);
+  --badge-info-text: var(--color-blue);
 
   /* KPI */
   --kpi-value-size: var(--font-size-xl);
@@ -252,9 +323,6 @@
   --color-orange: var(--orange-500);
   --color-teal: var(--teal-500);
   --color-purple: var(--purple-500);
-  --color-green: var(--green-500);
-  --color-red: var(--red-500);
-  --color-blue: var(--blue-500);
   --color-black: var(--black);
   --color-orange-red: var(--color-primary);
 
@@ -267,12 +335,7 @@
   --card-title-weight: var(--font-weight-semibold);
   --card-title-color: var(--color-text);
 
-  /* Sidebar */
-  --sidebar-width: var(--sidebar-width);
-  --sidebar-collapsed: var(--sidebar-collapsed);
-
   /* Header */
-  --header-height: var(--header-height);
   --header-bg: var(--color-surface);
   --header-border: var(--color-border);
 
@@ -280,10 +343,17 @@
   --focus-ring-width: 3px;
   --focus-ring-color: var(--color-primary);
   --focus-ring-opacity: 0.15;
+  --focus-ring: 0 0 0 3px color-mix(in srgb, var(--color-primary) 40%, transparent);
 
-  /* Font Family & Size (user overrideable) */
-  --font-family: var(--font-family);
-  --font-size-base: var(--font-size-base);
+  /* Categorical Chart Palette */
+  --chart-1: var(--orange-500);
+  --chart-2: var(--blue-500);
+  --chart-3: var(--green-500);
+  --chart-4: var(--purple-500);
+  --chart-5: var(--amber-500);
+  --chart-6: var(--teal-500);
+  --chart-7: var(--pink-500);
+  --chart-8: var(--cyan-500);
 
   /* Skeleton */
   --skeleton-enabled: 1;

@@ -89,11 +89,7 @@ export function WarehousePage() {
   const activeWarehouses = warehouses.filter((w) => w.isActive).length;
 
   if (loading)
-    return config.skeletonEnabled ? (
-      <SkeletonTablePage rows={8} cols={5} kpi={3} />
-    ) : (
-      <LoadingDots text="Cargando almacenes..." />
-    );
+    return <SkeletonTablePage rows={8} cols={5} kpi={3} />;
 
   return (
     <div className={styles.container}>

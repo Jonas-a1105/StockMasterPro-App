@@ -114,11 +114,7 @@ export function UsersPage() {
   const activeUsers = users.filter((u) => u.isActive !== false).length;
 
   if (loading)
-    return config.skeletonEnabled ? (
-      <SkeletonTablePage rows={8} cols={6} kpi={3} />
-    ) : (
-      <LoadingDots text="Cargando usuarios" />
-    );
+    return <SkeletonTablePage rows={8} cols={6} kpi={3} />;
 
   return (
     <div className={styles.container}>

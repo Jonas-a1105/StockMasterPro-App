@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { api } from '@shared/lib/http/client';
 import { useToast } from '@contexts/ToastContext';
 import { useExchangeRate } from '@contexts/ExchangeRateContext';
-import { LoadingDots } from '@shared/ui/LoadingDots';
+
 import { TabNav } from '@shared/ui/TabNav';
 import {
   TrendingUp,
@@ -223,10 +223,8 @@ export function BestSellersPage() {
         )}
       </Toolbar>
 
-      {loading && config.skeletonEnabled ? (
+      {loading ? (
         <SkeletonTablePage rows={bestLimit} cols={6} tabs={2} kpi={3} />
-      ) : loading ? (
-        <LoadingDots text="Cargando..." />
       ) : (
         <>
           {tab === 'best' && (

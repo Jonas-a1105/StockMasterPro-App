@@ -4,7 +4,7 @@ import { useAuth } from '@contexts/AuthContext';
 import { useToast } from '@contexts/ToastContext';
 import { useTheme } from '@contexts/ThemeContext';
 import { useExchangeRate } from '@contexts/ExchangeRateContext';
-import { LoadingDots } from '@shared/ui/LoadingDots';
+
 import { SkeletonPOSLayout } from '@shared/ui/Skeleton';
 import { useCart } from '../hooks/useCart';
 import { useCheckout } from '../hooks/useCheckout';
@@ -239,7 +239,7 @@ export function POSPage() {
   });
 
   if (initialLoading)
-    return config.skeletonEnabled ? <SkeletonPOSLayout /> : <LoadingDots text="Cargando POS..." />;
+    return <SkeletonPOSLayout />;
 
   const handleOpenCash = () => cash.openCash(cash.cashOpening);
   const handleCloseCash = async () => {

@@ -289,17 +289,11 @@ export function AgendaDigitalPage() {
 
           <div className={styles.eventsList}>
             {loading ? (
-              config.skeletonEnabled ? (
-                <div className={styles.loadingSkeleton}>
-                  <Skeleton height={60} borderRadius={6} />
-                  <Skeleton height={60} borderRadius={6} />
-                  <Skeleton height={60} borderRadius={6} />
-                </div>
-              ) : (
-                <div className={styles.emptyEvents}>
-                  <p className={styles.loadingText}>Cargando eventos...</p>
-                </div>
-              )
+              <div className={styles.loadingSkeleton}>
+                <Skeleton height={60} borderRadius={6} />
+                <Skeleton height={60} borderRadius={6} />
+                <Skeleton height={60} borderRadius={6} />
+              </div>
             ) : selectedDateEvents.length === 0 ? (
               <div className={styles.emptyEvents}>
                 <FileText size={24} className={styles.iconMuted} />

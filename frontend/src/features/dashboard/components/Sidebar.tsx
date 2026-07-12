@@ -1,5 +1,5 @@
-import { useRef, useState, useCallback } from 'react';
-import { NavLink } from 'react-router-dom';
+import { useRef, useState, useCallback, useEffect } from 'react';
+import { NavLink, useLocation } from 'react-router-dom';
 import { useAuth } from '@contexts/AuthContext';
 import {
   LayoutDashboard,
@@ -10,6 +10,7 @@ import {
   BarChart3,
   BarChart2,
   ChevronRight,
+  ChevronDown,
   Users,
   Contact,
   Receipt,
@@ -41,15 +42,19 @@ export function Sidebar({
   mode,
   onClose,
   isMobile,
+  onToggleMode,
 }: {
   mode: SidebarMode;
   onClose: () => void;
   isMobile: boolean;
+  onToggleMode?: (m: SidebarMode) => void;
 }) {
   const { user, logout, licenseStatus } = useAuth();
+  const location = useLocation();
   const sidebarRef = useRef<HTMLDivElement>(null);
   const [dragWidth, setDragWidth] = useState<number | null>(null);
   const touchStartRef = useRef({ x: 0, sidebarLeft: 0 });
+  const [openSections, setOpenSections] = useState<Record<string, boolean>>({});
 
   const currentPlan = licenseStatus?.tier || 'free';
 
@@ -127,20 +132,25 @@ export function Sidebar({
     const current = dragWidth ?? COMPACT_WIDTH;
     setDragWidth(null);
     if (current >= COMPACT_WIDTH + SWIPE_THRESHOLD) {
-      document.getElementById('nav-toggle')?.click();
+      if (onToggleMode) {
+        onToggleMode('full');
+      } else {
+        document.getElementById('nav-toggle')?.click();
+      }
     }
-  }, [isMobile, mode, dragWidth]);
+  }, [isMobile, mode, dragWidth, onToggleMode]);
 
   const dragStyle =
     isMobile && dragWidth !== null ? { width: dragWidth, transition: 'none' } : undefined;
 
-  const nav = (to: string, icon: any, label: string) => {
+  const nav = (to: string, icon: any, label: string, isSubItem = false) => {
     const locked = isRouteLocked(to);
     return (
       <NavLink
+        key={to}
         to={to}
         className={({ isActive }) =>
-          `${styles.menuItem} ${isActive ? styles.active : ''} ${locked ? styles.menuItemLocked : ''}`
+          `${styles.menuItem} ${isActive ? styles.active : ''} ${locked ? styles.menuItemLocked : ''} ${isSubItem ? styles.subMenuItem : ''}`
         }
         onClick={isMobile ? onClose : undefined}
       >
@@ -149,9 +159,132 @@ export function Sidebar({
         {locked ? (
           <Lock size={10} className={styles.lockIcon} />
         ) : (
-          <ChevronRight size={10} className={styles.arrow} />
+          !isSubItem && <ChevronRight size={10} className={styles.arrow} />
         )}
       </NavLink>
+    );
+  };
+
+  const sections = [
+    {
+      id: 'sales',
+      label: 'Operaciones',
+      icon: <ShoppingCart size={16} className={styles.menuIcon} />,
+      items: [
+        { to: '/pos', icon: <ShoppingCart size={16} className={styles.menuIcon} />, label: 'Punto de Venta' },
+        { to: '/sales', icon: <ReceiptText size={16} className={styles.menuIcon} />, label: 'Historial Ventas' },
+        { to: '/cash-register', icon: <Wallet size={16} className={styles.menuIcon} />, label: 'Caja' },
+        { to: '/agenda', icon: <CalendarDays size={16} className={styles.menuIcon} />, label: 'Agenda Digital' },
+      ],
+    },
+    {
+      id: 'inventory',
+      label: 'Inventario',
+      icon: <Package size={16} className={styles.menuIcon} />,
+      items: [
+        { to: '/inventory', icon: <Package size={16} className={styles.menuIcon} />, label: 'Inventario' },
+        { to: '/warehouses', icon: <Building2 size={16} className={styles.menuIcon} />, label: 'Almacenes' },
+        { to: '/categories', icon: <Tag size={16} className={styles.menuIcon} />, label: 'Categorías' },
+        { to: '/warehouse-transfers', icon: <ArrowRightLeft size={16} className={styles.menuIcon} />, label: 'Transferencias' },
+        { to: '/product-lots', icon: <Boxes size={16} className={styles.menuIcon} />, label: 'Lotes y Vencimientos' },
+        { to: '/low-stock', icon: <AlertTriangle size={16} className={styles.menuIcon} />, label: 'Alertas Stock' },
+      ],
+    },
+    {
+      id: 'finance',
+      label: 'Finanzas',
+      icon: <DollarSign size={16} className={styles.menuIcon} />,
+      items: [
+        { to: '/accounts-payable', icon: <Receipt size={16} className={styles.menuIcon} />, label: 'Cuentas por Pagar' },
+        { to: '/accounts-receivable', icon: <DollarSign size={16} className={styles.menuIcon} />, label: 'Cuentas por Cobrar' },
+        { to: '/expenses', icon: <ReceiptText size={16} className={styles.menuIcon} />, label: 'Gastos' },
+        { to: '/credit-notes', icon: <RotateCcw size={16} className={styles.menuIcon} />, label: 'Notas de Crédito' },
+        { to: '/returns', icon: <ReturnIcon size={16} className={styles.menuIcon} />, label: 'Devoluciones' },
+      ],
+    },
+    {
+      id: 'reports',
+      label: 'Reportes y Analítica',
+      icon: <BarChart3 size={16} className={styles.menuIcon} />,
+      items: [
+        { to: '/reports', icon: <BarChart3 size={16} className={styles.menuIcon} />, label: 'Reportes' },
+        { to: '/net-profit', icon: <DollarSign size={16} className={styles.menuIcon} />, label: 'Utilidad Neta' },
+        { to: '/best-sellers', icon: <BarChart3 size={16} className={styles.menuIcon} />, label: 'Best-Sellers' },
+        { to: '/dead-products', icon: <AlertTriangle size={16} className={styles.menuIcon} />, label: 'Productos Muertos' },
+        { to: '/fiscal', icon: <FileText size={16} className={styles.menuIcon} />, label: 'Fiscal' },
+      ],
+    },
+    {
+      id: 'admin',
+      label: 'Administración',
+      icon: <Settings size={16} className={styles.menuIcon} />,
+      items: [
+        { to: '/customers', icon: <Contact size={16} className={styles.menuIcon} />, label: 'Clientes' },
+        ...(user?.role === 'admin' ? [{ to: '/users', icon: <Users size={16} className={styles.menuIcon} />, label: 'Usuarios' }] : []),
+        ...(user?.email === 'admin@stockmaster.com'
+          ? [
+              { to: '/admin/tenants', icon: <Shield size={16} className={styles.menuIcon} />, label: 'Licencias' },
+              { to: '/admin/saas-dashboard', icon: <BarChart2 size={16} className={styles.menuIcon} />, label: 'SaaS Metrics' },
+            ]
+          : []),
+        { to: '/settings', icon: <Settings size={16} className={styles.menuIcon} />, label: 'Configuración' },
+      ],
+    },
+  ];
+
+  useEffect(() => {
+    // Auto-expand section containing active path on load or navigate
+    sections.forEach((sec) => {
+      const hasActive = sec.items.some((item) => location.pathname === item.to);
+      if (hasActive) {
+        setOpenSections((prev) => ({ ...prev, [sec.id]: true }));
+      }
+    });
+  }, [location.pathname]);
+
+  const handleSectionClick = (sectionId: string) => {
+    const isCollapsed = mode === 'compact';
+    if (isCollapsed) {
+      if (onToggleMode) {
+        onToggleMode('full');
+      } else {
+        document.getElementById('nav-toggle')?.click();
+      }
+      setOpenSections((prev) => ({ ...prev, [sectionId]: true }));
+    } else {
+      setOpenSections((prev) => ({
+        ...prev,
+        [sectionId]: !prev[sectionId],
+      }));
+    }
+  };
+
+  const renderSection = (sec: any) => {
+    const isOpen = !!openSections[sec.id];
+    const isCollapsed = mode === 'compact';
+    const hasActiveChild = sec.items.some((item: any) => location.pathname === item.to);
+
+    return (
+      <div key={sec.id} className={`${styles.accordionSection} ${isOpen ? styles.sectionOpen : ''} ${hasActiveChild ? styles.sectionHasActive : ''}`}>
+        <button
+          type="button"
+          className={`${styles.accordionHeader} ${hasActiveChild ? styles.activeHeader : ''}`}
+          onClick={() => handleSectionClick(sec.id)}
+          title={isCollapsed ? sec.label : undefined}
+        >
+          {sec.icon}
+          <span className={styles.sectionText}>{sec.label}</span>
+          {!isCollapsed && (
+            <ChevronDown size={14} className={`${styles.chevron} ${isOpen ? styles.chevronRotated : ''}`} />
+          )}
+        </button>
+
+        {isOpen && !isCollapsed && (
+          <div className={styles.accordionContent}>
+            {sec.items.map((item: any) => nav(item.to, item.icon, item.label, true))}
+          </div>
+        )}
+      </div>
     );
   };
 
@@ -210,83 +343,12 @@ export function Sidebar({
             'Panel de Control'
           )}
 
-          {nav('/pos', <ShoppingCart size={16} className={styles.menuIcon} />, 'Punto de Venta')}
-          {nav('/sales', <ReceiptText size={16} className={styles.menuIcon} />, 'Historial Ventas')}
-          {nav('/reports', <BarChart3 size={16} className={styles.menuIcon} />, 'Reportes')}
-          {nav(
-            '/dead-products',
-            <AlertTriangle size={16} className={styles.menuIcon} />,
-            'Productos Muertos'
-          )}
-          {nav(
-            '/best-sellers',
-            <BarChart3 size={16} className={styles.menuIcon} />,
-            'Best-Sellers'
-          )}
-          {nav(
-            '/net-profit',
-            <DollarSign size={16} className={styles.menuIcon} />,
-            'Utilidad Neta'
-          )}
-
-          {nav('/agenda', <CalendarDays size={16} className={styles.menuIcon} />, 'Agenda Digital')}
-
-          {nav('/inventory', <Package size={16} className={styles.menuIcon} />, 'Inventario')}
-          {nav('/warehouses', <Building2 size={16} className={styles.menuIcon} />, 'Almacenes')}
-          {nav(
-            '/low-stock',
-            <AlertTriangle size={16} className={styles.menuIcon} />,
-            'Alertas Stock'
-          )}
-          {nav('/categories', <Tag size={16} className={styles.menuIcon} />, 'Categorías')}
-          {nav(
-            '/credit-notes',
-            <RotateCcw size={16} className={styles.menuIcon} />,
-            'Notas de Crédito'
-          )}
-          {nav('/returns', <ReturnIcon size={16} className={styles.menuIcon} />, 'Devoluciones')}
-          {nav(
-            '/warehouse-transfers',
-            <ArrowRightLeft size={16} className={styles.menuIcon} />,
-            'Transferencias'
-          )}
-          {nav(
-            '/product-lots',
-            <Boxes size={16} className={styles.menuIcon} />,
-            'Lotes y Vencimientos'
-          )}
-
-          {nav(
-            '/accounts-payable',
-            <Receipt size={16} className={styles.menuIcon} />,
-            'Cuentas por Pagar'
-          )}
-          {nav(
-            '/accounts-receivable',
-            <DollarSign size={16} className={styles.menuIcon} />,
-            'Cuentas por Cobrar'
-          )}
-          {nav('/cash-register', <Wallet size={16} className={styles.menuIcon} />, 'Caja')}
-          {nav('/expenses', <ReceiptText size={16} className={styles.menuIcon} />, 'Gastos')}
-
-          {nav('/customers', <Contact size={16} className={styles.menuIcon} />, 'Clientes')}
-
-          {user?.role === 'admin' &&
-            nav('/users', <Users size={16} className={styles.menuIcon} />, 'Usuarios')}
-          {user?.email === 'admin@stockmaster.com' && (
-            <>
-              {nav('/admin/tenants', <Shield size={16} className={styles.menuIcon} />, 'Licencias')}
-              {nav(
-                '/admin/saas-dashboard',
-                <BarChart2 size={16} className={styles.menuIcon} />,
-                'SaaS Metrics'
-              )}
-            </>
-          )}
-          {nav('/settings', <Settings size={16} className={styles.menuIcon} />, 'Configuración')}
-          {nav('/notifications', <Bell size={16} className={styles.menuIcon} />, 'Notificaciones')}
-          {nav('/fiscal', <FileText size={16} className={styles.menuIcon} />, 'Fiscal')}
           <div className={styles.divider} />
+
+          {sections.map(renderSection)}
+
+          <div className={styles.divider} />
+          {nav('/notifications', <Bell size={16} className={styles.menuIcon} />, 'Notificaciones')}
           {nav('/social', <Share2 size={16} className={styles.menuIcon} />, 'Social')}
         </nav>
 

@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { api } from '@shared/lib/http/client';
 import { useToast } from '@contexts/ToastContext';
 import { Modal } from '@shared/ui/Modal';
-import { LoadingDots } from '@shared/ui/LoadingDots';
+
 import { KpiGrid } from '@shared/ui/KpiGrid';
 import { Toolbar } from '@shared/ui/Toolbar';
 import { DataTable } from '@shared/ui/DataTable';
@@ -123,11 +123,7 @@ export function SalesHistoryPage() {
   };
 
   if (loading && sales.length === 0)
-    return config.skeletonEnabled ? (
-      <SkeletonTablePage />
-    ) : (
-      <LoadingDots text="Cargando historial de ventas..." />
-    );
+    return <SkeletonTablePage />;
 
   const paymentBadgeVariant = (method: string) => {
     const m = method?.toLowerCase();
@@ -218,11 +214,7 @@ export function SalesHistoryPage() {
   const totalRevenue = filteredSales.reduce((s: number, sale: any) => s + Number(sale.total), 0);
 
   if (loading && sales.length === 0)
-    return config.skeletonEnabled ? (
-      <SkeletonTablePage />
-    ) : (
-      <LoadingDots text="Cargando historial de ventas..." />
-    );
+    return <SkeletonTablePage />;
 
   return (
     <>

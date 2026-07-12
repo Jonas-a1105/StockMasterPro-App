@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { api } from '@shared/lib/http/client';
 import { useToast } from '@contexts/ToastContext';
-import { LoadingDots } from '@shared/ui/LoadingDots';
+
 import { SkeletonTablePage } from '@shared/ui/Skeleton';
 import { useTheme } from '@contexts/ThemeContext';
 import { useExchangeRate } from '@contexts/ExchangeRateContext';
@@ -115,11 +115,7 @@ export function ReturnsPage() {
     selectedSale?.items?.reduce((sum: number, i: any) => sum + itemTotal(i), 0) || 0;
 
   if (loading)
-    return config.skeletonEnabled ? (
-      <SkeletonTablePage rows={6} cols={6} kpi={2} />
-    ) : (
-      <LoadingDots text="Cargando ventas..." />
-    );
+    return <SkeletonTablePage rows={6} cols={6} kpi={2} />;
 
   return (
     <div className={styles.container}>

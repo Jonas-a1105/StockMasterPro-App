@@ -1,6 +1,6 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { api } from '@shared/lib/http/client';
-import { LoadingDots } from '@shared/ui/LoadingDots';
+
 import { SkeletonTablePage } from '@shared/ui/Skeleton';
 import { useToast } from '@contexts/ToastContext';
 import { useTheme } from '@contexts/ThemeContext';
@@ -83,11 +83,7 @@ export function DeadProductsPage() {
   };
 
   if (loading)
-    return config.skeletonEnabled ? (
-      <SkeletonTablePage rows={8} cols={6} kpi={0} />
-    ) : (
-      <div className={styles.loadingCenter}>Cargando...</div>
-    );
+    return <SkeletonTablePage rows={8} cols={6} kpi={0} />;
 
   return (
     <div className={styles.container}>

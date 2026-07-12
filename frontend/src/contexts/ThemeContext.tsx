@@ -5,7 +5,6 @@ interface ThemeConfig {
   oledMode: boolean;
   primaryColor: string;
   density: 'compact' | 'comfortable' | 'spacious';
-  fontFamily: string;
   fontSizeBase: number;
   // Visual overrides (connected to semantic tokens)
   cardBorders: boolean;
@@ -37,7 +36,6 @@ const defaultConfig: ThemeConfig = {
   oledMode: false,
   primaryColor: '#ea580c',
   density: 'comfortable',
-  fontFamily: "'Outfit', 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif",
   fontSizeBase: 15,
   // Visual overrides defaults
   cardBorders: true,
@@ -59,23 +57,7 @@ export const palettes = [
   { name: 'Threads', primary: '#1d9bf0' },
 ];
 
-const FONT_OPTIONS = [
-  {
-    label: 'System UI',
-    value:
-      'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
-  },
-  { label: 'Inter', value: '"Inter", system-ui, sans-serif' },
-  { label: 'Poppins', value: '"Poppins", system-ui, sans-serif' },
-  { label: 'Roboto', value: '"Roboto", system-ui, sans-serif' },
-  { label: 'Open Sans', value: '"Open Sans", system-ui, sans-serif' },
-  { label: 'Montserrat', value: '"Montserrat", system-ui, sans-serif' },
-  { label: 'Lato', value: '"Lato", system-ui, sans-serif' },
-  {
-    label: 'Outfit (Default)',
-    value: "'Outfit', 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif",
-  },
-];
+// FONT_OPTIONS removed to lock typography to Segoe UI
 
 const ThemeContext = createContext<ThemeContextType | null>(null);
 
@@ -100,7 +82,6 @@ function applyConfigToDOM(config: ThemeConfig) {
   // 2. User overrides (minimal set)
   root.style.setProperty('--color-primary', config.primaryColor);
   root.style.setProperty('--density-multiplier', String(DENSITY_MAP[config.density]));
-  root.style.setProperty('--font-family', config.fontFamily);
   root.style.setProperty('--font-size-base', `${config.fontSizeBase}px`);
 
   // 3. Visual overrides connected to semantic tokens
@@ -120,8 +101,12 @@ function applyConfigToDOM(config: ThemeConfig) {
   root.style.setProperty('--font-size-xs', `${Math.max(10, base - 3)}px`);
   root.style.setProperty('--font-size-sm', `${Math.max(11, base - 2)}px`);
   root.style.setProperty('--font-size-md', `${base}px`);
-  root.style.setProperty('--font-size-lg', `${Math.round(base * 1.2)}px`);
-  root.style.setProperty('--font-size-xl', `${Math.round(base * 1.5)}px`);
+  root.style.setProperty('--font-size-lg', `${Math.round(base * 1.13)}px`);
+  root.style.setProperty('--font-size-xl', `${Math.round(base * 1.33)}px`);
+  root.style.setProperty('--font-size-2xl', `${Math.round(base * 1.6)}px`);
+  root.style.setProperty('--font-size-3xl', `${Math.round(base * 2.0)}px`);
+  root.style.setProperty('--font-size-4xl', `${Math.round(base * 2.4)}px`);
+  root.style.setProperty('--font-size-5xl', `${Math.round(base * 2.93)}px`);
 }
 
 const ThemeProvider = ({ children }: { children: ReactNode }) => {
@@ -211,4 +196,4 @@ export function useTheme() {
   return ctx;
 }
 
-export { ThemeProvider, FONT_OPTIONS };
+export { ThemeProvider };

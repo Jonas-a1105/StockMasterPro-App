@@ -32,7 +32,7 @@ export function DashboardPage() {
   const { formatPrice } = useExchangeRate();
   const { config } = useTheme();
 
-  if (loading && config.skeletonEnabled) {
+  if (loading) {
     return (
       <>
         <SkeletonKPI count={6} />

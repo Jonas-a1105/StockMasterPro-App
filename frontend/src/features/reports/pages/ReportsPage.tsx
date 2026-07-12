@@ -35,7 +35,7 @@ import {
   Download,
 } from 'lucide-react';
 import { api } from '@shared/lib/http/client';
-import { LoadingDots } from '@shared/ui/LoadingDots';
+
 import { SkeletonReports } from '@shared/ui/Skeleton';
 import { TabNav } from '@shared/ui/TabNav';
 import { useTheme } from '@contexts/ThemeContext';
@@ -388,11 +388,7 @@ export function ReportsPage() {
   };
 
   if (loading)
-    return config.skeletonEnabled ? (
-      <SkeletonReports chartCount={6} />
-    ) : (
-      <LoadingDots text="Cargando reportes..." />
-    );
+    return <SkeletonReports chartCount={6} />;
 
   return (
     <div className={styles.container}>
