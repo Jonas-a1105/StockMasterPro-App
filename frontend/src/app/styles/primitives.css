@@ -60,6 +60,15 @@
   --radius-2xl: 24px;
   --radius-full: 9999px;
 
+  /* Aliases for components using the alternative border-radius syntax */
+  --border-radius-sm: var(--radius-sm);
+  --border-radius-md: var(--radius-md);
+  --border-radius-lg: var(--radius-lg);
+  --border-radius-xl: var(--radius-xl);
+  --border-radius-2xl: var(--radius-2xl);
+  --border-radius-full: var(--radius-full);
+
+
   /* ─── Typography Scale (Segoe UI stack & Minor Third ratio ~1.20) ─── */
   --font-family: 'Segoe UI', sans-serif;
   --font-family-mono: 'Segoe UI', sans-serif;
