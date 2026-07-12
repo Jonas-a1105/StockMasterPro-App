@@ -4,7 +4,7 @@ import {
   NestInterceptor,
   CallHandler,
 } from '@nestjs/common';
-import { Observable, from } from 'rxjs';
+import { Observable } from 'rxjs';
 import { PrismaService } from '../../prisma/prisma.service';
 import { rlsStorage } from '../../prisma/rls.context';
 
@@ -21,25 +21,14 @@ export class RLSInterceptor implements NestInterceptor {
       return next.handle();
     }
 
-    // Convertir el Observable de NestJS a una promesa para envolverlo en la transacción Prisma
-    const promise = this.prisma.$transaction(async (tx) => {
-      // Establecer el tenant_id actual en la conexión física antes de ejecutar cualquier consulta del request
-      await tx.$executeRawUnsafe(
-        `SELECT set_config('app.tenant_id', $1, true)`,
-        tenantId,
-      );
-
-      return new Promise((resolve, reject) => {
-        rlsStorage.run({ tenantId, tx }, () => {
-          const observable = next.handle();
-          (observable as any).subscribe({
-            next: (res: any) => resolve(res),
-            error: (err: any) => reject(err),
-          });
+    return new Observable((subscriber) => {
+      rlsStorage.run({ tenantId }, () => {
+        (next.handle() as any).subscribe({
+          next: (val: any) => subscriber.next(val),
+          error: (err: any) => subscriber.error(err),
+          complete: () => subscriber.complete(),
         });
       });
     });
-
-    return from(promise);
   }
 }
