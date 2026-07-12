@@ -12,6 +12,7 @@ interface ThemeConfig {
   shadows: boolean;
   cardRadius: number;
   animationEnabled: boolean;
+  skeletonEnabled: boolean;
 }
 
 interface SavedPreset {
@@ -43,6 +44,7 @@ const defaultConfig: ThemeConfig = {
   shadows: true,
   cardRadius: 12,
   animationEnabled: true,
+  skeletonEnabled: true,
 };
 
 export const palettes = [
@@ -109,6 +111,9 @@ function applyConfigToDOM(config: ThemeConfig) {
   
   // Animation control
   root.style.setProperty('--transition-base', config.animationEnabled ? '150ms cubic-bezier(0.4, 0, 0.2, 1)' : '0ms');
+
+  // Skeleton control
+  root.style.setProperty('--skeleton-enabled', config.skeletonEnabled ? '1' : '0');
 
   // Derived font sizes based on base
   const base = config.fontSizeBase;

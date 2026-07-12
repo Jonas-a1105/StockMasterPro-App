@@ -252,6 +252,9 @@
   --color-orange: var(--orange-500);
   --color-teal: var(--teal-500);
   --color-purple: var(--purple-500);
+  --color-green: var(--green-500);
+  --color-red: var(--red-500);
+  --color-blue: var(--blue-500);
   --color-black: var(--black);
   --color-orange-red: var(--color-primary);
 
@@ -281,6 +284,9 @@
   /* Font Family & Size (user overrideable) */
   --font-family: var(--font-family);
   --font-size-base: var(--font-size-base);
+
+  /* Skeleton */
+  --skeleton-enabled: 1;
 }
 
 /* ─── Animation Control (from data-animation-disabled) ─── */
@@ -291,6 +297,12 @@ html[data-animation-disabled='true'] *::after {
   animation-iteration-count: 1 !important;
   transition-duration: 0.01ms !important;
   scroll-behavior: auto !important;
+}
+
+/* ─── Skeleton Control (from --skeleton-enabled) ─── */
+html[style*="--skeleton-enabled: 0"] .skeleton,
+html[style*="--skeleton-enabled: 0"] [class*="skeleton"] {
+  display: none !important;
 }
 
 /* ─── Uppercase Control (from data-uppercase-disabled) ─── */
