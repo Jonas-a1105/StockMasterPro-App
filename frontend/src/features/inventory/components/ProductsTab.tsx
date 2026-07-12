@@ -21,6 +21,7 @@ import { exportToPdf } from '@shared/lib/print/pdfHelper';
 import type { Product } from '@types';
 import type { SortField, SortDirection, ViewMode } from '../types';
 import styles from '../pages/InventoryPage.module.css';
+import tableStyles from '@shared/ui/TableList.module.css';
 
 const PRODUCT_COLUMNS: ColumnMapping[] = [
   { header: 'Nombre', key: 'name', type: 'string' }, { header: 'Marca', key: 'brand', type: 'string' },
@@ -254,8 +255,8 @@ export function ProductsTab() {
           {filteredProducts.length === 0 && <div className={styles.emptyGrid}>No hay productos registrados</div>}
         </div>
       ) : (
-        <div className="lista-container">
-          <table className="lista-table">
+        <div className={tableStyles.container}>
+          <table className={tableStyles.table}>
             <thead>
               <tr>
                 <th>Producto</th><th>Marca</th><th>Categoría</th><th>Código</th>
@@ -271,23 +272,23 @@ export function ProductsTab() {
                 const profit = product.price - product.cost;
                 return (
                   <tr key={product.id}>
-                    <td><div className="lista-name-cell">{product.imageUrl ? <img src={product.imageUrl} alt="" className={`${styles.objectCover} ${styles.w28h28} ${styles.flexShrink0}`} /> : <span className={`${styles.w28h28} ${styles.flexCenter} ${styles.flexShrink0} ${styles.bgMain}`}><Package size={14} /></span>}<span className="lista-name-text">{product.name}</span></div></td>
+                    <td><div className={tableStyles.nameCell}>{product.imageUrl ? <img src={product.imageUrl} alt="" className={`${styles.objectCover} ${styles.w28h28} ${styles.flexShrink0}`} /> : <span className={`${styles.w28h28} ${styles.flexCenter} ${styles.flexShrink0} ${styles.bgMain}`}><Package size={14} /></span>}<span className={tableStyles.nameText}>{product.name}</span></div></td>
                     <td className={styles.textMuted}>{(product as any).brand || '—'}</td>
                     <td className={styles.textMuted}>{getCategoryName(product.categoryId)}</td>
-                    <td><span className="lista-code">{product.barcode || '—'}</span></td>
-                    <td className={styles.textRight}><span className="lista-number-value">{formatUsd(product.price)}</span></td>
-                    <td className={styles.textRight}><span className="lista-number-value">{formatBs(product.price)}</span></td>
-                    <td className={styles.textRight}><span className="lista-number-value">{formatUsd(product.cost)}</span></td>
-                    <td className={styles.textRight}><span className="lista-number-value">{formatBs(product.cost)}</span></td>
-                    <td className={styles.textRight}><span className={`lista-number-value ${profit >= 0 ? styles.textSuccess : styles.textDanger}`}>{formatUsd(profit)}</span></td>
-                    <td className={styles.textRight}><span className={`lista-number-value ${profit >= 0 ? styles.textSuccess : styles.textDanger}`}>{formatBs(profit)}</span></td>
-                    <td className={styles.textRight}><span className="lista-number-value">{product.stock}</span></td>
+                    <td><span className={tableStyles.code}>{product.barcode || '—'}</span></td>
+                    <td className={styles.textRight}><span className={tableStyles.numberValue}>{formatUsd(product.price)}</span></td>
+                    <td className={styles.textRight}><span className={tableStyles.numberValue}>{formatBs(product.price)}</span></td>
+                    <td className={styles.textRight}><span className={tableStyles.numberValue}>{formatUsd(product.cost)}</span></td>
+                    <td className={styles.textRight}><span className={tableStyles.numberValue}>{formatBs(product.cost)}</span></td>
+                    <td className={styles.textRight}><span className={`${tableStyles.numberValue} ${profit >= 0 ? styles.textSuccess : styles.textDanger}`}>{formatUsd(profit)}</span></td>
+                    <td className={styles.textRight}><span className={`${tableStyles.numberValue} ${profit >= 0 ? styles.textSuccess : styles.textDanger}`}>{formatBs(profit)}</span></td>
+                    <td className={styles.textRight}><span className={tableStyles.numberValue}>{product.stock}</span></td>
                     <td className={styles.textRight}>{product.minStock}</td>
-                    <td className={styles.textCenter}><span className={`lista-badge ${product.stock <= product.minStock ? 'saturated' : 'active'}`}>{product.stock <= product.minStock ? 'Stock Bajo' : 'OK'}</span></td>
+                    <td className={styles.textCenter}><span className={`${tableStyles.badge} ${product.stock <= product.minStock ? tableStyles.badgeSaturated : tableStyles.badgeActive}`}>{product.stock <= product.minStock ? 'Stock Bajo' : 'OK'}</span></td>
                     <td className={styles.textCenter}>
-                      <div className="lista-actions">
-                        <button className="lista-action-btn" onClick={() => handleViewDetails(product)} title="Ver Detalles"><Eye size={14} /></button>
-                        {user?.role !== 'cajero' && (<><button className="lista-action-btn" onClick={() => startEdit(product)} title="Editar"><Edit2 size={14} /></button><button className="lista-action-btn danger" onClick={() => handleDelete(product.id, product.name)} title="Eliminar"><Trash2 size={14} /></button></>)}
+                      <div className={tableStyles.actions}>
+                        <button className={tableStyles.actionBtn} onClick={() => handleViewDetails(product)} title="Ver Detalles"><Eye size={14} /></button>
+                        {user?.role !== 'cajero' && (<><button className={tableStyles.actionBtn} onClick={() => startEdit(product)} title="Editar"><Edit2 size={14} /></button><button className={`${tableStyles.actionBtn} danger`} onClick={() => handleDelete(product.id, product.name)} title="Eliminar"><Trash2 size={14} /></button></>)}
                       </div>
                     </td>
                   </tr>

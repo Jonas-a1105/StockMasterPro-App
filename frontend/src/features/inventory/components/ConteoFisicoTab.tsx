@@ -11,6 +11,7 @@ import { formatUsd } from '@shared/lib/format/currency';
 import { exportToExcel, type ColumnMapping } from '@shared/lib/excelHelper';
 import { ImportModal } from '@shared/ui/ImportModal';
 import styles from './ConteoFisicoTab.module.css';
+import tableStyles from '@shared/ui/TableList.module.css';
 
 interface InventoryCountItem {
   id: string;
@@ -306,8 +307,8 @@ export function ConteoFisicoTab() {
         </select>
       </div>
 
-      <div className={styles.tableContainer}>
-        <table className="lista-table">
+      <div className={tableStyles.container}>
+        <table className={tableStyles.table}>
           <thead>
             <tr>
               <th>ID</th>
@@ -324,7 +325,7 @@ export function ConteoFisicoTab() {
             {loading ? renderLoadingRows(config) : filteredCounts.map(count => (
                 <tr key={count.id}>
                   <td className={`${styles.monoFont} ${styles.textMuted}`}>{count.id.slice(0, 8)}</td>
-                  <td><span className="lista-name-text">{count.name || '—'}</span></td>
+                  <td><span className={tableStyles.nameText}>{count.name || '—'}</span></td>
                   <td>{count.warehouse?.name || 'Todos'}</td>
                   <td className={styles.textCenter}>
                     <span className={`${styles.badge} ${STATUS_STYLES[count.status]}`}>{STATUS_LABELS[count.status]}</span>
@@ -491,7 +492,7 @@ function CountDetailModal({ open, onClose, count, onUpdateItem, savingItem }: an
         {count.notes && <div className="detail-notes"><strong>Notas:</strong> {count.notes}</div>}
       </div>
 
-      <table className="lista-table">
+      <table className={tableStyles.table}>
         <thead>
           <tr>
             <th>Producto</th>

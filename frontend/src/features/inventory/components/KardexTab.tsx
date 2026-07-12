@@ -6,6 +6,7 @@ import { LoadingDots } from '@shared/ui/LoadingDots';
 import { getInventoryProducts, getInventoryMovements } from '../api/inventory.api';
 import type { Product, InventoryMovement } from '@types';
 import styles from '../pages/InventoryPage.module.css';
+import tableStyles from '@shared/ui/TableList.module.css';
 
 export function KardexTab() {
   const { config } = useTheme();
@@ -70,8 +71,8 @@ export function KardexTab() {
           {loading ? (
             config.skeletonEnabled ? <SkeletonTable rows={5} cols={5} /> : <LoadingDots text="Cargando movimientos..." />
           ) : (
-            <div className="lista-container">
-              <table className="lista-table">
+            <div className={tableStyles.container}>
+              <table className={tableStyles.table}>
                 <thead>
                   <tr><th>Fecha</th><th>Tipo</th><th className={styles.textAlignRight}>Cantidad</th><th>Referencia</th><th>Usuario</th></tr>
                 </thead>
@@ -82,8 +83,8 @@ export function KardexTab() {
                     movements.map(m => (
                       <tr key={m.id}>
                         <td>{new Date(m.createdAt).toLocaleString()}</td>
-                        <td><span className={`lista-badge ${m.type === 'sale' || m.type === 'exit' ? 'saturated' : m.type === 'purchase' || m.type === 'entry' ? 'active' : 'warning'}`}>{typeLabel(m.type)}</span></td>
-                        <td className={styles.textAlignRight}><span className={`lista-number-value ${styles.colorVar}`} style={{ '--color-var': m.quantity > 0 ? 'var(--color-success)' : 'var(--color-danger)' } as React.CSSProperties}>{m.quantity > 0 ? '+' : ''}{m.quantity}</span></td>
+                        <td><span className={`${tableStyles.badge} ${m.type === 'sale' || m.type === 'exit' ? tableStyles.badgeSaturated : m.type === 'purchase' || m.type === 'entry' ? tableStyles.badgeActive : tableStyles.badgeWarning}`}>{typeLabel(m.type)}</span></td>
+                        <td className={styles.textAlignRight}><span className={`${tableStyles.numberValue} ${styles.colorVar}`} style={{ '--color-var': m.quantity > 0 ? 'var(--color-success)' : 'var(--color-danger)' } as React.CSSProperties}>{m.quantity > 0 ? '+' : ''}{m.quantity}</span></td>
                         <td>{m.reference || '-'}</td>
                         <td>{m.userId ? m.userId.slice(0, 8) : '-'}</td>
                       </tr>
