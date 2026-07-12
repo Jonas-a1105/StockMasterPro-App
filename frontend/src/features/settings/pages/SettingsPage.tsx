@@ -16,6 +16,7 @@ import { SkeletonTablePage } from '@shared/ui/Skeleton';
 import { StripeCheckoutModal } from '@shared/ui/StripeCheckoutModal';
 import { CreditCard as CardIcon } from 'lucide-react';
 import styles from './SettingsPage.module.css';
+import tableStyles from '@shared/ui/TableList.module.css';
 import { SessionsTab } from '../components/SessionsTab';
 
 type Tab = 'tax-currency' | 'personalization' | 'branches' | 'backup' | 'notifications' | 'downloads' | 'bitacora' | 'licenses' | 'sessions';
@@ -609,8 +610,8 @@ function BranchesTab() {
           <p>No hay sucursales registradas. Crea la primera.</p>
         </div>
       ) : (
-        <div className="lista-container">
-          <table className="lista-table">
+        <div className={tableStyles.container}>
+          <table className={tableStyles.table}>
             <thead>
               <tr>
                 <th>Nombre</th>
@@ -624,27 +625,27 @@ function BranchesTab() {
               {warehouses.map(w => (
                 <tr key={w.id}>
                   <td>
-                    <div className="lista-name-cell">
+                    <div className={tableStyles.nameCell}>
                       <Store size={14} className={styles.iconAccent} />
-                      <span className="lista-name-text">{w.name}</span>
+                      <span className={tableStyles.nameText}>{w.name}</span>
                     </div>
                   </td>
-                  <td><span className="lista-code">{w.code}</span></td>
+                  <td><span className={tableStyles.code}>{w.code}</span></td>
                   <td className={styles.textMuted}>{w.address || '—'}</td>
                   <td className={styles.textCenter}>
-                    <span className={`lista-badge ${w.isActive ? 'active' : 'inactive'}`}>
+                    <span className={`${tableStyles.badge} ${w.isActive ? tableStyles.badgeActive : tableStyles.badgeInactive}`}>
                       {w.isActive ? 'Activo' : 'Inactivo'}
                     </span>
                   </td>
                   <td className={styles.textCenter}>
-                    <div className={`${styles.listaActions} ${styles.flexCenter}`}>
-                      <button className="lista-action-btn" onClick={() => setModal({ type: 'edit', data: w })} title="Editar">
+                    <div className={`${tableStyles.actions} ${styles.flexCenter}`}>
+                      <button className={tableStyles.actionBtn} onClick={() => setModal({ type: 'edit', data: w })} title="Editar">
                         <Edit2 size={14} />
                       </button>
-                      <button className="lista-action-btn" onClick={() => toggleActive(w)} title={w.isActive ? 'Desactivar' : 'Activar'}>
+                      <button className={tableStyles.actionBtn} onClick={() => toggleActive(w)} title={w.isActive ? 'Desactivar' : 'Activar'}>
                         {w.isActive ? <ToggleRight size={14} /> : <ToggleLeft size={14} />}
                       </button>
-                      <button className="lista-action-btn danger" onClick={() => handleDelete(w.id, w.name)} title="Eliminar">
+                      <button className={`${tableStyles.actionBtn} danger`} onClick={() => handleDelete(w.id, w.name)} title="Eliminar">
                         <Trash2 size={14} />
                       </button>
                     </div>
