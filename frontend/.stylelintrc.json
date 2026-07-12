@@ -1,8 +1,7 @@
 {
   "rules": {
-    "selector-max-specificity": "1,0,0",
-    "selector-class-pattern": null,
-    "selector-pseudo-class-no-unknown": [true, { "ignorePseudoClasses": ["global", "local"] }],
-    "custom-property-pattern": null
+    "selector-max-id": 0,
+    "selector-max-specificity": "0,4,0",
+    "selector-pseudo-class-no-unknown": [true, { "ignorePseudoClasses": ["global", "local"] }]
   }
 }
