@@ -32,7 +32,7 @@
       "@types/*": ["src/types/*"],
       "@types": ["src/types/index.ts", "src/types"]
     },
-    "ignoreDeprecations": "6.0"
+    "ignoreDeprecations": "5.0"
   },
   "include": ["src"],
   "exclude": []
