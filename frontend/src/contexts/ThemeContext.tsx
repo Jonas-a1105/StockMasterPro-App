@@ -4,14 +4,44 @@ interface ThemeConfig {
   darkMode: boolean;
   oledMode: boolean;
   primaryColor: string;
+  secondaryColor?: string;
+  bgMain?: string;
+  bgCard?: string;
+  sidebarBg?: string;
+  borderColor?: string;
   density: 'compact' | 'comfortable' | 'spacious';
   fontSizeBase: number;
   // Visual overrides (connected to semantic tokens)
   cardBorders: boolean;
   shadows: boolean;
   cardRadius: number;
-  animationEnabled: boolean;
+  borderWidth?: number;
+  cardBorderEnabled?: boolean;
+  letterSpacing?: number;
+  uppercaseEnabled?: boolean;
+  fontWeightEnabled?: boolean;
+  listHeaderFontSize?: number;
+  listBodyFontSize?: number;
+  listCellPadding?: number;
+  listHeaderFontWeight?: string;
+  listBodyFontWeight?: string;
+  listHeaderUppercase?: boolean;
+  listStripeEnabled?: boolean;
+  listHeaderBg?: string;
+  listRowHoverColor?: string;
+  listBorderColor?: string;
+  listAccentColor?: string;
+  productViewMode?: 'table' | 'cards';
   skeletonEnabled: boolean;
+  btnBorderRadius?: number;
+  btnBorderWidth?: number;
+  btnFontWeight?: string;
+  inputBorderRadius?: number;
+  inputBorderWidth?: number;
+  animationEnabled: boolean;
+  transitionDuration?: number;
+  notificationSpeed?: number;
+  shadowEnabled?: boolean;
 }
 
 interface SavedPreset {
@@ -35,14 +65,43 @@ const defaultConfig: ThemeConfig = {
   darkMode: false,
   oledMode: false,
   primaryColor: '#ea580c',
+  secondaryColor: '#64748b',
+  bgMain: '#f8fafc',
+  bgCard: '#ffffff',
+  sidebarBg: '#1e293b',
+  borderColor: '#e2e8f0',
   density: 'comfortable',
   fontSizeBase: 15,
-  // Visual overrides defaults
   cardBorders: true,
   shadows: true,
   cardRadius: 12,
-  animationEnabled: true,
+  borderWidth: 1,
+  cardBorderEnabled: true,
+  letterSpacing: 0,
+  uppercaseEnabled: false,
+  fontWeightEnabled: true,
+  listHeaderFontSize: 12,
+  listBodyFontSize: 13,
+  listCellPadding: 12,
+  listHeaderFontWeight: '600',
+  listBodyFontWeight: '600',
+  listHeaderUppercase: true,
+  listStripeEnabled: false,
+  listHeaderBg: '#f8fafc',
+  listRowHoverColor: '#f1f5f9',
+  listBorderColor: '#e2e8f0',
+  listAccentColor: '#ea580c',
+  productViewMode: 'table',
   skeletonEnabled: true,
+  btnBorderRadius: 8,
+  btnBorderWidth: 1,
+  btnFontWeight: '600',
+  inputBorderRadius: 8,
+  inputBorderWidth: 1,
+  animationEnabled: true,
+  transitionDuration: 150,
+  notificationSpeed: 300,
+  shadowEnabled: true,
 };
 
 export const palettes = [
@@ -79,25 +138,82 @@ function applyConfigToDOM(config: ThemeConfig) {
     root.removeAttribute('data-theme');
   }
 
-  // 2. User overrides (minimal set)
+  // 2. User overrides
   root.style.setProperty('--color-primary', config.primaryColor);
-  root.style.setProperty('--density-multiplier', String(DENSITY_MAP[config.density]));
+  if (config.secondaryColor) root.style.setProperty('--color-secondary', config.secondaryColor);
+  if (config.bgMain) root.style.setProperty('--color-bg', config.bgMain);
+  if (config.bgCard) root.style.setProperty('--color-surface', config.bgCard);
+  if (config.sidebarBg) root.style.setProperty('--sidebar-bg', config.sidebarBg);
+  if (config.borderColor) {
+    root.style.setProperty('--color-border', config.borderColor);
+    root.style.setProperty('--color-surface-border', config.borderColor);
+  }
+
+  root.style.setProperty('--density-multiplier', String(DENSITY_MAP[config.density] || 1));
   root.style.setProperty('--font-size-base', `${config.fontSizeBase}px`);
 
   // 3. Visual overrides connected to semantic tokens
-  root.style.setProperty('--card-border-width', config.cardBorders ? 'var(--border-width)' : '0px');
-  root.style.setProperty('--card-shadow', config.shadows ? 'var(--shadow-sm)' : 'none');
-  root.style.setProperty('--card-shadow-hover', config.shadows ? 'var(--shadow-md)' : 'none');
+  const borderEnabled = config.cardBorderEnabled !== false && config.cardBorders !== false;
+  const bWidth = config.borderWidth !== undefined ? config.borderWidth : 1;
+  root.style.setProperty('--card-border-width', borderEnabled ? `${bWidth}px` : '0px');
+  root.style.setProperty('--border-width', `${bWidth}px`);
+
+  const shadowsActive = config.shadowEnabled !== false && config.shadows !== false;
+  root.style.setProperty('--card-shadow', shadowsActive ? 'var(--shadow-sm)' : 'none');
+  root.style.setProperty('--card-shadow-hover', shadowsActive ? 'var(--shadow-md)' : 'none');
   root.style.setProperty('--card-radius', `${config.cardRadius}px`);
   
+  // Font weight - lock to 600 as requested by the user, or let it respond
+  if (config.fontWeightEnabled === false) {
+    root.style.setProperty('--font-weight-normal', '400');
+    root.style.setProperty('--font-weight-medium', '500');
+    root.style.setProperty('--font-weight-semibold', '600');
+    root.style.setProperty('--font-weight-bold', '700');
+  } else {
+    root.style.setProperty('--font-weight-normal', '600');
+    root.style.setProperty('--font-weight-medium', '600');
+    root.style.setProperty('--font-weight-semibold', '600');
+    root.style.setProperty('--font-weight-bold', '600');
+  }
+
+  // Letter spacing and casing
+  if (config.letterSpacing !== undefined) {
+    root.style.setProperty('--tracking-normal', `${config.letterSpacing}em`);
+  }
+  root.style.setProperty('--text-transform-global', config.uppercaseEnabled ? 'uppercase' : 'none');
+
+  // Lists/Tables
+  if (config.listHeaderFontSize) root.style.setProperty('--list-header-font-size', `${config.listHeaderFontSize}px`);
+  if (config.listBodyFontSize) root.style.setProperty('--list-body-font-size', `${config.listBodyFontSize}px`);
+  if (config.listCellPadding) root.style.setProperty('--list-cell-padding', `${config.listCellPadding}px`);
+  if (config.listHeaderFontWeight) root.style.setProperty('--list-header-font-weight', config.listHeaderFontWeight);
+  if (config.listBodyFontWeight) root.style.setProperty('--list-body-font-weight', config.listBodyFontWeight);
+  root.style.setProperty('--list-header-uppercase', config.listHeaderUppercase ? 'uppercase' : 'none');
+  root.style.setProperty('--list-stripe', config.listStripeEnabled ? 'var(--color-bg-hover)' : 'transparent');
+  if (config.listHeaderBg) root.style.setProperty('--list-header-bg', config.listHeaderBg);
+  if (config.listRowHoverColor) root.style.setProperty('--list-row-hover', config.listRowHoverColor);
+  if (config.listBorderColor) root.style.setProperty('--list-border-color', config.listBorderColor);
+  if (config.listAccentColor) root.style.setProperty('--list-accent-color', config.listAccentColor);
+
+  // Buttons
+  if (config.btnBorderRadius !== undefined) root.style.setProperty('--btn-radius', `${config.btnBorderRadius}px`);
+  if (config.btnBorderWidth !== undefined) root.style.setProperty('--btn-border-width', `${config.btnBorderWidth}px`);
+  if (config.btnFontWeight) root.style.setProperty('--btn-font-weight', config.btnFontWeight);
+
+  // Inputs
+  if (config.inputBorderRadius !== undefined) root.style.setProperty('--input-radius', `${config.inputBorderRadius}px`);
+  if (config.inputBorderWidth !== undefined) root.style.setProperty('--input-border-width', `${config.inputBorderWidth}px`);
+
   // Animation control
-  root.style.setProperty('--transition-base', config.animationEnabled ? '150ms cubic-bezier(0.4, 0, 0.2, 1)' : '0ms');
+  const duration = config.transitionDuration !== undefined ? config.transitionDuration : 150;
+  root.style.setProperty('--transition-base', config.animationEnabled ? `${duration}ms cubic-bezier(0.4, 0, 0.2, 1)` : '0ms');
 
   // Skeleton control
   root.style.setProperty('--skeleton-enabled', config.skeletonEnabled ? '1' : '0');
 
   // Derived font sizes based on base
   const base = config.fontSizeBase;
+  root.style.setProperty('--font-size-2xs', `${Math.max(9, base - 4)}px`);
   root.style.setProperty('--font-size-xs', `${Math.max(10, base - 3)}px`);
   root.style.setProperty('--font-size-sm', `${Math.max(11, base - 2)}px`);
   root.style.setProperty('--font-size-md', `${base}px`);

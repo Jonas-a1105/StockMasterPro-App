@@ -50,9 +50,9 @@ export const COLORS = ['#ea580c', '#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#
 
 export const CHART_PROPS = {
   contentStyle: {
-    backgroundColor: 'var(--bg-card, #1e1e1e)',
-    borderColor: 'var(--border-color, #2d2d2d)',
-    borderRadius: '6px',
+    backgroundColor: 'var(--color-surface)',
+    borderColor: 'var(--color-border)',
+    borderRadius: 'var(--card-radius)',
   },
   itemStyle: { fontSize: '12px', color: 'var(--text-main)' },
   labelStyle: { fontSize: '11px', fontWeight: 'bold', color: 'var(--text-muted)' },

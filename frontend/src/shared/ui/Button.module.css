@@ -64,7 +64,7 @@
   height: 32px;
   padding: 0 12px;
   font-size: var(--font-size-sm);
-  border-radius: var(--border-radius-md);
+  border-radius: calc(var(--btn-radius) * 0.8);
 }
 
 .sizeMd {
@@ -78,7 +78,7 @@
   height: 48px;
   padding: 0 24px;
   font-size: var(--font-size-lg);
-  border-radius: var(--border-radius-lg);
+  border-radius: calc(var(--btn-radius) * 1.2);
 }
 
 /* Loading */

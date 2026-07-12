@@ -208,7 +208,7 @@
   font-weight: 700;
   border: 1px solid;
   line-height: 1.4;
-  border-radius: 0 !important;
+  border-radius: var(--badge-radius) !important;
 }
 
 .badge.active {
