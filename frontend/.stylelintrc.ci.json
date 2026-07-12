@@ -1,0 +1,7 @@
+{
+  "rules": {
+    "selector-max-id": 0,
+    "selector-max-specificity": "0,4,0",
+    "selector-pseudo-class-no-unknown": [true, { "ignorePseudoClasses": ["global", "local"] }]
+  }
+}
