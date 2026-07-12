@@ -122,8 +122,7 @@ export function SalesHistoryPage() {
     }
   };
 
-  if (loading && sales.length === 0)
-    return <SkeletonTablePage />;
+
 
   const paymentBadgeVariant = (method: string) => {
     const m = method?.toLowerCase();
