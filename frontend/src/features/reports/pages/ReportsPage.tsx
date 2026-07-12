@@ -16,6 +16,7 @@ import { exportToExcel } from '@shared/lib/excelHelper';
 import { exportToPdf } from '@shared/lib/print/pdfHelper';
 import { useToast } from '@contexts/ToastContext';
 import styles from './ReportsPage.module.css';
+import tableStyles from '@shared/ui/TableList.module.css';
 
 export const COLORS = ['#ea580c', '#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899'];
 
@@ -432,34 +433,34 @@ export function ReportsPage() {
                     <th className={styles.textRight}>Utilidad Neta</th>
                   </tr>
                 </thead>
-                <tbody>
-                  {profitData.map(m => (
-                    <tr key={m.month}>
-                      <td><span className="lista-name-text">{m.month}</span></td>
-                      <td className={styles.textRight}><span className="lista-number-value">{formatUsd(m.revenue)}</span></td>
-                      <td className={styles.textRight}><span className="lista-number-value">{formatUsd(m.cost)}</span></td>
-                      <td className={styles.textRight}>
-                        <span className={`lista-number-value ${m.profit >= 0 ? styles.textSuccess : styles.textDanger}`}>
-                          {formatUsd(m.profit)}
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
-                  <tr className={styles.totalRow}>
-                    <td className={styles.totalCell}>Total Anual</td>
-                    <td className={styles.totalCellRight}>{formatUsd(profitTotals.revenue)}</td>
-                    <td className={styles.totalCellRight}>{formatUsd(profitTotals.cost)}</td>
-                    <td className={styles.totalProfit}>
-                      <span className={`${styles.totalProfitValue} ${profitTotals.profit >= 0 ? styles.totalProfitPositive : styles.totalProfitNegative}`}>
-                        {formatUsd(profitTotals.profit)}
-                      </span>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <div className={styles.card}>
+<tbody>
+              {profitData.map(m => (
+                <tr key={m.month}>
+                  <td><span className={tableStyles.nameText}>{m.month}</span></td>
+                  <td className={styles.textRight}><span className={tableStyles.numberValue}>{formatUsd(m.revenue)}</span></td>
+                  <td className={styles.textRight}><span className={tableStyles.numberValue}>{formatUsd(m.cost)}</span></td>
+                  <td className={styles.textRight}>
+                    <span className={`${tableStyles.numberValue} ${m.profit >= 0 ? styles.textSuccess : styles.textDanger}`}>
+                      {formatUsd(m.profit)}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+              <tr className={styles.totalRow}>
+                <td className={styles.totalCell}>Total Anual</td>
+                <td className={styles.totalCellRight}>{formatUsd(profitTotals.revenue)}</td>
+                <td className={styles.totalCellRight}>{formatUsd(profitTotals.cost)}</td>
+                <td className={styles.totalProfit}>
+                  <span className={`${styles.totalProfitValue} ${profitTotals.profit >= 0 ? styles.totalProfitPositive : styles.totalProfitNegative}`}>
+                    {formatUsd(profitTotals.profit)}
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div className={styles.card}>
 <div className={styles.cardTitle}>
             <AlertTriangle size={14} />
             Productos con stock bajo
@@ -470,8 +471,8 @@ export function ReportsPage() {
               {lowStockProducts.length === 0 ? (
                 <p className={styles.muted}>No hay productos con stock bajo.</p>
               ) : (
-                <div className="lista-container">
-                  <table className="lista-table">
+                <div className={tableStyles.container}>
+                  <table className={tableStyles.table}>
                     <thead>
                       <tr>
                         <th>Producto</th>
