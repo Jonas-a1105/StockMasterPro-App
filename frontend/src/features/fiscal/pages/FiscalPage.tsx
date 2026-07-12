@@ -4,6 +4,7 @@ import { SkeletonTablePage } from '@shared/ui/Skeleton';
 import { useTheme } from '@contexts/ThemeContext';
 import { getWithholdings, getFiscalBooks } from '../api/fiscal.api';
 import styles from '@features/inventory/pages/InventoryPage.module.css';
+import tableStyles from '@shared/ui/TableList.module.css';
 
 export function FiscalPage() {
   const { config } = useTheme();
@@ -44,8 +45,8 @@ export function FiscalPage() {
           <div className={`${styles.headerFlex} ${styles.flexCenter} ${styles.gap16} ${styles.mb20}`}>
             <h3 className={styles.sectionTitle}>Retenciones Registradas</h3>
           </div>
-          <div className="lista-container">
-            <table className="lista-table">
+          <div className={tableStyles.container}>
+            <table className={tableStyles.table}>
               <thead>
                 <tr>
                   <th>Tipo</th>
@@ -102,8 +103,8 @@ export function FiscalPage() {
             </div>
             <button className={styles.addBtn} onClick={loadData}>Consultar</button>
           </div>
-          <div className="lista-container">
-            <table className="lista-table">
+          <div className={tableStyles.container}>
+            <table className={tableStyles.table}>
               <thead>
                 <tr>
                   {bookType === 'ventas' ? (

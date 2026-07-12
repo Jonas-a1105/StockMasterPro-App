@@ -7,6 +7,7 @@ import {
 } from 'recharts';
 import { CHART_PROPS, COLORS, renderTooltip, formatUSD, demoFinancialCore } from './pages/ReportsPage';
 import styles from '../ReportsPage.module.css';
+import tableStyles from '@shared/ui/TableList.module.css';
 
 interface Props {
   sales: any[];
@@ -174,11 +175,11 @@ export function ReportsResumen({ sales, products }: Props) {
             <tbody>
               {profitData.map(m => (
                 <tr key={m.month}>
-                  <td><span className="lista-name-text">{m.month}</span></td>
-                  <td className={styles.textRight}><span className="lista-number-value">{formatUSD(m.revenue)}</span></td>
-                  <td className={styles.textRight}><span className="lista-number-value">{formatUSD(m.cost)}</span></td>
+                  <td><span className={tableStyles.nameText}>{m.month}</span></td>
+                  <td className={styles.textRight}><span className={tableStyles.numberValue}>{formatUSD(m.revenue)}</span></td>
+                  <td className={styles.textRight}><span className={tableStyles.numberValue}>{formatUSD(m.cost)}</span></td>
                   <td className={styles.textRight}>
-                    <span className={`lista-number-value ${m.profit >= 0 ? styles.textSuccess : styles.textDanger}`}>
+                    <span className={`${tableStyles.numberValue} ${m.profit >= 0 ? styles.textSuccess : styles.textDanger}`}>
                       {formatUSD(m.profit)}
                     </span>
                   </td>
@@ -226,10 +227,10 @@ export function ReportsResumen({ sales, products }: Props) {
                 <tbody>
                   {lowStockProducts.map(p => (
                     <tr key={p.id}>
-                      <td><span className="lista-name-text">{p.name}</span></td>
-                      <td className={styles.textRight}><span className="lista-number-value">{p.stock}</span></td>
+                      <td><span className={tableStyles.nameText}>{p.name}</span></td>
+                      <td className={styles.textRight}><span className={tableStyles.numberValue}>{p.stock}</span></td>
                       <td className={styles.textRight}>{p.minStock}</td>
-                      <td className={styles.textCenter}><span className="lista-badge saturated">Crítico</span></td>
+                      <td className={styles.textCenter}><span className={`${tableStyles.badge} ${tableStyles.badgeSaturated}`}>Crítico</span></td>
                     </tr>
                   ))}
                 </tbody>

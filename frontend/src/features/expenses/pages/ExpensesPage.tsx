@@ -228,8 +228,8 @@ export function ExpensesPage() {
         </div>
       </Toolbar>
 
-      <div className="lista-container">
-        <table className="lista-table">
+      <div className={tableStyles.container}>
+        <table className={tableStyles.table}>
           <thead>
             <tr>
               <th>Fecha</th>
@@ -245,12 +245,12 @@ export function ExpensesPage() {
               <tr key={e.id}>
                 <td>{new Date(e.expenseDate).toLocaleDateString()}</td>
                 <td className={styles.colorMuted}>{e.description}</td>
-                <td><span className="lista-badge warning">{categoryLabel(e.category)}</span></td>
-                <td className={styles.textRight}><span className="lista-number-value">{formatPrice(Number(e.amount))}</span></td>
+                <td><span className={`${tableStyles.badge} ${tableStyles.badgeWarning}`}>{categoryLabel(e.category)}</span></td>
+                <td className={styles.textRight}><span className={tableStyles.numberValue}>{formatPrice(Number(e.amount))}</span></td>
                 <td>{paymentLabel(e.paymentMethod)}</td>
                 <td className={styles.textCenter}>
-                  <div className={`lista-actions ${styles.justifyCenter}`}>
-                    <button className="lista-action-btn danger" onClick={() => handleDelete(e.id)} title="Eliminar">
+                  <div className={`${tableStyles.actions} ${styles.justifyCenter}`}>
+                    <button className={`${tableStyles.actionBtn} danger`} onClick={() => handleDelete(e.id)} title="Eliminar">
                       <Trash2 size={14} />
                     </button>
                   </div>
