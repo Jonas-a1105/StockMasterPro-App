@@ -4,8 +4,8 @@
   gap: 12px;
   background-color: var(--color-surface);
   padding: 14px;
-  border-radius: var(--card-radius, 12px);
-  border: var(--card-border-width, 1px) solid var(--color-border);
+  border-radius: var(--card-radius);
+  border: var(--card-border-width) solid var(--color-border);
   box-shadow: 0 1px 3px rgb(0, 0, 0, 0.05);
 }
 
@@ -24,9 +24,9 @@
   max-width: 580px;
   gap: 8px;
   padding: 0 12px;
-  background-color: var(--bg-main, #f5f5f5);
-  border: var(--card-border-width, 1px) solid var(--color-border);
-  border-radius: var(--input-radius, 8px);
+  background-color: var(--color-bg);
+  border: var(--card-border-width) solid var(--color-border);
+  border-radius: var(--input-radius);
   color: var(--color-text-muted);
   transition:
     border-color 0.2s ease,
@@ -44,7 +44,7 @@
   outline: none;
   font-size: var(--font-size-sm);
   background: transparent;
-  color: var(--text-dark, #333);
+  color: var(--color-text);
   padding: 9px 0;
 }
 
@@ -80,7 +80,7 @@
 }
 
 .clearBtn:hover {
-  color: var(--text-dark, #333);
+  color: var(--color-text);
   background-color: rgb(0, 0, 0, 0.06);
 }
 
@@ -100,12 +100,12 @@
   align-items: center;
   gap: 6px;
   padding: 7px 14px;
-  background-color: var(--bg-main, #f5f5f5);
+  background-color: var(--color-bg);
   border: 1px solid var(--color-border) !important;
-  border-radius: var(--btn-radius, 8px);
+  border-radius: var(--btn-radius);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-dark, #555);
+  color: var(--color-text);
   cursor: pointer;
   transition: all 0.2s ease;
   white-space: nowrap;
@@ -132,7 +132,7 @@
   background-color: var(--color-surface);
   border-color: var(--color-border);
   border-style: solid;
-  border-radius: var(--card-radius, 12px);
+  border-radius: var(--card-radius);
   box-shadow: 0 8px 24px rgb(0, 0, 0, 0.12);
   z-index: 30;
   padding: 4px 0;
@@ -146,7 +146,7 @@
   color: var(--color-text-muted);
   text-transform: none;
   letter-spacing: 0.5px;
-  border-bottom: var(--card-border-width, 1px) solid var(--color-border);
+  border-bottom: var(--card-border-width) solid var(--color-border);
 }
 
 .toolsMenuItem {
@@ -158,7 +158,7 @@
   border: none;
   background: none;
   font-size: var(--font-size-sm);
-  color: var(--text-dark, #555);
+  color: var(--color-text);
   cursor: pointer;
   transition: all 0.15s ease;
   text-align: left;
@@ -166,7 +166,7 @@
 
 .toolsMenuItem:hover {
   background-color: var(--color-bg-hover);
-  color: var(--text-dark, #333);
+  color: var(--color-text);
 }
 
 .toolsMenuIcon {
@@ -180,9 +180,9 @@
   gap: 6px;
   padding: 8px 16px;
   background: var(--color-primary);
-  color: var(--text-on-primary, #fff);
+  color: var(--color-on-primary);
   border: none;
-  border-radius: var(--btn-radius, 8px);
+  border-radius: var(--btn-radius);
   font-weight: var(--font-weight-semibold);
   font-size: var(--font-size-sm);
   cursor: pointer;

@@ -19,7 +19,7 @@
 }
 
 .card {
-  background-color: var(--bg-card, #fff);
+  background-color: var(--color-surface);
   padding: 20px;
   box-shadow: 0 1px 3px rgb(0, 0, 0, 0.05);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -40,10 +40,10 @@
 
 .cardTitle .exportBtn {
   padding: 6px 10px;
-  border: 1px solid var(--border-color, #ddd);
+  border: 1px solid var(--color-border);
   border-radius: var(--border-radius-md);
-  background: var(--bg-main, #f5f5f5);
-  color: var(--text-dark, #333);
+  background: var(--color-bg);
+  color: var(--color-text);
   font-size: var(--font-size-caption);
   cursor: pointer;
   display: flex;
@@ -52,15 +52,15 @@
 }
 
 .cardTitle .exportBtn:hover {
-  background: var(--color-orange-red, #f05a28);
+  background: var(--color-primary);
   color: white;
-  border-color: var(--color-orange-red, #f05a28);
+  border-color: var(--color-primary);
 }
 
 .cardSub {
   font-family: var(--font-family) !important;
   font-size: var(--font-size-caption);
-  color: var(--text-muted, #888);
+  color: var(--color-text-muted);
   font-weight: var(--font-weight-normal);
   line-height: 1.4;
   margin-bottom: 16px;
@@ -68,7 +68,7 @@
 }
 
 .cardBody {
-  color: var(--text-dark, #333);
+  color: var(--color-text);
 }
 
 .pieWrapper {
@@ -77,7 +77,7 @@
 }
 
 .muted {
-  color: var(--text-muted, #888);
+  color: var(--color-text-muted);
   font-size: var(--font-size-sm);
 }
 
@@ -97,15 +97,15 @@
   width: 100%;
   border-collapse: collapse;
   font-size: var(--font-size-caption);
-  color: var(--text-dark);
+  color: var(--color-text);
 }
 
 .reportTable thead tr {
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   font-size: var(--font-size-2xs);
   letter-spacing: 0.5px;
   text-transform: none;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .reportTable th {
@@ -122,7 +122,7 @@
 }
 
 .reportTable tbody tr {
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--color-border);
   transition: background-color 0.15s ease;
 }
 
@@ -147,15 +147,15 @@
 }
 
 .textMuted {
-  color: var(--text-muted);
+  color: var(--color-text-muted);
 }
 
 .textDanger {
-  color: var(--color-danger, #dc2626);
+  color: var(--color-danger);
 }
 
 .textSuccess {
-  color: var(--color-success, #16a34a);
+  color: var(--color-success);
 }
 
 .flexCenter {
@@ -195,18 +195,18 @@
 
 /* ── Tooltip ── */
 .tooltipBox {
-  background-color: var(--bg-card, #1e1e1e);
-  border: 1px solid var(--border-color, #2d2d2d);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
   padding: 8px 12px;
   font-size: var(--font-size-caption);
-  color: var(--text-dark, #e5e5e5);
+  color: var(--color-text);
 }
 
 .tooltipLabel {
   font-weight: var(--font-weight-bold);
   margin-bottom: 4px;
   font-size: var(--font-size-xs);
-  color: var(--text-muted, #888);
+  color: var(--color-text-muted);
   text-transform: none;
   letter-spacing: 0.5px;
 }
@@ -225,15 +225,15 @@
   width: 100%;
   border-collapse: collapse;
   font-size: var(--font-size-caption);
-  color: var(--text-dark);
+  color: var(--color-text);
 }
 
 .reportTable thead tr {
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   font-size: var(--font-size-2xs);
   letter-spacing: 0.5px;
   text-transform: none;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .reportTable th {
@@ -250,7 +250,7 @@
 }
 
 .reportTable tbody tr {
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--color-border);
   transition: background-color 0.15s ease;
 }
 
@@ -275,15 +275,15 @@
 }
 
 .textMuted {
-  color: var(--text-muted);
+  color: var(--color-text-muted);
 }
 
 .textDanger {
-  color: var(--color-danger, #dc2626);
+  color: var(--color-danger);
 }
 
 .textSuccess {
-  color: var(--color-success, #16a34a);
+  color: var(--color-success);
 }
 
 .flexCenter {
@@ -338,33 +338,33 @@
 
 /* ── Table total row ── */
 .totalRow {
-  border-top: 2px solid var(--list-accent-color, #f97316);
-  background-color: var(--list-header-bg, #141414);
+  border-top: 2px solid var(--list-accent-color);
+  background-color: var(--list-header-bg);
 }
 
 .totalCell {
-  font-weight: var(--font-weight-extrabold, 800);
-  color: var(--list-accent-color, #f97316);
-  font-size: calc(var(--list-body-font-size, 12px) + 1px);
+  font-weight: var(--font-weight-extrabold);
+  color: var(--list-accent-color);
+  font-size: calc(var(--list-body-font-size) + 1px);
   text-transform: none;
   letter-spacing: 0.5px;
-  padding: var(--list-cell-padding, 12px);
+  padding: var(--list-cell-padding);
 }
 
 .totalCellRight {
   text-align: right;
   font-weight: var(--font-weight-bold);
-  padding: var(--list-cell-padding, 12px);
+  padding: var(--list-cell-padding);
 }
 
 .totalProfit {
   text-align: right;
-  padding: var(--list-cell-padding, 12px);
+  padding: var(--list-cell-padding);
 }
 
 .totalProfitValue {
-  font-weight: var(--font-weight-extrabold, 800);
-  font-size: calc(var(--list-body-font-size, 12px) + 2px);
+  font-weight: var(--font-weight-extrabold);
+  font-size: calc(var(--list-body-font-size) + 2px);
   color: var(--profit-color);
 }
 

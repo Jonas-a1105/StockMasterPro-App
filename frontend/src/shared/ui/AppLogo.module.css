@@ -5,7 +5,7 @@
 
 .stroke {
   fill: none;
-  stroke: var(--text-dark);
+  stroke: var(--color-text);
   stroke-width: 5;
   stroke-linecap: round;
   stroke-linejoin: round;
@@ -22,7 +22,7 @@
 .proText {
   fill: var(--color-primary);
   font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-black, 900);
+  font-weight: var(--font-weight-black);
   font-family: var(--font-family);
   letter-spacing: 0.05em;
 }

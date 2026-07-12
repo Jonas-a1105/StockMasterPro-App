@@ -8,6 +8,6 @@
 }
 .emptyCatalogs {
   text-align: center;
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   padding: 40px;
 }

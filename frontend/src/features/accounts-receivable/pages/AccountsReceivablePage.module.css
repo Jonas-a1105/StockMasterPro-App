@@ -1,8 +1,8 @@
 .tableContainer {
   overflow-x: auto;
   border-radius: var(--border-radius-lg);
-  border: 1px solid var(--border-color);
-  background: var(--bg-card);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
 }
 
 .table {
@@ -15,17 +15,17 @@
   text-align: left;
   padding: 12px 14px;
   font-weight: var(--font-weight-semibold);
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   font-size: var(--font-size-caption);
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  border-bottom: 1px solid var(--border-color);
-  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-bg-hover);
 }
 
 .table td {
   padding: 12px 14px;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--color-border);
   color: var(--text-primary);
 }
 
@@ -34,13 +34,13 @@
 }
 
 .table tr:hover td {
-  background: var(--bg-hover);
+  background: var(--color-bg-hover);
 }
 
 .emptyRow {
   text-align: center;
   padding: 40px 14px !important;
-  color: var(--text-muted);
+  color: var(--color-text-muted);
 }
 
 .notesCell {
@@ -48,7 +48,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   font-size: var(--font-size-sm);
 }
 
@@ -61,23 +61,23 @@
 }
 
 .statusPending {
-  background: var(--bg-warning, #fef3c7);
-  color: var(--color-amber-800, #92400e);
+  background: var(--color-warning-bg);
+  color: var(--color-warning);
 }
 
 .statusPaid {
-  background: var(--bg-success-light, #d1fae5);
-  color: var(--color-green-800, #065f46);
+  background: var(--color-success-bg);
+  color: var(--color-success);
 }
 
 .statusOverdue {
-  background: var(--bg-danger-light, #fee2e2);
-  color: var(--color-red-800, #991b1b);
+  background: var(--color-danger-bg);
+  color: var(--color-danger);
 }
 
 .statusWarning {
-  background: var(--bg-orange-light, #ffedd5);
-  color: var(--color-orange-800, #9a3412);
+  background: var(--bg-orange-light);
+  color: var(--color-warning);
 }
 
 .payBtn {
@@ -85,7 +85,7 @@
   border: none;
   border-radius: var(--border-radius-md);
   background: var(--color-primary);
-  color: var(--text-on-primary, #fff);
+  color: var(--color-on-primary);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
   cursor: pointer;
@@ -114,8 +114,8 @@
 .formFields textarea {
   padding: 8px 12px;
   border-radius: var(--border-radius-md);
-  border: 1px solid var(--border-color);
-  background: var(--bg-card);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
   color: var(--text-primary);
   font-size: var(--font-size-md);
 }
@@ -130,12 +130,12 @@
   justify-content: flex-end;
   margin-top: 16px;
   padding-top: 12px;
-  border-top: 1px solid var(--border-color);
+  border-top: 1px solid var(--color-border);
 }
 
 .cancelBtn {
   padding: 8px 20px;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--color-border);
   border-radius: var(--border-radius-md);
   background: transparent;
   color: var(--text-primary);
@@ -148,7 +148,7 @@
   border: none;
   border-radius: var(--border-radius-md);
   background: var(--color-primary);
-  color: var(--text-on-primary, #fff);
+  color: var(--color-on-primary);
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-medium);
   cursor: pointer;
@@ -160,8 +160,8 @@
 }
 
 .error {
-  background: var(--bg-danger-light, #fee2e2);
-  color: var(--color-red-800, #991b1b);
+  background: var(--color-danger-bg);
+  color: var(--color-danger);
   padding: 8px 12px;
   border-radius: var(--border-radius-md);
   font-size: var(--font-size-sm);

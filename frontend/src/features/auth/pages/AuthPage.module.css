@@ -4,9 +4,9 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: var(--bg-main);
-  color: var(--text-dark);
-  font-family: var(--font-family, 'Segoe UI', -apple-system, sans-serif);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-family);
   padding: 16px;
 }
 
@@ -23,24 +23,24 @@
   justify-content: center;
   width: 44px;
   height: 44px;
-  background-color: var(--bg-card);
-  border: 1px solid var(--border-color);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
   margin-bottom: 8px;
-  border-radius: var(--card-radius, 4px);
+  border-radius: var(--card-radius);
   transition: border-color 0.3s ease;
 }
 
 .logoCore {
   width: 14px;
   height: 14px;
-  background-color: var(--color-primary, #f05a28);
+  background-color: var(--color-primary);
   transition: background-color 0.3s ease;
 }
 
 .headerTitle {
   font-size: var(--font-size-2xl);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-dark);
+  color: var(--color-text);
   text-transform: none;
   letter-spacing: 1px;
   margin: 0;
@@ -48,12 +48,12 @@
 
 /* Auth Card */
 .authCard {
-  background-color: var(--bg-card);
-  border: 1px solid var(--border-color);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
   padding: 24px;
   width: 100%;
   max-width: 400px;
-  border-radius: var(--card-radius, 4px);
+  border-radius: var(--card-radius);
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -75,27 +75,27 @@
 .indicatorDot {
   width: 8px;
   height: 8px;
-  background-color: var(--color-primary, #f05a28);
+  background-color: var(--color-primary);
 }
 
 .indicatorDotRegister {
   width: 8px;
   height: 8px;
-  background-color: var(--color-register-green, #9ee63c);
+  background-color: var(--color-register-green);
 }
 
 .indicatorText {
   font-size: var(--font-size-2xs);
   font-family: monospace;
   letter-spacing: 1.5px;
-  color: var(--text-muted, #888);
+  color: var(--color-text-muted);
   text-transform: none;
 }
 
 .title {
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-dark);
+  color: var(--color-text);
   text-transform: none;
   letter-spacing: 1px;
   margin: 0;
@@ -118,14 +118,14 @@
 .fieldHeader label {
   font-size: var(--font-size-2xs);
   font-family: monospace;
-  color: var(--text-muted, #888);
+  color: var(--color-text-muted);
   text-transform: none;
   letter-spacing: 0.5px;
 }
 
 .forgotLink {
   font-size: var(--font-size-2xs);
-  color: var(--color-primary, #f05a28);
+  color: var(--color-primary);
   text-decoration: none;
   opacity: 0.8;
   transition: opacity 0.15s ease;
@@ -141,12 +141,12 @@
 
 .input {
   width: 100%;
-  background-color: var(--bg-input, #141414);
-  border: 1px solid var(--border-color, #282828);
-  border-radius: var(--input-radius, 4px);
+  background-color: var(--bg-input);
+  border: 1px solid var(--color-border);
+  border-radius: var(--input-radius);
   font-size: var(--font-size-caption);
   padding: 8px 12px;
-  color: var(--text-dark);
+  color: var(--color-text);
   font-family: monospace;
   outline: none;
   box-sizing: border-box;
@@ -154,15 +154,15 @@
 }
 
 .input::placeholder {
-  color: var(--text-muted, #555);
+  color: var(--color-text-muted);
 }
 
 .input:focus {
-  border-color: var(--color-primary, #f05a28);
+  border-color: var(--color-primary);
 }
 
 .inputRegister:focus {
-  border-color: var(--color-register-green, #9ee63c);
+  border-color: var(--color-register-green);
 }
 
 .eyeBtn {
@@ -171,7 +171,7 @@
   top: 9px;
   background: none;
   border: none;
-  color: var(--text-muted, #555);
+  color: var(--color-text-muted);
   cursor: pointer;
   padding: 0;
   display: flex;
@@ -180,7 +180,7 @@
 }
 
 .eyeBtn:hover {
-  color: var(--text-dark);
+  color: var(--color-text);
 }
 
 /* Checkbox */
@@ -203,7 +203,7 @@
 .checkboxCustom {
   width: 16px;
   height: 16px;
-  border: 1px solid var(--color-primary, #f05a28);
+  border: 1px solid var(--color-primary);
   background-color: transparent;
   display: flex;
   align-items: center;
@@ -218,27 +218,27 @@
 .checkboxCheckIcon {
   width: 10px;
   height: 10px;
-  color: var(--color-primary, #f05a28);
+  color: var(--color-primary);
 }
 
 .checkboxText {
   font-size: var(--font-size-2xs);
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   transition: color 0.15s ease;
 }
 
 .checkboxLabel:hover .checkboxText {
-  color: var(--text-dark);
+  color: var(--color-text);
 }
 
 /* Submit Button & Shimmer */
 .submitBtn {
   width: 100%;
   padding: 10px;
-  background-color: var(--color-primary, #f05a28);
-  color: var(--color-black, #000);
+  background-color: var(--color-primary);
+  color: var(--color-black);
   border: none;
-  border-radius: var(--btn-radius, var(--card-radius, 4px));
+  border-radius: var(--btn-radius);
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-bold);
   text-transform: none;
@@ -257,7 +257,7 @@
 }
 
 .submitBtnRegister {
-  background-color: var(--color-register-green, #9ee63c);
+  background-color: var(--color-register-green);
 }
 
 .submitBtnRegister:hover:not(:disabled) {
@@ -300,7 +300,7 @@
 
 /* Error Alert */
 .error {
-  background-color: var(--bg-danger);
+  background-color: var(--color-danger-bg);
   color: var(--color-danger);
   padding: 10px;
   border-left: 3px solid #dc2626;
@@ -314,7 +314,7 @@
   justify-content: space-between;
   font-size: var(--font-size-2xs);
   font-family: monospace;
-  color: var(--text-muted, #444);
+  color: var(--color-text-muted);
   text-transform: none;
   margin-bottom: 2px;
 }
@@ -322,8 +322,8 @@
 .strengthBarContainer {
   width: 100%;
   height: 4px;
-  background-color: var(--bg-input, #141414);
-  border: 1px solid var(--border-color, #222);
+  background-color: var(--bg-input);
+  border: 1px solid var(--color-border);
   overflow: hidden;
 }
 
@@ -349,12 +349,12 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  color: var(--text-muted, #666);
+  color: var(--color-text-muted);
   transition: color 0.15s ease;
 }
 
 .requirementRowActive {
-  color: var(--color-register-green, #9ee63c);
+  color: var(--color-register-green);
 }
 
 .reqIcon {
@@ -377,14 +377,14 @@
   background: none;
   border: none;
   font-size: var(--font-size-caption);
-  color: var(--text-muted, #666);
+  color: var(--color-text-muted);
   cursor: pointer;
   font-family: sans-serif;
   transition: color 0.15s ease;
 }
 
 .footerBtn:hover {
-  color: var(--text-dark);
+  color: var(--color-text);
 }
 
 .footerLinkAccent {
@@ -394,11 +394,11 @@
 }
 
 .footerLinkAccentLogin {
-  color: var(--color-primary, #f05a28);
+  color: var(--color-primary);
 }
 
 .footerLinkAccentRegister {
-  color: var(--color-register-green, #9ee63c);
+  color: var(--color-register-green);
 }
 
 /* ── Utility classes ── */
@@ -412,10 +412,10 @@
   text-align: left;
 }
 .textMuted {
-  color: var(--text-muted);
+  color: var(--color-text-muted);
 }
 .textDark {
-  color: var(--text-dark);
+  color: var(--color-text);
 }
 .textSuccess {
   color: var(--color-success);
@@ -508,7 +508,7 @@
 
 /* Colors */
 .colorMuted {
-  color: var(--text-muted);
+  color: var(--color-text-muted);
 }
 .colorPrimary {
   color: var(--color-primary);
@@ -523,10 +523,10 @@
   color: var(--color-warning);
 }
 .colorWhite {
-  color: var(--text-on-primary, #fff);
+  color: var(--color-on-primary);
 }
 .colorBlack {
-  color: var(--color-black, #000);
+  color: var(--color-black);
 }
 .colorRed {
   color: var(--color-danger);
@@ -535,7 +535,7 @@
   color: var(--color-success);
 }
 .colorOrange {
-  color: var(--color-orange, #f97316);
+  color: var(--color-orange);
 }
 .colorBlue {
   color: var(--color-blue);
@@ -587,10 +587,10 @@
   border-color: var(--color-danger);
 }
 .borderColorMuted {
-  border-color: var(--text-muted);
+  border-color: var(--color-text-muted);
 }
 .borderColorDark {
-  border-color: var(--color-gray-800, #222);
+  border-color: var(--color-gray-800);
 }
 
 /* Width/Height */
@@ -621,8 +621,8 @@
 
 /* Progress bar for dynamic styles */
 .strengthBarFill {
-  width: var(--strength-width, 0%);
-  background-color: var(--strength-color, #dc2626);
+  width: var(--strength-width);
+  background-color: var(--strength-color);
   height: 100%;
   transition:
     width 0.3s ease,
@@ -661,22 +661,22 @@
   text-align: center;
 }
 .colorMuted {
-  color: var(--color-gray-500, #666);
+  color: var(--color-gray-500);
 }
 .colorTextMuted {
-  color: var(--text-muted);
+  color: var(--color-text-muted);
 }
 .colorPrimary {
   color: var(--color-primary);
 }
 .colorSuccess {
-  color: var(--color-register-green, #9ee63c);
+  color: var(--color-register-green);
 }
 .colorDanger {
   color: var(--color-danger);
 }
 .colorIcon {
-  color: var(--color-gray-700, #444);
+  color: var(--color-gray-700);
 }
 .fontSize10 {
   font-size: var(--font-size-2xs);
@@ -700,7 +700,7 @@
   letter-spacing: 0.5px;
 }
 .borderColor222 {
-  border-color: var(--color-gray-800, #222);
+  border-color: var(--color-gray-800);
 }
 .overflowVisible {
   overflow: visible;

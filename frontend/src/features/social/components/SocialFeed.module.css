@@ -16,7 +16,7 @@
 .carouselTrack {
   display: flex;
   transition: transform 0.3s ease-in-out;
-  transform: translateX(var(--tx, 0));
+  transform: translateX(var(--tx));
 }
 .dotCursor {
   cursor: pointer;

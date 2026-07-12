@@ -23,7 +23,7 @@
 
 .transferRoute span:first-child {
   font-weight: var(--font-weight-semibold);
-  color: var(--text-dark);
+  color: var(--color-text);
 }
 
 .transferRoute span:last-child {
@@ -32,7 +32,7 @@
 }
 
 .arrow {
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   flex-shrink: 0;
 }
 
@@ -74,7 +74,7 @@
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
   margin-bottom: 6px;
-  color: var(--text-dark);
+  color: var(--color-text);
 }
 
 .field select,
@@ -82,10 +82,10 @@
 .field textarea {
   width: 100%;
   padding: 10px 12px;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--color-border);
   border-radius: var(--btn-radius);
   background: var(--bg-input);
-  color: var(--text-dark);
+  color: var(--color-text);
   font-size: var(--font-size-md);
   box-sizing: border-box;
 }
@@ -111,7 +111,7 @@
 .itemsHeader label {
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-dark);
+  color: var(--color-text);
 }
 
 .addItemBtn {
@@ -139,9 +139,9 @@
   align-items: flex-end;
   margin-bottom: 12px;
   padding: 12px;
-  background: var(--bg-main);
+  background: var(--color-bg);
   border-radius: var(--btn-radius);
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--color-border);
 }
 
 .itemRow select {
@@ -162,12 +162,12 @@
   border: none;
   border-radius: var(--border-radius-md);
   background: transparent;
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   cursor: pointer;
 }
 
 .removeBtn:hover:not(:disabled) {
-  background: var(--bg-danger-light, #fee2e2);
+  background: var(--color-danger-bg);
   color: var(--color-danger);
 }
 
@@ -182,7 +182,7 @@
   gap: 12px;
   justify-content: flex-end;
   padding-top: 16px;
-  border-top: 1px solid var(--border-color);
+  border-top: 1px solid var(--color-border);
   margin-top: 20px;
 }
 
@@ -191,17 +191,17 @@
   align-items: center;
   gap: 6px;
   padding: 10px 18px;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--color-border);
   border-radius: var(--btn-radius);
   background: transparent;
-  color: var(--text-dark);
+  color: var(--color-text);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
   cursor: pointer;
 }
 
 .cancelBtn:hover {
-  background: var(--bg-hover);
+  background: var(--color-bg-hover);
 }
 
 .saveBtn,
@@ -251,7 +251,7 @@
 .detailLabel {
   font-size: var(--font-size-caption);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -261,7 +261,7 @@
   gap: 12px;
   justify-content: flex-end;
   padding-top: 16px;
-  border-top: 1px solid var(--border-color);
+  border-top: 1px solid var(--color-border);
 }
 
 .textCenter {
@@ -271,7 +271,7 @@
   text-align: right;
 }
 .textMuted {
-  color: var(--text-muted);
+  color: var(--color-text-muted);
 }
 .fontMono {
   font-family: monospace;
@@ -279,7 +279,7 @@
 .emptyRow {
   text-align: center;
   padding: 40px;
-  color: var(--text-muted);
+  color: var(--color-text-muted);
 }
 .sectionTitle {
   font-size: var(--font-size-md);

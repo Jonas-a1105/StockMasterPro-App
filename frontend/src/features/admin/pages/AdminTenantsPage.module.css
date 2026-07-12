@@ -8,36 +8,36 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  color: var(--color-orange-red, #f05a28);
+  color: var(--color-primary);
 }
 
 .title {
   font-size: var(--font-size-md-plus);
   font-weight: var(--font-weight-bold);
   letter-spacing: 0.5px;
-  color: var(--text-dark, #e5e5e5);
+  color: var(--color-text);
   margin: 0;
 }
 
 .subtitle {
   font-size: var(--font-size-caption);
-  color: var(--text-muted, #888);
+  color: var(--color-text-muted);
   margin: -8px 0 0;
 }
 
 .card {
-  background-color: var(--bg-card, #1a1a1a);
+  background-color: var(--color-surface);
   display: flex;
   flex-direction: column;
 }
 
 .cardTitle {
   padding: 14px 18px;
-  border-bottom: 1px solid var(--border-color, #262626);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .muted {
-  color: var(--text-muted, #555);
+  color: var(--color-text-muted);
   font-size: var(--font-size-caption);
   padding: 30px 18px;
   margin: 0;
@@ -61,15 +61,15 @@
   font-weight: var(--font-weight-bold);
   text-transform: none;
   letter-spacing: 0.5px;
-  color: var(--text-muted, #888);
-  border-bottom: 1px solid var(--border-color, #2a2a2a);
+  color: var(--color-text-muted);
+  border-bottom: 1px solid var(--color-border);
   font-family: var(--font-family-mono);
 }
 
 .table td {
   padding: 12px 14px;
-  border-bottom: 1px solid var(--border-color, #222);
-  color: var(--text-dark, #ccc);
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text);
 }
 
 .table tbody tr:hover {
@@ -82,12 +82,12 @@
 
 .cellName {
   font-weight: var(--font-weight-semibold);
-  color: var(--text-dark, #fff);
+  color: var(--color-text);
 }
 
 .cellDate {
   font-family: var(--font-family-mono);
-  color: var(--text-muted, #888);
+  color: var(--color-text-muted);
   font-size: var(--font-size-xs);
 }
 
@@ -102,17 +102,17 @@
 
 .badgeFree {
   background-color: rgb(136, 136, 136, 0.15);
-  color: var(--color-gray-400, #888);
+  color: var(--color-gray-400);
 }
 
 .badgePro {
   background-color: rgb(249, 115, 22, 0.15);
-  color: var(--color-orange, #f97316);
+  color: var(--color-orange);
 }
 
 .badgeEnterprise {
   background-color: rgb(139, 92, 246, 0.15);
-  color: var(--color-purple, #8b5cf6);
+  color: var(--color-purple);
 }
 
 .statusBadge {
@@ -136,8 +136,8 @@
   font-weight: var(--font-weight-bold);
   text-transform: none;
   letter-spacing: 0.3px;
-  background-color: var(--bg-main, #222);
-  color: var(--text-dark, #ccc);
+  background-color: var(--color-bg);
+  color: var(--color-text);
   border: none;
   cursor: pointer;
   transition: all 0.12s ease;
@@ -145,8 +145,8 @@
 }
 
 .actionBtn:hover {
-  background-color: var(--list-row-hover, #2a2a2a);
-  color: var(--text-dark, #fff);
+  background-color: var(--list-row-hover);
+  color: var(--color-text);
 }
 
 .actionBtn:disabled {
@@ -170,19 +170,19 @@
 }
 
 .accessDeniedIcon {
-  color: var(--color-primary, var(--color-orange-red, #f05a28));
+  color: var(--color-primary);
   margin-bottom: 12px;
 }
 
 .accessDeniedTitle {
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-bold);
-  color: var(--text-dark, #e5e5e5);
+  color: var(--color-text);
   margin: 0 0 8px;
 }
 
 .accessDeniedText {
-  color: var(--text-muted, #888);
+  color: var(--color-text-muted);
   font-size: var(--font-size-sm);
   margin: 0;
 }
@@ -198,7 +198,7 @@
 }
 
 .statusExpired {
-  color: var(--color-orange, #f97316);
+  color: var(--color-orange);
 }
 
 .statusCanceled {
@@ -224,17 +224,17 @@
 
 .modalFormText {
   font-size: var(--font-size-sm);
-  color: var(--text-muted, #888);
+  color: var(--color-text-muted);
   margin: 0;
 }
 
 .modalFormStrong {
-  color: var(--text-dark, #fff);
+  color: var(--color-text);
 }
 
 .modalFormLabel {
   font-size: var(--font-size-caption);
-  color: var(--text-muted, #888);
+  color: var(--color-text-muted);
   display: block;
   margin-bottom: 4px;
 }
@@ -242,17 +242,17 @@
 .modalFormInput {
   width: 100%;
   padding: 8px 10px;
-  background: var(--bg-main, #1c1c1c);
-  border: 1px solid var(--border-color, #333);
-  color: var(--text-dark, #fff);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
   font-size: var(--font-size-sm);
   box-sizing: border-box;
 }
 
 .modalFormBtn {
   padding: 10px;
-  background: var(--color-orange-red, #f05a28);
-  color: var(--text-on-primary, #fff);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
   border: none;
   font-weight: var(--font-weight-semibold);
   font-size: var(--font-size-sm);

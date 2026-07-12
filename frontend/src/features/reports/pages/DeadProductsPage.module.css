@@ -19,7 +19,7 @@
   gap: 12px;
   font-size: var(--font-size-3xl);
   font-weight: var(--font-weight-bold);
-  color: var(--text-main);
+  color: var(--color-text);
 }
 
 .title svg {
@@ -42,17 +42,17 @@
 .filterGroup label {
   font-size: var(--font-size-caption);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
 .select {
   padding: 8px 12px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--color-border);
   border-radius: var(--btn-radius);
-  background: var(--bg-secondary);
-  color: var(--text-main);
+  background: var(--color-bg-hover);
+  color: var(--color-text);
   font-size: var(--font-size-md);
   min-width: 140px;
 }
@@ -66,16 +66,16 @@
 .searchInput {
   width: 100%;
   padding: 10px 16px 10px 40px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--color-border);
   border-radius: var(--btn-radius);
-  background: var(--bg-secondary);
-  color: var(--text-main);
+  background: var(--color-bg-hover);
+  color: var(--color-text);
   font-size: var(--font-size-md);
 }
 
 .searchInput:focus {
   outline: none;
-  border-color: var(--brand);
+  border-color: var(--color-primary);
   box-shadow: 0 0 0 3px var(--brand-bg);
 }
 
@@ -84,7 +84,7 @@
   left: 12px;
   top: 50%;
   transform: translateY(-50%);
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   pointer-events: none;
 }
 
@@ -110,7 +110,7 @@
 }
 
 .btnPrimary {
-  background: var(--brand);
+  background: var(--color-primary);
   color: white;
 }
 
@@ -119,13 +119,13 @@
 }
 
 .btnSecondary {
-  background: var(--bg-tertiary);
-  color: var(--text-main);
-  border: 1px solid var(--border);
+  background: var(--color-bg-active);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
 }
 
 .btnSecondary:hover {
-  background: var(--bg-hover);
+  background: var(--color-bg-hover);
 }
 
 .stats {
@@ -133,9 +133,9 @@
   gap: 24px;
   margin-top: 8px;
   padding: 16px;
-  background: var(--bg-secondary);
+  background: var(--color-bg-hover);
   border-radius: var(--card-radius);
-  border: 1px solid var(--border);
+  border: 1px solid var(--color-border);
 }
 
 .stat {
@@ -149,22 +149,22 @@
 .statValue {
   font-size: var(--font-size-4xl);
   font-weight: var(--font-weight-bold);
-  color: var(--text-main);
+  color: var(--color-text);
 }
 
 .statLabel {
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-medium);
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
 .tableContainer {
   overflow-x: auto;
-  border: 1px solid var(--border);
+  border: 1px solid var(--color-border);
   border-radius: var(--card-radius);
-  background: var(--bg-secondary);
+  background: var(--color-bg-hover);
 }
 
 .table {
@@ -177,21 +177,21 @@
 .table td {
   padding: 12px 16px;
   text-align: left;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .table th {
-  background: var(--bg-tertiary);
+  background: var(--color-bg-active);
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  color: var(--text-muted);
+  color: var(--color-text-muted);
 }
 
 .table td {
   font-size: var(--font-size-sm);
-  color: var(--text-main);
+  color: var(--color-text);
 }
 
 .table tr:last-child td {
@@ -199,18 +199,18 @@
 }
 
 .table tr:hover td {
-  background: var(--bg-tertiary);
+  background: var(--color-bg-active);
 }
 
 .productName {
   font-weight: var(--font-weight-medium);
-  color: var(--text-main);
+  color: var(--color-text);
 }
 
 .barcode {
   font-family: monospace;
   font-size: var(--font-size-caption);
-  color: var(--text-muted);
+  color: var(--color-text-muted);
 }
 
 .daysBadge {
@@ -242,7 +242,7 @@
 }
 
 .stockOk {
-  color: var(--text-main);
+  color: var(--color-text);
   font-variant-numeric: tabular-nums;
 }
 
@@ -268,7 +268,7 @@
 .empty {
   text-align: center;
   padding: 48px;
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   font-size: var(--font-size-md);
 }
 
@@ -280,13 +280,13 @@
   text-align: right;
 }
 .colorRed {
-  color: var(--color-red, #dc2626);
+  color: var(--color-red);
 }
 .colorMuted {
-  color: var(--text-muted);
+  color: var(--color-text-muted);
 }
 .loadingCenter {
   padding: 40px;
   text-align: center;
-  color: var(--text-muted);
+  color: var(--color-text-muted);
 }

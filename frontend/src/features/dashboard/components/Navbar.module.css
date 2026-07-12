@@ -1,12 +1,12 @@
 .navbar {
   height: 60px;
-  background-color: var(--bg-card);
-  border-bottom: var(--header-border-width, 1px) solid var(--border-color);
+  background-color: var(--color-surface);
+  border-bottom: var(--header-border-width) solid var(--color-border);
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 30px;
-  padding-left: calc(var(--sidebar-w, 60px) + 30px);
+  padding-left: calc(var(--sidebar-w) + 30px);
   transition: padding-left 0.25s ease-out;
   position: fixed;
   top: 0;
@@ -21,7 +21,7 @@
 }
 
 .navbarLeft svg {
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   cursor: pointer;
 }
 
@@ -30,7 +30,7 @@
   border: none;
   cursor: pointer;
   padding: 5px;
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   display: flex;
   align-items: center;
 }
@@ -46,12 +46,12 @@
   align-items: center;
   gap: 4px;
   padding: 5px 12px;
-  background-color: var(--bg-success, #f0fdf4);
-  border: 1px solid var(--color-success, #bbf7d0);
-  border-radius: var(--btn-radius, 8px);
+  background-color: var(--color-success-bg);
+  border: 1px solid var(--color-success);
+  border-radius: var(--btn-radius);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
-  color: var(--color-success, #16a34a);
+  color: var(--color-success);
   white-space: nowrap;
   cursor: pointer;
   transition: all 0.15s ease;
@@ -62,19 +62,19 @@
 }
 
 .dolarSign {
-  color: var(--color-success, #16a34a);
+  color: var(--color-success);
   font-weight: var(--font-weight-semibold);
 }
 
 .dolarValue {
-  color: var(--color-success, #16a34a);
+  color: var(--color-success);
   font-weight: var(--font-weight-semibold);
 }
 
 .dolarTag {
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-normal);
-  color: var(--text-muted, #6b7280);
+  color: var(--color-text-muted);
   margin-left: 4px;
 }
 
@@ -82,7 +82,7 @@
   position: relative;
   background: none;
   border: none;
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -92,8 +92,8 @@
   position: absolute;
   top: -4px;
   right: -4px;
-  background-color: var(--color-danger, #ef4444);
-  color: var(--text-on-primary, #fff);
+  background-color: var(--color-danger);
+  color: var(--color-on-primary);
   font-size: var(--font-size-2xs);
   font-weight: var(--font-weight-bold);
   width: 16px;
@@ -115,13 +115,13 @@
   gap: 10px;
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-main);
+  color: var(--color-text);
 }
 
 .avatar {
   width: 32px;
   height: 32px;
-  background-color: var(--text-muted, #475569);
+  background-color: var(--color-text-muted);
   border-radius: 50%;
 }
 
@@ -131,9 +131,9 @@
   top: calc(100% + 8px);
   right: 0;
   width: 360px;
-  background-color: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: var(--card-radius, 12px);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--card-radius);
   box-shadow: 0 10px 25px rgb(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
@@ -157,10 +157,10 @@
   justify-content: space-between;
   align-items: center;
   padding: 14px 18px;
-  background-color: var(--bg-app);
-  border-top-left-radius: calc(var(--card-radius, 12px) - 1px);
-  border-top-right-radius: calc(var(--card-radius, 12px) - 1px);
-  border-bottom: 1px solid var(--border-color);
+  background-color: var(--color-bg);
+  border-top-left-radius: calc(var(--card-radius) - 1px);
+  border-top-right-radius: calc(var(--card-radius) - 1px);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .notifModalTitle {
@@ -168,7 +168,7 @@
   font-weight: var(--font-weight-bold);
   text-transform: none;
   letter-spacing: 0.6px;
-  color: var(--text-main);
+  color: var(--color-text);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -178,7 +178,7 @@
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-bold);
   text-transform: none;
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   cursor: pointer;
   border: none;
   background: none;
@@ -186,7 +186,7 @@
 }
 
 .notifModalClearAll:hover {
-  color: var(--brand-orange);
+  color: var(--color-primary);
 }
 
 .notifModalFeed {
@@ -208,14 +208,14 @@
 }
 
 .notifModalFeed::-webkit-scrollbar-thumb {
-  background-color: var(--text-muted);
+  background-color: var(--color-text-muted);
   border-radius: var(--border-radius-md);
 }
 
 .notifModalItem {
-  background-color: var(--bg-app);
+  background-color: var(--color-bg);
   padding: 12px 14px;
-  border-radius: var(--btn-radius, 8px);
+  border-radius: var(--btn-radius);
   display: flex;
   gap: 12px;
   align-items: flex-start;
@@ -228,7 +228,7 @@
 }
 
 .notifModalItem:hover {
-  background-color: var(--border-color);
+  background-color: var(--color-border);
 }
 
 .notifModalUnread::after {
@@ -239,35 +239,35 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background-color: var(--brand-orange);
+  background-color: var(--color-primary);
 }
 
 .notifModalIconBox {
   width: 32px;
   height: 32px;
-  background-color: var(--bg-card);
-  border-radius: var(--btn-radius, 8px);
+  background-color: var(--color-surface);
+  border-radius: var(--btn-radius);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: var(--font-size-sm);
   flex-shrink: 0;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--color-border);
 }
 
 .notifModalCritical .notifModalIconBox {
-  color: var(--color-danger, #dc2626);
-  border-color: var(--color-danger, #dc2626);
+  color: var(--color-danger);
+  border-color: var(--color-danger);
 }
 
 .notifModalSuccess .notifModalIconBox {
-  color: var(--color-success, #16a34a);
-  border-color: var(--color-success, #16a34a);
+  color: var(--color-success);
+  border-color: var(--color-success);
 }
 
 .notifModalInfo .notifModalIconBox {
-  color: var(--brand-orange);
-  border-color: var(--brand-orange);
+  color: var(--color-primary);
+  border-color: var(--color-primary);
 }
 
 .notifModalDetails {
@@ -282,7 +282,7 @@
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-bold);
   line-height: 1.3;
-  color: var(--text-main);
+  color: var(--color-text);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -290,7 +290,7 @@
 
 .notifModalMessage {
   font-size: var(--font-size-xs);
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   font-weight: var(--font-weight-semibold);
   line-height: 1.3;
   display: -webkit-box;
@@ -302,7 +302,7 @@
 .notifModalTime {
   font-size: var(--font-size-2xs);
   font-weight: var(--font-weight-bold);
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   text-transform: none;
   margin-top: 2px;
   letter-spacing: 0.3px;
@@ -315,7 +315,7 @@
   flex-direction: column;
   align-items: center;
   gap: 8px;
-  color: var(--text-muted);
+  color: var(--color-text-muted);
 }
 
 .notifModalEmpty span {
@@ -325,30 +325,30 @@
 
 .notifModalFooter {
   padding: 10px 12px;
-  background-color: var(--bg-app);
-  border-bottom-left-radius: calc(var(--card-radius, 12px) - 1px);
-  border-bottom-right-radius: calc(var(--card-radius, 12px) - 1px);
-  border-top: 1px solid var(--border-color);
+  background-color: var(--color-bg);
+  border-bottom-left-radius: calc(var(--card-radius) - 1px);
+  border-bottom-right-radius: calc(var(--card-radius) - 1px);
+  border-top: 1px solid var(--color-border);
 }
 
 .notifModalViewAll {
   width: 100%;
   padding: 10px;
-  background-color: var(--bg-app);
-  color: var(--text-main);
+  background-color: var(--color-bg);
+  color: var(--color-text);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-bold);
   text-transform: none;
   letter-spacing: 0.5px;
-  border-radius: var(--btn-radius, 8px);
+  border-radius: var(--btn-radius);
   cursor: pointer;
   text-align: center;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--color-border);
   transition: background 0.15s;
 }
 
 .notifModalViewAll:hover {
-  background-color: var(--border-color);
+  background-color: var(--color-border);
 }
 
 @media (max-width: 768px) {
@@ -383,5 +383,5 @@
   color: var(--color-primary);
 }
 .colorMuted {
-  color: var(--text-muted);
+  color: var(--color-text-muted);
 }

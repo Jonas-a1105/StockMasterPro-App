@@ -5,9 +5,9 @@
 }
 
 .chartCard {
-  background: var(--bg-card);
+  background: var(--color-surface);
   padding: 20px 24px;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--color-border);
 }
 
 .chartHeader {
@@ -19,13 +19,13 @@
   font-weight: var(--font-weight-semibold);
   letter-spacing: 1px;
   text-transform: none;
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   display: block;
 }
 
 .chartSub {
   font-size: var(--font-size-2xs);
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   margin-top: 2px;
 }
 
@@ -43,7 +43,7 @@
 }
 
 .filterGroup {
-  background: var(--bg-main);
+  background: var(--color-bg);
   padding: 4px 10px;
   display: flex;
   align-items: center;
@@ -52,27 +52,27 @@
 
 .filterLabel {
   font-size: var(--font-size-xs);
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   text-transform: none;
   font-weight: var(--font-weight-semibold);
 }
 
 .yearSelect {
   background: var(--bg-input);
-  color: var(--text-dark);
+  color: var(--color-text);
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);
   padding: 4px 6px;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--color-border);
   outline: none;
 }
 
 .dateInput {
   padding: 6px 10px;
   font-size: var(--font-size-xs);
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--color-border);
   background: var(--bg-input);
-  color: var(--text-dark);
+  color: var(--color-text);
   outline: none;
 }
 
@@ -87,7 +87,7 @@
   letter-spacing: 0.5px;
   border: 1px solid var(--color-primary);
   background: var(--color-primary);
-  color: var(--text-on-primary, #fff);
+  color: var(--color-on-primary);
   cursor: pointer;
 }
 
@@ -101,19 +101,19 @@
   text-transform: none;
   letter-spacing: 0.5px;
   padding: 6px 14px;
-  border: 1px solid var(--border-color);
-  background: var(--bg-main);
-  color: var(--text-muted);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  color: var(--color-text-muted);
   cursor: pointer;
 }
 
 .toggleBtn:hover {
-  background: var(--bg-hover);
+  background: var(--color-bg-hover);
 }
 
 .toggleBtnActive {
   background: var(--color-primary);
-  color: var(--text-on-primary, #fff);
+  color: var(--color-on-primary);
   border-color: var(--color-primary);
 }
 
@@ -130,14 +130,14 @@
 }
 
 .table th {
-  background: var(--bg-main);
-  color: var(--text-muted);
+  background: var(--color-bg);
+  color: var(--color-text-muted);
   text-transform: none;
   font-size: var(--font-size-2xs);
   letter-spacing: 1px;
   font-family: var(--font-family-mono);
   padding: 10px 12px;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .thLeft {
@@ -149,16 +149,16 @@
 
 .table td {
   padding: 10px 12px;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .rowInactive td {
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   opacity: 0.4;
 }
 
 .rowActive {
-  background: var(--bg-hover);
+  background: var(--color-bg-hover);
 }
 
 .rowActive:hover {
@@ -167,19 +167,19 @@
 
 .cellMonth {
   font-weight: var(--font-weight-semibold);
-  color: var(--text-dark);
+  color: var(--color-text);
 }
 
 .cellNumber {
   text-align: right;
   font-family: var(--font-family-mono);
-  color: var(--text-dark);
+  color: var(--color-text);
 }
 
 .cellNumberMuted {
   text-align: right;
   font-family: var(--font-family-mono);
-  color: var(--text-muted);
+  color: var(--color-text-muted);
 }
 
 .tableFoot {
@@ -201,7 +201,7 @@
 .footNumber {
   text-align: right;
   font-family: var(--font-family-mono);
-  color: var(--text-dark);
+  color: var(--color-text);
 }
 
 .exportBtn {
@@ -210,10 +210,10 @@
   justify-content: center;
   width: 28px;
   height: 28px;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--color-border);
   border-radius: var(--border-radius-md);
-  background: var(--bg-card);
-  color: var(--text-muted);
+  background: var(--color-surface);
+  color: var(--color-text-muted);
   cursor: pointer;
   transition: all 0.2s;
 }
@@ -246,7 +246,7 @@
 }
 
 .totalProfitValue {
-  font-weight: var(--font-weight-extrabold, 800);
+  font-weight: var(--font-weight-extrabold);
   color: var(--total-profit-color);
 }
 

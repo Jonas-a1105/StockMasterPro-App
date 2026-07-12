@@ -1,6 +1,6 @@
 .sessionCard {
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: var(--border-radius-lg);
   padding: 20px;
   margin-bottom: 16px;
@@ -19,8 +19,8 @@
   border-radius: var(--border-radius-xl);
   font-size: var(--font-size-caption);
   font-weight: var(--font-weight-semibold);
-  background: var(--bg-success-light, #d1fae5);
-  color: var(--color-green-800, #065f46);
+  background: var(--color-success-bg);
+  color: var(--color-success);
 }
 
 .sessionBadgeClosed {
@@ -29,18 +29,18 @@
   border-radius: var(--border-radius-xl);
   font-size: var(--font-size-caption);
   font-weight: var(--font-weight-semibold);
-  background: var(--color-gray-200, #e5e7eb);
-  color: var(--color-gray-700, #374151);
+  background: var(--color-gray-200);
+  color: var(--color-gray-700);
 }
 
 .sessionDate {
   font-size: var(--font-size-sm);
-  color: var(--text-muted);
+  color: var(--color-text-muted);
 }
 
 .sessionNotes {
   font-size: var(--font-size-sm);
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   margin-bottom: 12px;
 }
 
@@ -64,16 +64,16 @@
 }
 
 .actionBtn {
-  background: var(--bg-success-light, #d1fae5);
-  color: var(--color-green-800, #065f46);
+  background: var(--color-success-bg);
+  color: var(--color-success);
 }
 .actionBtnDanger {
-  background: var(--bg-danger-light, #fee2e2);
-  color: var(--color-red-800, #991b1b);
+  background: var(--color-danger-bg);
+  color: var(--color-danger);
 }
 .actionBtnClose {
   background: var(--color-primary);
-  color: var(--text-on-primary, #fff);
+  color: var(--color-on-primary);
 }
 .actionBtn:hover,
 .actionBtnDanger:hover,
@@ -97,15 +97,15 @@
   text-align: left;
   padding: 8px 10px;
   font-weight: var(--font-weight-semibold);
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   font-size: var(--font-size-xs);
   text-transform: uppercase;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .txnTable td {
   padding: 8px 10px;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .txnTypeBadge {
@@ -118,20 +118,20 @@
 }
 
 .txnIncome {
-  background: var(--bg-success-light, #d1fae5);
-  color: var(--color-green-800, #065f46);
+  background: var(--color-success-bg);
+  color: var(--color-success);
 }
 .txnExpense {
-  background: var(--bg-danger-light, #fee2e2);
-  color: var(--color-red-800, #991b1b);
+  background: var(--color-danger-bg);
+  color: var(--color-danger);
 }
 .txnSale {
-  background: var(--bg-primary-light, #dbeafe);
-  color: var(--color-blue-800, #1e40af);
+  background: var(--color-primary-light);
+  color: var(--color-blue-800);
 }
 
 .amountPositive {
-  color: var(--color-success, #059669);
+  color: var(--color-success);
   font-weight: var(--font-weight-semibold);
 }
 .amountNegative {
@@ -140,7 +140,7 @@
 }
 
 .txnTime {
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   font-size: var(--font-size-caption);
 }
 
@@ -150,7 +150,7 @@
   align-items: center;
   gap: 12px;
   padding: 60px 20px;
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   text-align: center;
 }
 
@@ -159,7 +159,7 @@
   border: none;
   border-radius: var(--btn-radius);
   background: var(--color-primary);
-  color: var(--text-on-primary, #fff);
+  color: var(--color-on-primary);
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-medium);
   cursor: pointer;
@@ -172,8 +172,8 @@
 }
 
 .historyCard {
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: var(--btn-radius);
   padding: 14px 16px;
 }
@@ -187,7 +187,7 @@
 
 .historyDate {
   font-size: var(--font-size-caption);
-  color: var(--text-muted);
+  color: var(--color-text-muted);
 }
 
 .historyDetails {
@@ -199,7 +199,7 @@
 }
 
 .diffPositive {
-  color: var(--color-success, #059669);
+  color: var(--color-success);
   font-weight: var(--font-weight-medium);
 }
 .diffNegative {
@@ -224,8 +224,8 @@
 .formFields select {
   padding: 8px 12px;
   border-radius: var(--border-radius-md);
-  border: 1px solid var(--border-color);
-  background: var(--bg-card);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
   color: var(--text-primary);
   font-size: var(--font-size-md);
 }
@@ -236,12 +236,12 @@
   justify-content: flex-end;
   margin-top: 16px;
   padding-top: 12px;
-  border-top: 1px solid var(--border-color);
+  border-top: 1px solid var(--color-border);
 }
 
 .cancelBtn {
   padding: 8px 20px;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--color-border);
   border-radius: var(--border-radius-md);
   background: transparent;
   color: var(--text-primary);
@@ -254,7 +254,7 @@
   border: none;
   border-radius: var(--border-radius-md);
   background: var(--color-primary);
-  color: var(--text-on-primary, #fff);
+  color: var(--color-on-primary);
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-medium);
   cursor: pointer;
@@ -266,8 +266,8 @@
 }
 
 .error {
-  background: var(--bg-danger-light, #fee2e2);
-  color: var(--color-red-800, #991b1b);
+  background: var(--color-danger-bg);
+  color: var(--color-danger);
   padding: 8px 12px;
   border-radius: var(--border-radius-md);
   font-size: var(--font-size-sm);
@@ -281,7 +281,7 @@
 }
 
 .summaryTotal {
-  border-top: 1px solid var(--border-color);
+  border-top: 1px solid var(--color-border);
   padding-top: 8px;
   margin-top: 4px;
   font-weight: var(--font-weight-bold);

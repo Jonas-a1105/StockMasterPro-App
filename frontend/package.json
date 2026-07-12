@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "oxlint && node scripts/check-boundaries.mjs",
-    "lint:css": "stylelint \"**/*.module.css\"",
+    "lint:css": "stylelint \"src/**/*.css\"",
     "lint:inline-styles": "node scripts/check-inline-styles.mjs",
     "lint:all": "npm run lint && npm run lint:css && npm run lint:inline-styles",
     "test": "vitest run",

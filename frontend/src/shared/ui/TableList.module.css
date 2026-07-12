@@ -20,7 +20,7 @@
   width: 100%;
   text-align: left;
   border-collapse: collapse;
-  font-size: var(--list-body-font-size, var(--font-size-sm));
+  font-size: var(--list-body-font-size);
   min-width: 950px;
 }
 
@@ -305,7 +305,7 @@
   gap: 6px;
   padding: 8px 16px;
   background-color: var(--list-accent-color);
-  color: #ffffff !important;
+  color: var(--color-on-primary) !important;
   font-size: var(--list-body-font-size);
   font-weight: 700;
   text-transform: none;

@@ -17,10 +17,10 @@
   justify-content: center;
   width: 36px;
   height: 36px;
-  border: 1px solid var(--border-color, #eee);
+  border: 1px solid var(--color-border);
   border-radius: var(--btn-radius);
-  background: var(--bg-card, #fff);
-  color: var(--text-dark, #555);
+  background: var(--color-surface);
+  color: var(--color-text);
   cursor: pointer;
 }
 
@@ -35,7 +35,7 @@
   padding: 8px 16px;
   border: none;
   border-radius: var(--btn-radius);
-  background: var(--color-orange-red, #f05a28);
+  background: var(--color-primary);
   color: white;
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
@@ -52,8 +52,8 @@
   flex: 1;
   padding: 16px;
   border-radius: var(--card-radius);
-  background: var(--bg-card, #fff);
-  border: 1px solid var(--border-color, #eee);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -69,12 +69,12 @@
 }
 
 .bellMuted {
-  color: var(--text-muted);
+  color: var(--color-text-muted);
 }
 
 .kpiLabel {
   font-size: var(--font-size-caption);
-  color: var(--text-muted, #888);
+  color: var(--color-text-muted);
 }
 
 .filterBar {
@@ -86,19 +86,19 @@
 
 .filterBtn {
   padding: 6px 14px;
-  border: 1px solid var(--border-color, #eee);
+  border: 1px solid var(--color-border);
   border-radius: var(--border-radius-xl);
-  background: var(--bg-card, #fff);
-  color: var(--text-dark, #555);
+  background: var(--color-surface);
+  color: var(--color-text);
   font-size: var(--font-size-caption);
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .filterActive {
-  background: var(--color-orange-red, #f05a28);
+  background: var(--color-primary);
   color: white;
-  border-color: var(--color-orange-red, #f05a28);
+  border-color: var(--color-primary);
 }
 
 .list {
@@ -113,18 +113,18 @@
   gap: 12px;
   padding: 14px 16px;
   border-radius: var(--border-radius-lg);
-  background: var(--bg-card, #fff);
-  border: 1px solid var(--border-color, #eee);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
   cursor: pointer;
   transition: background 0.2s;
 }
 
 .item:hover {
-  background: var(--bg-hover, #f9f9f9);
+  background: var(--color-bg-hover);
 }
 
 .itemUnread {
-  border-left: 3px solid var(--color-orange-red, #f05a28);
+  border-left: 3px solid var(--color-primary);
 }
 
 .iconBox {
@@ -165,7 +165,7 @@
 
 .itemMessage {
   font-size: var(--font-size-sm);
-  color: var(--text-muted, #888);
+  color: var(--color-text-muted);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -176,7 +176,7 @@
   align-items: center;
   gap: 6px;
   font-size: var(--font-size-xs);
-  color: var(--text-muted, #888);
+  color: var(--color-text-muted);
   margin-top: 4px;
 }
 
@@ -184,7 +184,7 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--color-orange-red, #f05a28);
+  background: var(--color-primary);
 }
 
 .readBtn {
@@ -196,13 +196,13 @@
   border: none;
   border-radius: var(--border-radius-md);
   background: transparent;
-  color: var(--text-muted, #888);
+  color: var(--color-text-muted);
   cursor: pointer;
 }
 
 .readBtn:hover {
-  background: var(--bg-hover, #f0f0f0);
-  color: var(--color-orange-red, #f05a28);
+  background: var(--color-bg-hover);
+  color: var(--color-primary);
 }
 
 .empty {
@@ -211,5 +211,5 @@
   align-items: center;
   gap: 12px;
   padding: 60px 20px;
-  color: var(--text-muted, #888);
+  color: var(--color-text-muted);
 }

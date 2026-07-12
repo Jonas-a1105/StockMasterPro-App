@@ -11,10 +11,10 @@
   justify-content: space-between;
   align-items: center;
   gap: 12px;
-  background-color: var(--bg-card);
+  background-color: var(--color-surface);
   padding: 16px 20px;
   border-radius: var(--card-radius);
-  border: var(--card-border-width, 1px) solid var(--border-color);
+  border: var(--card-border-width) solid var(--color-border);
   box-shadow: var(--shadow-sm);
 }
 
@@ -27,13 +27,13 @@
 .headerTitle {
   font-size: var(--font-size-md-plus);
   font-weight: var(--font-weight-bold);
-  color: var(--text-main);
+  color: var(--color-text);
   margin: 0;
 }
 
 .headerSub {
   font-size: var(--font-size-caption);
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   margin: 4px 0 0;
 }
 
@@ -49,17 +49,17 @@
   justify-content: center;
   width: 36px;
   height: 36px;
-  background-color: var(--bg-main);
-  color: var(--text-muted);
-  border: 1px solid var(--border-color);
+  background-color: var(--color-bg);
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
   border-radius: var(--btn-radius);
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .navBtn:hover {
-  background-color: var(--border-color);
-  color: var(--text-dark);
+  background-color: var(--color-border);
+  color: var(--color-text);
   transform: translateY(-1.5px);
 }
 
@@ -67,13 +67,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--bg-main);
+  background-color: var(--color-bg);
   padding: 0 16px;
   height: 36px;
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-dark);
-  border: 1px solid var(--border-color);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
   border-radius: var(--btn-radius);
   min-width: 155px;
   text-align: center;
@@ -84,7 +84,7 @@
   align-items: center;
   justify-content: center;
   background-color: var(--color-primary);
-  color: var(--text-on-primary, #fff);
+  color: var(--color-on-primary);
   border: none;
   padding: 0 16px;
   height: 36px;
@@ -107,7 +107,7 @@
   justify-content: center;
   gap: 6px;
   background-color: var(--color-success);
-  color: var(--text-on-primary, #fff);
+  color: var(--color-on-primary);
   border: none;
   padding: 0 16px;
   height: 36px;
@@ -134,9 +134,9 @@
 
 /* Calendar Card */
 .calendarCard {
-  background-color: var(--bg-card);
+  background-color: var(--color-surface);
   border-radius: var(--card-radius);
-  border: var(--card-border-width, 1px) solid var(--border-color);
+  border: var(--card-border-width) solid var(--color-border);
   box-shadow: var(--shadow-sm);
   overflow: hidden;
   display: flex;
@@ -149,14 +149,14 @@
   grid-template-columns: repeat(7, 1fr);
   text-align: center;
   padding: 12px 10px;
-  border-bottom: 1px solid var(--border-color);
-  background-color: var(--bg-main);
+  border-bottom: 1px solid var(--color-border);
+  background-color: var(--color-bg);
 }
 
 .weekday {
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-bold);
-  color: var(--text-muted);
+  color: var(--color-text-muted);
 }
 
 .weekdaySun {
@@ -178,9 +178,9 @@
   justify-content: space-between;
   cursor: pointer;
   transition: all 0.15s ease;
-  border-right: 1px solid var(--border-color);
-  border-bottom: 1px solid var(--border-color);
-  background-color: var(--bg-card);
+  border-right: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  background-color: var(--color-surface);
 }
 
 .dayCell:nth-child(7n) {
@@ -188,11 +188,11 @@
 }
 
 .dayCell:hover {
-  background-color: var(--bg-main) !important;
+  background-color: var(--color-bg) !important;
 }
 
 .dayCellSelected {
-  background-color: var(--bg-main) !important;
+  background-color: var(--color-bg) !important;
   box-shadow: inset 0 0 0 2px var(--color-primary) !important;
   z-index: 2;
 }
@@ -202,13 +202,13 @@
 }
 
 .dayCellMuted {
-  background-color: var(--bg-main);
+  background-color: var(--color-bg);
   opacity: 0.35;
   cursor: default;
 }
 
 .dayCellMuted:hover {
-  background-color: var(--bg-main) !important;
+  background-color: var(--color-bg) !important;
 }
 
 /* Day Number */
@@ -216,11 +216,11 @@
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-bold);
   align-self: flex-end;
-  color: var(--text-main);
+  color: var(--color-text);
 }
 
 .dayNumMuted {
-  color: var(--text-light);
+  color: var(--color-text-light);
 }
 
 .dayNumSun {
@@ -248,9 +248,9 @@
 
 /* Sidebar */
 .sidebar {
-  background-color: var(--bg-card);
+  background-color: var(--color-surface);
   border-radius: var(--card-radius);
-  border: var(--card-border-width, 1px) solid var(--border-color);
+  border: var(--card-border-width) solid var(--color-border);
   box-shadow: var(--shadow-sm);
   padding: 20px;
   display: flex;
@@ -262,7 +262,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--color-border);
   padding-bottom: 12px;
 }
 
@@ -274,7 +274,7 @@
 
 .sidebarSub {
   font-size: var(--font-size-caption);
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   margin: 0;
   line-height: 1.4;
 }
@@ -295,7 +295,7 @@
 }
 
 .eventsList::-webkit-scrollbar-thumb {
-  background-color: var(--border-color);
+  background-color: var(--color-border);
   border-radius: var(--border-radius-sm);
 }
 
@@ -306,7 +306,7 @@
   justify-content: center;
   gap: 8px;
   padding: 40px 10px;
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   font-size: var(--font-size-sm);
   font-style: italic;
   text-align: center;
@@ -320,12 +320,12 @@
   position: relative;
   padding: 10px 12px 10px 18px;
   border-radius: var(--btn-radius);
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--color-border);
   display: flex;
   flex-direction: column;
   gap: 4px;
   transition: all 0.2s ease;
-  background-color: var(--event-bg, rgb(136, 136, 136, 0.1));
+  background-color: var(--event-bg);
 }
 
 .eventCard:hover {
@@ -340,19 +340,19 @@
   top: 8px;
   bottom: 8px;
   width: 4px;
-  background-color: var(--event-color, var(--text-muted));
+  background-color: var(--event-color);
   border-radius: var(--border-radius-sm);
 }
 
 .eventLabel {
   font-size: var(--font-size-caption);
   font-weight: var(--font-weight-bold);
-  color: var(--text-main);
+  color: var(--color-text);
 }
 
 .eventDesc {
   font-size: var(--font-size-caption);
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   margin: 0;
   line-height: 1.4;
 }
@@ -360,15 +360,15 @@
 .eventType {
   font-size: var(--font-size-2xs);
   font-weight: var(--font-weight-bold);
-  color: var(--text-light);
+  color: var(--color-text-light);
   margin-top: 2px;
 }
 
 /* Stats */
 .statsCard {
-  background-color: var(--bg-main);
+  background-color: var(--color-bg);
   border-radius: var(--btn-radius);
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--color-border);
   padding: 14px;
   margin-top: auto;
 }
@@ -377,7 +377,7 @@
   display: block;
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-bold);
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   margin-bottom: 8px;
 }
 
@@ -386,12 +386,12 @@
   justify-content: space-between;
   align-items: center;
   font-size: var(--font-size-caption);
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   margin-top: 6px;
 }
 
 .statValue {
-  font-weight: var(--font-weight-extrabold, 800);
+  font-weight: var(--font-weight-extrabold);
   font-size: var(--font-size-md);
 }
 
@@ -429,7 +429,7 @@
 
 .formLabel {
   font-size: var(--font-size-caption);
-  color: var(--text-muted, #888);
+  color: var(--color-text-muted);
   display: block;
   margin-bottom: 4px;
 }
@@ -439,10 +439,10 @@
   padding: 0 12px;
   height: 38px;
   font-size: var(--font-size-sm);
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--color-border);
   border-radius: var(--btn-radius);
-  background: var(--bg-main);
-  color: var(--text-main);
+  background: var(--color-bg);
+  color: var(--color-text);
 }
 
 .formInput:focus {
@@ -455,10 +455,10 @@
   padding: 8px 12px;
   font-size: var(--font-size-sm);
   resize: vertical;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--color-border);
   border-radius: var(--btn-radius);
-  background: var(--bg-main);
-  color: var(--text-main);
+  background: var(--color-bg);
+  color: var(--color-text);
   font-family: inherit;
 }
 
@@ -487,7 +487,7 @@
 }
 
 .colorCircleSelected {
-  outline: 2px solid var(--text-dark, #fff);
+  outline: 2px solid var(--color-text);
   outline-offset: 2px;
 }
 
@@ -499,13 +499,13 @@
 
 .checkboxLabel {
   font-size: var(--font-size-caption);
-  color: var(--text-muted, #888);
+  color: var(--color-text-muted);
 }
 
 .submitBtn {
   padding: 10px 16px;
-  background: var(--color-primary, #f05a28);
-  color: var(--text-on-primary, #fff);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
   border: none;
   font-weight: var(--font-weight-semibold);
   font-size: var(--font-size-sm);
@@ -531,7 +531,7 @@
 .deleteBtn {
   background: none;
   border: none;
-  color: var(--text-muted, #888);
+  color: var(--color-text-muted);
   cursor: pointer;
   padding: 2px;
 }
@@ -555,7 +555,7 @@
 }
 .formLabel {
   font-size: var(--font-size-caption);
-  color: var(--text-muted, #888);
+  color: var(--color-text-muted);
   display: block;
   margin-bottom: 4px;
 }
@@ -564,19 +564,19 @@
   padding: 0 12px;
   height: 38px;
   font-size: var(--font-size-sm);
-  border: 1px solid var(--border-color);
-  border-radius: var(--input-radius, 6px);
-  background: var(--bg-card);
-  color: var(--text-main);
+  border: 1px solid var(--color-border);
+  border-radius: var(--input-radius);
+  background: var(--color-surface);
+  color: var(--color-text);
 }
 .formTextarea {
   width: 100%;
   padding: 8px 12px;
   font-size: var(--font-size-sm);
-  border: 1px solid var(--border-color);
-  border-radius: var(--input-radius, 6px);
-  background: var(--bg-card);
-  color: var(--text-main);
+  border: 1px solid var(--color-border);
+  border-radius: var(--input-radius);
+  background: var(--color-surface);
+  color: var(--color-text);
   resize: vertical;
 }
 .formGrid2 {
@@ -599,7 +599,7 @@
   cursor: pointer;
 }
 .colorCircleSelected {
-  outline: 2px solid var(--text-dark, #fff);
+  outline: 2px solid var(--color-text);
   outline-offset: 2px;
 }
 .checkboxRow {
@@ -609,12 +609,12 @@
 }
 .checkboxLabel {
   font-size: var(--font-size-caption);
-  color: var(--text-muted, #888);
+  color: var(--color-text-muted);
 }
 .submitBtn {
   padding: 10px 16px;
-  background: var(--color-primary, #f05a28);
-  color: var(--text-on-primary, #fff);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
   border: none;
   font-weight: var(--font-weight-semibold);
   font-size: var(--font-size-sm);
@@ -629,23 +629,23 @@
   width: 100%;
 }
 .loadingText {
-  color: var(--text-muted, #555);
+  color: var(--color-text-muted);
   font-size: var(--font-size-caption);
 }
 .iconMuted {
-  color: var(--text-muted, #555);
+  color: var(--color-text-muted);
   opacity: 0.4;
 }
 .statValueOrange {
-  color: var(--list-accent-color, #f97316);
+  color: var(--list-accent-color);
 }
 .statValueGreen {
-  color: var(--color-success, #16a34a);
+  color: var(--color-success);
 }
 .deleteBtn {
   background: none;
   border: none;
-  color: var(--text-muted, #888);
+  color: var(--color-text-muted);
   cursor: pointer;
   padding: 2px;
 }
@@ -658,5 +658,5 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background-color: var(--dot-color, #888);
+  background-color: var(--dot-color);
 }

@@ -12,8 +12,8 @@
 
 .modal {
   background-color: var(--color-surface);
-  border: var(--card-border-width, 1px) solid var(--color-border);
-  border-radius: var(--card-radius, 8px);
+  border: var(--card-border-width) solid var(--color-border);
+  border-radius: var(--card-radius);
   width: 100%;
   max-width: 540px;
   max-height: 90vh;
@@ -40,14 +40,14 @@
   justify-content: space-between;
   align-items: center;
   padding: 14px 18px;
-  border-bottom: var(--card-border-width, 1px) solid var(--color-border);
-  background-color: var(--bg-main, #f8f9fa);
+  border-bottom: var(--card-border-width) solid var(--color-border);
+  background-color: var(--color-bg);
 }
 
 .title {
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-bold);
-  color: var(--text-dark, #333);
+  color: var(--color-text);
   margin: 0;
   text-transform: none;
 }
@@ -67,7 +67,7 @@
 
 .closeBtn:hover {
   background-color: var(--color-border);
-  color: var(--text-dark, #333);
+  color: var(--color-text);
 }
 
 .body {
@@ -90,15 +90,15 @@
 }
 
 .templateSection {
-  background-color: var(--bg-main, #f8f9fa);
-  border: var(--card-border-width, 1px) solid var(--color-border);
-  border-radius: var(--card-radius, 6px);
+  background-color: var(--color-bg);
+  border: var(--card-border-width) solid var(--color-border);
+  border-radius: var(--card-radius);
   padding: 12px;
   display: flex;
   flex-direction: column;
   gap: 8px;
   font-size: var(--font-size-xs);
-  color: var(--text-dark, #444);
+  color: var(--color-text);
 }
 
 .templateButtons {
@@ -127,7 +127,7 @@
 
 .dropzone {
   border: 2px dashed var(--color-border);
-  border-radius: var(--card-radius, 8px);
+  border-radius: var(--card-radius);
   padding: 30px 20px;
   display: flex;
   flex-direction: column;
@@ -150,7 +150,7 @@
 .dropTitle {
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-dark, #333);
+  color: var(--color-text);
   margin-bottom: 4px;
 }
 
@@ -196,7 +196,7 @@
 .filename {
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-dark, #333);
+  color: var(--color-text);
 }
 
 .filesize {
@@ -206,7 +206,7 @@
 }
 
 .tablePreviewContainer {
-  border: var(--card-border-width, 1px) solid var(--color-border);
+  border: var(--card-border-width) solid var(--color-border);
   border-radius: var(--card-radius);
   overflow: hidden;
 }
@@ -219,17 +219,17 @@
 }
 
 .previewTable th {
-  background-color: var(--bg-main, #f8f9fa);
+  background-color: var(--color-bg);
   padding: 8px 12px;
   font-weight: var(--font-weight-semibold);
-  color: var(--text-dark, #333);
-  border-bottom: var(--card-border-width, 1px) solid var(--color-border);
+  color: var(--color-text);
+  border-bottom: var(--card-border-width) solid var(--color-border);
 }
 
 .previewTable td {
   padding: 8px 12px;
-  border-bottom: var(--card-border-width, 1px) solid var(--color-border);
-  color: var(--text-dark, #444);
+  border-bottom: var(--card-border-width) solid var(--color-border);
+  color: var(--color-text);
 }
 
 .previewTable tr:last-child td {
@@ -242,8 +242,8 @@
   color: var(--color-text-muted);
   font-style: italic;
   text-align: center;
-  background-color: var(--bg-main, #f8f9fa);
-  border-top: var(--card-border-width, 1px) solid var(--color-border);
+  background-color: var(--color-bg);
+  border-top: var(--card-border-width) solid var(--color-border);
 }
 
 .footerActions {
@@ -254,11 +254,11 @@
 }
 
 .cancelBtn {
-  background-color: var(--bg-main, #eee);
-  color: var(--text-dark, #333);
+  background-color: var(--color-bg);
+  color: var(--color-text);
   border: none;
   padding: 8px 14px;
-  border-radius: var(--btn-radius, 6px);
+  border-radius: var(--btn-radius);
   font-weight: var(--font-weight-semibold);
   font-size: var(--font-size-caption);
   cursor: pointer;
@@ -271,10 +271,10 @@
 
 .confirmBtn {
   background-color: var(--color-primary);
-  color: var(--text-on-primary, #fff);
+  color: var(--color-on-primary);
   border: none;
   padding: 8px 16px;
-  border-radius: var(--btn-radius, 6px);
+  border-radius: var(--btn-radius);
   font-weight: var(--font-weight-semibold);
   font-size: var(--font-size-caption);
   cursor: pointer;
@@ -309,7 +309,7 @@
 .progressTitle {
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-bold);
-  color: var(--text-dark, #333);
+  color: var(--color-text);
 }
 
 .progressText {
@@ -328,7 +328,7 @@
 
 .progressBarFill {
   height: 100%;
-  width: var(--import-progress, 0%);
+  width: var(--import-progress);
   background-color: var(--color-primary);
   transition: width 0.2s ease;
 }
@@ -353,7 +353,7 @@
 .summaryTitle {
   font-size: var(--font-size-md-plus);
   font-weight: var(--font-weight-bold);
-  color: var(--text-dark, #333);
+  color: var(--color-text);
 }
 
 .summaryGrid {
@@ -365,11 +365,11 @@
 }
 
 .summaryCard {
-  border: var(--card-border-width, 1px) solid var(--color-border);
+  border: var(--card-border-width) solid var(--color-border);
   border-radius: var(--card-radius);
   padding: 12px;
   text-align: center;
-  background-color: var(--bg-main, #f8f9fa);
+  background-color: var(--color-bg);
 }
 
 .summaryLabel {
@@ -394,7 +394,7 @@
 
 .detailsSection {
   width: 100%;
-  border: var(--card-border-width, 1px) solid var(--color-border);
+  border: var(--card-border-width) solid var(--color-border);
   border-radius: var(--card-radius);
   overflow: hidden;
 }
@@ -402,10 +402,10 @@
 .detailsTitle {
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);
-  background-color: var(--bg-main, #f8f9fa);
+  background-color: var(--color-bg);
   padding: 8px 12px;
-  border-bottom: var(--card-border-width, 1px) solid var(--color-border);
-  color: var(--text-dark, #444);
+  border-bottom: var(--card-border-width) solid var(--color-border);
+  color: var(--color-text);
 }
 
 .detailsList {
@@ -423,15 +423,15 @@
 }
 
 .detailInfo {
-  color: var(--text-dark, #555);
+  color: var(--color-text);
 }
 
 .finishBtn {
   background-color: var(--color-primary);
-  color: var(--text-on-primary, #fff);
+  color: var(--color-on-primary);
   border: none;
   padding: 10px 24px;
-  border-radius: var(--btn-radius, 6px);
+  border-radius: var(--btn-radius);
   font-weight: var(--font-weight-semibold);
   font-size: var(--font-size-caption);
   cursor: pointer;

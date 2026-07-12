@@ -5,8 +5,8 @@
 }
 
 .tableCard {
-  background-color: var(--bg-card, #fff);
-  border-radius: var(--card-radius, 4px);
+  background-color: var(--color-surface);
+  border-radius: var(--card-radius);
   box-shadow: 0 1px 3px rgb(0, 0, 0, 0.05);
   overflow: hidden;
 }
@@ -21,18 +21,18 @@
   padding: 12px 16px;
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-bold);
-  color: var(--text-muted, #888);
+  color: var(--color-text-muted);
   text-transform: none;
   letter-spacing: 0.5px;
-  border-bottom: var(--card-border-width, 1px) solid var(--border-color, #eee);
-  background-color: var(--bg-hover, rgb(0, 0, 0, 0.02));
+  border-bottom: var(--card-border-width) solid var(--color-border);
+  background-color: var(--color-bg-hover);
 }
 
 .table td {
   padding: 12px 16px;
   font-size: var(--font-size-sm);
-  color: var(--text-dark, #333);
-  border-bottom: var(--card-border-width, 1px) solid var(--border-color, #eee);
+  color: var(--color-text);
+  border-bottom: var(--card-border-width) solid var(--color-border);
 }
 
 .reasonCell {
@@ -44,24 +44,24 @@
 
 .amountCell {
   font-weight: var(--font-weight-bold);
-  color: var(--color-orange-red, #f05a28);
+  color: var(--color-primary);
 }
 
 .statusBadge {
   display: inline-block;
   padding: 4px 10px;
-  border-radius: var(--border-radius-sm, 2px);
+  border-radius: var(--border-radius-sm);
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-bold);
 }
 
 .active {
-  background-color: var(--bg-success);
+  background-color: var(--color-success-bg);
   color: var(--color-success);
 }
 
 .voided {
-  background-color: var(--bg-danger);
+  background-color: var(--color-danger-bg);
   color: var(--color-danger);
 }
 
@@ -76,24 +76,24 @@
   justify-content: center;
   width: 30px;
   height: 30px;
-  border-color: var(--border-color);
+  border-color: var(--color-border);
   border-style: solid;
-  border-radius: var(--card-radius, 4px);
+  border-radius: var(--card-radius);
   background: none;
   cursor: pointer;
-  color: var(--text-muted, #888);
+  color: var(--color-text-muted);
   transition: all 0.2s ease;
 }
 
 .viewBtn:hover {
-  background-color: var(--bg-primary-light, #eff6ff);
+  background-color: var(--color-primary-light);
   color: var(--color-blue);
   border-color: var(--color-blue);
 }
 
 .empty {
   text-align: center;
-  color: var(--text-muted, #888);
+  color: var(--color-text-muted);
   padding: 30px !important;
   font-size: var(--font-size-sm);
 }
@@ -118,20 +118,20 @@
 .field label {
   font-size: var(--font-size-caption);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-dark, #333);
+  color: var(--color-text);
 }
 
 .field input,
 .field select,
 .field textarea {
   padding: 10px 12px;
-  border-color: var(--border-color);
+  border-color: var(--color-border);
   border-style: solid;
-  border-radius: var(--card-radius, 4px);
+  border-radius: var(--card-radius);
   font-size: var(--font-size-sm);
   outline: none;
-  background-color: var(--bg-card, #fff);
-  color: var(--text-dark, #333);
+  background-color: var(--color-surface);
+  color: var(--color-text);
   transition: border-color 0.2s ease;
   font-family: inherit;
 }
@@ -139,7 +139,7 @@
 .field input:focus,
 .field select:focus,
 .field textarea:focus {
-  border-color: var(--color-orange-red, #f05a28);
+  border-color: var(--color-primary);
 }
 
 .fieldRow {
@@ -151,7 +151,7 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  border-top: var(--card-border-width, 1px) solid var(--border-color, #eee);
+  border-top: var(--card-border-width) solid var(--color-border);
   padding-top: 12px;
 }
 
@@ -164,7 +164,7 @@
 .itemsHeader label {
   font-size: var(--font-size-caption);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-dark, #333);
+  color: var(--color-text);
 }
 
 .addItemBtn {
@@ -172,18 +172,18 @@
   align-items: center;
   gap: 4px;
   padding: 6px 12px;
-  border: 1px solid var(--color-orange-red, #f05a28);
-  border-radius: var(--card-radius, 4px);
+  border: 1px solid var(--color-primary);
+  border-radius: var(--card-radius);
   background: none;
   font-size: var(--font-size-caption);
   font-weight: var(--font-weight-semibold);
-  color: var(--color-orange-red, #f05a28);
+  color: var(--color-primary);
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .addItemBtn:hover {
-  background-color: var(--color-orange-red, #f05a28);
+  background-color: var(--color-primary);
   color: white;
 }
 
@@ -196,46 +196,46 @@
 .itemRow select {
   flex: 1;
   padding: 8px 10px;
-  border-color: var(--border-color);
+  border-color: var(--color-border);
   border-style: solid;
-  border-radius: var(--card-radius, 4px);
+  border-radius: var(--card-radius);
   font-size: var(--font-size-sm);
   outline: none;
-  background-color: var(--bg-card, #fff);
-  color: var(--text-dark, #333);
+  background-color: var(--color-surface);
+  color: var(--color-text);
   font-family: inherit;
 }
 
 .qtyInput {
   width: 70px;
   padding: 8px 10px;
-  border-color: var(--border-color);
+  border-color: var(--color-border);
   border-style: solid;
-  border-radius: var(--card-radius, 4px);
+  border-radius: var(--card-radius);
   font-size: var(--font-size-sm);
   outline: none;
-  background-color: var(--bg-card, #fff);
-  color: var(--text-dark, #333);
+  background-color: var(--color-surface);
+  color: var(--color-text);
   font-family: inherit;
 }
 
 .priceInput {
   width: 100px;
   padding: 8px 10px;
-  border-color: var(--border-color);
+  border-color: var(--color-border);
   border-style: solid;
-  border-radius: var(--card-radius, 4px);
+  border-radius: var(--card-radius);
   font-size: var(--font-size-sm);
   outline: none;
-  background-color: var(--bg-card, #fff);
-  color: var(--text-dark, #333);
+  background-color: var(--color-surface);
+  color: var(--color-text);
   font-family: inherit;
 }
 
 .itemSubtotal {
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-bold);
-  color: var(--color-orange-red, #f05a28);
+  color: var(--color-primary);
   min-width: 80px;
   text-align: right;
 }
@@ -243,12 +243,12 @@
 .removeBtn {
   width: 28px;
   height: 28px;
-  border-color: var(--border-color);
+  border-color: var(--color-border);
   border-style: solid;
-  border-radius: var(--card-radius, 4px);
+  border-radius: var(--card-radius);
   background: none;
   cursor: pointer;
-  color: var(--text-muted, #888);
+  color: var(--color-text-muted);
   font-size: var(--font-size-caption);
   display: flex;
   align-items: center;
@@ -257,7 +257,7 @@
 }
 
 .removeBtn:hover:not(:disabled) {
-  background-color: var(--bg-danger);
+  background-color: var(--color-danger-bg);
   color: var(--color-danger);
   border-color: var(--color-danger);
 }
@@ -268,9 +268,9 @@
 }
 
 .totalField {
-  background-color: var(--bg-hover, #f9f9f9) !important;
+  background-color: var(--color-bg-hover) !important;
   font-weight: var(--font-weight-bold);
-  color: var(--color-orange-red, #f05a28) !important;
+  color: var(--color-primary) !important;
 }
 
 .modalActions {
@@ -282,27 +282,27 @@
 
 .cancelBtn {
   padding: 10px 20px;
-  border-color: var(--border-color);
+  border-color: var(--color-border);
   border-style: solid;
-  border-radius: var(--card-radius, 4px);
+  border-radius: var(--card-radius);
   background: none;
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-dark, #333);
+  color: var(--color-text);
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .cancelBtn:hover {
-  background-color: var(--bg-hover, rgb(0, 0, 0, 0.04));
+  background-color: var(--color-bg-hover);
 }
 
 .saveBtn {
   padding: 10px 20px;
-  background-color: var(--color-orange-red, #f05a28);
+  background-color: var(--color-primary);
   color: white;
   border: none;
-  border-radius: var(--card-radius, 4px);
+  border-radius: var(--card-radius);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-bold);
   cursor: pointer;
@@ -334,7 +334,7 @@
 .detailLabel {
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-bold);
-  color: var(--text-muted, #888);
+  color: var(--color-text-muted);
   text-transform: none;
   letter-spacing: 0.5px;
 }
@@ -342,7 +342,7 @@
 .detailItems h4 {
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-bold);
-  color: var(--text-dark, #333);
+  color: var(--color-text);
   margin: 0 0 8px;
 }
 
@@ -353,7 +353,7 @@
   text-align: center;
 }
 .textMuted {
-  color: var(--text-muted);
+  color: var(--color-text-muted);
 }
 .flexCenter {
   justify-content: center;
@@ -362,11 +362,11 @@
   font-size: var(--font-size-caption);
   font-weight: var(--font-weight-bold);
   text-transform: none;
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   margin-bottom: 8px;
 }
 .emptyCell {
   text-align: center;
   padding: 40px;
-  color: var(--text-muted);
+  color: var(--color-text-muted);
 }

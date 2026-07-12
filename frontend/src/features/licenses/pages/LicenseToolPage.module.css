@@ -7,7 +7,7 @@
 }
 
 .card {
-  background-color: var(--bg-card);
+  background-color: var(--color-surface);
   border-radius: var(--card-radius);
   padding: 32px;
   max-width: 560px;
@@ -32,13 +32,13 @@
 .header h2 {
   font-size: var(--font-size-xl);
   font-weight: var(--font-weight-bold);
-  color: var(--text-dark);
+  color: var(--color-text);
   margin: 0;
 }
 
 .description {
   font-size: var(--font-size-sm);
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   line-height: 1.6;
   margin: 0;
 }
@@ -60,15 +60,15 @@
   font-weight: var(--font-weight-bold);
   text-transform: none;
   letter-spacing: 0.5px;
-  color: var(--text-muted);
+  color: var(--color-text-muted);
 }
 
 .field input,
 .field select {
   padding: 10px 12px;
   background-color: var(--bg-input);
-  color: var(--text-dark);
-  border: var(--input-border-width, 1px) solid var(--border-color);
+  color: var(--color-text);
+  border: var(--input-border-width) solid var(--color-border);
   border-radius: var(--input-radius);
   font-size: var(--font-size-md);
   outline: none;
@@ -87,11 +87,11 @@
 .generateBtn {
   padding: 12px 24px;
   background-color: var(--color-primary);
-  color: var(--text-on-primary, #fff);
+  color: var(--color-on-primary);
   border: none;
   border-radius: var(--btn-radius);
   font-size: var(--font-size-sm);
-  font-weight: var(--btn-font-weight, 700);
+  font-weight: var(--btn-font-weight);
   cursor: pointer;
   transition:
     filter var(--transition-smooth),
@@ -123,7 +123,7 @@
   gap: 8px;
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
-  color: var(--color-success, #16a34a);
+  color: var(--color-success);
 }
 
 .resultHeader svg {
@@ -136,9 +136,9 @@
   align-items: center;
   gap: 6px;
   padding: 6px 12px;
-  background-color: var(--bg-card);
-  color: var(--text-dark);
-  border: var(--input-border-width, 1px) solid var(--border-color);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  border: var(--input-border-width) solid var(--color-border);
   border-radius: var(--input-radius);
   font-size: var(--font-size-caption);
   font-weight: var(--font-weight-semibold);
@@ -156,9 +156,9 @@
 .codeArea {
   width: 100%;
   padding: 12px;
-  background-color: var(--bg-card);
-  color: var(--text-dark);
-  border: var(--input-border-width, 1px) solid var(--border-color);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  border: var(--input-border-width) solid var(--color-border);
   border-radius: var(--input-radius);
   font-family: monospace;
   font-size: var(--font-size-caption);

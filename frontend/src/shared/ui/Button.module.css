@@ -21,7 +21,7 @@
 /* Variants */
 .btnPrimary {
   background: var(--color-primary);
-  color: var(--text-on-primary, #fff);
+  color: var(--color-on-primary);
   border-color: var(--color-primary);
 }
 
@@ -41,7 +41,7 @@
 
 .btnDanger {
   background: var(--color-danger);
-  color: var(--text-on-primary, #fff);
+  color: var(--color-on-primary);
   border-color: var(--color-danger);
 }
 

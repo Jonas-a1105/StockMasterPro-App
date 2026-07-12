@@ -19,11 +19,11 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  background-color: var(--bg-card, #fff);
-  border-radius: var(--card-radius, 4px);
+  background-color: var(--color-surface);
+  border-radius: var(--card-radius);
   padding: 10px 15px;
   box-shadow: 0 1px 3px rgb(0, 0, 0, 0.05);
-  color: var(--text-muted, #888);
+  color: var(--color-text-muted);
 }
 
 .searchBar input {
@@ -32,7 +32,7 @@
   outline: none;
   font-size: var(--font-size-md);
   background: transparent;
-  color: var(--text-dark, #333);
+  color: var(--color-text);
 }
 
 .productsGrid {
@@ -46,7 +46,7 @@
 
 /* ── Card principal ── */
 .productCard {
-  background-color: var(--bg-card);
+  background-color: var(--color-surface);
   border-radius: var(--card-radius);
   padding: 16px !important;
   display: flex;
@@ -69,7 +69,7 @@
 
 /* ── Image container ── */
 .prodImageContainer {
-  background-color: var(--pos-inner-bg, #f5f5f7);
+  background-color: var(--pos-inner-bg);
   border-radius: var(--card-radius);
   height: 105px;
   display: flex;
@@ -82,7 +82,7 @@
 
 [data-theme='dark'] .prodImageContainer,
 [data-theme='oled'] .prodImageContainer {
-  background-color: var(--color-gray-800, #17181c);
+  background-color: var(--color-gray-800);
 }
 
 .prodImageContainer img {
@@ -99,7 +99,7 @@
   top: 8px;
   left: 8px;
   padding: 2px 6px;
-  border-radius: var(--border-radius-sm, 2px);
+  border-radius: var(--border-radius-sm);
   display: flex;
   align-items: center;
   gap: 3px;
@@ -109,17 +109,17 @@
 
 .prodBadgeOk {
   background-color: rgb(0, 176, 80, 0.15);
-  color: var(--color-success, #00b050);
+  color: var(--color-success);
 }
 
 .prodBadgeLow {
   background-color: rgb(220, 38, 38, 0.15);
-  color: var(--color-danger, #dc2626);
+  color: var(--color-danger);
 }
 
 .prodBadgeOut {
   background-color: rgb(133, 137, 146, 0.2);
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   font-size: var(--font-size-2xs);
 }
 
@@ -131,16 +131,16 @@
 }
 
 .prodPriceUsd {
-  font-size: var(--font-size-2xl, 26px);
-  font-weight: var(--font-weight-light, 300);
-  color: var(--text-dark);
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-light);
+  color: var(--color-text);
   letter-spacing: -0.5px;
   line-height: 1;
 }
 
 .prodUnitsStock {
   font-size: var(--font-size-xs);
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   text-align: right;
 }
 
@@ -148,7 +148,7 @@
   grid-column: 1 / span 2;
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-bold);
-  color: var(--text-dark);
+  color: var(--color-text);
   margin-top: 4px;
   display: flex;
   align-items: center;
@@ -161,7 +161,7 @@
 .prodProductName::after {
   content: '↗';
   font-size: var(--font-size-2xs);
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   flex-shrink: 0;
 }
 
@@ -187,14 +187,14 @@
 
 .prodPriceBsLabel {
   font-size: var(--font-size-2xs);
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   text-transform: none;
 }
 
 .prodPriceBsValue {
   font-size: var(--font-size-caption);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-dark);
+  color: var(--color-text);
 }
 
 /* ── Actions row ── */
@@ -206,14 +206,14 @@
 .prodQtySelector {
   display: flex;
   align-items: center;
-  background-color: var(--pos-qty-bg, #e8e8ec);
+  background-color: var(--pos-qty-bg);
   border-radius: var(--input-radius);
   overflow: hidden;
 }
 
 [data-theme='dark'] .prodQtySelector,
 [data-theme='oled'] .prodQtySelector {
-  background-color: var(--color-gray-800, #222327);
+  background-color: var(--color-gray-800);
 }
 
 .prodQtyBtn {
@@ -223,7 +223,7 @@
   height: 28px;
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-bold);
-  color: var(--text-dark);
+  color: var(--color-text);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -246,7 +246,7 @@
   border: none;
   font-size: var(--font-size-caption);
   font-weight: var(--font-weight-bold);
-  color: var(--text-dark);
+  color: var(--color-text);
   background: transparent;
   appearance: textfield;
 }
@@ -260,8 +260,8 @@
 /* ── Add button ── */
 .prodAddBtn {
   flex: 1;
-  background-color: var(--color-primary, #f05a28);
-  color: var(--text-on-primary, #fff);
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
   border: none;
   border-radius: var(--btn-radius);
   font-size: var(--font-size-caption);
@@ -290,7 +290,7 @@
   gap: 8px;
   padding: 8px 4px;
   font-size: var(--font-size-sm);
-  color: var(--text-muted, #888);
+  color: var(--color-text-muted);
 }
 
 .warehouseSelector label {
@@ -300,33 +300,33 @@
 
 .warehouseSelector select {
   padding: 6px 10px;
-  border-color: var(--border-color, #eee);
+  border-color: var(--color-border);
   border-style: solid;
-  border-radius: var(--card-radius, 4px);
+  border-radius: var(--card-radius);
   font-size: var(--font-size-sm);
-  background: var(--bg-card, #fff);
-  color: var(--text-dark, #333);
+  background: var(--color-surface);
+  color: var(--color-text);
   cursor: pointer;
   outline: none;
   flex: 1;
 }
 
 .warehouseSelector select:focus {
-  border-color: var(--color-orange-red, #f05a28);
+  border-color: var(--color-primary);
 }
 
 .noResults {
   grid-column: 1 / -1;
   text-align: center;
-  color: var(--text-muted, #888);
+  color: var(--color-text-muted);
   padding: 40px;
 }
 
 .cartPanel {
-  background-color: var(--bg-card, #fff);
-  border: var(--card-border-width, 1px) solid var(--border-color, #eee);
-  border-radius: var(--card-radius, 10px);
-  box-shadow: var(--shadow-sm, 0 1px 3px rgb(0, 0, 0, 0.05));
+  background-color: var(--color-surface);
+  border: var(--card-border-width) solid var(--color-border);
+  border-radius: var(--card-radius);
+  box-shadow: var(--shadow-sm);
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -336,7 +336,7 @@
   display: flex;
   gap: 4px;
   padding: 8px 10px 0;
-  border-bottom: var(--card-border-width, 1px) solid var(--border-color, #eee);
+  border-bottom: var(--card-border-width) solid var(--color-border);
   flex-wrap: wrap;
 }
 
@@ -347,16 +347,16 @@
   padding: 6px 10px;
   font-size: var(--font-size-caption);
   font-weight: var(--font-weight-semibold);
-  border: var(--card-border-width, 1px) solid var(--border-color, #eee);
+  border: var(--card-border-width) solid var(--color-border);
   border-bottom: none;
-  border-radius: var(--card-radius, 4px) var(--card-radius, 4px) 0 0;
-  background: var(--bg-main);
-  color: var(--text-muted, #888);
+  border-radius: var(--card-radius) var(--card-radius) 0 0;
+  background: var(--color-bg);
+  color: var(--color-text-muted);
 }
 
 .cartTabActive {
   background: white;
-  color: var(--color-orange-red, #f05a28);
+  color: var(--color-primary);
   border-bottom-color: white;
 }
 
@@ -378,7 +378,7 @@
   background: none;
   cursor: pointer;
   padding: 2px;
-  color: var(--text-muted, #888);
+  color: var(--color-text-muted);
   display: flex;
   align-items: center;
   border-radius: 50%;
@@ -395,35 +395,35 @@
   align-items: center;
   gap: 8px;
   padding: 15px;
-  border-bottom: var(--card-border-width, 1px) solid var(--border-color, #eee);
+  border-bottom: var(--card-border-width) solid var(--color-border);
   font-weight: var(--font-weight-semibold);
   font-size: var(--font-size-md);
-  color: var(--text-dark, #333);
+  color: var(--color-text);
 }
 
 .status {
   margin-left: auto;
   font-size: var(--font-size-xs);
   padding: 2px 8px;
-  border-radius: var(--card-radius, 4px);
+  border-radius: var(--card-radius);
   font-weight: var(--font-weight-semibold);
 }
 
 .online {
-  background-color: var(--bg-success, #d4edda);
-  color: var(--color-success, #5cb85c);
+  background-color: var(--color-success-bg);
+  color: var(--color-success);
 }
 
 .offline {
-  background-color: var(--bg-warning, #fff3cd);
-  color: var(--color-warning, #f0ad4e);
+  background-color: var(--color-warning-bg);
+  color: var(--color-warning);
 }
 
 .toolbarRow {
   display: flex;
   gap: 6px;
   padding: 8px 15px;
-  border-bottom: var(--card-border-width, 1px) solid var(--border-color, #eee);
+  border-bottom: var(--card-border-width) solid var(--color-border);
   flex-wrap: wrap;
 }
 
@@ -434,18 +434,18 @@
   padding: 5px 10px;
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);
-  border: var(--card-border-width, 1px) solid var(--border-color, #eee);
-  border-radius: var(--btn-radius, var(--card-radius, 4px));
+  border: var(--card-border-width) solid var(--color-border);
+  border-radius: var(--btn-radius);
   background: none;
   cursor: pointer;
-  color: var(--text-muted, #888);
-  transition: var(--transition-smooth, all 0.2s ease);
+  color: var(--color-text-muted);
+  transition: var(--transition-smooth);
 }
 
 .toolbarBtn:hover {
-  border-color: var(--color-orange-red, #f05a28);
-  color: var(--color-orange-red, #f05a28);
-  background: var(--bg-hover, rgb(240, 90, 40, 0.05));
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  background: var(--color-bg-hover);
 }
 
 .cartItems {
@@ -456,7 +456,7 @@
 
 .cartItem {
   padding: 10px;
-  border-bottom: var(--card-border-width, 1px) solid var(--border-color, #eee);
+  border-bottom: var(--card-border-width) solid var(--color-border);
 }
 
 .cartItemInfo {
@@ -468,12 +468,12 @@
 .cartItemName {
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-dark, #333);
+  color: var(--color-text);
 }
 
 .cartItemPrice {
   font-size: var(--font-size-caption);
-  color: var(--text-muted, #888);
+  color: var(--color-text-muted);
 }
 
 .cartItemActions {
@@ -486,18 +486,18 @@
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  border: var(--card-border-width, 1px) solid var(--border-color, #eee);
+  border: var(--card-border-width) solid var(--color-border);
   background: none;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--text-dark, #333);
+  color: var(--color-text);
   transition: all 0.2s ease;
 }
 
 .cartItemActions button:hover {
-  background-color: var(--bg-main, #ededed);
+  background-color: var(--color-bg);
 }
 
 .qty {
@@ -516,34 +516,34 @@
   font-weight: var(--font-weight-bold);
   font-size: var(--font-size-md);
   margin-top: 4px;
-  color: var(--text-dark, #333);
+  color: var(--color-text);
 }
 
 .emptyCart {
   text-align: center;
-  color: var(--text-muted, #888);
+  color: var(--color-text-muted);
   padding: 30px;
   font-size: var(--font-size-sm);
 }
 
 .cartSummary {
   padding: 15px;
-  border-top: var(--card-border-width, 1px) solid var(--border-color, #eee);
+  border-top: var(--card-border-width) solid var(--color-border);
 }
 
 .summaryRow {
   display: flex;
   justify-content: space-between;
   font-size: var(--font-size-sm);
-  color: var(--text-muted, #888);
+  color: var(--color-text-muted);
   margin-bottom: 6px;
 }
 
 .totalRow {
   font-size: var(--font-size-xl);
   font-weight: var(--font-weight-bold);
-  color: var(--text-dark, #333);
-  border-top: var(--card-border-width, 1px) solid var(--border-color, #eee);
+  color: var(--color-text);
+  border-top: var(--card-border-width) solid var(--color-border);
   padding-top: 8px;
   margin-top: 8px;
 }
@@ -573,8 +573,8 @@
 
 .paymentBtn {
   padding: 8px;
-  border: var(--card-border-width, 1px) solid var(--border-color, #eee);
-  border-radius: var(--card-radius, 4px);
+  border: var(--card-border-width) solid var(--color-border);
+  border-radius: var(--card-radius);
   background: none;
   cursor: pointer;
   font-size: var(--font-size-xs);
@@ -583,14 +583,14 @@
   align-items: center;
   justify-content: center;
   gap: 4px;
-  color: var(--text-muted, #888);
+  color: var(--color-text-muted);
   transition: all 0.2s ease;
 }
 
 .paymentBtn.active {
-  border-color: var(--color-orange-red, #f05a28);
+  border-color: var(--color-primary);
   background-color: rgb(240, 90, 40, 0.08);
-  color: var(--color-orange-red, #f05a28);
+  color: var(--color-primary);
 }
 
 .customerSelectContainer {
@@ -603,23 +603,23 @@
 .customerLabel {
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-muted, #888);
+  color: var(--color-text-muted);
 }
 
 .customerSelect {
   padding: 8px 12px;
-  border-color: var(--border-color, #eee);
+  border-color: var(--color-border);
   border-style: solid;
-  border-radius: var(--card-radius, 4px);
-  background-color: var(--bg-card, #fff);
-  color: var(--text-dark, #333);
+  border-radius: var(--card-radius);
+  background-color: var(--color-surface);
+  color: var(--color-text);
   font-size: var(--font-size-sm);
   outline: none;
   transition: border-color 0.2s ease;
 }
 
 .customerSelect:focus {
-  border-color: var(--color-orange-red, #f05a28);
+  border-color: var(--color-primary);
 }
 
 /* ── Mobile FAB Container ── */
@@ -683,7 +683,7 @@
     width: 36px;
     height: 4px;
     border-radius: var(--card-radius);
-    background-color: var(--text-muted);
+    background-color: var(--color-text-muted);
     opacity: 0.3;
   }
 
@@ -728,8 +728,8 @@
     padding: 0 !important;
     box-sizing: border-box !important;
     border-radius: 50% !important;
-    background-color: var(--color-orange-red, #f05a28) !important;
-    color: var(--text-on-primary, #fff);
+    background-color: var(--color-primary) !important;
+    color: var(--color-on-primary);
     border: none !important;
     box-shadow: 0 4px 16px rgb(240, 90, 40, 0.4) !important;
     cursor: pointer !important;
@@ -743,7 +743,7 @@
   /* ── Payment/Mixed Payment Modal ── */
   .paymentSummary {
     margin-bottom: 16px;
-    color: var(--text-muted);
+    color: var(--color-text-muted);
     font-size: var(--font-size-md);
   }
 
@@ -766,7 +766,7 @@
   .paymentError {
     padding: 12px;
     background: rgb(239, 68, 68, 0.1);
-    border: 1px solid var(--color-danger, #ef4444);
+    border: 1px solid var(--color-danger);
     border-radius: var(--btn-radius);
     margin-bottom: 16px;
     color: var(--color-danger);
@@ -777,8 +777,8 @@
     width: 100% !important;
     padding: 6px 10px !important;
     border-radius: var(--border-radius-md) !important;
-    border: 1px solid var(--border) !important;
-    background: var(--bg-secondary) !important;
+    border: 1px solid var(--color-border) !important;
+    background: var(--color-bg-hover) !important;
     font-size: var(--font-size-md) !important;
     box-sizing: border-box !important;
   }
@@ -795,10 +795,10 @@
     width: 100px;
     padding: 6px 10px;
     border-radius: var(--border-radius-md);
-    border: 1px solid var(--border);
-    background: var(--bg-secondary);
+    border: 1px solid var(--color-border);
+    background: var(--color-bg-hover);
     font-size: var(--font-size-md);
-    color: var(--text-dark);
+    color: var(--color-text);
   }
 
   .removeBtn {
@@ -819,25 +819,25 @@
     width: 100%;
     padding: 10px;
     background: none;
-    border: 1px dashed var(--border-color);
+    border: 1px dashed var(--color-border);
     border-radius: var(--card-radius);
-    color: var(--text-muted);
+    color: var(--color-text-muted);
     font-size: var(--font-size-sm);
     cursor: pointer;
     transition: all 0.2s;
   }
 
   .addPaymentBtn:hover {
-    border-color: var(--color-orange-red);
-    color: var(--color-orange-red);
+    border-color: var(--color-primary);
+    color: var(--color-primary);
     background: rgb(240, 90, 40, 0.04);
   }
 
   .spinnerInline {
     width: 16px;
     height: 16px;
-    border: 2px solid var(--border);
-    border-top-color: var(--brand);
+    border: 2px solid var(--color-border);
+    border-top-color: var(--color-primary);
     border-radius: 50%;
     animation: inlineSpin 0.8s linear infinite;
     display: inline-block;
@@ -857,10 +857,10 @@
 
   .cancelBtn {
     padding: 10px 20px;
-    border: 1px solid var(--border-color);
-    border-radius: var(--btn-radius, var(--card-radius));
+    border: 1px solid var(--color-border);
+    border-radius: var(--btn-radius);
     background: transparent;
-    color: var(--text-muted);
+    color: var(--color-text-muted);
     cursor: pointer;
     font-weight: var(--font-weight-semibold);
     font-size: var(--font-size-sm);
@@ -868,7 +868,7 @@
   }
 
   .cancelBtn:hover {
-    background: var(--bg-main);
+    background: var(--color-bg);
   }
 
   .saveBtn {
@@ -876,7 +876,7 @@
     background: var(--color-primary);
     color: white;
     border: none;
-    border-radius: var(--btn-radius, var(--card-radius));
+    border-radius: var(--btn-radius);
     font-weight: var(--font-weight-semibold);
     font-size: var(--font-size-sm);
     cursor: pointer;
@@ -899,11 +899,11 @@
     min-width: 20px !important;
     height: 20px !important;
     padding: 0 5px !important;
-    border-radius: var(--border-radius-sm, 2px) !important;
-    background-color: var(--text-on-primary, #fff);
-    color: var(--color-orange-red, #f05a28) !important;
+    border-radius: var(--border-radius-sm) !important;
+    background-color: var(--color-on-primary);
+    color: var(--color-primary) !important;
     font-size: var(--font-size-xs) !important;
-    font-weight: var(--font-weight-extrabold, 800) !important;
+    font-weight: var(--font-weight-extrabold) !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
@@ -915,10 +915,10 @@
 .checkoutBtn {
   margin: 0 15px 15px;
   padding: 14px;
-  background-color: var(--color-orange-red, #f05a28);
+  background-color: var(--color-primary);
   color: white;
   border: none;
-  border-radius: var(--card-radius, 4px);
+  border-radius: var(--card-radius);
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-bold);
   cursor: pointer;
@@ -948,11 +948,11 @@
 }
 
 .modalCard {
-  background: var(--bg-card);
-  border-radius: var(--card-radius, 4px);
+  background: var(--color-surface);
+  border-radius: var(--card-radius);
   width: 380px;
   max-width: 90vw;
-  box-shadow: var(--shadow-lg, 0 20px 60px rgb(0, 0, 0, 0.3));
+  box-shadow: var(--shadow-lg);
 }
 
 .modalTitle {
@@ -962,8 +962,8 @@
   padding: 18px 20px;
   font-size: var(--modal-title-size);
   font-weight: var(--font-weight-bold);
-  color: var(--text-dark, #333);
-  border-bottom: var(--card-border-width, 1px) solid var(--border-color, #eee);
+  color: var(--color-text);
+  border-bottom: var(--card-border-width) solid var(--color-border);
 }
 
 .modalBody {
@@ -982,26 +982,26 @@
 .modalLabel {
   font-size: var(--font-size-caption);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-muted, #888);
+  color: var(--color-text-muted);
   text-transform: none;
   letter-spacing: 0.5px;
 }
 
 .modalInput {
   padding: 10px 12px;
-  border-color: var(--border-color, #eee);
+  border-color: var(--color-border);
   border-style: solid;
-  border-width: var(--input-border-width, 1px);
-  border-radius: var(--input-radius, var(--card-radius, 4px));
+  border-width: var(--input-border-width);
+  border-radius: var(--input-radius);
   font-size: var(--font-size-md);
   outline: none;
-  color: var(--text-dark);
-  background: var(--bg-input, var(--bg-main));
-  transition: var(--transition-smooth, border-color 0.2s ease);
+  color: var(--color-text);
+  background: var(--bg-input);
+  transition: var(--transition-smooth);
 }
 
 .modalInput:focus {
-  border-color: var(--color-orange-red, #f05a28);
+  border-color: var(--color-primary);
   background: white;
 }
 
@@ -1010,27 +1010,27 @@
   justify-content: space-between;
   align-items: center;
   font-size: var(--font-size-sm);
-  color: var(--text-muted, #888);
+  color: var(--color-text-muted);
 }
 
 .modalRowDiff {
   padding-top: 10px;
-  border-top: var(--card-border-width, 1px) solid var(--border-color, #eee);
+  border-top: var(--card-border-width) solid var(--color-border);
   margin-top: 4px;
 }
 
 .modalValue {
   font-weight: var(--font-weight-bold);
   font-size: var(--font-size-md);
-  color: var(--text-dark, #333);
+  color: var(--color-text);
 }
 
 .modalPositive {
-  color: var(--color-green, #16a34a);
+  color: var(--color-green);
 }
 
 .modalNegative {
-  color: var(--color-red, #dc2626);
+  color: var(--color-red);
 }
 
 .modalActions {
@@ -1043,16 +1043,16 @@
 .modalBtnPrimary,
 .modalBtnSecondary {
   padding: 10px 20px;
-  border-radius: var(--btn-radius, var(--card-radius, 4px));
-  border-width: var(--btn-border-width, 1px);
+  border-radius: var(--btn-radius);
+  border-width: var(--btn-border-width);
   font-size: var(--font-size-sm);
-  font-weight: var(--btn-font-weight, 600);
+  font-weight: var(--btn-font-weight);
   cursor: pointer;
-  transition: var(--transition-smooth, all 0.2s ease);
+  transition: var(--transition-smooth);
 }
 
 .modalBtnPrimary {
-  background: var(--color-orange-red, #f05a28);
+  background: var(--color-primary);
   color: white;
   border: none;
 }
@@ -1068,12 +1068,12 @@
 
 .modalBtnSecondary {
   background: none;
-  color: var(--text-muted, #888);
-  border: var(--card-border-width, 1px) solid var(--border-color, #eee);
+  color: var(--color-text-muted);
+  border: var(--card-border-width) solid var(--color-border);
 }
 
 .modalBtnSecondary:hover {
-  background: var(--bg-main, #ededed);
+  background: var(--color-bg);
 }
 
 /* Success Modal & Ticket Styles */
@@ -1098,9 +1098,9 @@
   border-radius: 50%;
   display: block;
   stroke-width: 2;
-  stroke: #16a34a;
+  stroke: var(--color-success);
   stroke-miterlimit: 10;
-  box-shadow: inset 0 0 0 #16a34a;
+  box-shadow: inset 0 0 0 var(--color-success);
   animation:
     fill 0.4s ease-in-out 0.4s forwards,
     scale 0.3s ease-in-out 0s both;
@@ -1111,7 +1111,7 @@
   stroke-dashoffset: 166;
   stroke-width: 2;
   stroke-miterlimit: 10;
-  stroke: #16a34a;
+  stroke: var(--color-success);
   fill: none;
   animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
 }
@@ -1148,14 +1148,14 @@
 .successText {
   font-size: var(--font-size-2xl);
   font-weight: var(--font-weight-bold);
-  color: var(--text-dark, #333);
+  color: var(--color-text);
   margin-bottom: 8px;
   text-align: center;
 }
 
 .successSubtext {
   font-size: var(--font-size-md);
-  color: var(--text-muted, #888);
+  color: var(--color-text-muted);
   margin-bottom: 24px;
   text-align: center;
 }
@@ -1163,19 +1163,19 @@
 .ticketCard {
   width: 100% !important;
   max-width: 340px !important;
-  background-color: var(--bg-main) !important;
-  border: 1px dashed var(--border-color) !important;
+  background-color: var(--color-bg) !important;
+  border: 1px dashed var(--color-border) !important;
   border-radius: var(--card-radius) !important;
   padding: 20px !important;
   box-shadow: var(--shadow-sm) !important;
   margin: 0 auto 24px !important;
-  color: var(--text-dark) !important;
+  color: var(--color-text) !important;
 }
 
 .ticketCard,
 .ticketCard * {
   font-family: var(--font-family-mono) !important;
-  color: var(--text-dark) !important;
+  color: var(--color-text) !important;
   text-transform: none !important;
 }
 
@@ -1188,19 +1188,19 @@
   font-size: var(--font-size-lg) !important;
   font-weight: var(--font-weight-bold) !important;
   letter-spacing: 1px !important;
-  color: var(--text-dark) !important;
+  color: var(--color-text) !important;
   margin-bottom: 4px !important;
   text-align: center !important;
 }
 
 .ticketSubtitle {
   font-size: var(--font-size-xs) !important;
-  color: var(--text-muted) !important;
+  color: var(--color-text-muted) !important;
   text-align: center !important;
 }
 
 .ticketDivider {
-  border-top: 1px dashed var(--border-color) !important;
+  border-top: 1px dashed var(--color-border) !important;
   border-bottom: none !important;
   border-left: none !important;
   border-right: none !important;
@@ -1228,7 +1228,7 @@
 
 .ticketItemQtyPrice {
   font-size: var(--font-size-xs) !important;
-  color: var(--text-muted) !important;
+  color: var(--color-text-muted) !important;
 }
 
 .ticketTotals {
@@ -1246,8 +1246,8 @@
 .ticketGrandTotal {
   font-weight: var(--font-weight-bold) !important;
   font-size: var(--font-size-md) !important;
-  color: var(--text-dark) !important;
-  border-top: 1px dashed var(--border-color) !important;
+  color: var(--color-text) !important;
+  border-top: 1px dashed var(--color-border) !important;
   padding-top: 4px !important;
   margin-top: 4px !important;
 }
@@ -1255,7 +1255,7 @@
 .ticketFooter {
   text-align: center !important;
   font-size: var(--font-size-xs) !important;
-  color: var(--text-muted) !important;
+  color: var(--color-text-muted) !important;
   margin-top: 15px !important;
 }
 
@@ -1281,14 +1281,14 @@
 }
 
 .printBtn {
-  background-color: var(--bg-card, #fff);
-  color: var(--text-dark, #333);
-  border: 1px solid var(--border-color);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
   border-radius: var(--btn-radius);
 }
 
 .printBtn:hover {
-  background-color: var(--bg-hover, rgb(0, 0, 0, 0.04));
+  background-color: var(--color-bg-hover);
 }
 
 .newSaleBtn {
@@ -1308,7 +1308,7 @@
 }
 
 .newSaleBtn:hover {
-  background-color: var(--color-green-700, #15803d);
+  background-color: var(--color-success);
 }
 
 .customerSelectContainer {
@@ -1321,23 +1321,23 @@
 .customerLabel {
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-muted, #888);
+  color: var(--color-text-muted);
 }
 
 .customerSelect {
   padding: 8px 12px;
-  border-color: var(--border-color, #eee);
+  border-color: var(--color-border);
   border-style: solid;
-  border-radius: var(--card-radius, 4px);
-  background-color: var(--bg-card, #fff);
-  color: var(--text-dark, #333);
+  border-radius: var(--card-radius);
+  background-color: var(--color-surface);
+  color: var(--color-text);
   font-size: var(--font-size-sm);
   outline: none;
   transition: border-color 0.2s ease;
 }
 
 .customerSelect:focus {
-  border-color: var(--color-orange-red, #f05a28);
+  border-color: var(--color-primary);
 }
 
 /* ── Search Input inside Search Bar ── */
@@ -1347,7 +1347,7 @@
   outline: none !important;
   font-size: var(--font-size-md);
   background: transparent !important;
-  color: var(--text-dark, #333);
+  color: var(--color-text);
   box-shadow: none !important;
   padding: 0 !important;
 }
@@ -1366,7 +1366,7 @@
   position: absolute !important;
   top: 8px !important;
   right: 8px !important;
-  background-color: var(--color-primary, #f05a28) !important;
+  background-color: var(--color-primary) !important;
   color: white !important;
   font-size: var(--font-size-xs) !important;
   font-weight: var(--font-weight-bold) !important;
@@ -1407,7 +1407,7 @@
 
 .mixedPaymentsWarning {
   font-size: var(--font-size-xs);
-  color: var(--color-gray-500, #6b7280);
+  color: var(--color-gray-500);
   margin-top: 4px;
 }
 
@@ -1419,7 +1419,7 @@
 }
 
 .placeholderIcon {
-  color: var(--text-muted);
+  color: var(--color-text-muted);
 }
 
 .creditExceededAlert {

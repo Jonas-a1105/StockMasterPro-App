@@ -14,8 +14,8 @@
   max-width: 1200px;
   max-height: 90vh;
   overflow-y: auto;
-  background-color: var(--bg-card) !important;
-  border: 1px solid var(--border-color) !important;
+  background-color: var(--color-surface) !important;
+  border: 1px solid var(--color-border) !important;
   border-radius: var(--card-radius);
   padding: 20px 24px;
   display: flex;
@@ -30,7 +30,7 @@
 }
 
 .modal::-webkit-scrollbar-thumb {
-  background-color: var(--text-muted);
+  background-color: var(--color-text-muted);
 }
 
 /* Header */
@@ -38,9 +38,9 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-  background-color: var(--bg-main) !important;
+  background-color: var(--color-bg) !important;
   padding: 16px 20px;
-  border: 1px solid var(--border-color) !important;
+  border: 1px solid var(--color-border) !important;
   border-radius: var(--card-radius) !important;
 }
 
@@ -54,14 +54,14 @@
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-semibold);
   letter-spacing: 1px;
-  color: var(--text-dark);
+  color: var(--color-text);
   text-transform: none;
 }
 
 .headerBadge {
   font-size: var(--font-size-2xs);
-  background-color: var(--bg-hover);
-  border: 1px solid var(--border-color);
+  background-color: var(--color-bg-hover);
+  border: 1px solid var(--color-border);
   padding: 3px 8px;
   color: var(--color-primary);
   font-weight: var(--font-weight-bold);
@@ -72,7 +72,7 @@
 
 .headerSubtitle {
   font-size: var(--font-size-xs);
-  color: var(--text-muted);
+  color: var(--color-text-muted);
 }
 
 .headerControls {
@@ -83,9 +83,9 @@
 }
 
 .rateInputGroup {
-  background-color: var(--bg-main);
+  background-color: var(--color-bg);
   padding: 6px 10px;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--color-border);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -94,16 +94,16 @@
 
 .rateInputLabel {
   font-size: var(--font-size-2xs);
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   text-transform: none;
   font-weight: var(--font-weight-semibold);
 }
 
 .rateInput {
   width: 80px;
-  background-color: var(--bg-card) !important;
+  background-color: var(--color-surface) !important;
   border: 1px solid var(--input-border) !important;
-  color: var(--text-dark);
+  color: var(--color-text);
   font-weight: var(--font-weight-bold);
   padding: 4px 8px;
   text-align: right;
@@ -118,13 +118,13 @@
 
 .rateInputUnit {
   font-size: var(--font-size-2xs);
-  color: var(--text-muted);
+  color: var(--color-text-muted);
 }
 
 .headerClose {
   background: none;
-  border: 1px solid var(--border-color);
-  color: var(--text-muted);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-muted);
   width: 32px;
   height: 32px;
   display: flex;
@@ -148,8 +148,8 @@
 }
 
 .kpiCard {
-  background-color: var(--bg-card) !important;
-  border: 1px solid var(--border-color) !important;
+  background-color: var(--color-surface) !important;
+  border: 1px solid var(--color-border) !important;
   border-radius: var(--card-radius) !important;
   box-shadow: var(--shadow-sm) !important;
   padding: 14px 16px;
@@ -160,7 +160,7 @@
 
 .kpiLabel {
   font-size: var(--font-size-2xs);
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   text-transform: none;
   font-weight: var(--font-weight-semibold);
   letter-spacing: 1px;
@@ -175,19 +175,19 @@
 
 .kpiValuePrefix {
   font-size: var(--font-size-xs);
-  color: var(--text-muted);
+  color: var(--color-text-muted);
 }
 
 .kpiValueNum {
   font-size: var(--font-size-4xl);
   font-weight: var(--font-weight-bold);
-  color: var(--text-dark);
+  color: var(--color-text);
   letter-spacing: -0.5px;
 }
 
 .kpiValueTag {
   font-size: var(--font-size-xs);
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   text-transform: none;
   font-weight: var(--font-weight-semibold);
   margin-left: 4px;
@@ -200,12 +200,12 @@
 }
 
 .kpiChangeSub {
-  color: var(--text-muted);
+  color: var(--color-text-muted);
 }
 
 .kpiSub {
   font-size: var(--font-size-2xs);
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   margin-top: 4px;
 }
 
@@ -223,8 +223,8 @@
 }
 
 .chartPanel {
-  background-color: var(--bg-card);
-  border: 1px solid var(--border-color);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: var(--card-radius);
   padding: 16px 20px;
   display: flex;
@@ -243,24 +243,24 @@
   font-weight: var(--font-weight-semibold);
   letter-spacing: 1px;
   text-transform: none;
-  color: var(--text-muted);
+  color: var(--color-text-muted);
 }
 
 .chartPanelSub {
   font-size: var(--font-size-2xs);
-  color: var(--text-muted);
+  color: var(--color-text-muted);
 }
 
 .chartBox {
   height: 260px;
-  background-color: var(--bg-main);
+  background-color: var(--color-bg);
   padding: 8px;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--color-border);
 }
 
 .converterPanel {
-  background-color: var(--bg-card);
-  border: 1px solid var(--border-color);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: var(--card-radius);
   padding: 16px 20px;
   display: flex;
@@ -273,14 +273,14 @@
   font-weight: var(--font-weight-semibold);
   letter-spacing: 1px;
   text-transform: none;
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   padding-bottom: 8px;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .converterBox {
-  background-color: var(--bg-main);
-  border: 1px solid var(--border-color);
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
   padding: 12px 16px;
   display: flex;
   flex-direction: column;
@@ -295,7 +295,7 @@
 
 .converterLabel {
   font-size: var(--font-size-2xs);
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   text-transform: none;
   letter-spacing: 1px;
   font-weight: var(--font-weight-semibold);
@@ -304,11 +304,11 @@
 .converterInput {
   width: 100%;
   background-color: var(--bg-input);
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--color-border);
   padding: 8px 10px;
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-bold);
-  color: var(--text-dark);
+  color: var(--color-text);
   text-align: right;
   outline: none;
 }
@@ -318,7 +318,7 @@
 }
 
 .converterDivider {
-  border-top: 1px solid var(--border-color);
+  border-top: 1px solid var(--color-border);
 }
 
 .converterLabelResult {
@@ -338,8 +338,8 @@
 }
 
 .arbitrageBox {
-  background-color: var(--bg-main);
-  border: 1px solid var(--border-color);
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
   padding: 12px 14px;
   display: flex;
   flex-direction: column;
@@ -349,7 +349,7 @@
 
 .arbitrageTitle {
   font-size: var(--font-size-2xs);
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   font-weight: var(--font-weight-semibold);
   text-transform: none;
   letter-spacing: 1px;
@@ -358,11 +358,11 @@
 .arbitrageRow {
   display: flex;
   justify-content: space-between;
-  color: var(--text-muted);
+  color: var(--color-text-muted);
 }
 
 .arbitrageValue {
-  color: var(--text-dark);
+  color: var(--color-text);
 }
 
 /* Row 3 */
@@ -373,8 +373,8 @@
 }
 
 .projectionPanel {
-  background-color: var(--bg-card);
-  border: 1px solid var(--border-color);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: var(--card-radius);
   padding: 16px 20px;
   display: flex;
@@ -387,12 +387,12 @@
   font-weight: var(--font-weight-semibold);
   letter-spacing: 1px;
   text-transform: none;
-  color: var(--text-muted);
+  color: var(--color-text-muted);
 }
 
 .projectionSub {
   font-size: var(--font-size-2xs);
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   margin-top: -12px;
 }
 
@@ -416,7 +416,7 @@
 
 .projectionBarText {
   font-weight: var(--font-weight-semibold);
-  color: var(--text-dark);
+  color: var(--color-text);
   text-transform: none;
   letter-spacing: 0.5px;
 }
@@ -434,9 +434,9 @@
 .projectionBarTrack {
   width: 100%;
   height: 8px;
-  background-color: var(--bg-main);
+  background-color: var(--color-bg);
   position: relative;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--color-border);
 }
 
 .projectionBarRed {
@@ -462,7 +462,7 @@
 }
 
 .supportCard {
-  background-color: var(--bg-main);
+  background-color: var(--color-bg);
   padding: 8px 12px;
   display: flex;
   flex-direction: column;
@@ -471,28 +471,28 @@
 
 .supportLabel {
   font-size: var(--font-size-2xs);
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   text-transform: none;
 }
 
 .supportValueRed {
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-bold);
-  color: var(--text-dark);
+  color: var(--color-text);
   margin-top: 2px;
 }
 
 .supportValueGreen {
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-bold);
-  color: var(--text-dark);
+  color: var(--color-text);
   margin-top: 2px;
 }
 
 /* Index Panel */
 .indexPanel {
-  background-color: var(--bg-card);
-  border: 1px solid var(--border-color);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: var(--card-radius);
   padding: 16px 20px;
   display: flex;
@@ -505,12 +505,12 @@
   font-weight: var(--font-weight-semibold);
   letter-spacing: 1px;
   text-transform: none;
-  color: var(--text-muted);
+  color: var(--color-text-muted);
 }
 
 .indexSub {
   font-size: var(--font-size-2xs);
-  color: var(--text-muted);
+  color: var(--color-text-muted);
 }
 
 .indexTable {
@@ -522,13 +522,13 @@
   display: grid;
   grid-template-columns: 2fr 1fr 1.5fr 1.5fr;
   gap: 8px;
-  background-color: var(--bg-main);
-  color: var(--text-muted);
+  background-color: var(--color-bg);
+  color: var(--color-text-muted);
   text-transform: none;
   font-size: var(--font-size-2xs);
   letter-spacing: 1px;
   padding: 8px 10px;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .indexTableRow {
@@ -536,18 +536,18 @@
   grid-template-columns: 2fr 1fr 1.5fr 1.5fr;
   gap: 8px;
   padding: 10px;
-  border-bottom: 1px solid var(--border-color);
-  color: var(--text-muted);
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text-muted);
   align-items: center;
 }
 
 .indexTableRow:hover {
-  background-color: var(--bg-hover);
+  background-color: var(--color-bg-hover);
 }
 
 .indexColAsset {
   font-weight: var(--font-weight-semibold);
-  color: var(--text-dark);
+  color: var(--color-text);
 }
 
 .indexColUsd {
@@ -556,7 +556,7 @@
 
 .indexColVesInit {
   text-align: right;
-  color: var(--text-muted);
+  color: var(--color-text-muted);
 }
 
 .indexColVesReval {

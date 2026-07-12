@@ -35,7 +35,7 @@
 
   /* Brand - uses user override or default */
   --color-primary-hover: var(--orange-600);
-  --color-primary-light: rgba(234, 88, 12, 0.08);
+  --color-primary-light: color-mix(in srgb, var(--color-primary) 8%, transparent);
   --color-on-primary: var(--gray-0);
 
   /* Feedback */
@@ -86,7 +86,7 @@
   --color-text-inverse: #0f0f0f;
 
   --color-primary-hover: var(--orange-400);
-  --color-primary-light: rgba(234, 88, 12, 0.15);
+  --color-primary-light: color-mix(in srgb, var(--color-primary) 15%, transparent);
   --color-on-primary: #ffffff;
 
   --color-success: var(--green-500);
@@ -133,7 +133,7 @@
   --color-text-inverse: #000000;
 
   --color-primary-hover: var(--orange-400);
-  --color-primary-light: rgba(234, 88, 12, 0.12);
+  --color-primary-light: color-mix(in srgb, var(--color-primary) 12%, transparent);
   --color-on-primary: #ffffff;
 
   --color-success: var(--green-500);

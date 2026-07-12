@@ -2,8 +2,8 @@
   position: relative;
   display: inline-block;
   user-select: none;
-  width: var(--plb-w, 208px);
-  height: var(--plb-h, 56px);
+  width: var(--plb-w);
+  height: var(--plb-h);
 }
 
 .lockWrapper {
@@ -38,7 +38,7 @@
   width: 100%;
   height: 100%;
   background-color: var(--color-primary);
-  color: var(--text-on-primary, #fff);
+  color: var(--color-on-primary);
   border: none;
   opacity: 0.6;
   transition: all 0.3s ease;
@@ -54,7 +54,7 @@
 }
 
 .button {
-  border-radius: var(--card-radius, 4px) !important;
+  border-radius: var(--card-radius) !important;
 }
 
 .buttonActive {
@@ -84,8 +84,8 @@
   left: 0;
   bottom: 0;
   height: 3px;
-  background-color: var(--text-on-primary, #fff);
+  background-color: var(--color-on-primary);
   opacity: 0.8;
-  width: var(--plb-progress, 0%);
+  width: var(--plb-progress);
   transition: width 0.1s linear;
 }

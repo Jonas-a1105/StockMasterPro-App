@@ -12,7 +12,7 @@
   background-color: var(--color-bg-hover);
   border: 1px solid var(--color-border);
   padding: 10px 12px;
-  border-radius: var(--card-radius, 4px);
+  border-radius: var(--card-radius);
 }
 
 .planLabel {
@@ -51,11 +51,11 @@
   width: 100%;
   padding: 7px 10px;
   border: 1px solid var(--color-border);
-  border-radius: var(--input-radius, 4px);
+  border-radius: var(--input-radius);
   font-size: var(--font-size-caption);
   outline: none;
   background-color: var(--color-bg-input);
-  color: var(--text-dark, #333);
+  color: var(--color-text);
   box-sizing: border-box;
 }
 
@@ -66,7 +66,7 @@
 .cardElementWrap {
   padding: 8px 10px;
   border: 1px solid var(--color-border);
-  border-radius: var(--input-radius, 4px);
+  border-radius: var(--input-radius);
   background-color: var(--color-bg-input);
   box-sizing: border-box;
 }
@@ -75,11 +75,11 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  background-color: var(--bg-danger, #fef2f2);
+  background-color: var(--color-danger-bg);
   border: 1px solid var(--color-danger);
   color: var(--color-danger);
   padding: 8px 10px;
-  border-radius: var(--card-radius, 4px);
+  border-radius: var(--card-radius);
   font-size: var(--font-size-caption);
 }
 
@@ -97,14 +97,14 @@
   color: var(--color-text-muted);
   font-size: var(--font-size-caption);
   font-weight: var(--font-weight-semibold);
-  border-radius: var(--card-radius, 4px);
+  border-radius: var(--card-radius);
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .btnCancel:hover:not(:disabled) {
   background-color: var(--color-bg-hover);
-  color: var(--text-dark, #333);
+  color: var(--color-text);
 }
 
 .btnCancel:disabled {
@@ -116,10 +116,10 @@
   padding: 7px 14px;
   background-color: var(--color-primary);
   border: none;
-  color: var(--text-on-primary, #fff);
+  color: var(--color-on-primary);
   font-size: var(--font-size-caption);
   font-weight: var(--font-weight-bold);
-  border-radius: var(--card-radius, 4px);
+  border-radius: var(--card-radius);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -152,7 +152,7 @@
   margin: 14px 0 8px;
   font-size: var(--font-size-md-plus);
   font-weight: var(--font-weight-bold);
-  color: var(--text-dark, #333);
+  color: var(--color-text);
 }
 
 .loaderArea p,

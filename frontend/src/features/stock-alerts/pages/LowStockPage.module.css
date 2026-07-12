@@ -4,7 +4,7 @@
   gap: 20px;
 }
 .tableContainer {
-  background: var(--bg-card);
+  background: var(--color-surface);
   border-radius: var(--card-radius);
   box-shadow: var(--shadow-sm);
   overflow-x: auto;
@@ -17,17 +17,17 @@
   padding: 14px 16px;
   text-align: left;
   font-size: var(--font-size-xs);
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   text-transform: none;
   letter-spacing: 0.5px;
   font-weight: var(--font-weight-semibold);
-  border-bottom: var(--card-border-width, 1px) solid var(--border-color);
+  border-bottom: var(--card-border-width) solid var(--color-border);
 }
 .table td {
   padding: 12px 16px;
   font-size: var(--font-size-sm);
-  color: var(--text-dark);
-  border-bottom: var(--card-border-width, 1px) solid var(--border-color);
+  color: var(--color-text);
+  border-bottom: var(--card-border-width) solid var(--color-border);
 }
 .productName {
   font-weight: var(--font-weight-semibold);
@@ -40,22 +40,22 @@
 .statusBadge {
   display: inline-block;
   padding: 4px 10px;
-  border-radius: var(--border-radius-sm, 2px);
+  border-radius: var(--border-radius-sm);
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);
   text-transform: none;
   letter-spacing: 0.3px;
 }
 .critical {
-  background: var(--bg-danger, #fef2f2);
+  background: var(--color-danger-bg);
   color: var(--color-danger);
 }
 .low {
-  background: var(--bg-warning-light, #fffbeb);
+  background: var(--color-warning-bg);
   color: var(--color-orange);
 }
 .warning {
-  background: var(--bg-primary-light, #eff6ff);
+  background: var(--color-primary-light);
   color: var(--color-blue);
 }
 .emptyState {
@@ -64,7 +64,7 @@
   align-items: center;
   justify-content: center;
   padding: 60px 20px;
-  background: var(--bg-card);
+  background: var(--color-surface);
   border-radius: var(--card-radius);
   box-shadow: var(--shadow-sm);
 }
@@ -73,15 +73,15 @@
   margin-bottom: 15px;
 }
 .emptyState p {
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   font-size: var(--font-size-md);
 }
 .actionBtn {
   padding: 6px 14px;
-  background: var(--color-primary, #f05a28);
+  background: var(--color-primary);
   color: white;
   border: none;
-  border-radius: var(--btn-radius, var(--card-radius));
+  border-radius: var(--btn-radius);
   font-size: var(--font-size-caption);
   font-weight: var(--font-weight-semibold);
   cursor: pointer;

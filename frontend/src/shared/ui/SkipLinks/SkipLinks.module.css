@@ -15,7 +15,7 @@
 .skip-link {
   display: inline-block;
   padding: 12px 24px;
-  background: var(--brand);
+  background: var(--color-primary);
   color: white;
   font-weight: var(--font-weight-semibold);
   font-size: var(--font-size-md);
@@ -35,7 +35,7 @@
   transform: translateY(0);
   pointer-events: auto;
   z-index: 10001;
-  outline: 3px solid var(--brand);
+  outline: 3px solid var(--color-primary);
   outline-offset: 2px;
 }
 

@@ -1,5 +1,5 @@
 .loadingText {
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   padding: 20px;
 }
 
@@ -20,10 +20,10 @@
 
 .logoutAllBtn {
   padding: 6px 14px;
-  border: 1px solid var(--color-danger, #ef4444);
-  border-radius: var(--btn-radius, 6px);
+  border: 1px solid var(--color-danger);
+  border-radius: var(--btn-radius);
   background: transparent;
-  color: var(--color-danger, #ef4444);
+  color: var(--color-danger);
   cursor: pointer;
   font-size: var(--font-size-sm);
 }
@@ -35,7 +35,7 @@
 }
 
 .emptyText {
-  color: var(--text-muted);
+  color: var(--color-text-muted);
 }
 
 .sessionCard {
@@ -44,8 +44,8 @@
   gap: 12px;
   padding: 12px 16px;
   border-radius: var(--btn-radius);
-  border: 1px solid var(--border-color);
-  background: var(--bg-card);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
 }
 
 .sessionInfo {
@@ -60,12 +60,12 @@
 .currentBadge {
   margin-left: 8px;
   font-size: var(--font-size-xs);
-  color: var(--color-success, #22c55e);
+  color: var(--color-success);
 }
 
 .sessionMeta {
   font-size: var(--font-size-caption);
-  color: var(--text-muted);
+  color: var(--color-text-muted);
 }
 
 .logoutBtn {
@@ -73,6 +73,6 @@
   border: none;
   border-radius: var(--border-radius-md);
   background: transparent;
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   cursor: pointer;
 }

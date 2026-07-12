@@ -17,7 +17,7 @@
   font-weight: var(--font-weight-bold);
   text-transform: none;
   letter-spacing: 0.5px;
-  color: var(--text-dark, #333);
+  color: var(--color-text);
 }
 
 .badge {
@@ -26,7 +26,7 @@
   font-weight: var(--font-weight-bold);
   letter-spacing: 1px;
   background: var(--color-primary);
-  color: var(--color-black, #000);
+  color: var(--color-black);
   padding: 2px 8px;
 }
 
@@ -65,7 +65,7 @@
 
 .barCount {
   font-weight: var(--font-weight-semibold);
-  color: var(--text-dark, #333);
+  color: var(--color-text);
 }
 
 .barTrack {
@@ -76,13 +76,13 @@
 
 .barFill {
   height: 100%;
-  width: var(--bar-fill-pct, 0%);
+  width: var(--bar-fill-pct);
   background: var(--color-primary);
   transition: width 0.5s ease;
 }
 
 .barFill.warning {
-  background: var(--color-yellow-500, #eab308);
+  background: var(--color-yellow-500);
 }
 
 .barFill.danger {

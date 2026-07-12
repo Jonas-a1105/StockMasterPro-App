@@ -1,7 +1,68 @@
 {
+  "extends": ["stylelint-config-standard"],
+  "plugins": ["stylelint-declaration-strict-value"],
   "rules": {
+    "selector-class-pattern": null,
+    "rule-empty-line-before": null,
+    "color-function-notation": null,
+    "alpha-value-notation": null,
+    "media-feature-range-notation": null,
+    "property-no-vendor-prefix": null,
+    "value-keyword-case": null,
+    "property-no-deprecated": null,
+    "declaration-empty-line-before": null,
+    "comment-empty-line-before": null,
+    "custom-property-empty-line-before": null,
+    "import-notation": null,
+    "at-rule-empty-line-before": null,
+    "declaration-block-no-redundant-longhand-properties": null,
+    "shorthand-property-no-redundant-values": null,
+    "keyframe-selector-notation": null,
+    "media-feature-name-no-vendor-prefix": null,
+    "selector-no-vendor-prefix": null,
+    "value-no-vendor-prefix": null,
+    "selector-not-notation": null,
+    "no-descending-specificity": null,
+    "no-duplicate-selectors": null,
+    "declaration-no-important": null,
+    "keyframes-name-pattern": null,
+    "color-hex-length": null,
+    "color-function-alias-notation": null,
+    "declaration-property-value-keyword-no-deprecated": null,
+    "block-no-empty": null,
+    "declaration-block-no-duplicate-custom-properties": null,
+    "property-no-unknown": [
+      true,
+      {
+        "ignoreProperties": ["composes"]
+      }
+    ],
     "selector-max-id": 0,
     "selector-max-specificity": "0,4,0",
-    "selector-pseudo-class-no-unknown": [true, { "ignorePseudoClasses": ["global", "local"] }]
-  }
+    "selector-pseudo-class-no-unknown": [true, { "ignorePseudoClasses": ["global", "local"] }],
+    "scale-unlimited/declaration-strict-value": [
+      ["/color/", "fill", "stroke", "background-color", "border-color"],
+      {
+        "ignoreValues": [
+          "transparent",
+          "currentColor",
+          "currentcolor",
+          "inherit",
+          "none",
+          "unset",
+          "white",
+          "black"
+        ],
+        "disableFix": true
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": ["**/primitives.css", "**/PremiumActivationAnimation.module.css"],
+      "rules": {
+        "scale-unlimited/declaration-strict-value": null
+      }
+    }
+  ]
 }

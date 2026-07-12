@@ -9,8 +9,8 @@
 .dateInput {
   padding: 7px 12px;
   border-radius: var(--border-radius-md);
-  border: 1px solid var(--border-color);
-  background: var(--bg-card);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
   color: var(--text-primary);
   font-size: var(--font-size-sm);
 }
@@ -27,19 +27,19 @@
 
 .filterBtn {
   background: var(--color-primary);
-  color: var(--text-on-primary, #fff);
+  color: var(--color-on-primary);
 }
 .clearBtn {
   background: transparent;
-  color: var(--text-muted);
-  border: 1px solid var(--border-color);
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
 }
 
 .tableContainer {
   overflow-x: auto;
   border-radius: var(--border-radius-lg);
-  border: 1px solid var(--border-color);
-  background: var(--bg-card);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
 }
 
 .table {
@@ -52,17 +52,17 @@
   text-align: left;
   padding: 12px 14px;
   font-weight: var(--font-weight-semibold);
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   font-size: var(--font-size-caption);
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  border-bottom: 1px solid var(--border-color);
-  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-bg-hover);
 }
 
 .table td {
   padding: 12px 14px;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--color-border);
   color: var(--text-primary);
 }
 
@@ -70,17 +70,17 @@
   border-bottom: none;
 }
 .table tr:hover td {
-  background: var(--bg-hover);
+  background: var(--color-bg-hover);
 }
 
 .emptyRow {
   text-align: center;
   padding: 40px 14px !important;
-  color: var(--text-muted);
+  color: var(--color-text-muted);
 }
 
 .cellMuted {
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   font-size: var(--font-size-caption);
 }
 .cellTotal {
@@ -93,8 +93,8 @@
   border-radius: var(--border-radius-xl);
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);
-  background: var(--bg-primary-light, #dbeafe);
-  color: var(--color-blue-800, #1e40af);
+  background: var(--color-primary-light);
+  color: var(--color-blue-800);
   text-transform: capitalize;
 }
 
@@ -108,13 +108,13 @@
   border: none;
   border-radius: var(--border-radius-md);
   background: transparent;
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   cursor: pointer;
   transition: all 0.15s;
 }
 
 .iconBtn:hover {
-  background: var(--bg-hover);
+  background: var(--color-bg-hover);
   color: var(--text-primary);
 }
 
@@ -129,7 +129,7 @@
   justify-content: space-between;
   align-items: flex-start;
   font-size: var(--font-size-md);
-  line-height: var(--line-height-relaxed, 1.7);
+  line-height: var(--line-height-relaxed);
 }
 
 .detailTotal {
@@ -139,7 +139,7 @@
 .detailTotal span {
   display: block;
   font-size: var(--font-size-caption);
-  color: var(--text-muted);
+  color: var(--color-text-muted);
 }
 
 .detailTotal strong {
@@ -157,15 +157,15 @@
   text-align: left;
   padding: 8px 10px;
   font-weight: var(--font-weight-semibold);
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   font-size: var(--font-size-xs);
   text-transform: uppercase;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .detailTable td {
   padding: 8px 10px;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .detailActions {
@@ -183,7 +183,7 @@
   border: none;
   border-radius: var(--border-radius-md);
   background: var(--color-primary);
-  color: var(--text-on-primary, #fff);
+  color: var(--color-on-primary);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
   cursor: pointer;
@@ -196,8 +196,8 @@
   padding: 8px 18px;
   border: none;
   border-radius: var(--border-radius-md);
-  background: var(--color-danger, #dc2626);
-  color: var(--text-on-primary, #fff);
+  background: var(--color-danger);
+  color: var(--color-on-primary);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
   cursor: pointer;
