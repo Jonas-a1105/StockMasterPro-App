@@ -96,9 +96,7 @@ export function RegisterPage() {
           </svg>
         </div>
         <h1 className={styles.headerTitle}>¡Bienvenido!</h1>
-      </div>
 
-      {/* TARJETA PRINCIPAL */}
       <div className={`${styles.authCard} ${styles.borderColor222}`}>
         <div className={styles.sectionHeader}>
           <div className={styles.indicatorRow}>

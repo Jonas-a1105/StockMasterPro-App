@@ -11,7 +11,6 @@ import { KpiGrid } from '@shared/ui/KpiGrid';
 import { Toolbar } from '@shared/ui/Toolbar';
 import { exportToExcel } from '@shared/lib/excelHelper';
 import styles from './BestSellersPage.module.css';
-import { Download } from 'lucide-react';
 function formatDate(d: string | null) {
   if (!d) return '\u2014';
   return new Date(d).toLocaleDateString('es-MX', { year: 'numeric', month: 'short', day: 'numeric' });

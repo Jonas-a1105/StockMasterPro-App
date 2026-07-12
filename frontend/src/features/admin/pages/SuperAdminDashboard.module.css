@@ -312,136 +312,136 @@
 }
 
 .kpiTrend svg {
-  flex-shrink: 0.
+  flex-shrink: 0;
 }
 
 .chartContainer {
-  display: flex.
-  flex-direction: column.
-  gap: 12px.
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .planBarRow {
-  display: flex.
-  align-items: center.
-  gap: 12px.
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .planLabel {
-  width: 100px.
-  font-size: var(--font-size-sm).
-  font-weight: var(--font-weight-semibold).
-  text-transform: uppercase.
-  letter-spacing: 0.5px.
+  width: 100px;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .barContainer {
-  flex: 1.
-  height: 24px.
-  background: var(--bg-tertiary).
-  border-radius: var(--card-radius).
-  overflow: hidden.
+  flex: 1;
+  height: 24px;
+  background: var(--bg-tertiary);
+  border-radius: var(--card-radius);
+  overflow: hidden;
 }
 
 .barFill {
-  height: 100%.
-  border-radius: var(--card-radius).
-  transition: width 0.3s ease.
+  height: 100%;
+  border-radius: var(--card-radius);
+  transition: width 0.3s ease;
 }
 
 .planValue {
-  width: 100px.
-  text-align: right.
-  font-size: var(--font-size-sm).
-  font-weight: var(--font-weight-semibold).
-  color: var(--text-main).
-  font-variant-numeric: tabular-nums.
+  width: 100px;
+  text-align: right;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-main);
+  font-variant-numeric: tabular-nums;
 }
 
 .emptyState {
-  display: flex.
-  align-items: center.
-  justify-content: center.
-  padding: 40px.
-  color: var(--text-muted).
-  font-size: var(--font-size-md).
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  color: var(--text-muted);
+  font-size: var(--font-size-md);
 }
 
 .tableResponsive {
-  overflow-x: auto.
+  overflow-x: auto;
 }
 
 .cohortTable {
-  width: 100%.
-  border-collapse: collapse.
-  font-size: var(--font-size-caption).
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-size-caption);
 }
 
 .cohortTable th,
 .cohortTable td {
-  padding: 8px 12px.
-  text-align: center.
-  border-bottom: 1px solid var(--border).
+  padding: 8px 12px;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
 }
 
 .cohortTable th {
-  background: var(--bg-tertiary).
-  font-weight: var(--font-weight-semibold).
-  color: var(--text-muted).
-  font-size: var(--font-size-xs).
-  text-transform: uppercase.
-  letter-spacing: 0.5px.
+  background: var(--bg-tertiary);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-muted);
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .cohortMonth {
-  font-weight: var(--font-weight-semibold).
-  color: var(--text-main).
-  text-align: left !important.
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-main);
+  text-align: left !important;
 }
 
 .cohortInitial {
-  font-weight: var(--font-weight-semibold).
-  color: var(--brand).
+  font-weight: var(--font-weight-semibold);
+  color: var(--brand);
 }
 
 .cohortCell {
-  font-weight: var(--font-weight-medium).
+  font-weight: var(--font-weight-medium);
 }
 
 .cohortCell.empty {
-  color: var(--text-muted).
-  background: var(--bg-tertiary).
+  color: var(--text-muted);
+  background: var(--bg-tertiary);
 }
 
 .detailTable {
-  width: 100%.
-  border-collapse: collapse.
-  font-size: var(--font-size-sm).
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-size-sm);
 }
 
 .detailTable th,
 .detailTable td {
-  padding: 10px 12px.
-  text-align: left.
-  border-bottom: 1px solid var(--border).
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
 }
 
 .detailTable th {
-  background: var(--bg-tertiary).
-  font-weight: var(--font-weight-semibold).
-  color: var(--text-muted).
-  font-size: var(--font-size-xs).
-  text-transform: uppercase.
-  letter-spacing: 0.5px.
+  background: var(--bg-tertiary);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-muted);
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .planBadge {
-  display: inline-block.
-  padding: 2px 8px.
-  border-radius: var(--border-radius-full).
-  font-size: var(--font-size-xs).
-  font-weight: var(--font-weight-semibold).
-  text-transform: uppercase.
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: var(--border-radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
 }
 
 .textDanger {
