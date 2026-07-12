@@ -1,4 +1,5 @@
-import styles from '../pages/DashboardPage.module.css';
+import { Card } from '@shared/ui/Card';
+import { Text } from '@shared/ui/Text';
 
 export function RecentActivity({
   activities,
@@ -6,49 +7,40 @@ export function RecentActivity({
   activities: { title: string; desc: string; time: string; color: string }[];
 }) {
   return (
-    <div className={styles.card}>
-      <div className={styles.cardTitle}>Actividad reciente del sistema</div>
-      <div className={styles.cardBody}>
+    <Card>
+      <Card.Header>
+        <Card.Title>Actividad reciente del sistema</Card.Title>
+      </Card.Header>
+      <Card.Body>
         {activities.length === 0 ? (
-          <p className={styles.muted}>No hay actividad reciente.</p>
+          <Text variant="description">No hay actividad reciente.</Text>
         ) : (
-          <div
-            className={`${styles.flexCol} ${styles.gap8} ${styles.overflowYAuto} ${styles.maxH200} ${styles.paddingRight4}`}
-          >
+          <div className="flex flex-col gap-2 max-h-[200px] overflow-y-auto pr-4">
             {activities.map((act, i) => (
               <div
                 key={i}
-                className={`list-item-bordered ${styles.flexRow} ${styles.justifyBetween} ${styles.itemsStart} ${styles.bgMainBg} ${styles.p10_12_10_18}`}
-                style={{ '--list-item-color': act.color } as React.CSSProperties}
+                className="flex items-start justify-between gap-4 p-2 bg-surface rounded-lg border border-border"
               >
                 <div>
-                  <div
-                    className={`${styles.fontWeight600} ${styles.fontSize13} ${styles.activityTitle}`}
-                    style={
-                      {
-                        '--title-color':
-                          act.color === '#22c55e'
-                            ? 'var(--text-dark, #fff)'
-                            : 'var(--color-orange-red, #f97316)',
-                      } as React.CSSProperties
-                    }
+                  <Text
+                    variant="bodySm"
+                    weight="semibold"
+                    style={{ color: act.color === '#22c55e' ? 'var(--color-text)' : 'var(--color-primary)' }}
                   >
                     {act.title}
-                  </div>
-                  <div className={`${styles.fontSize11} ${styles.colorMuted} ${styles.mt1}`}>
+                  </Text>
+                  <Text variant="caption" className="mt-1">
                     {act.desc}
-                  </div>
+                  </Text>
                 </div>
-                <span
-                  className={`${styles.fontSize10} ${styles.activityTime} ${styles.whitespaceNowrap} ${styles.marginLeft8}`}
-                >
+                <Text variant="caption" className="whitespace-nowrap ml-4">
                   {act.time}
-                </span>
+                </Text>
               </div>
             ))}
           </div>
         )}
-      </div>
-    </div>
+      </Card.Body>
+    </Card>
   );
 }

@@ -7,15 +7,18 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from 'recharts';
-import styles from '../pages/DashboardPage.module.css';
+import { Card } from '@shared/ui/Card';
+import { Text } from '@shared/ui/Text';
 
 export function SalesTrendChart({ data }: { data: { date: string; total: number }[] }) {
   return (
-    <div className={styles.card}>
-      <div className={styles.cardTitle}>Ventas últimos 7 días</div>
-      <div className={styles.cardBody}>
+    <Card>
+      <Card.Header>
+        <Card.Title>Ventas últimos 7 días</Card.Title>
+      </Card.Header>
+      <Card.Body>
         {data.length === 0 ? (
-          <p className={styles.muted}>No hay datos de ventas.</p>
+          <Text variant="description">No hay datos de ventas.</Text>
         ) : (
           <ResponsiveContainer width="100%" height={250}>
             <AreaChart data={data}>
@@ -23,31 +26,31 @@ export function SalesTrendChart({ data }: { data: { date: string; total: number 
                 <linearGradient id="salesGrad" x1="0" y1="0" x2="0" y2="1">
                   <stop
                     offset="5%"
-                    stopColor="var(--color-orange-red, #f05a28)"
+                    stopColor="var(--color-primary)"
                     stopOpacity={0.25}
                   />
                   <stop
                     offset="95%"
-                    stopColor="var(--color-orange-red, #f05a28)"
+                    stopColor="var(--color-primary)"
                     stopOpacity={0.0}
                   />
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color, #eee)" />
-              <XAxis dataKey="date" tick={{ fontSize: 12 }} stroke="var(--text-muted, #888)" />
-              <YAxis tick={{ fontSize: 12 }} stroke="var(--text-muted, #888)" />
+              <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" />
+              <XAxis dataKey="date" tick={{ fontSize: 12 }} stroke="var(--color-text-muted)" />
+              <YAxis tick={{ fontSize: 12 }} stroke="var(--color-text-muted)" />
               <Tooltip
                 contentStyle={{
-                  backgroundColor: 'var(--bg-card, #fff)',
-                  border: '1px solid var(--border-color, #eee)',
-                  borderRadius: '8px',
+                  backgroundColor: 'var(--color-surface)',
+                  border: '1px solid var(--color-border)',
+                  borderRadius: 'var(--radius-md)',
                   fontSize: '13px',
                 }}
               />
               <Area
                 type="monotone"
                 dataKey="total"
-                stroke="var(--color-orange-red, #f05a28)"
+                stroke="var(--color-primary)"
                 strokeWidth={2}
                 fillOpacity={1}
                 fill="url(#salesGrad)"
@@ -59,7 +62,7 @@ export function SalesTrendChart({ data }: { data: { date: string; total: number 
             </AreaChart>
           </ResponsiveContainer>
         )}
-      </div>
-    </div>
+      </Card.Body>
+    </Card>
   );
 }

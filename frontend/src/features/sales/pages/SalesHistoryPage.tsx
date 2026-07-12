@@ -1,17 +1,20 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { api } from '@shared/lib/http/client';
 import { useToast } from '@contexts/ToastContext';
 import { Modal } from '@shared/ui/Modal';
 import { LoadingDots } from '@shared/ui/LoadingDots';
 import { KpiGrid } from '@shared/ui/KpiGrid';
 import { Toolbar } from '@shared/ui/Toolbar';
+import { DataTable } from '@shared/ui/DataTable';
+import { Table } from '@shared/ui/Table';
+import { Badge } from '@shared/ui/Badge';
+import { Button } from '@shared/ui/Button';
 import { SkeletonTablePage } from '@shared/ui/Skeleton';
 import { useTheme } from '@contexts/ThemeContext';
 import { DollarSign, ShoppingCart, Eye, Printer, RotateCcw, XCircle, FileText } from 'lucide-react';
 import { useExchangeRate } from '@contexts/ExchangeRateContext';
 import { printTicket } from '@shared/lib/print/ticket';
 import { generateFiscalInvoicePdf } from '@shared/lib/print/invoicePdf';
-import styles from './SalesHistoryPage.module.css';
 
 export function SalesHistoryPage() {
   const { showToast } = useToast();
@@ -119,7 +122,100 @@ export function SalesHistoryPage() {
     }
   };
 
-  const totalRevenue = sales.reduce((s: number, sale: any) => s + Number(sale.total), 0);
+  if (loading && sales.length === 0)
+    return config.skeletonEnabled ? (
+      <SkeletonTablePage />
+    ) : (
+      <LoadingDots text="Cargando historial de ventas..." />
+    );
+
+  const paymentBadgeVariant = (method: string) => {
+    const m = method?.toLowerCase();
+    if (m === 'efectivo' || m === 'cash') return 'success';
+    if (m === 'tarjeta' || m === 'card') return 'info';
+    if (m === 'transferencia' || m === 'transfer') return 'warning';
+    return 'default';
+  };
+
+  const saleColumns = useMemo(
+    () => [
+      {
+        key: 'folio',
+        header: '#',
+        align: 'left' as const,
+        render: (sale: any) => <span className="font-mono text-text-muted">#{String(sale.folio || sale.id).slice(0, 8)}</span>,
+      },
+      {
+        key: 'createdAt',
+        header: 'Fecha',
+        render: (sale: any) => new Date(sale.createdAt).toLocaleString(),
+      },
+      {
+        key: 'customer',
+        header: 'Cliente',
+        render: (sale: any) => sale.customer?.name || '—',
+      },
+      {
+        key: 'items',
+        header: 'Productos',
+        align: 'center' as const,
+        render: (sale: any) => sale.items?.length || 0,
+      },
+      {
+        key: 'paymentMethod',
+        header: 'Método',
+        render: (sale: any) => (
+          <Badge variant={paymentBadgeVariant(sale.paymentMethod)}>
+            {sale.paymentMethod}
+          </Badge>
+        ),
+      },
+      {
+        key: 'total',
+        header: 'Total',
+        align: 'right' as const,
+        render: (sale: any) => <span className="font-semibold">{formatPrice(Number(sale.total))}</span>,
+      },
+      {
+        key: 'actions',
+        header: '',
+        align: 'center' as const,
+        render: (sale: any) => (
+          <div className="flex items-center justify-center gap-1.5">
+            <button onClick={() => openDetail(sale)} title="Ver detalle" className="p-1.5 rounded-lg hover:bg-bg-hover transition-colors">
+              <Eye size={15} />
+            </button>
+            <button onClick={() => printSaleTicket(sale)} title="Reimprimir" className="p-1.5 rounded-lg hover:bg-bg-hover transition-colors">
+              <Printer size={15} />
+            </button>
+            <button onClick={() => handleInvoicePdf(sale)} title="Factura PDF" className="p-1.5 rounded-lg hover:bg-bg-hover transition-colors">
+              <FileText size={15} />
+            </button>
+          </div>
+        ),
+      },
+    ],
+    []
+  );
+
+  const filteredSales = useMemo(
+    () => sales.filter((s) => {
+      if (search) {
+        const term = search.toLowerCase();
+        return (
+          s.folio?.toLowerCase().includes(term) ||
+          s.customer?.name?.toLowerCase().includes(term) ||
+          s.items?.some((i: any) => i.product?.name?.toLowerCase().includes(term))
+        );
+      }
+      if (startDate && new Date(s.createdAt) < new Date(startDate)) return false;
+      if (endDate && new Date(s.createdAt) > new Date(endDate)) return false;
+      return true;
+    }),
+    [sales, search, startDate, endDate]
+  );
+
+  const totalRevenue = filteredSales.reduce((s: number, sale: any) => s + Number(sale.total), 0);
 
   if (loading && sales.length === 0)
     return config.skeletonEnabled ? (
@@ -131,43 +227,29 @@ export function SalesHistoryPage() {
   return (
     <>
       <Toolbar
-        search={{
-          value: search,
-          onChange: setSearch,
-          placeholder: 'Buscar por producto o cliente...',
-        }}
-      />
-
-      <div className={styles.filterBar}>
-        <input
-          type="date"
-          value={startDate}
-          onChange={(e) => setStartDate(e.target.value)}
-          className={styles.dateInput}
-        />
-        <input
-          type="date"
-          value={endDate}
-          onChange={(e) => setEndDate(e.target.value)}
-          className={styles.dateInput}
-        />
-        <button className={styles.filterBtn} onClick={loadSales}>
-          Filtrar
-        </button>
-        {(startDate || endDate || search) && (
-          <button
-            className={styles.clearBtn}
-            onClick={() => {
-              setSearch('');
-              setStartDate('');
-              setEndDate('');
-              setTimeout(loadSales, 0);
-            }}
-          >
-            Limpiar
-          </button>
-        )}
-      </div>
+        search={{ value: search, onChange: setSearch, placeholder: 'Buscar por folio, cliente, producto...' }}
+      >
+        <div className="flex flex-wrap gap-2">
+          <input
+            type="date"
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+            className="px-3 py-2 border border-border rounded-lg bg-surface text-text text-sm focus:outline-none focus:border-primary"
+          />
+          <input
+            type="date"
+            value={endDate}
+            onChange={(e) => setEndDate(e.target.value)}
+            className="px-3 py-2 border border-border rounded-lg bg-surface text-text text-sm focus:outline-none focus:border-primary"
+          />
+          <Button variant="secondary" onClick={loadSales}>Filtrar</Button>
+          {(startDate || endDate || search) && (
+            <Button variant="secondary" onClick={() => { setSearch(''); setStartDate(''); setEndDate(''); setTimeout(loadSales, 0); }}>
+              Limpiar
+            </Button>
+          )}
+        </div>
+      </Toolbar>
 
       <KpiGrid
         kpis={[
@@ -192,68 +274,17 @@ export function SalesHistoryPage() {
         ]}
       />
 
-      <div className={styles.tableContainer}>
-        <table className={styles.table}>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Fecha</th>
-              <th>Cliente</th>
-              <th>Productos</th>
-              <th>Método</th>
-              <th>Total</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {sales.length === 0 ? (
-              <tr>
-                <td colSpan={7} className={styles.emptyRow}>
-                  No hay ventas registradas
-                </td>
-              </tr>
-            ) : (
-              sales.map((sale, idx) => (
-                <tr key={sale.id}>
-                  <td className={styles.cellMuted}>#{String(sale.folio || sale.id).slice(0, 8)}</td>
-                  <td>{new Date(sale.createdAt).toLocaleString()}</td>
-                  <td>{sale.customer?.name || '—'}</td>
-                  <td>{sale.items?.length || 0}</td>
-                  <td>
-                    <span className={styles.paymentBadge}>{sale.paymentMethod}</span>
-                  </td>
-                  <td className={styles.cellTotal}>{formatPrice(Number(sale.total))}</td>
-                  <td>
-                    <div className={styles.rowActions}>
-                      <button
-                        className={styles.iconBtn}
-                        onClick={() => openDetail(sale)}
-                        title="Ver detalle"
-                      >
-                        <Eye size={15} />
-                      </button>
-                      <button
-                        className={styles.iconBtn}
-                        onClick={() => printSaleTicket(sale)}
-                        title="Reimprimir"
-                      >
-                        <Printer size={15} />
-                      </button>
-                      <button
-                        className={styles.iconBtn}
-                        onClick={() => handleInvoicePdf(sale)}
-                        title="Factura PDF"
-                      >
-                        <FileText size={15} />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
+      <DataTable
+        data={filteredSales}
+        columns={saleColumns}
+        keyExtractor={(s) => s.id}
+        searchable
+        searchPlaceholder="Buscar por folio, cliente, producto..."
+        searchKeys={['folio', 'customer?.name']}
+        sortable
+        emptyMessage="No hay ventas registradas"
+        loading={loading}
+      />
 
       <Modal
         open={showDetail}
@@ -265,8 +296,8 @@ export function SalesHistoryPage() {
         wide
       >
         {selectedSale && (
-          <div className={styles.detail}>
-            <div className={styles.detailHeader}>
+          <div className="space-y-4">
+            <div className="flex justify-between items-start text-md leading-relaxed">
               <div>
                 <strong>Fecha:</strong> {new Date(selectedSale.createdAt).toLocaleString()}
                 <br />
@@ -274,59 +305,42 @@ export function SalesHistoryPage() {
                 <br />
                 <strong>Método de pago:</strong> {selectedSale.paymentMethod}
               </div>
-              <div className={styles.detailTotal}>
-                <span>Total</span>
-                <strong>{formatPrice(Number(selectedSale.total))}</strong>
+              <div className="text-right">
+                <span className="block text-caption text-text-muted">Total</span>
+                <strong className="text-3xl">{formatPrice(Number(selectedSale.total))}</strong>
               </div>
             </div>
 
             {selectedSale.discount ? (
-              <p>
-                <strong>Descuento:</strong> {formatPrice(Number(selectedSale.discount))}
-              </p>
+              <p><strong>Descuento:</strong> {formatPrice(Number(selectedSale.discount))}</p>
             ) : null}
             {selectedSale.taxRate ? (
-              <p>
-                <strong>IVA:</strong> {Number(selectedSale.taxRate) * 100}%
-              </p>
+              <p><strong>IVA:</strong> {Number(selectedSale.taxRate) * 100}%</p>
             ) : null}
 
-            <table className={styles.detailTable}>
-              <thead>
-                <tr>
-                  <th>Producto</th>
-                  <th>Cant</th>
-                  <th>Precio</th>
-                  <th>Subtotal</th>
-                </tr>
-              </thead>
-              <tbody>
-                {(selectedSale.items || []).map((item: any, i: number) => (
-                  <tr key={item.id || i}>
-                    <td>{item.product?.name || item.name || 'Producto'}</td>
-                    <td>{item.quantity}</td>
-                    <td>{formatPrice(Number(item.price))}</td>
-                    <td>
-                      {formatPrice(
-                        Number(item.subtotal || item.total || item.price * item.quantity)
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <Table
+              data={selectedSale.items || []}
+              columns={[
+                { key: 'product', header: 'Producto', render: (i: any) => i.product?.name || i.name || 'Producto' },
+                { key: 'quantity', header: 'Cant', align: 'center' as const },
+                { key: 'price', header: 'Precio', align: 'right' as const, render: (i: any) => formatPrice(Number(i.price)) },
+                { key: 'subtotal', header: 'Subtotal', align: 'right' as const, render: (i: any) => formatPrice(Number(i.subtotal || i.total || i.price * i.quantity)) },
+              ]}
+              keyExtractor={(_, idx) => String(idx)}
+              emptyMessage="Sin items"
+            />
 
-            <div className={styles.detailActions}>
-              <button className={styles.printBtn} onClick={() => printSaleTicket(selectedSale)}>
+            <div className="flex gap-3 justify-end pt-4 border-t border-border">
+              <Button variant="secondary" onClick={() => printSaleTicket(selectedSale)}>
                 <Printer size={15} /> Reimprimir Ticket
-              </button>
-              <button className={styles.printBtn} onClick={() => handleInvoicePdf(selectedSale)}>
+              </Button>
+              <Button variant="secondary" onClick={() => handleInvoicePdf(selectedSale)}>
                 <FileText size={15} /> Factura PDF
-              </button>
+              </Button>
               {selectedSale.status !== 'cancelled' && (
-                <button className={styles.voidBtn} onClick={() => handleVoid(selectedSale)}>
+                <Button variant="danger" onClick={() => handleVoid(selectedSale)}>
                   <XCircle size={15} /> Anular Venta
-                </button>
+                </Button>
               )}
             </div>
           </div>

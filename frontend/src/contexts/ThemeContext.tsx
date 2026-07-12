@@ -7,6 +7,11 @@ interface ThemeConfig {
   density: 'compact' | 'comfortable' | 'spacious';
   fontFamily: string;
   fontSizeBase: number;
+  // Visual overrides (connected to semantic tokens)
+  cardBorders: boolean;
+  shadows: boolean;
+  cardRadius: number;
+  animationEnabled: boolean;
 }
 
 interface SavedPreset {
@@ -33,6 +38,11 @@ const defaultConfig: ThemeConfig = {
   density: 'comfortable',
   fontFamily: "'Outfit', 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif",
   fontSizeBase: 15,
+  // Visual overrides defaults
+  cardBorders: true,
+  shadows: true,
+  cardRadius: 12,
+  animationEnabled: true,
 };
 
 export const palettes = [
@@ -90,6 +100,15 @@ function applyConfigToDOM(config: ThemeConfig) {
   root.style.setProperty('--density-multiplier', String(DENSITY_MAP[config.density]));
   root.style.setProperty('--font-family', config.fontFamily);
   root.style.setProperty('--font-size-base', `${config.fontSizeBase}px`);
+
+  // 3. Visual overrides connected to semantic tokens
+  root.style.setProperty('--card-border-width', config.cardBorders ? 'var(--border-width)' : '0px');
+  root.style.setProperty('--card-shadow', config.shadows ? 'var(--shadow-sm)' : 'none');
+  root.style.setProperty('--card-shadow-hover', config.shadows ? 'var(--shadow-md)' : 'none');
+  root.style.setProperty('--card-radius', `${config.cardRadius}px`);
+  
+  // Animation control
+  root.style.setProperty('--transition-base', config.animationEnabled ? '150ms cubic-bezier(0.4, 0, 0.2, 1)' : '0ms');
 
   // Derived font sizes based on base
   const base = config.fontSizeBase;

@@ -1,7 +1,8 @@
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 import { useExchangeRate } from '@contexts/ExchangeRateContext';
+import { Card } from '@shared/ui/Card';
+import { Table } from '@shared/ui/Table';
 import { Text } from '@shared/ui/Text';
-import styles from '../pages/DashboardPage.module.css';
 
 const COLORS = ['#a3a3a3', '#22c55e', '#eab308', '#f97316', '#3b82f6'];
 
@@ -14,25 +15,43 @@ export function TopSellersDonut({
 
   if (data.items.length === 0) {
     return (
-      <div className={styles.card}>
-        <div className={styles.cardTitle}>
-          <Text variant="h4">Participación de top ventas</Text>
-        </div>
-        <div className={styles.cardBody}>
+      <Card>
+        <Card.Header>
+          <Card.Title as="h4">Participación de top ventas</Card.Title>
+        </Card.Header>
+        <Card.Body>
           <Text variant="description">No hay datos de ventas.</Text>
-        </div>
-      </div>
+        </Card.Body>
+      </Card>
     );
   }
 
+  const columns = [
+    {
+      key: 'name',
+      header: 'Producto',
+      render: (item: typeof data.items[0]) => (
+        <div className="flex items-center gap-2">
+          <span className="w-2 h-2 rounded-full" style={{ backgroundColor: COLORS[data.items.indexOf(item)] }} />
+          <Text variant="bodySm" weight="semibold" title={item.name}>
+            {item.name.length > 22 ? item.name.slice(0, 20) + '...' : item.name}
+          </Text>
+        </div>
+      ),
+    },
+    { key: 'qty', header: 'Cant.', align: 'right' as const, render: (v: number) => `${v} u.` },
+    { key: 'total', header: 'Ingreso', align: 'right' as const, render: (v: number) => formatUsd(v) },
+    { key: 'share', header: '% Share', align: 'right' as const, render: (v: number) => `${v}%` },
+  ];
+
   return (
-    <div className={styles.card}>
-      <div className={styles.cardTitle}>
-        <Text variant="h4">Participación de top ventas</Text>
-      </div>
-      <div className={styles.cardBody}>
-        <div className={styles.bestSellersLayout}>
-          <div className={styles.donutChartArea}>
+    <Card>
+      <Card.Header>
+        <Card.Title as="h4">Participación de top ventas</Card.Title>
+      </Card.Header>
+      <Card.Body>
+        <div className="grid grid-cols-[5fr_7fr] gap-4">
+          <div className="relative flex items-center justify-center" style={{ height: 200 }}>
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
@@ -53,59 +72,33 @@ export function TopSellersDonut({
                 </Pie>
                 <Tooltip
                   contentStyle={{
-                    backgroundColor: 'var(--bg-card, #1c1c1c)',
-                    border: '1px solid var(--border-color, #333)',
+                    backgroundColor: 'var(--color-surface)',
+                    border: '1px solid var(--color-border)',
                     fontSize: '12px',
-                    borderRadius: 0,
+                    borderRadius: 'var(--card-radius)',
                   }}
-                  labelStyle={{ color: 'var(--text-dark, #e5e5e5)' }}
+                  labelStyle={{ color: 'var(--color-text)' }}
                 />
               </PieChart>
             </ResponsiveContainer>
-            <div className={styles.donutCenter}>
-              <div className={styles.donutCenterTotal}>Total</div>
-              <div className={styles.donutCenterQty}>{data.totalQty} u.</div>
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              <div className="text-center">
+                <Text variant="caption" weight="semibold" color="muted">
+                  Total
+                </Text>
+                <Text variant="h3" weight="bold">
+                  {data.totalQty} u.
+                </Text>
+              </div>
             </div>
           </div>
-          <div className={styles.sellerTableWrap}>
-            <table className={styles.sellerTable}>
-              <thead>
-                <tr>
-                  <th>Producto</th>
-                  <th>Cant.</th>
-                  <th>Ingreso</th>
-                  <th>% Share</th>
-                </tr>
-              </thead>
-              <tbody>
-                {data.items.map((item, i) => (
-                  <tr key={i}>
-                    <td>
-                      <div className={styles.sellerNameCell}>
-                        <span
-                          className={`${styles.sellerColorDot} ${styles.dotColor}`}
-                          style={{ '--dot-color': COLORS[i] } as React.CSSProperties}
-                        />
-                        <Text
-                          variant="bodySm"
-                          weight="semibold"
-                          className={styles.sellerName}
-                          title={item.name}
-                        >
-                          {item.name.length > 22 ? item.name.slice(0, 20) + '...' : item.name}
-                        </Text>
-                      </div>
-                    </td>
-                    <td className={styles.sellerQty}>{item.qty} u.</td>
-                    <td className={styles.sellerRevenue}>{formatUsd(item.total)}</td>
-                    <td className={styles.sellerShare}>{item.share}%</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          <Table
+            data={data.items}
+            columns={columns}
+            keyExtractor={(_, i) => String(i)}
+          />
         </div>
-      </div>
-    </div>
+      </Card.Body>
+    </Card>
   );
 }

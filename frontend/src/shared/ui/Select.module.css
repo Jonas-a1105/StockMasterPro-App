@@ -30,7 +30,7 @@
 
 .select:focus {
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgb(245, 102, 30, 0.15);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--focus-ring-color) var(--focus-ring-opacity), transparent);
 }
 
 .selectError {
@@ -38,7 +38,7 @@
 }
 
 .selectError:focus {
-  box-shadow: 0 0 0 3px rgb(229, 72, 77, 0.15);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-danger) var(--focus-ring-opacity), transparent);
 }
 
 .error {

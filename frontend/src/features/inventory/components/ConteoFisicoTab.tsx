@@ -1,11 +1,17 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { api } from '@shared/lib/http/client';
 import { useToast } from '@contexts/ToastContext';
 import { useTheme } from '@contexts/ThemeContext';
 import { LoadingDots } from '@shared/ui/LoadingDots';
-import { SkeletonTablePage } from '@shared/ui/Skeleton';
 import { Modal } from '@shared/ui/Modal';
 import { ButtonLoader } from '@shared/ui/ButtonLoader';
+import { DataTable } from '@shared/ui/DataTable';
+import { Badge } from '@shared/ui/Badge';
+import { FormField } from '@shared/ui/FormField';
+import { Input } from '@shared/ui/Input';
+import { Select } from '@shared/ui/Select';
+import { exportToExcel, type ColumnMapping } from '@shared/lib/excelHelper';
+import { ImportModal } from '@shared/ui/ImportModal';
 import {
   FileText,
   Plus,
@@ -17,11 +23,6 @@ import {
   FileDown,
   FileUp,
 } from 'lucide-react';
-import { formatUsd } from '@shared/lib/format/currency';
-import { exportToExcel, type ColumnMapping } from '@shared/lib/excelHelper';
-import { ImportModal } from '@shared/ui/ImportModal';
-import styles from './ConteoFisicoTab.module.css';
-import tableStyles from '@shared/ui/TableList.module.css';
 
 interface InventoryCountItem {
   id: string;
@@ -66,54 +67,33 @@ const STATUS_LABELS: Record<string, string> = {
 };
 
 const STATUS_STYLES: Record<string, string> = {
-  draft: 'status-draft',
-  in_progress: 'status-in-progress',
-  completed: 'status-completed',
-  approved: 'status-approved',
-  cancelled: 'status-cancelled',
+  draft: 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300',
+  in_progress: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
+  completed: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
+  approved: 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400',
+  cancelled: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400',
 };
 
-function renderLoadingRows(config: any) {
-  if (!config.skeletonEnabled) {
-    return (
-      <tr>
-        <td colSpan={8} className={styles.emptyRow}>
-          <LoadingDots text="Cargando conteos..." />
-        </td>
-      </tr>
-    );
-  }
-  return Array.from({ length: 5 }).map((_, idx) => (
-    <tr key={`loader-${idx}`}>
-      <td>
-        <div className={`skeleton ${styles.skeletonWidth60}`} />
-      </td>
-      <td>
-        <div className={`skeleton ${styles.skeletonWidth120}`} />
-      </td>
-      <td>
-        <div className={`skeleton ${styles.skeletonWidth100}`} />
-      </td>
-      <td>
-        <div className={`skeleton ${styles.skeletonWidth80}`} />
-      </td>
-      <td>
-        <div className={`skeleton ${styles.skeletonWidth40}`} />
-      </td>
-      <td>
-        <div className={`skeleton ${styles.skeletonWidth60b}`} />
-      </td>
-      <td>
-        <div className={`skeleton ${styles.skeletonWidth100b}`} />
-      </td>
-      <td></td>
-    </tr>
-  ));
-}
+const typeBadge = (type: string) => {
+  if (type === 'waste' || type === 'theft') return 'danger';
+  if (type === 'return') return 'info';
+  return 'warning';
+};
+
+const typeLabel = (type: string) => {
+  const labels: Record<string, string> = {
+    adjustment: 'Ajuste',
+    waste: 'Merma',
+    return: 'Devolución',
+    theft: 'Robo',
+  };
+  return labels[type] || type;
+};
 
 export function ConteoFisicoTab() {
   const { showToast } = useToast();
   const { config } = useTheme();
+
   const [counts, setCounts] = useState<InventoryCount[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
@@ -276,8 +256,7 @@ export function ConteoFisicoTab() {
   };
 
   const handleImport = async (data: any[], onProgress: (c: number, t: number) => void) => {
-    let success = 0,
-      errors = 0;
+    let success = 0, errors = 0;
     const details: string[] = [];
     for (let i = 0; i < data.length; i++) {
       const row = data[i];
@@ -305,189 +284,116 @@ export function ConteoFisicoTab() {
     setShowDetailModal(true);
   };
 
-  const filteredCounts = counts.filter((c) => {
-    if (
-      search &&
-      !c.id.toLowerCase().includes(search.toLowerCase()) &&
-      !c.name?.toLowerCase().includes(search.toLowerCase()) &&
-      !c.warehouse?.name.toLowerCase().includes(search.toLowerCase())
-    )
-      return false;
-    if (statusFilter && c.status !== statusFilter) return false;
-    return true;
-  });
+  const filteredCounts = useMemo(
+    () =>
+      counts.filter((c) => {
+        if (
+          search &&
+          !c.id.toLowerCase().includes(search.toLowerCase()) &&
+          !c.name?.toLowerCase().includes(search.toLowerCase()) &&
+          !c.warehouse?.name.toLowerCase().includes(search.toLowerCase())
+        )
+          return false;
+        if (statusFilter && c.status !== statusFilter) return false;
+        return true;
+      }),
+    [counts, search, statusFilter]
+  );
+
+  const countColumns = useMemo(
+    () => [
+      { key: 'id', header: 'ID', render: (c: InventoryCount) => c.id.slice(0, 8) },
+      { key: 'name', header: 'Nombre', render: (c: InventoryCount) => c.name || '—' },
+      { key: 'warehouse', header: 'Almacén', render: (c: InventoryCount) => c.warehouse?.name || 'Todos' },
+      { key: 'status', header: 'Estado', render: (c: InventoryCount) => (
+        <Badge className={STATUS_STYLES[c.status]}>{STATUS_LABELS[c.status]}</Badge>
+      )},
+      { key: 'items', header: 'Items', align: 'center' as const, render: (c: InventoryCount) => c.items.length },
+      { key: 'differences', header: 'Diferencias', align: 'center' as const, render: (c: InventoryCount) => {
+        const diffs = c.items.filter((i) => i.difference !== 0).length;
+        return <span className={diffs > 0 ? 'text-danger font-semibold' : 'text-success font-semibold'}>{diffs}</span>;
+      }},
+      { key: 'createdAt', header: 'Creado', render: (c: InventoryCount) => new Date(c.createdAt).toLocaleDateString() },
+      { key: 'actions', header: 'Acciones', align: 'center' as const, render: (c: InventoryCount) => (
+        <div className="flex items-center justify-center gap-1.5">
+          <button onClick={() => openDetail(c)} title="Ver detalle" className="p-1.5 rounded-lg hover:bg-bg-hover transition-colors"><FileText size={14} /></button>
+          {c.status === 'draft' && (
+            <>
+              <button onClick={() => setShowStartConfirm(c)} title="Iniciar" className="p-1.5 rounded-lg hover:bg-bg-hover transition-colors"><ChevronRight size={14} /></button>
+              <button onClick={() => setShowCancelConfirm(c)} title="Cancelar" className="p-1.5 rounded-lg hover:bg-bg-hover transition-colors text-danger"><X size={14} /></button>
+            </>
+          )}
+          {c.status === 'in_progress' && (
+            <>
+              <button onClick={() => setShowCompleteConfirm(c)} title="Completar" className="p-1.5 rounded-lg hover:bg-bg-hover transition-colors"><Check size={14} /></button>
+              <button onClick={() => setShowCancelConfirm(c)} title="Cancelar" className="p-1.5 rounded-lg hover:bg-bg-hover transition-colors text-danger"><X size={14} /></button>
+            </>
+          )}
+          {c.status === 'completed' && (
+            <>
+              <button onClick={() => setShowApproveConfirm(c)} title="Aprobar" className="p-1.5 rounded-lg hover:bg-bg-hover transition-colors"><Check size={14} /></button>
+              <button onClick={() => setShowCancelConfirm(c)} title="Cancelar" className="p-1.5 rounded-lg hover:bg-bg-hover transition-colors text-danger"><X size={14} /></button>
+            </>
+          )}
+          {c.status === 'approved' && (
+            <button onClick={() => handleApplyAdjustments(c)} title="Aplicar ajustes al stock" className="p-1.5 rounded-lg hover:bg-bg-hover transition-colors text-success"><RotateCcw size={14} /></button>
+          )}
+        </div>
+      )},
+    ],
+    []
+  );
 
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <h2>Conteo Físico de Inventario</h2>
-        <div className={styles.actions}>
-          <button className={styles.btnSecondary} onClick={handleExport}>
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <h2 className="text-xl font-semibold text-text">Conteo Físico de Inventario</h2>
+        <div className="flex items-center gap-3">
+          <button onClick={handleExport} className="inline-flex items-center gap-2 px-3 py-2 border border-border rounded-lg bg-surface text-text text-sm font-medium hover:bg-bg-hover transition-colors">
             <FileDown size={16} /> Exportar
           </button>
-          <button className={styles.btnSecondary} onClick={() => setShowImport(true)}>
+          <button onClick={() => setShowImport(true)} className="inline-flex items-center gap-2 px-3 py-2 border border-border rounded-lg bg-surface text-text text-sm font-medium hover:bg-bg-hover transition-colors">
             <FileUp size={16} /> Importar
           </button>
-          <button
-            className={styles.btnPrimary}
-            onClick={() => {
-              setForm({ name: '', notes: '', warehouseId: '', productIds: [] });
-              setShowCreateModal(true);
-            }}
-          >
+          <button onClick={() => { setForm({ name: '', notes: '', warehouseId: '', productIds: [] }); setShowCreateModal(true); }} className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors">
             <Plus size={16} /> Nuevo Conteo
           </button>
         </div>
       </div>
 
-      <div className={styles.filters}>
-        <input
-          type="text"
+      <div className="flex flex-wrap gap-3">
+        <Input
           placeholder="Buscar por ID, nombre, almacén..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className={styles.searchInput}
+          className="flex-1 min-w-[250px]"
         />
-        <select
+        <Select
           value={statusFilter}
-          onChange={(e) => setStatusFilter(e.target.value)}
-          className={styles.select}
-        >
-          <option value="">Todos los estados</option>
-          <option value="draft">Borrador</option>
-          <option value="in_progress">En Progreso</option>
-          <option value="completed">Completado</option>
-          <option value="approved">Aprobado</option>
-          <option value="cancelled">Cancelado</option>
-        </select>
+          onChange={(val) => setStatusFilter(val)}
+          options={[
+            { value: '', label: 'Todos los estados' },
+            { value: 'draft', label: 'Borrador' },
+            { value: 'in_progress', label: 'En Progreso' },
+            { value: 'completed', label: 'Completado' },
+            { value: 'approved', label: 'Aprobado' },
+            { value: 'cancelled', label: 'Cancelado' },
+          ]}
+          className="min-w-[180px]"
+        />
       </div>
 
-      <div className={tableStyles.container}>
-        <table className={tableStyles.table}>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Nombre</th>
-              <th>Almacén</th>
-              <th className={styles.textCenter}>Estado</th>
-              <th className={styles.textCenter}>Items</th>
-              <th className={styles.textCenter}>Diferencias</th>
-              <th>Creado</th>
-              <th className={styles.textCenter}>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {loading
-              ? renderLoadingRows(config)
-              : filteredCounts.map((count) => (
-                  <tr key={count.id}>
-                    <td className={`${styles.monoFont} ${styles.textMuted}`}>
-                      {count.id.slice(0, 8)}
-                    </td>
-                    <td>
-                      <span className={tableStyles.nameText}>{count.name || '—'}</span>
-                    </td>
-                    <td>{count.warehouse?.name || 'Todos'}</td>
-                    <td className={styles.textCenter}>
-                      <span className={`${styles.badge} ${STATUS_STYLES[count.status]}`}>
-                        {STATUS_LABELS[count.status]}
-                      </span>
-                    </td>
-                    <td className={styles.textCenter}>{count.items.length}</td>
-                    <td className={styles.textCenter}>
-                      <span
-                        className={`${styles.fontWeight600} ${count.items.some((i) => i.difference !== 0) ? styles.textDanger : styles.textSuccess}`}
-                      >
-                        {count.items.filter((i) => i.difference !== 0).length}
-                      </span>
-                    </td>
-                    <td>{new Date(count.createdAt).toLocaleDateString()}</td>
-                    <td className={`${styles.textCenter} ${styles.textCenterWhiteSpace}`}>
-                      <div className={styles.actionGroup}>
-                        <button
-                          className={styles.iconBtn}
-                          onClick={() => openDetail(count)}
-                          title="Ver detalle"
-                        >
-                          <FileText size={14} />
-                        </button>
-                        {count.status === 'draft' && (
-                          <>
-                            <button
-                              className={styles.iconBtn}
-                              onClick={() => setShowStartConfirm(count)}
-                              title="Iniciar"
-                            >
-                              <ChevronRight size={14} />
-                            </button>
-                            <button
-                              className={`${styles.iconBtn} danger`}
-                              onClick={() => setShowCancelConfirm(count)}
-                              title="Cancelar"
-                            >
-                              <X size={14} />
-                            </button>
-                          </>
-                        )}
-                        {count.status === 'in_progress' && (
-                          <>
-                            <button
-                              className={styles.iconBtn}
-                              onClick={() => setShowCompleteConfirm(count)}
-                              title="Completar"
-                            >
-                              <Check size={14} />
-                            </button>
-                            <button
-                              className={`${styles.iconBtn} danger`}
-                              onClick={() => setShowCancelConfirm(count)}
-                              title="Cancelar"
-                            >
-                              <X size={14} />
-                            </button>
-                          </>
-                        )}
-                        {count.status === 'completed' && (
-                          <>
-                            <button
-                              className={styles.iconBtn}
-                              onClick={() => setShowApproveConfirm(count)}
-                              title="Aprobar"
-                            >
-                              <Check size={14} />
-                            </button>
-                            <button
-                              className={`${styles.iconBtn} danger`}
-                              onClick={() => setShowCancelConfirm(count)}
-                              title="Cancelar"
-                            >
-                              <X size={14} />
-                            </button>
-                          </>
-                        )}
-                        {count.status === 'approved' && (
-                          <button
-                            className={`${styles.iconBtn} success`}
-                            onClick={() => handleApplyAdjustments(count)}
-                            title="Aplicar ajustes al stock"
-                          >
-                            <RotateCcw size={14} />
-                          </button>
-                        )}
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-            {filteredCounts.length === 0 && (
-              <tr>
-                <td colSpan={8} className={styles.emptyRow}>
-                  No hay conteos de inventario
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
+      <DataTable
+        data={filteredCounts}
+        columns={countColumns}
+        keyExtractor={(c) => c.id}
+        searchable
+        searchPlaceholder="Buscar por ID, nombre, almacén..."
+        searchKeys={['id', 'name', 'warehouse?.name']}
+        sortable
+        emptyMessage="No hay conteos de inventario"
+        loading={loading}
+      />
 
       <CreateCountModal
         open={showCreateModal}
@@ -501,10 +407,7 @@ export function ConteoFisicoTab() {
 
       <CountDetailModal
         open={showDetailModal}
-        onClose={() => {
-          setShowDetailModal(false);
-          setSelectedCount(null);
-        }}
+        onClose={() => { setShowDetailModal(false); setSelectedCount(null); }}
         count={selectedCount}
         onUpdateItem={handleUpdateItem}
         savingItem={savingItem}
@@ -513,7 +416,7 @@ export function ConteoFisicoTab() {
       <ConfirmationModal
         open={!!showStartConfirm}
         onClose={() => setShowStartConfirm(null)}
-        onConfirm={() => showStartConfirm && handleStart(showStartConfirm)}
+        onConfirm={() => showStartConfirm && handleStart(showStartConfirm!)}
         title="Iniciar Conteo"
         message="¿Iniciar este conteo físico? Cambiará el estado a 'En Progreso'."
         confirmLabel="Iniciar"
@@ -522,7 +425,7 @@ export function ConteoFisicoTab() {
       <ConfirmationModal
         open={!!showCompleteConfirm}
         onClose={() => setShowCompleteConfirm(null)}
-        onConfirm={() => showCompleteConfirm && handleComplete(showCompleteConfirm)}
+        onConfirm={() => showCompleteConfirm && handleComplete(showCompleteConfirm!)}
         title="Completar Conteo"
         message="¿Marcar este conteo como completado? Se calcularán las diferencias."
         confirmLabel="Completar"
@@ -531,7 +434,7 @@ export function ConteoFisicoTab() {
       <ConfirmationModal
         open={!!showApproveConfirm}
         onClose={() => setShowApproveConfirm(null)}
-        onConfirm={() => showApproveConfirm && handleApprove(showApproveConfirm)}
+        onConfirm={() => showApproveConfirm && handleApprove(showApproveConfirm!)}
         title="Aprobar Conteo"
         message="¿Aprobar este conteo? Una vez aprobado, se pueden aplicar los ajustes al stock."
         confirmLabel="Aprobar"
@@ -540,7 +443,7 @@ export function ConteoFisicoTab() {
       <ConfirmationModal
         open={!!showCancelConfirm}
         onClose={() => setShowCancelConfirm(null)}
-        onConfirm={() => showCancelConfirm && handleCancel(showCancelConfirm)}
+        onConfirm={() => showCancelConfirm && handleCancel(showCancelConfirm!)}
         title="Cancelar Conteo"
         message="¿Cancelar este conteo? Esta acción no se puede deshacer."
         confirmLabel="Cancelar"
@@ -567,46 +470,41 @@ function CreateCountModal({ open, onClose, onSubmit, loading, warehouses, form, 
   return (
     <Modal open={open} onClose={onClose} title="Nuevo Conteo Físico" wide>
       <form onSubmit={onSubmit}>
-        <div className="form-grid">
-          <div className="field">
-            <label>Nombre del conteo</label>
-            <input
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <FormField label="Nombre del conteo" required>
+            <Input
               value={form.name}
-              onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
+              onChange={(e) => setForm((f: any) => ({ ...f, name: e.target.value }))}
               placeholder="Ej: Conteo mensual enero"
               required
             />
-          </div>
-          <div className="field">
-            <label>Almacén (opcional)</label>
-            <select
+          </FormField>
+          <FormField label="Almacén (opcional)">
+            <Select
               value={form.warehouseId}
-              onChange={(e) => setForm((f) => ({ ...f, warehouseId: e.target.value }))}
-            >
-              <option value="">Todos los almacenes</option>
-              {warehouses.map((w) => (
-                <option key={w.id} value={w.id}>
-                  {w.name} ({w.code})
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="field-full">
-            <label>Notas</label>
+              onChange={(val) => setForm((f: any) => ({ ...f, warehouseId: val }))}
+              options={[
+                { value: '', label: 'Todos los almacenes' },
+                ...warehouses.map((w: any) => ({ value: w.id, label: `${w.name} (${w.code})` })),
+              ]}
+            />
+          </FormField>
+          <FormField label="Notas" className="lg:col-span-3">
             <textarea
               value={form.notes}
-              onChange={(e) => setForm((f) => ({ ...f, notes: e.target.value }))}
+              onChange={(e) => setForm((f: any) => ({ ...f, notes: e.target.value }))}
               rows={2}
               placeholder="Observaciones..."
+              className="w-full px-3 py-2 border border-border rounded-lg bg-surface text-text placeholder-text-muted focus:outline-none focus:border-primary"
             />
-          </div>
+          </FormField>
         </div>
-        <div className="form-actions">
-          <button type="button" className="cancelBtn" onClick={onClose}>
+        <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-border">
+          <button type="button" className="px-4 py-2 border border-border rounded-lg text-text hover:bg-bg-hover transition-colors" onClick={onClose}>
             Cancelar
           </button>
-          <button type="submit" className="saveBtn" disabled={loading}>
-            {loading ? <span className="loader" /> : 'Crear'}
+          <button type="submit" className="px-4 py-2 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors disabled:opacity-50" disabled={loading}>
+            {loading ? <ButtonLoader /> : 'Crear'}
           </button>
         </div>
       </form>
@@ -618,109 +516,62 @@ function CountDetailModal({ open, onClose, count, onUpdateItem, savingItem }: an
   if (!open || !count) return null;
 
   return (
-    <Modal
-      open={open}
-      onClose={onClose}
-      title={`Conteo: ${count.name || count.id.slice(0, 8)}`}
-      wide
-    >
-      <div className="detail-header">
-        <div className="detail-info">
-          <div>
-            <strong>Estado:</strong>{' '}
-            <span className={`badge ${STATUS_STYLES[count.status]}`}>
-              {STATUS_LABELS[count.status]}
-            </span>
-          </div>
-          <div>
-            <strong>Almacén:</strong> {count.warehouse?.name || 'Todos'}
-          </div>
-          <div>
-            <strong>Creado por:</strong> {count.user?.name || '—'}
-          </div>
-          {count.startedAt && (
-            <div>
-              <strong>Iniciado:</strong> {new Date(count.startedAt).toLocaleString()}
-            </div>
-          )}
-          {count.completedAt && (
-            <div>
-              <strong>Completado:</strong> {new Date(count.completedAt).toLocaleString()}
-            </div>
-          )}
-          {count.approvedAt && (
-            <div>
-              <strong>Aprobado por:</strong> {count.approver?.name || '—'} (
-              {new Date(count.approvedAt).toLocaleString()})
-            </div>
-          )}
+    <Modal open={open} onClose={onClose} title={`Conteo: ${count.name || count.id.slice(0, 8)}`} wide>
+      <div className="mb-4 space-y-2">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+          <div><strong>Estado:</strong> <Badge className={STATUS_STYLES[count.status]}>{STATUS_LABELS[count.status]}</Badge></div>
+          <div><strong>Almacén:</strong> {count.warehouse?.name || 'Todos'}</div>
+          <div><strong>Creado por:</strong> {count.user?.name || '—'}</div>
+          {count.startedAt && <div><strong>Iniciado:</strong> {new Date(count.startedAt).toLocaleString()}</div>}
+          {count.completedAt && <div><strong>Completado:</strong> {new Date(count.completedAt).toLocaleString()}</div>}
+          {count.approvedAt && <div><strong>Aprobado por:</strong> {count.approver?.name || '—'} ({new Date(count.approvedAt).toLocaleString()})</div>}
         </div>
-        {count.notes && (
-          <div className="detail-notes">
-            <strong>Notas:</strong> {count.notes}
-          </div>
-        )}
+        {count.notes && <div className="mt-3 p-3 bg-bg rounded-lg"><strong>Notas:</strong> {count.notes}</div>}
       </div>
 
-      <table className={tableStyles.table}>
-        <thead>
-          <tr>
-            <th>Producto</th>
-            <th className={styles.thCenter}>Stock Sistema</th>
-            <th className={styles.thCenter}>Contado</th>
-            <th className={styles.thCenter}>Diferencia</th>
-            <th>Notas</th>
-          </tr>
-        </thead>
-        <tbody>
-          {count.items.map((item: any) => (
-            <tr key={item.id}>
-              <td>{item.product?.name || item.productId.slice(0, 8)}</td>
-              <td className={styles.tdCenter}>{item.systemQty}</td>
-              <td className={styles.tdCenter}>
-                <input
-                  type="number"
-                  min="0"
-                  value={item.countedQty ?? ''}
-                  onChange={(e) =>
-                    onUpdateItem(count.id, item.id, parseInt(e.target.value) || 0, item.notes)
-                  }
-                  className={styles.inputCell}
-                  disabled={count.status !== 'in_progress'}
-                />
-              </td>
-              <td
-                className={`${styles.tdCenter} ${styles.fontWeight600} ${styles.colorVar}`}
-                style={
-                  {
-                    '--color-var':
-                      item.difference !== 0 ? 'var(--color-danger)' : 'var(--color-success)',
-                  } as React.CSSProperties
-                }
-              >
-                {item.difference >= 0 ? '+' : ''}
-                {item.difference}
-              </td>
-              <td>
-                <input
-                  type="text"
-                  value={item.notes || ''}
-                  onChange={(e) =>
-                    onUpdateItem(
-                      count.id,
-                      item.id,
-                      item.countedQty ?? item.systemQty,
-                      e.target.value
-                    )
-                  }
-                  className={styles.inputFull}
-                  disabled={count.status !== 'in_progress'}
-                />
-              </td>
+      <div className="overflow-x-auto">
+        <table className="w-full">
+          <thead>
+            <tr className="border-b border-border">
+              <th className="text-left p-3">Producto</th>
+              <th className="text-center p-3">Stock Sistema</th>
+              <th className="text-center p-3">Contado</th>
+              <th className="text-center p-3">Diferencia</th>
+              <th className="p-3">Notas</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {count.items.map((item: any) => (
+              <tr key={item.id} className="border-b border-border">
+                <td className="p-3">{item.product?.name || item.productId.slice(0, 8)}</td>
+                <td className="text-center p-3">{item.systemQty}</td>
+                <td className="text-center p-3">
+                  <input
+                    type="number"
+                    min="0"
+                    value={item.countedQty ?? ''}
+                    onChange={(e) => onUpdateItem(count.id, item.id, parseInt(e.target.value) || 0, item.notes)}
+                    className="w-24 px-2 py-1 border border-border rounded text-center focus:outline-none focus:border-primary"
+                    disabled={count.status !== 'in_progress'}
+                  />
+                </td>
+                <td className="text-center p-3 font-semibold" style={{ color: item.difference !== 0 ? 'var(--color-danger)' : 'var(--color-success)' }}>
+                  {item.difference >= 0 ? '+' : ''}{item.difference}
+                </td>
+                <td className="p-3">
+                  <input
+                    type="text"
+                    value={item.notes || ''}
+                    onChange={(e) => onUpdateItem(count.id, item.id, item.countedQty ?? item.systemQty, e.target.value)}
+                    className="w-full px-2 py-1 border border-border rounded"
+                    disabled={count.status !== 'in_progress'}
+                  />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </Modal>
   );
 }
@@ -737,17 +588,14 @@ function ConfirmationModal({
   if (!open) return null;
   return (
     <Modal open={open} onClose={onClose} title={title}>
-      <p>{message}</p>
-      <div className="form-actions">
-        <button className="cancelBtn" onClick={onClose}>
+      <p className="mb-6">{message}</p>
+      <div className="flex justify-end gap-3">
+        <button className="px-4 py-2 border border-border rounded-lg text-text hover:bg-bg-hover transition-colors" onClick={onClose}>
           Cancelar
         </button>
         <button
-          className={`saveBtn ${danger ? 'danger' : ''}`}
-          onClick={() => {
-            onConfirm();
-            onClose();
-          }}
+          className={`px-4 py-2 rounded-lg font-medium ${danger ? 'bg-danger text-white hover:bg-danger/90' : 'bg-primary text-white hover:bg-primary/90'}`}
+          onClick={() => { onConfirm(); onClose(); }}
         >
           {confirmLabel}
         </button>

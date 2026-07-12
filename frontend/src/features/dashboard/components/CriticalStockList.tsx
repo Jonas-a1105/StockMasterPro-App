@@ -1,44 +1,43 @@
-import styles from '../pages/DashboardPage.module.css';
+import { Card } from '@shared/ui/Card';
+import { Table } from '@shared/ui/Table';
+import { Text } from '@shared/ui/Text';
 
 export function CriticalStockList({ products }: { products: any[] }) {
+  const columns = [
+    { key: 'name', header: 'Producto' },
+    { key: 'barcode', header: 'Código' },
+    { key: 'minStock', header: 'Mínimo', align: 'right' as const, render: (v: number) => `${v} u.` },
+    {
+      key: 'stock',
+      header: 'Disponible',
+      align: 'right' as const,
+      render: (stock: number, idx: number) => {
+        const isBelowMin = products[idx].stock < products[idx].minStock;
+        return (
+          <Text variant="bodySm" weight={isBelowMin ? 'semibold' : 'normal'} color={isBelowMin ? 'danger' : 'warning'}>
+            {stock} u.
+          </Text>
+        );
+      },
+    },
+  ];
+
   return (
-    <div className={styles.card}>
-      <div className={styles.cardTitle}>Alertas de stock crítico</div>
-      <div className={styles.cardBody}>
+    <Card>
+      <Card.Header>
+        <Card.Title>Alertas de stock crítico</Card.Title>
+      </Card.Header>
+      <Card.Body>
         {products.length === 0 ? (
-          <p className={styles.muted}>No hay productos con stock bajo.</p>
+          <Text variant="description">No hay productos con stock bajo.</Text>
         ) : (
-          <div className={styles.stockTableWrap}>
-            <table className={styles.stockTable}>
-              <thead>
-                <tr>
-                  <th>Producto</th>
-                  <th>Código</th>
-                  <th>Mínimo</th>
-                  <th>Disponible</th>
-                </tr>
-              </thead>
-              <tbody>
-                {products.slice(0, 10).map((p) => {
-                  const isBelowMin = p.stock < p.minStock;
-                  return (
-                    <tr key={p.id}>
-                      <td>{p.name}</td>
-                      <td>{p.barcode || '—'}</td>
-                      <td>{p.minStock} u.</td>
-                      <td
-                        className={isBelowMin ? styles.stockValueDanger : styles.stockValueWarning}
-                      >
-                        {p.stock} u.
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
+          <Table
+            data={products.slice(0, 10)}
+            columns={columns}
+            keyExtractor={(p) => p.id}
+          />
         )}
-      </div>
-    </div>
+      </Card.Body>
+    </Card>
   );
 }

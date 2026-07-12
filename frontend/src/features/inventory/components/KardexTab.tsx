@@ -1,12 +1,29 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Package } from 'lucide-react';
 import { useTheme } from '@contexts/ThemeContext';
 import { SkeletonTable } from '@shared/ui/Skeleton';
 import { LoadingDots } from '@shared/ui/LoadingDots';
+import { DataTable } from '@shared/ui/DataTable';
 import { getInventoryProducts, getInventoryMovements } from '../api/inventory.api';
 import type { Product, InventoryMovement } from '@types';
-import styles from '../pages/InventoryPage.module.css';
-import tableStyles from '@shared/ui/TableList.module.css';
+
+const typeLabel = (type: string) => {
+  const labels: Record<string, string> = {
+    sale: 'Venta',
+    purchase: 'Compra',
+    adjustment: 'Ajuste',
+    waste: 'Merma',
+    return: 'Devolución',
+    theft: 'Robo',
+  };
+  return labels[type] || type;
+};
+
+const typeBadgeVariant = (type: string) => {
+  if (type === 'sale' || type === 'exit') return 'danger';
+  if (type === 'purchase' || type === 'entry') return 'success';
+  return 'warning';
+};
 
 export function KardexTab() {
   const { config } = useTheme();
@@ -23,10 +40,14 @@ export function KardexTab() {
       .catch(() => {});
   }, []);
 
-  const filteredProducts = products.filter(
-    (p) =>
-      p.name.toLowerCase().includes(productSearch.toLowerCase()) ||
-      p.barcode?.includes(productSearch)
+  const filteredProducts = useMemo(
+    () =>
+      products.filter(
+        (p) =>
+          p.name.toLowerCase().includes(productSearch.toLowerCase()) ||
+          p.barcode?.includes(productSearch)
+      ),
+    [products, productSearch]
   );
 
   const loadMovements = async (productId: string) => {
@@ -47,63 +68,64 @@ export function KardexTab() {
     loadMovements(product.id);
   };
 
-  const typeLabel = (type: string) => {
-    const labels: Record<string, string> = {
-      sale: 'Venta',
-      purchase: 'Compra',
-      adjustment: 'Ajuste',
-      waste: 'Merma',
-      return: 'Devolución',
-      theft: 'Robo',
-    };
-    return labels[type] || type;
-  };
+  const movementColumns = useMemo(
+    () => [
+      { key: 'date', header: 'Fecha', render: (m: InventoryMovement) => new Date(m.createdAt).toLocaleString() },
+      { key: 'type', header: 'Tipo', render: (m: InventoryMovement) => (
+        <Badge variant={typeBadgeVariant(m.type)}>{typeLabel(m.type)}</Badge>
+      )},
+      { key: 'quantity', header: 'Cantidad', align: 'right' as const, render: (m: InventoryMovement) => (
+        <span className={m.quantity > 0 ? 'text-success' : 'text-danger'}>{m.quantity > 0 ? '+' : ''}{m.quantity}</span>
+      )},
+      { key: 'reference', header: 'Referencia', render: (m: InventoryMovement) => m.reference || '—' },
+      { key: 'user', header: 'Usuario', render: (m: InventoryMovement) => m.userId ? m.userId.slice(0, 8) : '—' },
+    ],
+    []
+  );
 
   return (
     <>
-      <div className={styles.header}>
-        <h3 className={styles.sectionTitle}>Kardex de Inventario</h3>
+      <div className="flex items-center justify-between mb-6">
+        <h3 className="text-lg font-semibold text-text">Kardex de Inventario</h3>
       </div>
-      <div className={styles.form}>
-        <div className={styles.formGrid}>
-          <div className={styles.fieldFull}>
-            <label>Producto</label>
-            <div className={styles.selectWithSearch}>
-              <input
-                type="text"
-                placeholder="Buscar producto..."
-                value={productSearch}
-                onChange={(e) => {
-                  setProductSearch(e.target.value);
-                  setShowDropdown(true);
-                  setSelectedProduct(null);
-                  setMovements([]);
-                }}
-                onFocus={() => setShowDropdown(true)}
-              />
-              {showDropdown && filteredProducts.length > 0 && (
-                <div className={styles.dropdown}>
-                  {filteredProducts.map((p) => (
-                    <div
-                      key={p.id}
-                      className={styles.dropdownItem}
-                      onClick={() => selectProduct(p)}
-                    >
-                      <span>{p.name}</span>
-                      <span className={styles.dropdownMeta}>Stock: {p.stock}</span>
-                    </div>
-                  ))}
-                </div>
-              )}
+
+      <div className="mb-6">
+        <label className="block text-xs font-semibold text-text-muted mb-2">Producto</label>
+        <div className="relative">
+          <input
+            type="text"
+            placeholder="Buscar producto..."
+            value={productSearch}
+            onChange={(e) => {
+              setProductSearch(e.target.value);
+              setShowDropdown(true);
+              setSelectedProduct(null);
+              setMovements([]);
+            }}
+            onFocus={() => setShowDropdown(true)}
+            className="w-full px-4 py-2.5 border border-border rounded-lg bg-surface text-text placeholder-text-muted focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
+          />
+          {showDropdown && filteredProducts.length > 0 && (
+            <div className="absolute top-full left-0 right-0 mt-1 bg-surface border border-border rounded-lg shadow-lg overflow-hidden z-20 max-h-60 overflow-y-auto">
+              {filteredProducts.map((p) => (
+                <button
+                  key={p.id}
+                  onClick={() => selectProduct(p)}
+                  className="w-full px-4 py-2.5 text-left hover:bg-bg-hover transition-colors flex items-center justify-between gap-2"
+                >
+                  <span>{p.name}</span>
+                  <span className="text-xs text-text-muted">Stock: {p.stock}</span>
+                </button>
+              ))}
             </div>
-          </div>
+          )}
         </div>
       </div>
 
       {selectedProduct && (
         <>
-          <div className={styles.kardexInfo}>
-            <Package size={18} />
+          <div className="flex items-center gap-2 mb-4 p-3 bg-surface border border-border rounded-lg">
+            <Package size={18} className="text-primary" />
             <span>
               <strong>{selectedProduct.name}</strong> — Stock actual: {selectedProduct.stock}
             </span>
@@ -115,57 +137,15 @@ export function KardexTab() {
               <LoadingDots text="Cargando movimientos..." />
             )
           ) : (
-            <div className={tableStyles.container}>
-              <table className={tableStyles.table}>
-                <thead>
-                  <tr>
-                    <th>Fecha</th>
-                    <th>Tipo</th>
-                    <th className={styles.textAlignRight}>Cantidad</th>
-                    <th>Referencia</th>
-                    <th>Usuario</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {movements.length === 0 ? (
-                    <tr>
-                      <td colSpan={5} className={styles.empty}>
-                        Sin movimientos
-                      </td>
-                    </tr>
-                  ) : (
-                    movements.map((m) => (
-                      <tr key={m.id}>
-                        <td>{new Date(m.createdAt).toLocaleString()}</td>
-                        <td>
-                          <span
-                            className={`${tableStyles.badge} ${m.type === 'sale' || m.type === 'exit' ? tableStyles.badgeSaturated : m.type === 'purchase' || m.type === 'entry' ? tableStyles.badgeActive : tableStyles.badgeWarning}`}
-                          >
-                            {typeLabel(m.type)}
-                          </span>
-                        </td>
-                        <td className={styles.textAlignRight}>
-                          <span
-                            className={`${tableStyles.numberValue} ${styles.colorVar}`}
-                            style={
-                              {
-                                '--color-var':
-                                  m.quantity > 0 ? 'var(--color-success)' : 'var(--color-danger)',
-                              } as React.CSSProperties
-                            }
-                          >
-                            {m.quantity > 0 ? '+' : ''}
-                            {m.quantity}
-                          </span>
-                        </td>
-                        <td>{m.reference || '-'}</td>
-                        <td>{m.userId ? m.userId.slice(0, 8) : '-'}</td>
-                      </tr>
-                    ))
-                  )}
-                </tbody>
-              </table>
-            </div>
+            <DataTable
+              data={movements}
+              columns={movementColumns}
+              keyExtractor={(m) => m.id}
+              emptyMessage="Sin movimientos"
+              searchable={false}
+              sortable={false}
+              showPagination={false}
+            />
           )}
         </>
       )}

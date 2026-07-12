@@ -1,0 +1,82 @@
+.container {
+  overflow-x: auto;
+  background-color: var(--color-surface);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--card-radius);
+  box-shadow: var(--shadow-card);
+}
+
+.table {
+  width: 100%;
+  text-align: left;
+  border-collapse: collapse;
+  font-size: var(--list-body-font-size);
+}
+
+.table thead {
+  background-color: var(--list-header-bg);
+  color: var(--list-header-text);
+  border-bottom: 1px solid var(--list-border-color);
+}
+
+.table thead tr th {
+  padding: var(--list-cell-padding);
+  font-size: var(--list-header-font-size);
+  font-weight: var(--list-header-font-weight);
+  font-family: var(--list-font-family);
+  text-transform: var(--list-header-uppercase);
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--list-border-color);
+}
+
+.table thead tr th:first-child {
+  border-top-left-radius: var(--card-radius);
+}
+
+.table thead tr th:last-child {
+  border-top-right-radius: var(--card-radius);
+}
+
+.table tbody {
+  border-top: none;
+}
+
+.table tbody tr {
+  transition: background-color 0.15s ease;
+  border-bottom: 1px solid var(--list-border-color);
+}
+
+.table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.table tbody tr:last-child td:first-child {
+  border-bottom-left-radius: var(--card-radius);
+}
+
+.table tbody tr:last-child td:last-child {
+  border-bottom-right-radius: var(--card-radius);
+}
+
+.hoverable tbody tr:hover {
+  background-color: var(--list-row-hover);
+}
+
+.striped tbody tr:nth-child(even) {
+  background-color: var(--list-stripe);
+}
+
+.table tbody tr td {
+  padding: var(--list-cell-padding);
+  font-size: var(--list-body-font-size);
+  font-family: var(--list-font-family);
+  color: var(--color-text);
+  vertical-align: middle;
+}
+
+.emptyState {
+  padding: var(--space-8);
+  text-align: center;
+  color: var(--color-text-muted);
+}

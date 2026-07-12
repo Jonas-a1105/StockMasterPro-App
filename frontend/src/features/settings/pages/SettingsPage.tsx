@@ -49,6 +49,8 @@ import {
   ToggleLeft,
   MapPin,
   Building2,
+  Plus,
+  Warehouse,
 } from 'lucide-react';
 import { api } from '@shared/lib/http/client';
 import { useToast } from '@contexts/ToastContext';
@@ -67,6 +69,14 @@ import { CreditCard as CardIcon } from 'lucide-react';
 import styles from './SettingsPage.module.css';
 import tableStyles from '@shared/ui/TableList.module.css';
 import { SessionsTab } from '../components/SessionsTab';
+import { Toolbar } from '@shared/ui/Toolbar';
+import { DataTable } from '@shared/ui/DataTable';
+import { Badge } from '@shared/ui/Badge';
+import { Modal } from '@shared/ui/Modal';
+import { FormField } from '@shared/ui/FormField';
+import { Input } from '@shared/ui/Input';
+import { Button } from '@shared/ui/Button';
+import { ButtonLoader } from '@shared/ui/ButtonLoader';
 
 type Tab =
   | 'tax-currency'
@@ -490,28 +500,10 @@ function PersonalizationTab() {
           </button>
         </div>
         <div className={`${styles.toggleRow} ${styles.mt8}`}>
-          <span className={styles.pFieldLabel}>Bordes en tarjetas/KPI</span>
+          <span className={styles.pFieldLabel}>Bordes en tarjetas</span>
           <button
-            className={`${styles.pToggle} ${config.cardBorderEnabled ? styles.pToggleOn : ''}`}
-            onClick={() => updateConfig({ cardBorderEnabled: !config.cardBorderEnabled })}
-          >
-            <span className={styles.pToggleKnob} />
-          </button>
-        </div>
-        <div className={`${styles.toggleRow} ${styles.mt8}`}>
-          <span className={styles.pFieldLabel}>Bordes en header</span>
-          <button
-            className={`${styles.pToggle} ${config.headerBorderEnabled ? styles.pToggleOn : ''}`}
-            onClick={() => updateConfig({ headerBorderEnabled: !config.headerBorderEnabled })}
-          >
-            <span className={styles.pToggleKnob} />
-          </button>
-        </div>
-        <div className={`${styles.toggleRow} ${styles.mt8}`}>
-          <span className={styles.pFieldLabel}>Bordes en footer</span>
-          <button
-            className={`${styles.pToggle} ${config.footerBorderEnabled ? styles.pToggleOn : ''}`}
-            onClick={() => updateConfig({ footerBorderEnabled: !config.footerBorderEnabled })}
+            className={`${styles.pToggle} ${config.cardBorders ? styles.pToggleOn : ''}`}
+            onClick={() => updateConfig({ cardBorders: !config.cardBorders })}
           >
             <span className={styles.pToggleKnob} />
           </button>
@@ -519,8 +511,8 @@ function PersonalizationTab() {
         <div className={`${styles.toggleRow} ${styles.mt8}`}>
           <span className={styles.pFieldLabel}>Sombras globales</span>
           <button
-            className={`${styles.pToggle} ${config.shadowEnabled ? styles.pToggleOn : ''}`}
-            onClick={() => updateConfig({ shadowEnabled: !config.shadowEnabled })}
+            className={`${styles.pToggle} ${config.shadows ? styles.pToggleOn : ''}`}
+            onClick={() => updateConfig({ shadows: !config.shadows })}
           >
             <span className={styles.pToggleKnob} />
           </button>
@@ -531,7 +523,7 @@ function PersonalizationTab() {
       <div className={styles.bentoCard}>
         <div className={styles.bentoCardHeader}>
           <Square size={22} />
-          <h2 className={styles.bentoCardTitle}>Bordes redondeados</h2>
+          <h2 className={styles.bentoCardTitle}>Radio de bordes</h2>
         </div>
         <div className={styles.sliderRow}>
           <label className={styles.pFieldLabel}>Radio de bordes global</label>
@@ -545,12 +537,7 @@ function PersonalizationTab() {
               value={config.cardRadius}
               onChange={(e) => {
                 const r = parseFloat(e.target.value);
-                updateConfig({
-                  cardRadius: r,
-                  // Mantener inputs y botones proporcionales (la mitad del radio global)
-                  inputBorderRadius: Math.round(r * 0.5),
-                  btnBorderRadius: Math.round(r * 0.5),
-                });
+                updateConfig({ cardRadius: r });
               }}
             />
             <span className={styles.sliderValue}>{config.cardRadius}px</span>
@@ -596,7 +583,6 @@ function PersonalizationTab() {
 
 function BranchesTab() {
   const { showToast } = useToast();
-  const { config } = useTheme();
   const [warehouses, setWarehouses] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [modal, setModal] = useState<{ type: 'create' | 'edit'; data?: any } | null>(null);
@@ -670,11 +656,7 @@ function BranchesTab() {
       </div>
 
       {loading ? (
-        config.skeletonEnabled ? (
-          <SkeletonTablePage rows={5} cols={5} tabs={0} kpi={0} />
-        ) : (
-          <LoadingDots text="Cargando sucursales..." />
-        )
+        <LoadingDots text="Cargando sucursales..." />
       ) : warehouses.length === 0 ? (
         <div className={styles.emptyState}>
           <Store size={40} className={styles.emptyIcon} />

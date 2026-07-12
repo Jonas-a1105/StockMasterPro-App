@@ -4,10 +4,11 @@ import { Modal } from '@shared/ui/Modal';
 import { ButtonLoader } from '@shared/ui/ButtonLoader';
 import { PremiumLockButton } from '@shared/ui/PremiumLockButton';
 import { SearchableSelect } from '@shared/ui/SearchableSelect';
+import { FormField } from '@shared/ui/FormField';
+import { Input } from '@shared/ui/Input';
 import { formatUsd } from '@shared/lib/format/currency';
 import { api } from '@shared/lib/http/client';
 import { useToast } from '@contexts/ToastContext';
-import styles from '../pages/InventoryPage.module.css';
 
 export interface ProductFormData {
   name: string;
@@ -104,47 +105,45 @@ export function ProductForm({
         title={editingId ? 'Editar Producto' : 'Nuevo Producto'}
       >
         <form onSubmit={handleSubmit}>
-          <div className={styles.formGrid}>
-            <div className={styles.field}>
-              <label>Nombre *</label>
-              <input
-                type="text"
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <FormField label="Nombre *" required>
+              <Input
                 value={form.name}
                 onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))}
+                placeholder="Nombre del producto"
                 required
               />
-            </div>
-            <div className={styles.field}>
-              <label>Código de Barras</label>
-              <input
-                type="text"
+            </FormField>
+
+            <FormField label="Código de Barras">
+              <Input
                 value={form.barcode}
                 onChange={(e) => setForm((p) => ({ ...p, barcode: e.target.value }))}
+                placeholder="Código de barras"
               />
-            </div>
-            <div className={styles.field}>
-              <label>Marca</label>
-              <input
-                type="text"
+            </FormField>
+
+            <FormField label="Marca">
+              <Input
                 value={form.brand}
                 onChange={(e) => setForm((p) => ({ ...p, brand: e.target.value }))}
                 placeholder="Ej: Samsung, Nike..."
               />
-            </div>
-            <div className={styles.field}>
-              <label>Precio de Venta ($) *</label>
-              <input
+            </FormField>
+
+            <FormField label="Precio de Venta ($) *" required>
+              <Input
                 type="number"
                 step="0.01"
                 value={form.price || ''}
                 onChange={(e) => setForm((p) => ({ ...p, price: Number(e.target.value) }))}
-                required
                 placeholder="0.00"
+                required
               />
-            </div>
-            <div className={styles.field}>
-              <label>Costo ($)</label>
-              <input
+            </FormField>
+
+            <FormField label="Costo ($)">
+              <Input
                 type="number"
                 step="0.01"
                 value={form.cost || ''}
@@ -152,73 +151,73 @@ export function ProductForm({
                 placeholder="0.00"
               />
               {form.cost > 0 && form.price > 0 && form.price < form.cost && (
-                <span className={styles.warningText}>
-                  ⚠️ Precio por debajo del costo (margen negativo: -$
-                  {formatUsd(form.cost - form.price)})
-                </span>
+                <p className="text-xs text-warning mt-1">
+                  ⚠️ Precio por debajo del costo (margen negativo: -${formatUsd(form.cost - form.price)})
+                </p>
               )}
-            </div>
-            <div className={styles.field}>
-              <label>Stock</label>
-              <input
+            </FormField>
+
+            <FormField label="Stock">
+              <Input
                 type="number"
                 value={form.stock || ''}
                 onChange={(e) => setForm((p) => ({ ...p, stock: Number(e.target.value) }))}
                 placeholder="0"
               />
-            </div>
-            <div className={styles.field}>
-              <label>Stock Mínimo</label>
-              <input
+            </FormField>
+
+            <FormField label="Stock Mínimo">
+              <Input
                 type="number"
                 value={form.minStock || ''}
                 onChange={(e) => setForm((p) => ({ ...p, minStock: Number(e.target.value) }))}
                 placeholder="0"
               />
-            </div>
-            <div className={styles.field}>
-              <label>Categoría</label>
-              <div className={styles.categoryRow}>
+            </FormField>
+
+            <FormField label="Categoría" className="md:col-span-2">
+              <div className="flex gap-2">
                 <SearchableSelect
                   value={form.categoryId}
                   onChange={(val) => setForm((p) => ({ ...p, categoryId: val }))}
                   options={categoryOptions}
                   placeholder="Sin categoría"
+                  className="flex-1"
                 />
                 <button
                   type="button"
-                  className={styles.quickAddBtn}
+                  className="w-10 h-10 rounded-lg border border-primary bg-transparent text-primary hover:bg-primary/5 flex items-center justify-center transition-colors"
                   onClick={onShowNewCategory}
                   title="Crear categoría"
                 >
-                  <Plus size={16} />
+                  <Plus size={18} />
                 </button>
               </div>
-            </div>
-            <div className={styles.fieldFull}>
-              <label>Imagen del Producto</label>
+            </FormField>
+
+            <FormField label="Imagen del Producto" className="md:col-span-3">
               <input
                 type="file"
                 accept="image/jpeg,image/png,image/webp,image/gif"
                 onChange={handleImageUpload}
                 disabled={uploading}
-                className={styles.hidden}
+                className="hidden"
                 ref={fileInputRef}
               />
               <button
                 type="button"
-                className={styles.uploadBtn}
+                className="inline-flex items-center justify-center px-4 py-2 border border-border rounded-lg bg-surface text-text text-sm font-medium cursor-pointer hover:border-primary hover:text-primary transition-colors disabled:opacity-50"
                 onClick={() => fileInputRef.current?.click()}
                 disabled={uploading}
               >
                 {uploading ? 'Subiendo...' : form.imageUrl ? 'Cambiar imagen' : 'Subir imagen'}
               </button>
               {form.imageUrl && (
-                <div className={styles.imageWrapper}>
-                  <img src={form.imageUrl} alt="Preview" className={styles.imagePreview} />
+                <div className="mt-2 flex items-center gap-2">
+                  <img src={form.imageUrl} alt="Preview" className="w-16 h-16 rounded-lg object-cover border border-border" />
                   <button
                     type="button"
-                    className={styles.removeImageBtn}
+                    className="text-text-muted hover:text-danger transition-colors text-xl leading-none"
                     onClick={() => setForm((p) => ({ ...p, imageUrl: '' }))}
                     title="Eliminar imagen"
                   >
@@ -226,18 +225,20 @@ export function ProductForm({
                   </button>
                 </div>
               )}
-            </div>
-            <div className={styles.fieldFull}>
-              <label>Descripción</label>
+            </FormField>
+
+            <FormField label="Descripción" className="md:col-span-3">
               <textarea
                 value={form.description}
                 onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))}
                 rows={2}
+                className="w-full px-3 py-2 border border-border rounded-lg bg-surface text-text placeholder-text-muted focus:outline-none focus:border-primary"
               />
-            </div>
+            </FormField>
           </div>
-          <div className={styles.formActions}>
-            <button type="button" className={styles.cancelBtn} onClick={onClose}>
+
+          <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-border">
+            <button type="button" className="px-4 py-2 border border-border rounded-lg text-text hover:bg-bg-hover transition-colors" onClick={onClose}>
               Cancelar
             </button>
             {isLimitExceeded ? (
@@ -249,7 +250,7 @@ export function ProductForm({
                 sublabel="Mantén pulsado para ampliar"
               />
             ) : (
-              <button type="submit" className={styles.saveBtn} disabled={loading}>
+              <button type="submit" className="px-4 py-2 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors disabled:opacity-50" disabled={loading}>
                 {loading ? <ButtonLoader /> : 'Guardar'}
               </button>
             )}
@@ -258,9 +259,8 @@ export function ProductForm({
       </Modal>
 
       <Modal open={showNewCategory} onClose={onShowNewCategory} title="Nueva Categoría" small>
-        <div className={styles.categoryFormContainer}>
-          <input
-            type="text"
+        <div className="space-y-4">
+          <Input
             value={newCategoryName}
             onChange={(e) => onNewCategoryNameChange(e.target.value)}
             placeholder="Nombre de la categoría"
@@ -271,21 +271,16 @@ export function ProductForm({
                 onCreateCategory();
               }
             }}
-            className={styles.categoryFormInput}
           />
-          <div className={styles.categoryFormActions}>
-            <button
-              type="button"
-              onClick={onShowNewCategory}
-              className={styles.categoryFormCancelBtn}
-            >
+          <div className="flex justify-end gap-2">
+            <button type="button" onClick={onShowNewCategory} className="px-4 py-2 border border-border rounded-lg text-text hover:bg-bg-hover transition-colors">
               Cancelar
             </button>
             <button
               type="button"
               onClick={onCreateCategory}
               disabled={!newCategoryName.trim()}
-              className={styles.categoryFormCreateBtn}
+              className="px-4 py-2 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors disabled:opacity-50"
             >
               Crear
             </button>

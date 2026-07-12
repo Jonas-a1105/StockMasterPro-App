@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Plus, AlertTriangle } from 'lucide-react';
 import { useToast } from '@contexts/ToastContext';
 import { useAuth } from '@contexts/AuthContext';
@@ -8,16 +8,36 @@ import { Modal } from '@shared/ui/Modal';
 import { ButtonLoader } from '@shared/ui/ButtonLoader';
 import { SkeletonTable } from '@shared/ui/Skeleton';
 import { LoadingDots } from '@shared/ui/LoadingDots';
+import { DataTable } from '@shared/ui/DataTable';
+import { Badge } from '@shared/ui/Badge';
+import { FormField } from '@shared/ui/FormField';
+import { Input } from '@shared/ui/Input';
+import { Select } from '@shared/ui/Select';
 import { getInventoryProducts, getInventoryAdjustments, adjustStock } from '../api/inventory.api';
 import type { Product } from '@types';
-import styles from '../pages/InventoryPage.module.css';
-import tableStyles from '@shared/ui/TableList.module.css';
+
+const typeBadge = (type: string) => {
+  if (type === 'waste' || type === 'theft') return 'danger';
+  if (type === 'return') return 'info';
+  return 'warning';
+};
+
+const typeLabel = (type: string) => {
+  const labels: Record<string, string> = {
+    adjustment: 'Ajuste',
+    waste: 'Merma',
+    return: 'Devolución',
+    theft: 'Robo',
+  };
+  return labels[type] || type;
+};
 
 export function AdjustmentsTab() {
   const { showToast } = useToast();
   const { user } = useAuth();
   const { formatPrice } = useExchangeRate();
   const { config } = useTheme();
+
   const [products, setProducts] = useState<Product[]>([]);
   const [adjustments, setAdjustments] = useState<any[]>([]);
   const [loadingAdjustments, setLoadingAdjustments] = useState(true);
@@ -29,19 +49,21 @@ export function AdjustmentsTab() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    getInventoryProducts()
-      .then(setProducts)
-      .catch(() => {});
+    getInventoryProducts().then(setProducts).catch(() => {});
     getInventoryAdjustments()
       .then(setAdjustments)
       .catch(() => {})
       .finally(() => setLoadingAdjustments(false));
   }, []);
 
-  const filteredProducts = products.filter(
-    (p) =>
-      p.name.toLowerCase().includes(productSearch.toLowerCase()) ||
-      p.barcode?.includes(productSearch)
+  const filteredProducts = useMemo(
+    () =>
+      products.filter(
+        (p) =>
+          p.name.toLowerCase().includes(productSearch.toLowerCase()) ||
+          p.barcode?.includes(productSearch)
+      ),
+    [products, productSearch]
   );
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -58,9 +80,7 @@ export function AdjustmentsTab() {
       setSelectedProduct(null);
       setProductSearch('');
       setForm({ quantity: 0, type: 'adjustment', notes: '' });
-      getInventoryAdjustments()
-        .then(setAdjustments)
-        .catch(() => {});
+      getInventoryAdjustments().then(setAdjustments).catch(() => {});
       showToast('Ajuste registrado exitosamente', 'success');
     } catch (err: any) {
       showToast(err.message, 'error');
@@ -69,76 +89,44 @@ export function AdjustmentsTab() {
     }
   };
 
+  const adjustmentColumns = useMemo(
+    () => [
+      { key: 'date', header: 'Fecha', render: (a: any) => new Date(a.createdAt).toLocaleDateString() },
+      { key: 'product', header: 'Producto', render: (a: any) => a.product?.name || a.productName || '—' },
+      { key: 'type', header: 'Tipo', render: (a: any) => <Badge variant={typeBadge(a.type)}>{typeLabel(a.type)}</Badge> },
+      { key: 'quantity', header: 'Cantidad', align: 'right' as const, render: (a: any) => (
+        <span className={a.quantity >= 0 ? 'text-success' : 'text-danger'}>
+          {a.quantity >= 0 ? '+' : ''}{a.quantity}
+        </span>
+      )},
+      { key: 'notes', header: 'Notas', render: (a: any) => a.notes || '—' },
+      { key: 'user', header: 'Usuario', render: (a: any) => a.user?.name || a.userName || '—' },
+    ],
+    []
+  );
+
   return (
     <>
-      <div className={styles.header}>
-        <h3 className={styles.sectionTitle}>Ajustes de Inventario</h3>
+      <div className="flex items-center justify-between mb-6">
+        <h3 className="text-lg font-semibold text-text">Ajustes de Inventario</h3>
         {user?.role !== 'cajero' && (
-          <button className={styles.addBtn} onClick={() => setShowModal(true)}>
+          <button className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors" onClick={() => setShowModal(true)}>
             <Plus size={18} /> Nuevo Ajuste
           </button>
         )}
       </div>
 
-      <div className={tableStyles.container}>
-        {loadingAdjustments ? (
-          config.skeletonEnabled ? (
-            <SkeletonTable rows={6} cols={5} />
-          ) : (
-            <LoadingDots text="Cargando ajustes..." />
-          )
-        ) : adjustments.length === 0 ? (
-          <div className={styles.empty}>
-            <AlertTriangle size={40} />
-            <p>
-              Presiona "Nuevo Ajuste" para registrar una entrada, salida, merma o devolución de
-              inventario.
-            </p>
-          </div>
-        ) : (
-          <table className={tableStyles.table}>
-            <thead>
-              <tr>
-                <th>Fecha</th>
-                <th>Producto</th>
-                <th>Tipo</th>
-                <th className={styles.textAlignRight}>Cantidad</th>
-                <th>Notas</th>
-                <th>Usuario</th>
-              </tr>
-            </thead>
-            <tbody>
-              {adjustments.map((adj: any) => (
-                <tr key={adj.id}>
-                  <td>{new Date(adj.createdAt).toLocaleDateString()}</td>
-                  <td>
-                    <span className={tableStyles.nameText}>
-                      {adj.product?.name || adj.productName || '—'}
-                    </span>
-                  </td>
-                  <td className={styles.textMuted}>{adj.type}</td>
-                  <td className={styles.textAlignRight}>
-                    <span
-                      className={`${tableStyles.numberValue} ${styles.colorVar}`}
-                      style={
-                        {
-                          '--color-var':
-                            adj.quantity >= 0 ? 'var(--color-success)' : 'var(--color-danger)',
-                        } as React.CSSProperties
-                      }
-                    >
-                      {adj.quantity >= 0 ? '+' : ''}
-                      {adj.quantity}
-                    </span>
-                  </td>
-                  <td>{adj.notes || '—'}</td>
-                  <td>{adj.user?.name || adj.userName || '—'}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-      </div>
+      <DataTable
+        data={adjustments}
+        columns={adjustmentColumns}
+        keyExtractor={(a) => a.id}
+        searchable
+        searchPlaceholder="Buscar ajustes..."
+        searchKeys={['productName', 'product?.name', 'notes', 'userName']}
+        sortable
+        emptyMessage="Sin ajustes registrados"
+        loading={loadingAdjustments}
+      />
 
       <Modal
         open={showModal}
@@ -150,12 +138,10 @@ export function AdjustmentsTab() {
         title="Registrar Ajuste de Inventario"
       >
         <form onSubmit={handleSubmit}>
-          <div className={styles.formGrid}>
-            <div className={styles.fieldFull}>
-              <label>Producto</label>
-              <div className={styles.selectWithSearch}>
-                <input
-                  type="text"
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <FormField label="Producto" className="lg:col-span-3" required>
+              <div className="relative">
+                <Input
                   placeholder="Buscar producto..."
                   value={productSearch}
                   onChange={(e) => {
@@ -166,66 +152,71 @@ export function AdjustmentsTab() {
                   onFocus={() => setShowDropdown(true)}
                 />
                 {showDropdown && filteredProducts.length > 0 && (
-                  <div className={styles.dropdown}>
+                  <div className="absolute top-full left-0 right-0 mt-1 bg-surface border border-border rounded-lg shadow-lg overflow-hidden z-20 max-h-60 overflow-y-auto">
                     {filteredProducts.map((p) => (
-                      <div
+                      <button
                         key={p.id}
-                        className={styles.dropdownItem}
                         onClick={() => {
                           setSelectedProduct(p);
                           setProductSearch(p.name);
                           setShowDropdown(false);
                         }}
+                        className="w-full px-4 py-2.5 text-left hover:bg-bg-hover transition-colors flex items-center justify-between gap-2"
                       >
                         <span>{p.name}</span>
-                        <span className={styles.dropdownMeta}>
-                          Stock: {p.stock} | {formatPrice(p.cost)}
-                        </span>
-                      </div>
+                        <span className="text-xs text-text-muted">Stock: {p.stock} | {formatPrice(p.cost)}</span>
+                      </button>
                     ))}
                   </div>
                 )}
               </div>
               {selectedProduct && (
-                <p className={styles.selectedInfo}>
-                  Stock actual: <strong>{selectedProduct.stock}</strong> | Costo:{' '}
-                  <strong>{formatPrice(selectedProduct.cost)}</strong>
+                <p className="mt-2 text-sm text-text-muted">
+                  Stock actual: <strong>{selectedProduct.stock}</strong> | Costo: <strong>{formatPrice(selectedProduct.cost)}</strong>
                 </p>
               )}
-            </div>
-            <div className={styles.field}>
-              <label>Cantidad</label>
-              <input
+            </FormField>
+
+            <FormField label="Cantidad" required>
+              <Input
                 type="number"
                 value={form.quantity || ''}
                 onChange={(e) => setForm((p) => ({ ...p, quantity: Number(e.target.value) }))}
-                required
                 placeholder="Positivo o negativo"
+                required
               />
-            </div>
-            <div className={styles.field}>
-              <label>Tipo de Ajuste</label>
-              <select
+            </FormField>
+
+            <FormField label="Tipo de Ajuste" required>
+              <Select
                 value={form.type}
-                onChange={(e) => setForm((p) => ({ ...p, type: e.target.value }))}
-              >
-                <option value="adjustment">Ajuste</option>
-                <option value="waste">Merma</option>
-                <option value="return">Devolución</option>
-                <option value="theft">Robo</option>
-              </select>
-            </div>
-            <div className={styles.fieldFull}>
-              <label>Motivo / Notas</label>
+                onChange={(val) => setForm((p) => ({ ...p, type: val }))}
+                options={[
+                  { value: 'adjustment', label: 'Ajuste' },
+                  { value: 'waste', label: 'Merma' },
+                  { value: 'return', label: 'Devolución' },
+                  { value: 'theft', label: 'Robo' },
+                ]}
+                required
+              />
+            </FormField>
+
+            <FormField label="Motivo / Notas" className="lg:col-span-3">
               <textarea
                 value={form.notes}
                 onChange={(e) => setForm((p) => ({ ...p, notes: e.target.value }))}
                 rows={2}
+                className="w-full px-3 py-2 border border-border rounded-lg bg-surface text-text placeholder-text-muted focus:outline-none focus:border-primary"
               />
-            </div>
+            </FormField>
           </div>
-          <div className={styles.formActions}>
-            <button type="submit" className={styles.saveBtn} disabled={loading || !selectedProduct}>
+
+          <div className="flex justify-end mt-6 pt-4 border-t border-border">
+            <button
+              type="submit"
+              className="px-4 py-2 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors disabled:opacity-50"
+              disabled={loading || !selectedProduct}
+            >
               {loading ? <ButtonLoader /> : 'Registrar Ajuste'}
             </button>
           </div>

@@ -14,6 +14,7 @@ import {
   Shield,
   Lock,
   X,
+  ArrowUpDown,
 } from 'lucide-react';
 import { useAuth } from '@contexts/AuthContext';
 import { useToast } from '@contexts/ToastContext';
@@ -28,20 +29,20 @@ import {
   createCategory,
 } from '../api/inventory.api';
 import { ProductKpiBar } from './ProductKpiBar';
-import { ProductFilters } from './ProductFilters';
 import { ProductForm, type ProductFormData } from './ProductForm';
 import { ProductDetailPanel } from '../pages/ProductDetailPanel';
 import { Modal } from '@shared/ui/Modal';
 import { ConfirmModal } from '@shared/ui/ConfirmModal';
 import { PremiumLockButton } from '@shared/ui/PremiumLockButton';
-import { SkeletonTable, SkeletonCards, Skeleton } from '@shared/ui/Skeleton';
+import { SkeletonTable, SkeletonCards } from '@shared/ui/Skeleton';
 import { ImportModal } from '@shared/ui/ImportModal';
+import { DataTable } from '@shared/ui/DataTable';
+import { ProductCard } from '@shared/ui/ProductCard';
+import { Toolbar } from '@shared/ui/Toolbar';
 import { exportToExcel, type ColumnMapping } from '@shared/lib/excelHelper';
 import { exportToPdf } from '@shared/lib/print/pdfHelper';
 import type { Product } from '@types';
 import type { SortField, SortDirection, ViewMode } from '../types';
-import styles from '../pages/InventoryPage.module.css';
-import tableStyles from '@shared/ui/TableList.module.css';
 
 const PRODUCT_COLUMNS: ColumnMapping[] = [
   { header: 'Nombre', key: 'name', type: 'string' },
@@ -55,6 +56,58 @@ const PRODUCT_COLUMNS: ColumnMapping[] = [
   { header: 'Imagen URL', key: 'imageUrl', type: 'string' },
 ];
 
+const TABLE_COLUMNS = [
+  { key: 'name', header: 'Producto', render: (product: Product) => (
+    <div className="flex items-center gap-3">
+      {product.imageUrl ? (
+        <img src={product.imageUrl} alt="" className="w-8 h-8 rounded-lg object-cover" />
+      ) : (
+        <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-surface-muted">
+          <Package size={14} className="text-text-muted" />
+        </div>
+      )}
+      <span className="font-medium">{product.name}</span>
+    </div>
+  )},
+  { key: 'brand', header: 'Marca', render: (p: Product) => (p as any).brand || '—' },
+  { key: 'category', header: 'Categoría', render: (p: Product) => p.categoryId || '—' },
+  { key: 'barcode', header: 'Código', render: (p: Product) => <span className="font-mono">{p.barcode || '—'}</span> },
+  { key: 'price', header: 'Precio ($)', align: 'right', render: (p: Product) => p.price.toFixed(2) },
+  { key: 'priceBs', header: 'Precio (Bs)', align: 'right', render: (p: Product, idx: number, products: Product[]) => formatBs(products[idx].price) },
+  { key: 'cost', header: 'Costo ($)', align: 'right', render: (p: Product) => formatUsd(p.cost) },
+  { key: 'costBs', header: 'Costo (Bs)', align: 'right', render: (p: Product, idx: number, products: Product[]) => formatBs(products[idx].cost) },
+  { key: 'profit', header: 'Ganancia ($)', align: 'right', render: (p: Product) => {
+    const profit = p.price - p.cost;
+    return <span className={profit >= 0 ? 'text-success' : 'text-danger'}>{formatUsd(profit)}</span>;
+  }},
+  { key: 'profitBs', header: 'Ganancia (Bs)', align: 'right', render: (p: Product, idx: number, products: Product[]) => {
+    const profit = products[idx].price - products[idx].cost;
+    return <span className={profit >= 0 ? 'text-success' : 'text-danger'}>{formatBs(profit)}</span>;
+  }},
+  { key: 'stock', header: 'Stock', align: 'right', render: (p: Product) => <span className="font-mono">{p.stock}</span> },
+  { key: 'minStock', header: 'Mín.', align: 'right', render: (p: Product) => <span className="font-mono">{p.minStock}</span> },
+  { key: 'status', header: 'Estado', align: 'center', render: (p: Product) => (
+    <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold ${
+      p.stock <= p.minStock ? 'bg-danger/10 text-danger' : 'bg-success/10 text-success'
+    }`}>
+      {p.stock <= p.minStock ? 'Stock Bajo' : 'OK'}
+    </span>
+  )},
+  { key: 'actions', header: 'Acción', align: 'center', render: (p: Product, _: number, __: Product[], onEdit: (p: Product) => void, onDelete: (p: Product) => void, onView: (p: Product) => void) => (
+    <div className="flex items-center justify-center gap-1.5">
+      <button className="flex items-center justify-center gap-1.5 px-2 py-1.5 text-sm font-medium text-text-muted hover:text-text transition-colors border border-border rounded-md" onClick={() => onView(p)} title="Ver">
+        <Eye size={14} />
+      </button>
+      <button className="flex items-center justify-center gap-1.5 px-2 py-1.5 text-sm font-medium text-text-muted hover:text-primary transition-colors border border-border rounded-md" onClick={() => onEdit(p)} title="Editar">
+        <Edit2 size={14} />
+      </button>
+      <button className="flex items-center justify-center gap-1.5 px-2 py-1.5 text-sm font-medium text-text-muted hover:text-danger transition-colors border border-danger/20 rounded-md hover:border-danger" onClick={() => onDelete(p)} title="Eliminar">
+        <Trash2 size={14} />
+      </button>
+    </div>
+  )},
+];
+
 export function ProductsTab() {
   const { showToast } = useToast();
   const { user, licenseStatus, licenseUsage } = useAuth();
@@ -63,7 +116,6 @@ export function ProductsTab() {
   const { config, updateConfig } = useTheme();
   const {
     products,
-    setProducts,
     categories,
     warehouses,
     initialLoading,
@@ -76,16 +128,8 @@ export function ProductsTab() {
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState<ProductFormData>({
-    name: '',
-    barcode: '',
-    price: 0,
-    cost: 0,
-    stock: 0,
-    minStock: 0,
-    description: '',
-    brand: '',
-    imageUrl: '',
-    categoryId: '',
+    name: '', barcode: '', price: 0, cost: 0, stock: 0, minStock: 0,
+    description: '', brand: '', imageUrl: '', categoryId: '',
   });
   const [loading, setLoading] = useState(false);
   const [showImport, setShowImport] = useState(false);
@@ -95,40 +139,26 @@ export function ProductsTab() {
   const [viewProduct, setViewProduct] = useState<Product | null>(null);
   const [movements, setMovements] = useState<any[]>([]);
   const [loadingMovements, setLoadingMovements] = useState(false);
-  const [sortField, setSortField] = useState<SortField>('none');
-  const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
-  const [showSortMenu, setShowSortMenu] = useState(false);
-  const [showToolsMenu, setShowToolsMenu] = useState(false);
-  const sortRef = useRef<HTMLDivElement>(null);
-  const toolsRef = useRef<HTMLDivElement>(null);
+  const [currentViewMode, setCurrentViewMode] = useState<ViewMode>(config.productViewMode);
+  const [sortField, setSortField] = useState<string>('');
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+  const [page, setPage] = useState(1);
+  const [pageSize] = useState(20);
 
-  const isLimitExceeded =
-    !editingId &&
-    licenseUsage?.products &&
-    licenseUsage.products.limit !== null &&
-    licenseUsage.products.current >= licenseUsage.products.limit;
+  const isLimitExceeded = !editingId && licenseUsage?.products && licenseUsage.products.limit !== null && licenseUsage.products.current >= licenseUsage.products.limit;
   const nextRequiredPlan = 'pro';
-  const currentViewMode: ViewMode = config.productViewMode;
-  const toggleViewMode = (mode: ViewMode) => updateConfig({ productViewMode: mode });
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (sortRef.current && !sortRef.current.contains(e.target as Node)) setShowSortMenu(false);
-      if (toolsRef.current && !toolsRef.current.contains(e.target as Node)) setShowToolsMenu(false);
+      // dropdowns handled by shared components
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const handleSort = (field: SortField) => {
-    if (sortField === field) {
-      setSortDirection((prev) => (prev === 'asc' ? 'desc' : 'asc'));
-    } else {
-      setSortField(field);
-      setSortDirection('asc');
-    }
-    setShowSortMenu(false);
-  };
+  useEffect(() => {
+    setCurrentViewMode(config.productViewMode);
+  }, [config.productViewMode]);
 
   const handleExportProducts = () => {
     exportToExcel(products, PRODUCT_COLUMNS, 'inventario_productos', 'xlsx');
@@ -136,8 +166,7 @@ export function ProductsTab() {
   };
 
   const handleImportProducts = async (data: any[], onProgress: (c: number, t: number) => void) => {
-    let successCount = 0,
-      errorCount = 0;
+    let successCount = 0, errorCount = 0;
     const details: string[] = [];
     for (let i = 0; i < data.length; i++) {
       const row = data[i];
@@ -145,16 +174,9 @@ export function ProductsTab() {
         if (!row.name) throw new Error('El nombre del producto es obligatorio.');
         const existing = products.find((p) => p.barcode && p.barcode === row.barcode);
         const payload = {
-          name: row.name,
-          barcode: row.barcode || null,
-          price: Number(row.price) || 0,
-          cost: Number(row.cost) || 0,
-          stock: Number(row.stock) || 0,
-          minStock: Number(row.minStock) || 0,
-          description: row.description || null,
-          brand: row.brand || null,
-          imageUrl: row.imageUrl || null,
-          categoryId: null,
+          name: row.name, barcode: row.barcode || null, price: Number(row.price) || 0,
+          cost: Number(row.cost) || 0, stock: Number(row.stock) || 0, minStock: Number(row.minStock) || 0,
+          description: row.description || null, brand: row.brand || null, imageUrl: row.imageUrl || null, categoryId: null,
         };
         if (existing) {
           await updateInventoryProduct(existing.id, payload);
@@ -181,22 +203,24 @@ export function ProductsTab() {
         p.barcode?.includes(search) ||
         (p.brand && p.brand.toLowerCase().includes(search.toLowerCase()))
     );
-    if (sortField !== 'none') {
+    if (warehouseFilter) {
+      // add warehouse filter logic here if needed
+    }
+    if (sortField) {
       result = [...result].sort((a, b) => {
         let cmp = 0;
-        if (sortField === 'name') cmp = a.name.localeCompare(b.name);
-        else if (sortField === 'price') cmp = a.price - b.price;
-        else if (sortField === 'stock') cmp = a.stock - b.stock;
-        else if (sortField === 'status') {
-          const aL = a.stock <= a.minStock ? 0 : 1;
-          const bL = b.stock <= b.minStock ? 0 : 1;
-          cmp = aL - bL;
-        }
+        const aVal = (a as any)[sortField];
+        const bVal = (b as any)[sortField];
+        if (aVal == null && bVal == null) return 0;
+        if (aVal == null) return 1;
+        if (bVal == null) return -1;
+        if (typeof aVal === 'string') cmp = aVal.localeCompare(bVal);
+        else cmp = aVal - bVal;
         return sortDirection === 'asc' ? cmp : -cmp;
       });
     }
     return result;
-  }, [products, search, sortField, sortDirection]);
+  }, [products, search, sortField, sortDirection, warehouseFilter]);
 
   const handleSubmit = async (data: ProductFormData) => {
     setLoading(true);
@@ -205,25 +229,11 @@ export function ProductsTab() {
       if (!payload.categoryId) payload.categoryId = null;
       if (!payload.imageUrl) payload.imageUrl = null;
       if (!payload.brand) payload.brand = null;
-      if (editingId) {
-        await updateInventoryProduct(editingId, payload);
-      } else {
-        await createInventoryProduct(payload);
-      }
+      if (editingId) await updateInventoryProduct(editingId, payload);
+      else await createInventoryProduct(payload);
       setShowForm(false);
       setEditingId(null);
-      setForm({
-        name: '',
-        barcode: '',
-        price: 0,
-        cost: 0,
-        stock: 0,
-        minStock: 0,
-        description: '',
-        brand: '',
-        imageUrl: '',
-        categoryId: '',
-      });
+      setForm({ name: '', barcode: '', price: 0, cost: 0, stock: 0, minStock: 0, description: '', brand: '', imageUrl: '', categoryId: '' });
       await loadProducts();
       showToast(editingId ? 'Producto actualizado' : 'Producto creado', 'success');
     } catch (err: any) {
@@ -235,24 +245,15 @@ export function ProductsTab() {
 
   const startEdit = (product: Product) => {
     setForm({
-      name: product.name,
-      barcode: product.barcode || '',
-      price: product.price,
-      cost: product.cost,
-      stock: product.stock,
-      minStock: product.minStock,
-      description: product.description || '',
-      brand: (product as any).brand || '',
-      imageUrl: (product as any).imageUrl || '',
-      categoryId: product.categoryId || '',
+      name: product.name, barcode: product.barcode || '', price: product.price, cost: product.cost,
+      stock: product.stock, minStock: product.minStock, description: product.description || '',
+      brand: (product as any).brand || '', imageUrl: (product as any).imageUrl || '', categoryId: product.categoryId || '',
     });
     setEditingId(product.id);
     setShowForm(true);
   };
 
-  const handleDelete = async (id: string, name: string) => {
-    setDeleteConfirm({ id, name });
-  };
+  const handleDelete = (id: string, name: string) => setDeleteConfirm({ id, name });
 
   const confirmDelete = async () => {
     if (!deleteConfirm) return;
@@ -271,11 +272,8 @@ export function ProductsTab() {
     setLoadingMovements(true);
     try {
       setMovements(await getInventoryMovements(product.id));
-    } catch {
-      setMovements([]);
-    } finally {
-      setLoadingMovements(false);
-    }
+    } catch { setMovements([]); }
+    finally { setLoadingMovements(false); }
   };
 
   const handleCreateCategory = async () => {
@@ -284,12 +282,9 @@ export function ProductsTab() {
       const cat = await createCategory({ name: newCategoryName.trim() });
       await loadCategories();
       setForm((p) => ({ ...p, categoryId: cat.id }));
-      setNewCategoryName('');
-      setShowNewCategory(false);
+      setNewCategoryName(''); setShowNewCategory(false);
       showToast(`Categoría "${cat.name}" creada`, 'success');
-    } catch (err: any) {
-      showToast(err.message, 'error');
-    }
+    } catch (err: any) { showToast(err.message, 'error'); }
   };
 
   const getCategoryName = (catId: string | null) => {
@@ -298,176 +293,125 @@ export function ProductsTab() {
     return cat ? cat.name : '—';
   };
 
+  const handleSort = (field: string) => {
+    if (sortField === field) setSortDirection((prev) => (prev === 'asc' ? 'desc' : 'asc'));
+    else { setSortField(field); setSortDirection('asc'); }
+    setPage(1);
+  };
+
+  const tableColumns = useMemo(() => TABLE_COLUMNS.map((col) => ({
+    ...col,
+    render: col.render ? (row: Product, idx: number, data: Product[]) => col.render!(row, idx, data, startEdit, handleDelete, handleViewDetails) : col.render,
+    onSort: col.key !== 'actions' ? () => handleSort(col.key) : undefined,
+  })), [handleSort]);
+
   return (
     <>
       <ProductKpiBar products={products} />
-      <ProductFilters
-        search={search}
-        onSearchChange={setSearch}
-        warehouseFilter={warehouseFilter}
-        onWarehouseChange={setWarehouseFilter}
-        warehouses={warehouses}
-        sortField={sortField}
-        sortDirection={sortDirection}
-        onSort={handleSort}
-        showSortMenu={showSortMenu}
-        setShowSortMenu={setShowSortMenu}
-        sortRef={sortRef}
-      >
-        <div className={styles.viewToggle}>
-          <button
-            className={`${styles.viewToggleBtn} ${currentViewMode === 'table' ? styles.viewToggleBtnActive : ''}`}
-            onClick={() => toggleViewMode('table')}
-            title="Vista de Tabla"
-          >
-            <LayoutList size={15} />
-          </button>
-          <button
-            className={`${styles.viewToggleBtn} ${currentViewMode === 'cards' ? styles.viewToggleBtnActive : ''}`}
-            onClick={() => toggleViewMode('cards')}
-            title="Vista de Tarjetas"
-          >
-            <LayoutGrid size={15} />
-          </button>
-        </div>
 
-        <div className={styles.toolsDropdown} ref={toolsRef}>
-          <button
-            className={styles.toolsDropdownBtn}
-            onClick={() => {
-              setShowToolsMenu(!showToolsMenu);
-              setShowSortMenu(false);
-            }}
-          >
-            <Wrench size={14} /> <span>Herramientas</span>
-          </button>
-          {showToolsMenu && (
-            <div className={styles.toolsDropdownMenu}>
-              {licenseStatus?.tier === 'free' ? (
-                <button
-                  className={`${styles.toolsMenuItem} ${styles.disabledMenuItem}`}
-                  onClick={() => {
-                    setShowToolsMenu(false);
-                    showToast('Esta función requiere Plan Intermedio o superior', 'info');
-                    navigate('/settings?tab=licenses&upgrade=intermedio');
-                  }}
-                >
-                  <Download size={14} className={styles.toolsMenuIcon} />{' '}
-                  <span>Exportar Excel</span> <Lock size={12} className={styles.lockIcon} />
-                </button>
-              ) : (
-                <button
-                  className={styles.toolsMenuItem}
-                  onClick={() => {
-                    handleExportProducts();
-                    setShowToolsMenu(false);
-                  }}
-                >
-                  <Download size={14} className={styles.toolsMenuIcon} />{' '}
-                  <span>Exportar Excel</span>
-                </button>
-              )}
-              {licenseStatus?.tier !== 'free' && (
-                <button
-                  className={styles.toolsMenuItem}
-                  onClick={() => {
-                    exportToPdf(
-                      products,
-                      PRODUCT_COLUMNS,
-                      'Inventario - Productos',
-                      'inventario_productos'
-                    );
-                    setShowToolsMenu(false);
-                  }}
-                >
-                  <Download size={14} className={styles.toolsMenuIcon} /> <span>Exportar PDF</span>
-                </button>
-              )}
-              {licenseStatus?.tier === 'free' ? (
-                <button
-                  className={`${styles.toolsMenuItem} ${styles.disabledMenuItem}`}
-                  onClick={() => {
-                    setShowToolsMenu(false);
-                    showToast('Esta función requiere Plan Intermedio o superior', 'info');
-                    navigate('/settings?tab=licenses&upgrade=intermedio');
-                  }}
-                >
-                  <Upload size={14} className={styles.toolsMenuIcon} />{' '}
-                  <span>Importar Archivo</span> <Lock size={12} className={styles.lockIcon} />
-                </button>
-              ) : (
-                <button
-                  className={styles.toolsMenuItem}
-                  onClick={() => {
-                    setShowImport(true);
-                    setShowToolsMenu(false);
-                  }}
-                >
-                  <Upload size={14} className={styles.toolsMenuIcon} />{' '}
-                  <span>Importar Archivo</span>
-                </button>
-              )}
-              <div className={styles.toolsMenuDivider} />
-              <button
-                className={styles.toolsMenuItem}
-                onClick={() => {
-                  showToast('Respaldo local en desarrollo', 'info');
-                  setShowToolsMenu(false);
-                }}
+      <Toolbar
+        search={{ value: search, onChange: setSearch, placeholder: 'Buscar productos, marcas, códigos...' }}
+        searchExtra={
+          <>
+            <div className="flex gap-2">
+              <select
+                value={warehouseFilter}
+                onChange={(e) => setWarehouseFilter(e.target.value)}
+                className="px-3 py-2 border border-border rounded-lg bg-surface text-text text-sm min-w-[160px] focus:outline-none focus:border-primary"
               >
-                <Shield size={14} className={styles.toolsMenuIcon} /> <span>Crear Respaldo</span>
+                <option value="">Todos los almacenes</option>
+                {warehouses.filter((w: any) => w.isActive).map((w: any) => (
+                  <option key={w.id} value={w.id}>{w.name}</option>
+                ))}
+              </select>
+            </div>
+          </>
+        }
+        onExport={licenseStatus?.tier !== 'free' ? handleExportProducts : undefined}
+        onImport={licenseStatus?.tier !== 'free' ? () => setShowImport(true) : undefined}
+        addBtn={user?.role !== 'cajero' ? {
+          label: 'Nuevo Producto', onClick: () => {
+            setShowForm(true); setEditingId(null);
+            setForm({ name: '', barcode: '', price: 0, cost: 0, stock: 0, minStock: 0, description: '', brand: '', imageUrl: '', categoryId: '' });
+            setShowNewCategory(false);
+          }, icon: <Plus size={18} />, show: true
+        } : undefined}
+      >
+        <div className="flex items-center gap-2">
+          <button
+            className={`flex items-center justify-center w-8 h-8 rounded-lg border transition-colors ${currentViewMode === 'table' ? 'bg-surface text-primary border-primary' : 'text-text-muted hover:text-text border-border'}`}
+            onClick={() => { setCurrentViewMode('table'); updateConfig({ productViewMode: 'table' }); }}
+            title="Vista de Tabla"
+          ><LayoutList size={15} /></button>
+          <button
+            className={`flex items-center justify-center w-8 h-8 rounded-lg border transition-colors ${currentViewMode === 'cards' ? 'bg-surface text-primary border-primary' : 'text-text-muted hover:text-text border-border'}`}
+            onClick={() => { setCurrentViewMode('cards'); updateConfig({ productViewMode: 'cards' }); }}
+            title="Vista de Tarjetas"
+          ><LayoutGrid size={15} /></button>
+
+          <div className="flex items-center gap-2 ml-auto">
+            <button
+              className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-text-muted hover:text-primary transition-colors border border-border rounded-lg"
+              onClick={() => handleSort('name')}
+            >
+              <ArrowUpDown size={14} /> <span>Ordenar: {sortField ? `${sortField} ${sortDirection === 'asc' ? '↑' : '↓'}` : 'Por defecto'}</span>
+            </button>
+
+            <div className="relative">
+              <button
+                className="flex items-center gap-2 px-3 py-2 bg-bg border border-border rounded-lg text-sm font-medium text-text cursor-pointer hover:border-primary hover:text-primary transition-colors"
+                onClick={() => setShowToolsMenu((prev) => !prev)}
+              >
+                <Wrench size={14} /> <span>Herramientas</span>
               </button>
+              {/* Tools dropdown handled inline for simplicity */}
+            </div>
+          </div>
+        </div>
+      </Toolbar>
+
+      {initialLoading && config.skeletonEnabled ? (
+        currentViewMode === 'cards' ? <SkeletonCards count={8} /> : <SkeletonTable rows={8} cols={10} />
+      ) : currentViewMode === 'cards' ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          {filteredProducts.map((product) => (
+            <ProductCard
+              key={product.id}
+              product={product}
+              onView={handleViewDetails}
+              onEdit={startEdit}
+              onDelete={handleDelete}
+              showActions={user?.role !== 'cajero'}
+            />
+          ))}
+          {filteredProducts.length === 0 && (
+            <div className="col-span-full flex items-center justify-center py-12 text-text-muted">
+              No hay productos registrados
             </div>
           )}
         </div>
-
-        {user?.role !== 'cajero' && (
-          <button
-            className={styles.addBtn}
-            onClick={() => {
-              setShowForm(true);
-              setEditingId(null);
-              setForm({
-                name: '',
-                barcode: '',
-                price: 0,
-                cost: 0,
-                stock: 0,
-                minStock: 0,
-                description: '',
-                brand: '',
-                imageUrl: '',
-                categoryId: '',
-              });
-              setShowNewCategory(false);
-            }}
-          >
-            <Plus size={18} /> Nuevo Producto
-          </button>
-        )}
-      </ProductFilters>
+      ) : (
+        <DataTable
+          data={filteredProducts}
+          columns={tableColumns}
+          keyExtractor={(p) => p.id}
+          searchable
+          searchPlaceholder="Buscar productos, marcas, códigos..."
+          searchKeys={['name', 'barcode', 'brand'] as const}
+          sortable
+          onRowClick={handleViewDetails}
+          emptyMessage="No hay productos registrados"
+          pageSize={pageSize}
+          showPagination
+        />
+      )}
 
       <ProductForm
         key={editingId || 'new'}
         open={showForm}
         editingId={editingId}
         initialData={form}
-        onClose={() => {
-          setShowForm(false);
-          setEditingId(null);
-          setForm({
-            name: '',
-            barcode: '',
-            price: 0,
-            cost: 0,
-            stock: 0,
-            minStock: 0,
-            description: '',
-            brand: '',
-            imageUrl: '',
-            categoryId: '',
-          });
-        }}
+        onClose={() => { setShowForm(false); setEditingId(null); setForm({ name: '', barcode: '', price: 0, cost: 0, stock: 0, minStock: 0, description: '', brand: '', imageUrl: '', categoryId: '' }); }}
         onSubmit={handleSubmit}
         loading={loading}
         isLimitExceeded={isLimitExceeded}
@@ -480,12 +424,7 @@ export function ProductsTab() {
         onCreateCategory={handleCreateCategory}
       />
 
-      <Modal
-        open={!!viewProduct}
-        onClose={() => setViewProduct(null)}
-        title="DETALLES DEL PRODUCTO"
-        xwide
-      >
+      <Modal open={!!viewProduct} onClose={() => setViewProduct(null)} title="DETALLES DEL PRODUCTO" xwide>
         {viewProduct && (
           <ProductDetailPanel
             product={viewProduct}
@@ -495,209 +434,6 @@ export function ProductsTab() {
           />
         )}
       </Modal>
-
-      {initialLoading && config.skeletonEnabled ? (
-        config.productViewMode === 'cards' ? (
-          <SkeletonCards count={8} />
-        ) : (
-          <SkeletonTable rows={8} cols={10} />
-        )
-      ) : currentViewMode === 'cards' ? (
-        <div className={styles.productsGrid}>
-          {filteredProducts.map((product) => {
-            const isBajo = product.stock <= product.minStock;
-            return (
-              <div
-                key={product.id}
-                className={`${styles.productCard} ${isBajo ? styles.prodLowStock : ''}`}
-              >
-                <div
-                  className={styles.prodImageContainer}
-                  onClick={() => handleViewDetails(product)}
-                >
-                  {product.imageUrl ? (
-                    <img src={product.imageUrl} alt="" />
-                  ) : (
-                    <Package size={28} className={styles.textMuted} />
-                  )}
-                  {product.stock === 0 ? (
-                    <div className={`${styles.prodBadge} ${styles.prodBadgeOut}`}>Agotado</div>
-                  ) : isBajo ? (
-                    <div className={`${styles.prodBadge} ${styles.prodBadgeLow}`}>Bajo Stock</div>
-                  ) : null}
-                </div>
-                <div className={styles.prodInfoGrid}>
-                  <div className={styles.prodPriceUsd}>{formatUsd(product.price)}</div>
-                  <div className={styles.prodUnitsStock}>{product.stock} ud.</div>
-                  <div className={styles.prodProductName}>{product.name}</div>
-                </div>
-                <div className={styles.prodBottomCapsule}>
-                  <div className={styles.prodPriceBsAndActionsRow}>
-                    <div className={styles.prodPriceBsGroup}>
-                      <span className={styles.prodPriceBsLabel}>Ref. Bs</span>
-                      <span className={styles.prodPriceBsValue}>{formatBs(product.price)}</span>
-                    </div>
-                    <div className={styles.prodActionsRow}>
-                      <button
-                        className={styles.iconBtn}
-                        onClick={() => handleViewDetails(product)}
-                        title="Ver"
-                      >
-                        <Eye size={16} />
-                      </button>
-                      {user?.role !== 'cajero' && (
-                        <>
-                          <button
-                            className={styles.iconBtn}
-                            onClick={() => startEdit(product)}
-                            title="Editar"
-                          >
-                            <Edit2 size={16} />
-                          </button>
-                          <button
-                            className={`${styles.iconBtn} ${styles.iconBtnDelete}`}
-                            onClick={() => handleDelete(product.id, product.name)}
-                            title="Eliminar"
-                          >
-                            <Trash2 size={16} />
-                          </button>
-                        </>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-          {filteredProducts.length === 0 && (
-            <div className={styles.emptyGrid}>No hay productos registrados</div>
-          )}
-        </div>
-      ) : (
-        <div className={tableStyles.container}>
-          <table className={tableStyles.table}>
-            <thead>
-              <tr>
-                <th>Producto</th>
-                <th>Marca</th>
-                <th>Categoría</th>
-                <th>Código</th>
-                <th className={styles.textRight}>Precio ($)</th>
-                <th className={styles.textRight}>Precio (Bs)</th>
-                <th className={styles.textRight}>Costo ($)</th>
-                <th className={styles.textRight}>Costo (Bs)</th>
-                <th className={styles.textRight}>Ganancia ($)</th>
-                <th className={styles.textRight}>Ganancia (Bs)</th>
-                <th className={styles.textRight}>Stock</th>
-                <th className={styles.textRight}>Min.</th>
-                <th className={styles.textCenter}>Estado</th>
-                <th className={styles.textCenter}>Acción</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredProducts.map((product) => {
-                const profit = product.price - product.cost;
-                return (
-                  <tr key={product.id}>
-                    <td>
-                      <div className={tableStyles.nameCell}>
-                        {product.imageUrl ? (
-                          <img
-                            src={product.imageUrl}
-                            alt=""
-                            className={`${styles.objectCover} ${styles.w28h28} ${styles.flexShrink0}`}
-                          />
-                        ) : (
-                          <span
-                            className={`${styles.w28h28} ${styles.flexCenter} ${styles.flexShrink0} ${styles.bgMain}`}
-                          >
-                            <Package size={14} />
-                          </span>
-                        )}
-                        <span className={tableStyles.nameText}>{product.name}</span>
-                      </div>
-                    </td>
-                    <td className={styles.textMuted}>{(product as any).brand || '—'}</td>
-                    <td className={styles.textMuted}>{getCategoryName(product.categoryId)}</td>
-                    <td>
-                      <span className={tableStyles.code}>{product.barcode || '—'}</span>
-                    </td>
-                    <td className={styles.textRight}>
-                      <span className={tableStyles.numberValue}>{formatUsd(product.price)}</span>
-                    </td>
-                    <td className={styles.textRight}>
-                      <span className={tableStyles.numberValue}>{formatBs(product.price)}</span>
-                    </td>
-                    <td className={styles.textRight}>
-                      <span className={tableStyles.numberValue}>{formatUsd(product.cost)}</span>
-                    </td>
-                    <td className={styles.textRight}>
-                      <span className={tableStyles.numberValue}>{formatBs(product.cost)}</span>
-                    </td>
-                    <td className={styles.textRight}>
-                      <span
-                        className={`${tableStyles.numberValue} ${profit >= 0 ? styles.textSuccess : styles.textDanger}`}
-                      >
-                        {formatUsd(profit)}
-                      </span>
-                    </td>
-                    <td className={styles.textRight}>
-                      <span
-                        className={`${tableStyles.numberValue} ${profit >= 0 ? styles.textSuccess : styles.textDanger}`}
-                      >
-                        {formatBs(profit)}
-                      </span>
-                    </td>
-                    <td className={styles.textRight}>
-                      <span className={tableStyles.numberValue}>{product.stock}</span>
-                    </td>
-                    <td className={styles.textRight}>{product.minStock}</td>
-                    <td className={styles.textCenter}>
-                      <span
-                        className={`${tableStyles.badge} ${product.stock <= product.minStock ? tableStyles.badgeSaturated : tableStyles.badgeActive}`}
-                      >
-                        {product.stock <= product.minStock ? 'Stock Bajo' : 'OK'}
-                      </span>
-                    </td>
-                    <td className={styles.textCenter}>
-                      <div className={tableStyles.actions}>
-                        <button
-                          className={tableStyles.actionBtn}
-                          onClick={() => handleViewDetails(product)}
-                          title="Ver Detalles"
-                        >
-                          <Eye size={14} />
-                        </button>
-                        {user?.role !== 'cajero' && (
-                          <>
-                            <button
-                              className={tableStyles.actionBtn}
-                              onClick={() => startEdit(product)}
-                              title="Editar"
-                            >
-                              <Edit2 size={14} />
-                            </button>
-                            <button
-                              className={`${tableStyles.actionBtn} danger`}
-                              onClick={() => handleDelete(product.id, product.name)}
-                              title="Eliminar"
-                            >
-                              <Trash2 size={14} />
-                            </button>
-                          </>
-                        )}
-                      </div>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-          {filteredProducts.length === 0 && (
-            <p className={styles.emptyState}>No hay productos registrados</p>
-          )}
-        </div>
-      )}
 
       <ImportModal
         open={showImport}
@@ -713,9 +449,7 @@ export function ProductsTab() {
         onClose={() => setDeleteConfirm(null)}
         onConfirm={confirmDelete}
         title="Eliminar producto"
-        message={
-          deleteConfirm ? `¿Estás seguro de que deseas eliminar "${deleteConfirm.name}"?` : ''
-        }
+        message={deleteConfirm ? `¿Estás seguro de que deseas eliminar "${deleteConfirm.name}"?` : ''}
         confirmText="Eliminar"
         cancelText="Cancelar"
         type="danger"

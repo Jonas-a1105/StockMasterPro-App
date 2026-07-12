@@ -1,24 +1,25 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { api } from '@shared/lib/http/client';
 import { useAuth } from '@contexts/AuthContext';
-import { Pencil, Trash2, DollarSign, MessageCircle, Users } from 'lucide-react';
+import { Pencil, Trash2, DollarSign, MessageCircle, Users, Plus, Download, Upload } from 'lucide-react';
 import { useToast } from '@contexts/ToastContext';
 import { PremiumLockButton } from '@shared/ui/PremiumLockButton';
 import { Modal } from '@shared/ui/Modal';
 import { LoadingDots } from '@shared/ui/LoadingDots';
 import { KpiGrid } from '@shared/ui/KpiGrid';
-import { TabNav } from '@shared/ui/TabNav';
 import { Toolbar } from '@shared/ui/Toolbar';
-import { SkeletonTablePage } from '@shared/ui/Skeleton';
+import { DataTable } from '@shared/ui/DataTable';
+import { FormField } from '@shared/ui/FormField';
+import { Input } from '@shared/ui/Input';
+import { Select } from '@shared/ui/Select';
+import { Badge } from '@shared/ui/Badge';
 import { ButtonLoader } from '@shared/ui/ButtonLoader';
+import { ImportModal } from '@shared/ui/ImportModal';
+import { exportToExcel, type ColumnMapping } from '@shared/lib/excelHelper';
 import { useTheme } from '@contexts/ThemeContext';
 import type { Customer } from '@types';
 import { useExchangeRate } from '@contexts/ExchangeRateContext';
-import { ImportModal } from '@shared/ui/ImportModal';
-import { exportToExcel, type ColumnMapping } from '@shared/lib/excelHelper';
-import styles from './CustomersPage.module.css';
-import tableStyles from '@shared/ui/TableList.module.css';
 
 const CUSTOMER_COLUMNS: ColumnMapping[] = [
   { header: 'Nombre', key: 'name', type: 'string' },
@@ -34,6 +35,7 @@ export function CustomersPage() {
   const navigate = useNavigate();
   const { formatPrice } = useExchangeRate();
   const { config } = useTheme();
+
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -54,6 +56,7 @@ export function CustomersPage() {
   const [error, setError] = useState('');
   const [saving, setSaving] = useState(false);
   const [showImport, setShowImport] = useState(false);
+  const [search, setSearch] = useState('');
 
   const isLimitExceeded =
     !editingCustomer &&
@@ -61,7 +64,6 @@ export function CustomersPage() {
     licenseUsage.customers.limit !== null &&
     licenseUsage.customers.current >= licenseUsage.customers.limit;
   const nextRequiredPlan = 'pro';
-  const [search, setSearch] = useState('');
 
   const loadCustomers = async () => {
     try {
@@ -184,7 +186,19 @@ export function CustomersPage() {
         await api.createCustomer(payload);
       }
       setShowModal(false);
-      loadCustomers();
+      setEditingCustomer(null);
+      setForm({
+        name: '',
+        email: '',
+        phone: '',
+        address: '',
+        taxId: '',
+        documentType: 'V',
+        fiscalAddress: '',
+        creditLimit: 0,
+      });
+      await loadCustomers();
+      showToast(editingCustomer ? 'Cliente actualizado' : 'Cliente creado', 'success');
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -192,358 +206,247 @@ export function CustomersPage() {
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('¿Eliminar este cliente?')) return;
-    try {
-      await api.deleteCustomer(id);
-      loadCustomers();
-    } catch (err: any) {
-      showToast(err.message, 'error');
-    }
-  };
-
   const handlePay = async () => {
     if (!payingCustomer || payAmount <= 0) return;
-    setSaving(true);
     try {
-      await api.payCustomerCredit(payingCustomer.id, payAmount);
+      await api.addCustomerPayment(payingCustomer.id, payAmount);
+      showToast('Abono registrado', 'success');
       setShowPayModal(false);
       setPayingCustomer(null);
       setPayAmount(0);
-      loadCustomers();
+      await loadCustomers();
     } catch (err: any) {
       showToast(err.message, 'error');
-    } finally {
-      setSaving(false);
     }
   };
 
-  const creditStatusClass = (balance: number, limit: number) => {
-    if (limit === 0) return '';
-    const ratio = balance / limit;
-    if (ratio >= 0.9) return styles.creditDanger;
-    if (ratio >= 0.6) return styles.creditWarning;
-    return styles.creditOk;
+  const openPay = (c: Customer) => {
+    setPayingCustomer(c);
+    setPayAmount(0);
+    setShowPayModal(true);
   };
 
-  const openWhatsApp = (phone: string, name: string) => {
-    const cleanPhone = phone.replace(/[\s\-()]/g, '');
-    const message = encodeURIComponent(`Hola ${name}, te contacto desde StockMaster Pro. `);
-    window.open(`https://wa.me/${cleanPhone}?text=${message}`, '_blank');
-  };
-
-  const handleEmailBlur = () => {
-    const email = form.email.trim();
-    if (email && !email.includes('@')) {
-      setForm((p) => ({ ...p, email: email + '@gmail.com' }));
-    }
-  };
-
-  const filteredCustomers = customers.filter(
-    (c) =>
-      !search ||
-      c.name.toLowerCase().includes(search.toLowerCase()) ||
-      (c.email || '').toLowerCase().includes(search.toLowerCase()) ||
-      (c.phone || '').includes(search)
+  const customerColumns = useMemo(
+    () => [
+      {
+        key: 'name',
+        header: 'Cliente',
+        render: (c: Customer) => (
+          <div className="flex items-center gap-3">
+            <Users size={18} className="text-text-muted" />
+            <span className="font-semibold">{c.name}</span>
+          </div>
+        ),
+      },
+      { key: 'email', header: 'Email', render: (c: Customer) => c.email || '—' },
+      { key: 'phone', header: 'Teléfono', render: (c: Customer) => c.phone || '—' },
+      { key: 'address', header: 'Dirección', render: (c: Customer) => c.address || '—' },
+      {
+        key: 'balance',
+        header: 'Saldo',
+        align: 'right' as const,
+        render: (c: Customer) => <span className={c.balance >= 0 ? 'text-success' : 'text-danger'}>{formatPrice(c.balance)}</span>,
+      },
+      {
+        key: 'creditLimit',
+        header: 'Límite Crédito',
+        align: 'right' as const,
+        render: (c: Customer) => {
+          const pct = c.creditLimit > 0 ? (c.balance / c.creditLimit) * 100 : 0;
+          const color = pct >= 100 ? 'danger' : pct >= 80 ? 'warning' : 'success';
+          return (
+            <div className="flex items-center gap-2">
+              <span className={`font-mono ${pct >= 100 ? 'text-danger' : pct >= 80 ? 'text-warning' : 'text-success'}`}>
+                {formatPrice(c.creditLimit)}
+              </span>
+              {c.creditLimit > 0 && (
+                <div className="w-24 h-2 bg-surface-muted rounded-full overflow-hidden">
+                  <div
+                    className={`h-full rounded-full transition-all ${pct >= 100 ? 'bg-danger' : pct >= 80 ? 'bg-warning' : 'bg-success'}`}
+                    style={{ width: `${Math.min(pct, 100)}%` }}
+                  />
+                </div>
+              )}
+            </div>
+          );
+        },
+      },
+      {
+        key: 'actions',
+        header: 'Acciones',
+        align: 'center' as const,
+        render: (c: Customer) => (
+          <div className="flex items-center justify-center gap-1.5">
+            <button
+              onClick={() => openEdit(c)}
+              className="p-1.5 rounded-lg hover:bg-bg-hover transition-colors"
+              title="Editar"
+            >
+              <Pencil size={14} />
+            </button>
+            <button
+              onClick={() => openPay(c)}
+              className="p-1.5 rounded-lg hover:bg-success-bg text-success transition-colors"
+              title="Abonar"
+            >
+              <DollarSign size={14} />
+            </button>
+            <button
+              onClick={() => handleDelete(c.id, c.name)}
+              className="p-1.5 rounded-lg hover:bg-danger-bg text-danger transition-colors"
+              title="Eliminar"
+            >
+              <Trash2 size={14} />
+            </button>
+          </div>
+        ),
+      },
+    ],
+    []
   );
 
-  const totalCustomers = customers.length;
-  const totalCredit = customers.reduce((sum, c) => sum + (c.creditLimit || 0), 0);
-  const totalBalance = customers.reduce((sum, c) => sum + (c.balance || 0), 0);
+  const handleDelete = async (id: string, name: string) => {
+    if (!confirm(`¿Eliminar cliente "${name}"?`)) return;
+    try {
+      await api.deleteCustomer(id);
+      showToast('Cliente eliminado', 'success');
+      await loadCustomers();
+    } catch (err: any) {
+      showToast(err.message, 'error');
+    }
+  };
 
-  if (loading)
-    return config.skeletonEnabled ? (
-      <SkeletonTablePage rows={8} cols={7} kpi={3} />
-    ) : (
-      <LoadingDots text="Cargando clientes" />
-    );
+  const filteredCustomers = useMemo(
+    () =>
+      customers.filter(
+        (c) =>
+          c.name.toLowerCase().includes(search.toLowerCase()) ||
+          c.email?.toLowerCase().includes(search.toLowerCase()) ||
+          c.phone?.includes(search)
+      ),
+    [customers, search]
+  );
 
   return (
-    <div className={styles.container}>
-      <TabNav
-        tabs={[{ key: 'main', label: 'Clientes', icon: <Users size={16} /> }]}
-        activeTab="main"
-        onTabChange={() => {}}
-      />
-      <KpiGrid
-        items={[
-          { icon: <Users size={18} />, value: totalCustomers, label: 'Total Clientes' },
-          {
-            icon: <DollarSign size={18} />,
-            value: formatPrice(totalCredit),
-            label: 'Límite de Crédito',
-          },
-          {
-            icon: <DollarSign size={18} />,
-            value: formatPrice(totalBalance),
-            label: 'Saldo Pendiente',
-            color: totalBalance > 0 ? 'var(--color-danger)' : 'var(--color-success)',
-          },
-        ]}
-      />
-
+    <div className="space-y-6">
       <Toolbar
-        search={{ value: search, onChange: setSearch, placeholder: 'Buscar clientes...' }}
+        search={{ value: search, onChange: setSearch, placeholder: 'Buscar clientes, email, teléfono...' }}
         onExport={handleExportCustomers}
         onImport={() => setShowImport(true)}
-        addBtn={{ label: 'Nuevo Cliente', onClick: openCreate }}
+        addBtn={isLimitExceeded ? undefined : { label: 'Nuevo Cliente', onClick: openCreate, icon: <Plus size={18} /> }}
       />
 
-      <div className={tableStyles.container}>
-        <table className={tableStyles.table}>
-          <thead>
-            <tr>
-              <th>Nombre</th>
-              <th>Email</th>
-              <th>Teléfono</th>
-              <th className={styles.textRight}>Límite Crédito</th>
-              <th className={styles.textRight}>Saldo Actual</th>
-              <th>Estado</th>
-              <th className={styles.textCenter}>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredCustomers.map((c) => (
-              <tr key={c.id}>
-                <td>
-                  <span className={tableStyles.nameText}>{c.name}</span>
-                </td>
-                <td className={styles.colorMuted}>{c.email || '—'}</td>
-                <td>{c.phone || '—'}</td>
-                <td className={styles.textRight}>
-                  <span className={tableStyles.numberValue}>{formatPrice(c.creditLimit)}</span>
-                </td>
-                <td className={styles.textRight}>
-                  <span
-                    className={`${tableStyles.numberValue} ${styles.balanceColor}`}
-                    style={
-                      {
-                        '--balance-color':
-                          c.balance > c.creditLimit * 0.8
-                            ? 'var(--color-danger)'
-                            : c.balance > 0
-                              ? 'var(--color-warning)'
-                              : 'var(--color-success)',
-                      } as React.CSSProperties
-                    }
-                  >
-                    {formatPrice(c.balance)}
-                  </span>
-                </td>
-                <td>
-                  {c.creditLimit > 0 ? (
-                    <div className={tableStyles.progressBar}>
-                      <div className={`${tableStyles.progressTrack} ${styles.w80px}`}>
-                        <div
-                          className={`${tableStyles.progressFill} ${styles.barFillWidth} ${c.balance > c.creditLimit * 0.8 ? 'red' : c.balance > 0 ? 'orange' : 'green'}`}
-                          style={
-                            {
-                              '--bar-fill-width': `${Math.min(100, (c.balance / c.creditLimit) * 100)}%`,
-                            } as React.CSSProperties
-                          }
-                        />
-                      </div>
-                    </div>
-                  ) : (
-                    <span className={styles.noCredit}>Sin crédito</span>
-                  )}
-                </td>
-                <td className={styles.textCenter}>
-                  <div className={`${styles.actions} ${styles.justifyCenter}`}>
-                    {c.phone && (
-                      <button
-                        className={tableStyles.actionBtn}
-                        onClick={() => openWhatsApp(c.phone!, c.name)}
-                        title="Enviar WhatsApp"
-                      >
-                        <MessageCircle size={14} />
-                      </button>
-                    )}
-                    <button
-                      className={tableStyles.actionBtn}
-                      onClick={() => openEdit(c)}
-                      title="Editar"
-                    >
-                      <Pencil size={14} />
-                    </button>
-                    {c.balance > 0 && (
-                      <button
-                        className={tableStyles.actionBtn}
-                        onClick={() => {
-                          setPayingCustomer(c);
-                          setPayAmount(0);
-                          setShowPayModal(true);
-                        }}
-                        title="Abonar"
-                      >
-                        <DollarSign size={14} />
-                      </button>
-                    )}
-                    {user?.role === 'admin' && (
-                      <button
-                        className={`${tableStyles.actionBtn} danger`}
-                        onClick={() => handleDelete(c.id)}
-                        title="Eliminar"
-                      >
-                        <Trash2 size={14} />
-                      </button>
-                    )}
-                  </div>
-                </td>
-              </tr>
-            ))}
-            {filteredCustomers.length === 0 && (
-              <tr>
-                <td
-                  colSpan={7}
-                  className={`${styles.textCenter} ${styles.p40} ${styles.colorMuted}`}
-                >
-                  No hay clientes registrados
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
+      <DataTable
+        data={filteredCustomers}
+        columns={customerColumns}
+        keyExtractor={(c) => c.id}
+        searchable
+        searchPlaceholder="Buscar clientes, email, teléfono..."
+        searchKeys={['name', 'email', 'phone']}
+        sortable
+        emptyMessage="No hay clientes registrados"
+        loading={loading}
+      />
 
-      {showModal && (
-        <Modal
-          open={showModal}
-          onClose={() => setShowModal(false)}
-          title={editingCustomer ? 'Editar Cliente' : 'Nuevo Cliente'}
-        >
-          <div className={styles.modalContent}>
-            <form onSubmit={handleSave} className={styles.form}>
-              {error && <div className={styles.error}>{error}</div>}
-              <div className={styles.field}>
-                <label>Nombre</label>
-                <input
-                  value={form.name}
-                  onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))}
-                  required
-                  placeholder="Nombre del cliente"
+      <Modal open={showModal} onClose={() => setShowModal(false)} title={editingCustomer ? 'Editar Cliente' : 'Nuevo Cliente'} wide>
+        <form onSubmit={handleSave}>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <FormField label="Nombre *" required>
+              <Input
+                value={form.name}
+                onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))}
+                required
+              />
+            </FormField>
+
+            <FormField label="Email">
+              <Input
+                type="email"
+                value={form.email}
+                onChange={(e) => setForm((p) => ({ ...p, email: e.target.value }))}
+                placeholder="email@ejemplo.com"
+              />
+            </FormField>
+
+            <FormField label="Teléfono">
+              <Input
+                value={form.phone}
+                onChange={(e) => setForm((p) => ({ ...p, phone: e.target.value }))}
+                placeholder="+58 4XX XXX XXXX"
+              />
+            </FormField>
+
+            <FormField label="Dirección" className="md:col-span-2">
+              <Input
+                value={form.address}
+                onChange={(e) => setForm((p) => ({ ...p, address: e.target.value }))}
+                placeholder="Dirección de entrega"
+              />
+            </FormField>
+
+            <FormField label="RIF / Cédula" className="md:col-span-2">
+              <div className="flex gap-2">
+                <Select
+                  value={form.documentType}
+                  onChange={(v) => setForm((p) => ({ ...p, documentType: v }))}
+                  options={[
+                    { value: 'V', label: 'V' },
+                    { value: 'J', label: 'J' },
+                    { value: 'E', label: 'E' },
+                    { value: 'G', label: 'G' },
+                  ]}
+                  className="w-20"
                 />
-              </div>
-              <div className={styles.field}>
-                <label>Email</label>
-                {!form.email.includes('@') || form.email.endsWith('@gmail.com') ? (
-                  <div className={styles.inputSuffix}>
-                    <input
-                      type="text"
-                      value={
-                        form.email.endsWith('@gmail.com') ? form.email.slice(0, -10) : form.email
-                      }
-                      onChange={(e) => setForm((p) => ({ ...p, email: e.target.value }))}
-                      placeholder="usuario"
-                    />
-                    <span>@gmail.com</span>
-                  </div>
-                ) : (
-                  <input
-                    type="email"
-                    value={form.email}
-                    onChange={(e) => setForm((p) => ({ ...p, email: e.target.value }))}
-                    placeholder="usuario@gmail.com"
-                  />
-                )}
-              </div>
-              <div className={styles.field}>
-                <label>Teléfono / WhatsApp</label>
-                {form.phone.startsWith('+58') || !form.phone.startsWith('+') ? (
-                  <div className={styles.inputPrefix}>
-                    <span>+58</span>
-                    <input
-                      type="text"
-                      value={form.phone.startsWith('+58') ? form.phone.slice(3) : form.phone}
-                      onChange={(e) => setForm((p) => ({ ...p, phone: e.target.value }))}
-                      placeholder="4XX XXX XXXX"
-                    />
-                  </div>
-                ) : (
-                  <input
-                    type="text"
-                    value={form.phone}
-                    onChange={(e) => setForm((p) => ({ ...p, phone: e.target.value }))}
-                    placeholder="+58 4XX XXX XXXX"
-                  />
-                )}
-              </div>
-              <div className={styles.field}>
-                <label>Dirección</label>
-                <input
-                  value={form.address}
-                  onChange={(e) => setForm((p) => ({ ...p, address: e.target.value }))}
-                  placeholder="Dirección del cliente"
-                />
-              </div>
-              <div className={styles.field}>
-                <label>RIF / CI / J</label>
-                <input
+                <Input
                   value={form.taxId}
                   onChange={(e) => setForm((p) => ({ ...p, taxId: e.target.value }))}
-                  placeholder="J-12345678-9 / V-12345678"
+                  placeholder="12345678-9"
+                  className="flex-1"
                 />
               </div>
-              <div className={styles.field}>
-                <label>Tipo Doc.</label>
-                <select
-                  value={form.documentType}
-                  onChange={(e) => setForm((p) => ({ ...p, documentType: e.target.value }))}
-                >
-                  <option value="V">V - Venezolano</option>
-                  <option value="E">E - Extranjero</option>
-                  <option value="J">J - Jurídico</option>
-                  <option value="G">G - Gobierno</option>
-                  <option value="P">P - Pasaporte</option>
-                </select>
-              </div>
-              <div className={styles.fieldFull}>
-                <label>Dirección Fiscal</label>
-                <input
-                  value={form.fiscalAddress}
-                  onChange={(e) => setForm((p) => ({ ...p, fiscalAddress: e.target.value }))}
-                  placeholder="Dirección fiscal del cliente"
-                />
-              </div>
-              <div className={styles.field}>
-                <label>Límite de crédito ($)</label>
-                <input
-                  type="number"
-                  min="0"
-                  step="0.01"
-                  value={form.creditLimit || ''}
-                  onChange={(e) =>
-                    setForm((p) => ({ ...p, creditLimit: parseFloat(e.target.value) || 0 }))
-                  }
-                  placeholder="0.00"
-                />
-              </div>
-              <div className={styles.modalActions}>
-                <button
-                  type="button"
-                  className={styles.cancelBtn}
-                  onClick={() => setShowModal(false)}
-                >
-                  Cancelar
-                </button>
-                {isLimitExceeded ? (
-                  <PremiumLockButton
-                    requiredPlan={nextRequiredPlan}
-                    width="140px"
-                    height="38px"
-                    label="Límite Superado"
-                    sublabel="Mantén pulsado para ampliar"
-                  />
-                ) : (
-                  <button type="submit" className={styles.saveBtn} disabled={saving}>
-                    {saving ? <ButtonLoader /> : editingCustomer ? 'Actualizar' : 'Crear Cliente'}
-                  </button>
-                )}
-              </div>
-            </form>
+            </FormField>
+
+            <FormField label="Dirección Fiscal" className="md:col-span-3">
+              <Input
+                value={form.fiscalAddress}
+                onChange={(e) => setForm((p) => ({ ...p, fiscalAddress: e.target.value }))}
+                placeholder="Dirección fiscal completa"
+              />
+            </FormField>
+
+            <FormField label="Límite de Crédito ($)">
+              <Input
+                type="number"
+                step="0.01"
+                value={form.creditLimit || ''}
+                onChange={(e) => setForm((p) => ({ ...p, creditLimit: Number(e.target.value) }))}
+                placeholder="0.00"
+              />
+            </FormField>
           </div>
-        </Modal>
-      )}
+
+          {error && <div className="mt-4 p-3 bg-danger/10 text-danger rounded-lg text-sm">{error}</div>}
+
+          <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-border">
+            <button type="button" onClick={() => setShowModal(false)} className="px-4 py-2 border border-border rounded-lg text-text hover:bg-bg-hover transition-colors">
+              Cancelar
+            </button>
+            {isLimitExceeded ? (
+              <PremiumLockButton
+                requiredPlan={nextRequiredPlan as any}
+                width="140px"
+                height="38px"
+                label="Límite Superado"
+                sublabel="Mantén pulsado para ampliar"
+              />
+            ) : (
+              <button type="submit" className="px-4 py-2 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors disabled:opacity-50" disabled={saving}>
+                {saving ? <ButtonLoader /> : 'Guardar'}
+              </button>
+            )}
+          </div>
+        </form>
+      </Modal>
 
       {showPayModal && payingCustomer && (
         <Modal
@@ -554,20 +457,19 @@ export function CustomersPage() {
           }}
           title={`Abonar a ${payingCustomer.name}`}
         >
-          <div className={styles.modalContent}>
-            <div className={styles.payInfo}>
-              <div className={styles.payRow}>
+          <div className="space-y-4">
+            <div className="flex flex-col gap-2 p-4 bg-bg-hover rounded-lg">
+              <div className="flex justify-between">
                 <span>Saldo actual</span>
-                <span className={styles.payValue}>{formatPrice(payingCustomer.balance)}</span>
+                <span className="font-bold">{formatPrice(payingCustomer.balance)}</span>
               </div>
-              <div className={styles.payRow}>
+              <div className="flex justify-between">
                 <span>Límite de crédito</span>
                 <span>{formatPrice(payingCustomer.creditLimit)}</span>
               </div>
             </div>
-            <div className={styles.field}>
-              <label>Monto a abonar</label>
-              <input
+            <FormField label="Monto a abonar">
+              <Input
                 type="number"
                 min="0"
                 step="0.01"
@@ -577,23 +479,12 @@ export function CustomersPage() {
                 autoFocus
                 placeholder="Monto a abonar"
               />
-            </div>
-            <div className={styles.modalActions}>
-              <button
-                type="button"
-                className={styles.cancelBtn}
-                onClick={() => {
-                  setShowPayModal(false);
-                  setPayingCustomer(null);
-                }}
-              >
+            </FormField>
+            <div className="flex justify-end gap-2 pt-4 border-t border-border">
+              <button onClick={() => { setShowPayModal(false); setPayingCustomer(null); }} className="px-4 py-2 border border-border rounded-lg text-text hover:bg-bg-hover transition-colors">
                 Cancelar
               </button>
-              <button
-                className={styles.saveBtn}
-                onClick={handlePay}
-                disabled={saving || payAmount <= 0}
-              >
+              <button className="px-4 py-2 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors disabled:opacity-50" disabled={saving || payAmount <= 0} onClick={handlePay}>
                 {saving ? <ButtonLoader /> : 'Registrar Abono'}
               </button>
             </div>

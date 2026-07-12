@@ -72,5 +72,5 @@ Card.Title = CardTitle;
 Card.Body = CardBody;
 Card.Footer = CardFooter;
 
-export { Card };
+export { Card, CardHeader, CardTitle, CardBody, CardFooter };
 export type { CardProps, CardHeaderProps, CardTitleProps, CardBodyProps, CardFooterProps };

@@ -1,4 +1,4 @@
-/* ─── Social/Instagram-style Module (migrated from global .ig-* classes) ─── */
+/* ─── Social/Instagram-style Module ─── */
 
 .container {
   display: flex;
@@ -839,7 +839,7 @@
   justify-content: center;
   font-weight: 600;
   font-size: 14px;
-  flex-shrink: 0;
+  flex-shrink: 0.
 }
 
 .suggestionInfo {
@@ -1420,7 +1420,7 @@
   border-radius: 6px;
   font-size: 10px;
   font-weight: 600;
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(8px);
 }
 
 .catalogBadge.published {
@@ -1775,6 +1775,12 @@
   color: var(--color-text-muted);
 }
 
+.profileEditActions button:last-child {
+  background: var(--color-primary);
+  color: white;
+  border: none;
+}
+
 /* Profile Tabs */
 .profileTabs {
   display: flex;
@@ -1924,7 +1930,7 @@
 }
 .btnPrimary:disabled {
   opacity: 0.5;
-  cursor: not-allowed;
+  cursor: not-allowed.
 }
 
 .createBody {
@@ -1997,356 +2003,255 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-text-muted);
-  border-radius: var(--input-radius);
+  color: var(--color-text-muted).
 }
 
-.createUrlRow {
+/* Lottie animated icons - visible on dark backgrounds */
+.lottieIcon svg {
+  filter: brightness(0) invert(0.82);
+}
+
+[data-theme='dark'] .lottieIcon svg,
+[data-theme='oled'] .lottieIcon svg {
+  filter: brightness(0) invert(0.85);
+}
+
+/* ─── Legacy .ig-* classes (migrated from semantic.css) ─── */
+
+/* LAYOUT */
+.igContainer {
   display: flex;
-  gap: 8px;
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--color-border);
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
 }
 
-.createUrlInput {
+.igMain {
   flex: 1;
-  padding: var(--input-padding);
-  border: var(--input-border-width) solid var(--color-border-input);
-  border-radius: var(--input-radius);
-  font-size: 13px;
+  margin-left: 68px;
+  padding: 32px 0;
+  display: flex;
+  justify-content: center;
   background: var(--color-bg);
-  color: var(--color-text);
-  outline: none;
-  height: 40px;
-  box-sizing: border-box;
+  min-height: 0;
+  overflow-x: hidden;
 }
 
-.createUrlInput:focus {
-  border-color: var(--color-border-focus);
-  border-width: 2px;
-}
-
-.createUrlRow .btnSecondary {
-  background: var(--color-primary);
-  color: var(--color-on-primary);
-  border: none;
-  border-radius: 8px;
-  padding: 8px 16px;
-  font-weight: 600;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-.createUrlRow .btnSecondary:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.createUrlRow .btnTest {
-  background: var(--color-bg-hover);
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
-  padding: 8px 12px;
-  cursor: pointer;
-  font-size: 16px;
-  line-height: 1;
-}
-
-.createUrlRow .btnTest:hover {
-  background: var(--color-border);
-}
-
-.previewFallback {
-  width: 100%;
-  height: 100%;
-  background: var(--color-bg-hover);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--color-text-muted);
-  border-radius: var(--input-radius);
-}
-
-.createDropzone {
-  cursor: default;
-}
-
-/* EXPLORE */
-.explore {
-  max-width: 500px;
-  width: 100%;
-  overflow-y: auto;
-  max-height: 100%;
-}
-
-.exploreSearch {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: var(--color-bg-hover);
-  border-radius: var(--input-radius);
-  padding: 8px 14px;
-  margin-bottom: 24px;
-}
-
-.exploreSearch input {
-  border: none !important;
-  background: transparent !important;
-  flex: 1;
-  font-size: 14px;
-  padding: 2px 0 !important;
-}
-
-.exploreSearch input:focus {
-  box-shadow: none !important;
-  border: none !important;
-}
-
-.exploreGrid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-}
-
-.exploreCard {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  padding: 16px 8px;
-  background: var(--color-surface);
-  border: var(--border-width) solid var(--color-border);
-  border-radius: var(--border-radius-md);
-  cursor: pointer;
-  transition: all 0.15s;
-  box-shadow: var(--shadow-card);
-}
-
-.exploreCard:hover {
-  border-color: var(--color-primary);
-  box-shadow: 0 4px 12px rgba(0, 149, 246, 0.1);
-}
-
-.exploreAvatar {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: var(--color-primary);
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 600;
-  font-size: 18px;
-}
-
-.exploreCard strong {
-  font-size: 12px;
-  text-align: center;
-}
-
-/* COMMENTS (inside feed) */
-.commentsSection {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  margin-top: 10px;
-  flex: 1;
-  height: 100%;
-}
-
-.commentsList {
-  flex: 1;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  padding-right: 4px;
-  scrollbar-width: thin;
-}
-
-.commentItem {
-  display: flex;
-  gap: 12px;
+.igSocialContentWrapper {
   position: relative;
-  align-items: flex-start;
-}
-
-.commentItem.reply {
-  margin-top: 12px;
-  padding-left: 8px;
-}
-
-.commentAvatarWrapper {
-  width: 32px;
-  height: 32px;
-  min-width: 32px;
-  position: relative;
-}
-
-.commentAvatarWrapper.small {
-  width: 24px;
-  height: 24px;
-  min-width: 24px;
-}
-
-.commentAvatar {
   width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.commentAvatarPlaceholder {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  background: var(--color-primary);
-  color: var(--color-on-primary);
+  max-width: 996px;
+  padding-left: 60px;
+  margin: 0 auto;
   display: flex;
-  align-items: center;
   justify-content: center;
-  font-size: 12px;
-  font-weight: 600;
 }
 
-.commentAvatarPlaceholder.small {
-  font-size: 10px;
-}
-
-.commentContentBox {
+.igSocialContentInner {
   flex: 1;
-  padding-right: 28px;
-}
-
-.commentTextWrapper {
-  font-size: 13.5px;
-  line-height: 1.45;
-  color: var(--color-text);
-  word-break: break-word;
-}
-
-.commentUser {
-  font-weight: 600;
-  color: var(--color-text);
-  margin-right: 6px;
-  display: inline-block;
-}
-
-/* Meta info under comment */
-.commentMeta {
+  width: 100%;
   display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 4px;
-  font-size: 11px;
-  color: var(--color-text-muted);
+  justify-content: center;
 }
 
-.commentTime {
-  color: var(--color-text-muted);
-  font-size: 11px;
+/* scrollable sections — hide scrollbar but keep scroll */
+.igFeedColumn,
+.igNotifications,
+.igCatalogs,
+.igProfile,
+.igExplore,
+.igCreateView {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
-
-.commentReplyAction {
-  background: none;
-  border: none;
-  font-size: 11px;
-  color: var(--color-text-muted);
-  cursor: pointer;
-  padding: 2px 6px;
-  border-radius: 4px;
-  transition: background 0.15s;
-}
-.commentReplyAction:hover {
-  background: var(--color-bg-hover);
-}
-
-.commentDeleteAction {
-  background: none;
-  border: none;
-  font-size: 11px;
-  color: var(--color-danger);
-  cursor: pointer;
-  padding: 2px 6px;
-  border-radius: 4px;
-  transition: background 0.15s;
-}
-.commentDeleteAction:hover {
-  background: rgba(220, 38, 38, 0.1);
-}
-
-.commentReplies {
-  margin-top: 8px;
-  padding-left: 16px;
-  border-left: 1px solid var(--color-border);
-}
-
-.commentReplyForm {
-  display: flex;
-  gap: 8px;
-  margin-top: 8px;
-}
-
-.commentReplyInput {
-  flex: 1;
-  padding: 8px 12px;
-  border: 1px solid var(--color-border-input);
-  border-radius: var(--input-radius);
-  background: var(--color-bg-input);
-  color: var(--color-text);
-  font-size: 13px;
-  outline: none;
-}
-
-.commentReplyInput:focus {
-  border-color: var(--color-border-focus);
-  border-width: 2px;
-  outline: none;
-}
-
-.commentReplySubmit {
-  background: var(--color-primary);
-  color: white;
-  border: none;
-  padding: 6px 12px;
-  border-radius: var(--btn-radius);
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: opacity 0.15s;
-}
-
-.commentReplySubmit:hover {
-  opacity: 0.9;
-}
-
-/* MOBILE */
-.mobileTop {
+.igFeedColumn::-webkit-scrollbar,
+.igNotifications::-webkit-scrollbar,
+.igCatalogs::-webkit-scrollbar,
+.igProfile::-webkit-scrollbar,
+.igExplore::-webkit-scrollbar,
+.igCreateView::-webkit-scrollbar {
   display: none;
+}
+
+/* grab cursor on scrollable areas */
+.igNotifications,
+.igCatalogs,
+.igProfile,
+.igExplore {
+  cursor: grab;
+  user-select: none;
+}
+.igNotifications:active,
+.igCatalogs:active,
+.igProfile:active,
+.igExplore:active {
+  cursor: grabbing;
+}
+
+/* SIDEBAR */
+.igSidebar {
+  width: 68px;
+  min-width: 68px;
+  height: 100%;
+  padding: 24px 0;
   position: fixed;
-  top: 0;
   left: 0;
-  right: 0;
-  z-index: 200;
-  background: var(--color-surface);
-  border-bottom: var(--border-width) solid var(--color-border);
-  padding: 8px 12px;
-}
-
-.mobileHeaderRow {
+  top: 0;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  z-index: 100;
+  transition:
+    width 0.2s ease,
+    min-width 0.2s ease;
+  overflow: hidden;
+  background: var(--color-bg);
+  border-right: var(--border-width) solid var(--color-border);
+  color: var(--color-text);
 }
 
-.mobileHeaderLeft {
+.igSidebar svg {
+  color: var(--color-text) !important;
+  stroke: var(--color-text) !important;
+}
+
+.igSidebar:hover {
+  width: 220px;
+  min-width: 220px;
+}
+
+.igLogo {
+  font-family:
+    'Grand Hotel',
+    cursive,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto;
+  font-size: 22px;
+  padding: 0 12px;
+  margin-bottom: 24px;
+  color: var(--color-text);
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-.backBtn {
+.igLogo span {
+  opacity: 0;
+  transition: opacity 0.2s;
+  overflow: hidden;
+}
+
+.igSidebar:hover .igLogo span {
+  opacity: 1;
+}
+
+.igNav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.igNavItem {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 14px;
+  margin: 0 8px;
+  border: none;
+  background: transparent;
+  color: var(--color-text);
+  font-size: 15px;
+  font-weight: 400;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s;
+  position: relative;
+  width: auto;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.igNavItem:hover {
+  background: var(--color-bg-hover);
+}
+.igNavItem.active {
+  font-weight: 600;
+}
+
+.igNavLabel {
+  opacity: 0;
+  transition: opacity 0.2s;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.igSidebar:hover .igNavLabel {
+  opacity: 1;
+}
+
+.igNavItem svg {
+  flex-shrink: 0;
+}
+
+.igSidebarBack {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  margin: 0 8px 8px;
+  border-radius: 8px;
+  color: var(--color-text);
+  text-decoration: none;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+
+.igSidebarBack:hover {
+  background: var(--color-bg-hover);
+  color: var(--color-text);
+}
+
+.igSidebarHistoryBack {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  margin: 0 8px 8px;
+  border-radius: var(--btn-radius);
+  color: var(--color-text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+.igSidebarHistoryBack:hover {
+  background: var(--color-bg-hover);
+  color: var(--color-text);
+}
+
+.igSidebarBack .igNavLabel {
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.igSidebar:hover .igSidebarBack .igNavLabel {
+  opacity: 1;
+}
+
+.igBackBtn {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2359,58 +2264,57 @@
   transition: background 0.2s;
   -webkit-tap-highlight-color: transparent;
 }
-.backBtn:active {
-  background: var(--color-bg-hover);
-}
-.backBtn:active {
+.igBackBtn:active {
   background: var(--color-bg-hover);
 }
 
-.mobileTopActions {
+.igSidebarUser {
   display: flex;
-  gap: 16px;
-}
-
-.mobileBottom {
-  display: none;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 200;
-  background: var(--color-surface);
-  border-top: var(--border-width) solid var(--color-border);
-  padding: 8px 0;
-}
-
-.mobileNavRow {
-  display: flex;
-  justify-content: space-around;
   align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  margin: 0 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  border-top: 1px solid transparent;
 }
 
-.mobileNavBtn {
+.igSidebarUserAvatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366);
+  color: white;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 4px;
-  background: none;
-  border: none;
-  color: var(--color-text-muted);
-  cursor: pointer;
-  padding: 8px;
-  border-radius: 8px;
-  transition: color 0.15s;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
 }
 
-.mobileNavBtn.active {
-  color: var(--color-primary);
-}
-.mobileNavBtn:hover {
+.igSidebarUserName {
+  font-family:
+    'Grand Hotel',
+    'Instagram Sans',
+    cursive,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto;
+  font-size: 16px;
+  font-weight: 500;
   color: var(--color-text);
+  opacity: 0;
+  transition: opacity 0.2s;
 }
 
-.badgeMobile {
+.igSidebar:hover .igSidebarUserName {
+  opacity: 1;
+}
+
+.igBadge {
+  margin-left: auto;
   background: var(--color-danger);
   color: white;
   font-size: 10px;
@@ -2423,108 +2327,669 @@
   flex-shrink: 0;
 }
 
-.mobileHomeIndicator {
-  width: 134px;
-  height: 5px;
-  background: var(--color-text-muted);
-  border-radius: 3px;
-  margin: 8px auto 0;
-  opacity: 0.5;
+/* MAIN CONTENT */
+.igMain {
+  flex: 1;
+  margin-left: 68px;
+  padding: 32px 0;
+  display: flex;
+  justify-content: center;
+  background: var(--color-bg);
+  min-height: 0;
+  overflow-x: hidden;
 }
 
-/* LONG PRESS PROGRESS */
-.longPressProgress {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) rotate(-90deg);
-  pointer-events: none;
+.igSocialContentWrapper {
+  position: relative;
+  width: 100%;
+  max-width: 996px;
+  padding-left: 60px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
 }
 
-@media (max-width: 768px) {
-  .sidebar {
-    width: 0;
-    min-width: 0;
-    border-right: none;
-  }
-  .sidebar:hover {
-    width: 220px;
-    min-width: 220px;
-  }
-  .main {
-    margin-left: 0;
-    padding-top: 80px;
-    padding-bottom: 80px;
-  }
-  .socialContentWrapper {
-    padding-left: 0;
-  }
-  .mobileTop {
-    display: block;
-  }
-  .mobileBottom {
-    display: block;
-  }
-  .feedLayout {
-    grid-template-columns: 1fr;
-  }
-  .feedSidebar {
-    display: none;
-  }
-  .catalogGrid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .exploreGrid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-  .profileGrid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-  .dm {
-    grid-template-columns: 1fr;
-  }
-  .dmInbox {
-    border-right: none;
-    border-bottom: 1px solid var(--color-border);
-  }
-  .backBtn {
-    display: flex;
-  }
-  .modalContent {
-    max-width: 100%;
-    width: 100%;
-    max-height: 100vh;
-    border-radius: 0;
-  }
-  .catalogDetailLayout {
-    grid-template-columns: 1fr;
-  }
-  .catalogDetailLeft {
-    aspect-ratio: 1;
-  }
-  .profileHeader {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 20px;
-  }
-  .profileStats {
-    justify-content: center;
-  }
-  .profileTabs {
-    padding: 0 16px;
-  }
-  .catalogGrid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+.igSocialContentInner {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
-/* Lottie animated icons - visible on dark backgrounds */
-.lottieIcon svg {
-  filter: brightness(0) invert(0.82);
+/* scrollable sections — hide scrollbar but keep scroll */
+.igFeedColumn,
+.igNotifications,
+.igCatalogs,
+.igProfile,
+.igExplore,
+.igCreateView {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.igFeedColumn::-webkit-scrollbar,
+.igNotifications::-webkit-scrollbar,
+.igCatalogs::-webkit-scrollbar,
+.igProfile::-webkit-scrollbar,
+.igExplore::-webkit-scrollbar,
+.igCreateView::-webkit-scrollbar {
+  display: none;
 }
 
-[data-theme='dark'] .lottieIcon svg,
-[data-theme='oled'] .lottieIcon svg {
-  filter: brightness(0) invert(0.85);
+/* grab cursor on scrollable areas */
+.igNotifications,
+.igCatalogs,
+.igProfile,
+.igExplore {
+  cursor: grab;
+  user-select: none;
+}
+.igNotifications:active,
+.igCatalogs:active,
+.igProfile:active,
+.igExplore:active {
+  cursor: grabbing;
+}
+
+/* SIDEBAR */
+.igSidebar {
+  width: 68px;
+  min-width: 68px;
+  height: 100%;
+  padding: 24px 0;
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  transition:
+    width 0.2s ease,
+    min-width 0.2s ease;
+  overflow: hidden;
+  background: var(--color-bg);
+  border-right: var(--border-width) solid var(--color-border);
+  color: var(--color-text);
+}
+
+.igSidebar svg {
+  color: var(--color-text) !important;
+  stroke: var(--color-text) !important;
+}
+
+.igSidebar:hover {
+  width: 220px;
+  min-width: 220px;
+}
+
+.igLogo {
+  font-family:
+    'Grand Hotel',
+    cursive,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto;
+  font-size: 22px;
+  padding: 0 12px;
+  margin-bottom: 24px;
+  color: var(--color-text);
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.igLogo span {
+  opacity: 0;
+  transition: opacity 0.2s;
+  overflow: hidden;
+}
+
+.igSidebar:hover .igLogo span {
+  opacity: 1;
+}
+
+.igNav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.igNavItem {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 14px;
+  margin: 0 8px;
+  border: none;
+  background: transparent;
+  color: var(--color-text);
+  font-size: 15px;
+  font-weight: 400;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s;
+  position: relative;
+  width: auto;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.igNavItem:hover {
+  background: var(--color-bg-hover);
+}
+.igNavItem.active {
+  font-weight: 600;
+}
+
+.igNavLabel {
+  opacity: 0;
+  transition: opacity 0.2s;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.igSidebar:hover .igNavLabel {
+  opacity: 1;
+}
+
+.igNavItem svg {
+  flex-shrink: 0;
+}
+
+.igSidebarBack {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  margin: 0 8px 8px;
+  border-radius: 8px;
+  color: var(--color-text);
+  text-decoration: none;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+
+.igSidebarBack:hover {
+  background: var(--color-bg-hover);
+  color: var(--color-text);
+}
+
+.igSidebarHistoryBack {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  margin: 0 8px 8px;
+  border-radius: var(--btn-radius);
+  color: var(--color-text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+.igSidebarHistoryBack:hover {
+  background: var(--color-bg-hover);
+  color: var(--color-text);
+}
+
+.igSidebarBack .igNavLabel {
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.igSidebar:hover .igSidebarBack .igNavLabel {
+  opacity: 1;
+}
+
+.igBackBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: var(--input-radius);
+  transition: background 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.igBackBtn:active {
+  background: var(--color-bg-hover);
+}
+
+.igSidebarUser {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  margin: 0 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  border-top: 1px solid transparent;
+}
+
+.igSidebarUserAvatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.igSidebarUserName {
+  font-family:
+    'Grand Hotel',
+    'Instagram Sans',
+    cursive,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--color-text);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.igSidebar:hover .igSidebarUserName {
+  opacity: 1;
+}
+
+.igBadge {
+  margin-left: auto;
+  background: var(--color-danger);
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 10px;
+  min-width: 18px;
+  text-align: center;
+  line-height: 16px;
+  flex-shrink: 0;
+}
+
+/* MAIN CONTENT */
+.igMain {
+  flex: 1;
+  margin-left: 68px;
+  padding: 32px 0;
+  display: flex;
+  justify-content: center;
+  background: var(--color-bg);
+  min-height: 0;
+  overflow-x: hidden;
+}
+
+.igSocialContentWrapper {
+  position: relative;
+  width: 100%;
+  max-width: 996px;
+  padding-left: 60px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+}
+
+.igSocialContentInner {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+/* scrollable sections — hide scrollbar but keep scroll */
+.igFeedColumn,
+.igNotifications,
+.igCatalogs,
+.igProfile,
+.igExplore,
+.igCreateView {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.igFeedColumn::-webkit-scrollbar,
+.igNotifications::-webkit-scrollbar,
+.igCatalogs::-webkit-scrollbar,
+.igProfile::-webkit-scrollbar,
+.igExplore::-webkit-scrollbar,
+.igCreateView::-webkit-scrollbar {
+  display: none;
+}
+
+/* grab cursor on scrollable areas */
+.igNotifications,
+.igCatalogs,
+.igProfile,
+.igExplore {
+  cursor: grab;
+  user-select: none;
+}
+.igNotifications:active,
+.igCatalogs:active,
+.igProfile:active,
+.igExplore:active {
+  cursor: grabbing;
+}
+
+/* SIDEBAR */
+.igSidebar {
+  width: 68px;
+  min-width: 68px;
+  height: 100%;
+  padding: 24px 0;
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  transition:
+    width 0.2s ease,
+    min-width 0.2s ease;
+  overflow: hidden;
+  background: var(--color-bg);
+  border-right: var(--border-width) solid var(--color-border);
+  color: var(--color-text);
+}
+
+.igSidebar svg {
+  color: var(--color-text) !important;
+  stroke: var(--color-text) !important;
+}
+
+.igSidebar:hover {
+  width: 220px;
+  min-width: 220px;
+}
+
+.igLogo {
+  font-family:
+    'Grand Hotel',
+    cursive,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto;
+  font-size: 22px;
+  padding: 0 12px;
+  margin-bottom: 24px;
+  color: var(--color-text);
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.igLogo span {
+  opacity: 0;
+  transition: opacity 0.2s;
+  overflow: hidden;
+}
+
+.igSidebar:hover .igLogo span {
+  opacity: 1;
+}
+
+.igNav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.igNavItem {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 14px;
+  margin: 0 8px;
+  border: none;
+  background: transparent;
+  color: var(--color-text);
+  font-size: 15px;
+  font-weight: 400;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s;
+  position: relative;
+  width: auto;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.igNavItem:hover {
+  background: var(--color-bg-hover);
+}
+.igNavItem.active {
+  font-weight: 600;
+}
+
+.igNavLabel {
+  opacity: 0;
+  transition: opacity 0.2s;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.igSidebar:hover .igNavLabel {
+  opacity: 1;
+}
+
+.igNavItem svg {
+  flex-shrink: 0;
+}
+
+.igSidebarBack {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  margin: 0 8px 8px;
+  border-radius: 8px;
+  color: var(--color-text);
+  text-decoration: none;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+
+.igSidebarBack:hover {
+  background: var(--color-bg-hover);
+  color: var(--color-text);
+}
+
+.igSidebarHistoryBack {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  margin: 0 8px 8px;
+  border-radius: var(--btn-radius);
+  color: var(--color-text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+.igSidebarHistoryBack:hover {
+  background: var(--color-bg-hover);
+  color: var(--color-text);
+}
+
+.igSidebarBack .igNavLabel {
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.igSidebar:hover .igSidebarBack .igNavLabel {
+  opacity: 1;
+}
+
+.igBackBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: var(--input-radius);
+  transition: background 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.igBackBtn:active {
+  background: var(--color-bg-hover);
+}
+
+.igSidebarUser {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  margin: 0 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  border-top: 1px solid transparent;
+}
+
+.igSidebarUserAvatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.igSidebarUserName {
+  font-family:
+    'Grand Hotel',
+    'Instagram Sans',
+    cursive,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--color-text);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.igSidebar:hover .igSidebarUserName {
+  opacity: 1;
+}
+
+.igBadge {
+  margin-left: auto;
+  background: var(--color-danger);
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 10px;
+  min-width: 18px;
+  text-align: center;
+  line-height: 16px;
+  flex-shrink: 0;
+}
+
+/* MAIN CONTENT */
+.igMain {
+  flex: 1;
+  margin-left: 68px;
+  padding: 32px 0;
+  display: flex;
+  justify-content: center;
+  background: var(--color-bg);
+  min-height: 0;
+  overflow-x: hidden;
+}
+
+.igSocialContentWrapper {
+  position: relative;
+  width: 100%;
+  max-width: 996px;
+  padding-left: 60px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+}
+
+.igSocialContentInner {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+/* scrollable sections — hide scrollbar but keep scroll */
+.igFeedColumn,
+.igNotifications,
+.igCatalogs,
+.igProfile,
+.igExplore,
+.igCreateView {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.igFeedColumn::-webkit-scrollbar,
+.igNotifications::-webkit-scrollbar,
+.igCatalogs::-webkit-scrollbar,
+.igProfile::-webkit-scrollbar,
+.igExplore::-webkit-scrollbar,
+.igCreateView::-webkit-scrollbar {
+  display: none;
+}
+
+/* grab cursor on scrollable areas */
+.igNotifications,
+.igCatalogs,
+.igProfile,
+.igExplore {
+  cursor: grab;
+  user-select: none;
+}
+.igNotifications:active,
+.igCatalogs:active,
+.igProfile:active,
+.igExplore:active {
+  cursor: grabbing;
 }

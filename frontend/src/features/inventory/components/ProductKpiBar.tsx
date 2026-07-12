@@ -1,12 +1,13 @@
 import { useExchangeRate } from '@contexts/ExchangeRateContext';
 import { LottieIcon } from '@shared/ui/LottieIcon';
 import { useState } from 'react';
+import { Card } from '@shared/ui/Card';
+import { Text } from '@shared/ui/Text';
 import shoppingBagData from '@assets/lottie/shopping-bag.json';
 import analyticsData from '@assets/lottie/analytics.json';
 import walletData from '@assets/lottie/wallet.json';
 import creditCardData from '@assets/lottie/credit-card.json';
 import warningData from '@assets/lottie/warning.json';
-import styles from '../pages/InventoryPage.module.css';
 
 export function ProductKpiBar({ products }: { products: any[] }) {
   const [hoveredKpi, setHoveredKpi] = useState<string | null>(null);
@@ -23,62 +24,73 @@ export function ProductKpiBar({ products }: { products: any[] }) {
       icon: shoppingBagData,
       value: totalProducts,
       label: 'Productos',
-      color: 'var(--color-orange-red)',
+      color: 'primary',
     },
     {
       key: 'stock',
       icon: analyticsData,
       value: totalStock,
       label: 'Stock Total',
-      color: 'var(--color-teal)',
+      color: 'teal',
     },
     {
       key: 'valuationUsd',
       icon: walletData,
       value: formatUsd(totalValuationUsd),
       label: 'Valoración ($)',
-      color: 'var(--color-green)',
+      color: 'success',
     },
     {
       key: 'valuationBs',
       icon: creditCardData,
       value: formatBs(totalValuationUsd),
       label: 'Valoración (Bs)',
-      color: 'var(--color-purple)',
+      color: 'purple',
     },
     {
       key: 'lowStock',
       icon: warningData,
       value: lowStockCount,
       label: 'Stock Bajo',
-      color: 'var(--color-red)',
-      danger: true,
+      color: 'danger',
     },
   ];
 
+  const colorMap: Record<string, string> = {
+    primary: 'var(--color-primary)',
+    teal: 'var(--color-teal)',
+    success: 'var(--color-success)',
+    purple: 'var(--color-purple)',
+    danger: 'var(--color-danger)',
+  };
+
   return (
-    <div className={styles.kpiContainer}>
+    <div className="flex flex-wrap gap-4">
       {kpiItems.map((k) => (
-        <div
+        <Card
           key={k.key}
-          className={styles.kpiCard}
-          style={{ '--kpi-color': k.color } as React.CSSProperties}
+          className="flex-1 min-w-[180px] max-w-[240px]"
+          style={{ '--kpi-color': colorMap[k.color] } as React.CSSProperties}
           onMouseEnter={() => setHoveredKpi(k.key)}
           onMouseLeave={() => setHoveredKpi(null)}
         >
-          <div className={styles.kpiIconWrapper}>
-            <LottieIcon data={k.icon} size={22} play={hoveredKpi === k.key} />
-          </div>
-          <div className={styles.kpiContent}>
-            <span
-              className={styles.kpiValue}
-              style={(k as any).danger ? { color: 'var(--color-red)' } : {}}
+          <Card.Body className="p-4 flex items-center gap-3">
+            <div
+              className="w-10 h-10 rounded-xl flex items-center justify-center"
+              style={{ backgroundColor: `var(--kpi-color, var(--color-primary))` }}
             >
-              {k.value}
-            </span>
-            <span className={styles.kpiLabel}>{k.label}</span>
-          </div>
-        </div>
+              <LottieIcon data={k.icon} size={20} play={hoveredKpi === k.key} />
+            </div>
+            <div className="min-w-0">
+              <Text variant="h4" weight="semibold" style={{ color: 'var(--kpi-color, var(--color-primary))' }}>
+                {k.value}
+              </Text>
+              <Text variant="label" color="muted">
+                {k.label}
+              </Text>
+            </div>
+          </Card.Body>
+        </Card>
       ))}
     </div>
   );

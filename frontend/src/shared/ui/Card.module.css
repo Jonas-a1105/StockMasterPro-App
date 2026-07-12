@@ -2,14 +2,14 @@
   background-color: var(--color-surface);
   border: var(--card-border-width) solid var(--color-border);
   border-radius: var(--card-radius);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--card-shadow);
   transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+    transform var(--transition-base),
+    box-shadow var(--transition-base);
 }
 
 .card:hover {
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--card-shadow-hover);
 }
 
 .header {
@@ -48,5 +48,5 @@
 
 .clickable:hover {
   transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--card-shadow-hover);
 }

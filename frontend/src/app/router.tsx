@@ -21,6 +21,10 @@ import { PremiumLockScreen } from '@shared/ui/PremiumLockScreen';
 import { ErrorBoundary } from '@shared/ui/ErrorBoundary';
 import { NotFoundPage } from '@pages/NotFoundPage';
 
+const UIDevCatalog = lazy(() =>
+  import('@pages/UIDevCatalog').then((m) => ({ default: m.default }))
+);
+
 const LoginPage = lazy(() =>
   import('@features/auth/pages/LoginPage').then((m) => ({ default: m.LoginPage }))
 );
@@ -572,6 +576,17 @@ export function AppRouter() {
               <ProtectedRoute>
                 <Suspense fallback={<SkeletonCards count={6} />}>
                   <SocialPage />
+                </Suspense>
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/dev/ui"
+            element={
+              <ProtectedRoute>
+                <Suspense fallback={<SkeletonForm fields={3} />}>
+                  <UIDevCatalog />
                 </Suspense>
               </ProtectedRoute>
             }
