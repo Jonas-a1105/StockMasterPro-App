@@ -97,7 +97,7 @@ export function MixedPaymentModal({
 
         {error && <div className={styles.paymentError}>{error}</div>}
 
-        <table className={`lista-table ${styles.mb16}`}>
+        <table className={`table ${styles.mb16}`}>
           <thead>
             <tr>
               <th>Método</th>

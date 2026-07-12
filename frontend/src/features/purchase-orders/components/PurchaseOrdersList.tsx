@@ -4,6 +4,7 @@ import { useExchangeRate } from '@contexts/ExchangeRateContext';
 import { Package, Check, X, Ban } from 'lucide-react';
 import type { PurchaseOrder } from '@types';
 import styles from '@features/inventory/pages/InventoryPage.module.css';
+import tableStyles from '@shared/ui/TableList.module.css';
 
 export function PurchaseOrdersList({
   orders, suppliers, loading, skeletonEnabled,
@@ -37,8 +38,8 @@ export function PurchaseOrdersList({
   };
 
   return (
-    <div className="lista-container">
-      <table className="lista-table">
+    <div className="tableStyles.container">
+      <table className="tableStyles.table">
         <thead>
           <tr>
             <th>#</th>
@@ -69,9 +70,9 @@ export function PurchaseOrdersList({
             orders.map(order => (
               <tr key={order.id}>
                 <td className={`${styles.mono} ${styles.bold} ${styles.textMuted}`}>{order.id.slice(0, 8)}</td>
-                <td><span className="lista-name-text">{getSupplierName(order.supplierId)}</span></td>
+                <td><span className="tableStyles.nameText">{getSupplierName(order.supplierId)}</span></td>
                 <td className={styles.textCenter}>{statusBadge(order.status)}</td>
-                <td className={styles.textRight}><span className="lista-number-value">{formatPrice(order.total)}</span></td>
+                <td className={styles.textRight}><span className="tableStyles.numberValue">{formatPrice(order.total)}</span></td>
                 <td>{new Date(order.createdAt).toLocaleDateString()}</td>
                 <td className={styles.textCenter}>
                   {userRole !== 'cajero' && (

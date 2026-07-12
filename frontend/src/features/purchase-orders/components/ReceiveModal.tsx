@@ -53,7 +53,7 @@ export function ReceiveModal({
         <p className={`${styles.colorMuted} ${styles.fontSize14} ${styles.mb16}`}>
           Orden #{order.id.slice(0, 8)} — Ajusta las cantidades a recibir por producto.
         </p>
-        <table className="lista-table" className={styles.mb16}>
+        <table className="table" className={styles.mb16}>
           <thead>
             <tr>
               <th>Producto</th>

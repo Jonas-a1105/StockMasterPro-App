@@ -484,10 +484,10 @@ export function ReportsPage() {
                     <tbody>
                       {lowStockProducts.map(p => (
                         <tr key={p.id}>
-                          <td><span className="lista-name-text">{p.name}</span></td>
-                          <td className={styles.textRight}><span className="lista-number-value">{p.stock}</span></td>
+                          <td><span className="tableStyles.nameText">{p.name}</span></td>
+                          <td className={styles.textRight}><span className="tableStyles.numberValue">{p.stock}</span></td>
                           <td className={styles.textRight}>{p.minStock}</td>
-                          <td className={styles.textCenter}><span className="lista-badge saturated">Crítico</span></td>
+                          <td className={styles.textCenter}><span className="tableStyles.badgeSaturated">Crítico</span></td>
                         </tr>
                       ))}
                     </tbody>
