@@ -31,5 +31,6 @@ import { ConfigService } from '@nestjs/config';
     StripeService,
     LicenseCronService,
   ],
+  exports: [LicensesService],
 })
 export class LicensesModule {}
