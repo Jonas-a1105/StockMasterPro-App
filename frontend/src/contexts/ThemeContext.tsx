@@ -138,15 +138,31 @@ function applyConfigToDOM(config: ThemeConfig) {
     root.removeAttribute('data-theme');
   }
 
-  // 2. User overrides
+  // 2. User overrides - ONLY inject custom theme properties if they differ from the default system colors
   root.style.setProperty('--color-primary', config.primaryColor);
-  if (config.secondaryColor) root.style.setProperty('--color-secondary', config.secondaryColor);
-  if (config.bgMain) root.style.setProperty('--color-bg', config.bgMain);
-  if (config.bgCard) root.style.setProperty('--color-surface', config.bgCard);
-  if (config.sidebarBg) root.style.setProperty('--sidebar-bg', config.sidebarBg);
-  if (config.borderColor) {
-    root.style.setProperty('--color-border', config.borderColor);
-    root.style.setProperty('--color-surface-border', config.borderColor);
+  
+  // Only override background/surfaces/borders if they are custom-entered by the user and we are NOT in Dark/OLED mode
+  const isDark = config.darkMode || config.oledMode;
+  if (!isDark) {
+    if (config.bgMain && config.bgMain !== '#f8fafc') root.style.setProperty('--color-bg', config.bgMain);
+    if (config.bgCard && config.bgCard !== '#ffffff') root.style.setProperty('--color-surface', config.bgCard);
+    if (config.borderColor && config.borderColor !== '#e2e8f0') {
+      root.style.setProperty('--color-border', config.borderColor);
+      root.style.setProperty('--color-surface-border', config.borderColor);
+    }
+  } else {
+    // In dark/oled mode, clean up light theme styles so stylesheet takes absolute control
+    root.style.removeProperty('--color-bg');
+    root.style.removeProperty('--color-surface');
+    root.style.removeProperty('--color-border');
+    root.style.removeProperty('--color-surface-border');
+  }
+
+  // Programmatic override for sidebar bg only if explicitly custom
+  if (config.sidebarBg && config.sidebarBg !== '#1e293b') {
+    root.style.setProperty('--sidebar-bg', config.sidebarBg);
+  } else {
+    root.style.removeProperty('--sidebar-bg');
   }
 
   root.style.setProperty('--density-multiplier', String(DENSITY_MAP[config.density] || 1));
@@ -161,7 +177,7 @@ function applyConfigToDOM(config: ThemeConfig) {
   const shadowsActive = config.shadowEnabled !== false && config.shadows !== false;
   root.style.setProperty('--card-shadow', shadowsActive ? 'var(--shadow-sm)' : 'none');
   root.style.setProperty('--card-shadow-hover', shadowsActive ? 'var(--shadow-md)' : 'none');
-  root.style.setProperty('--card-radius', `${config.cardRadius}px`);
+  root.style.setProperty('--card-radius', borderEnabled ? `${config.cardRadius}px` : '0px');
   
   // Font weight - lock to 600 as requested by the user, or let it respond
   if (config.fontWeightEnabled === false) {
