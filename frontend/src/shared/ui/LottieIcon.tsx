@@ -56,7 +56,7 @@ export function LottieIcon({ data, src, size = 24, play = true, hoverPlay }: Pro
       onMouseEnter={hoverPlay ? handleMouseEnter : undefined}
       onMouseLeave={hoverPlay ? handleMouseLeave : undefined}
       className={`lottie-icon ${styles.icon} ${hoverPlay ? styles.iconClickable : ''}`}
-      style={{ '--lottie-size': size } as React.CSSProperties}
+      style={{ '--lottie-size': `${size}px` } as React.CSSProperties}
     />
   );
 }

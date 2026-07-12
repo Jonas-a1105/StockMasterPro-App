@@ -15,7 +15,7 @@
   background-color: var(--color-surface);
   border-radius: var(--card-radius);
   padding: 16px;
-  box-shadow: 0 1px 3px rgb(0, 0, 0, 0.05);
+  box-shadow: var(--card-shadow);
   display: flex;
   align-items: center;
   gap: 14px;
@@ -27,7 +27,7 @@
 
 .card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgb(0, 0, 0, 0.08);
+  box-shadow: var(--card-shadow-hover);
 }
 
 .iconWrapper {
@@ -37,8 +37,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgb(240, 90, 40, 0.1);
-  color: var(--color-primary);
+  background-color: color-mix(in srgb, var(--kpi-color, var(--color-primary)) 12%, transparent);
+  color: var(--kpi-color, var(--color-primary));
   flex-shrink: 0;
 }
 
