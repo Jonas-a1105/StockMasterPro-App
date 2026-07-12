@@ -223,10 +223,13 @@ export class AuthService {
       { expiresIn: '15m' },
     );
 
+    // En producción, esto se enviaría por correo electrónico.
+    // Para depuración local/desarrollo, lo imprimimos en el log del servidor:
+    console.log(`[DEBUG] Reset token for ${email}: ${resetToken}`);
+
     return {
       message:
         'Si el email está registrado, se enviará un enlace de restablecimiento',
-      resetToken,
     };
   }
 

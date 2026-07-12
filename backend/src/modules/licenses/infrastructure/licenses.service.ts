@@ -180,15 +180,30 @@ export class LicensesService {
         iat: number;
       };
 
-      // Verificar que el JTI no haya sido usado
+      // Verificar que el JTI no esté activado o revocado
       const existingLicense = await this.prisma.license.findUnique({
         where: { jti: payload.jti },
       });
+
       if (existingLicense) {
-        throw new HttpException(
-          'Esta licencia ya ha sido utilizada',
-          HttpStatus.FORBIDDEN,
-        );
+        if (existingLicense.status === 'activated') {
+          throw new HttpException(
+            'Esta licencia ya ha sido utilizada',
+            HttpStatus.FORBIDDEN,
+          );
+        }
+        if (existingLicense.status === 'revoked') {
+          throw new HttpException(
+            'Esta licencia ha sido revocada',
+            HttpStatus.FORBIDDEN,
+          );
+        }
+        if (existingLicense.status === 'expired') {
+          throw new HttpException(
+            'Esta licencia ha expirado',
+            HttpStatus.FORBIDDEN,
+          );
+        }
       }
 
       // Verificar tenant match
@@ -202,24 +217,36 @@ export class LicensesService {
       const expiresAt = new Date(payload.exp * 1000);
       const tier = payload.tier || 'pro';
 
-      // Guardar licencia en BD con JTI
-      await this.prisma.license.create({
-        data: {
-          jti: payload.jti,
-          tenantId,
-          tier: payload.tier || 'pro',
-          expiresAt: new Date(payload.exp * 1000),
-          status: 'activated',
-          activatedAt: new Date(),
-          payload: {
-            jti: payload.jti,
-            targetTenantId: payload.targetTenantId,
-            exp: payload.exp,
-            tier: payload.tier,
-            iat: payload.iat,
+      // Transicionar estado a activated en la base de datos
+      if (existingLicense) {
+        await this.prisma.license.update({
+          where: { jti: payload.jti },
+          data: {
+            status: 'activated',
+            tenantId,
+            activatedAt: new Date(),
           },
-        },
-      });
+        });
+      } else {
+        // En caso de licencias offline firmadas que no existían previamente
+        await this.prisma.license.create({
+          data: {
+            jti: payload.jti,
+            tenantId,
+            tier: payload.tier || 'pro',
+            expiresAt: new Date(payload.exp * 1000),
+            status: 'activated',
+            activatedAt: new Date(),
+            payload: {
+              jti: payload.jti,
+              targetTenantId: payload.targetTenantId,
+              exp: payload.exp,
+              tier: payload.tier,
+              iat: payload.iat,
+            },
+          },
+        });
+      }
 
       // Actualizar tenant
       await this.licenseRepo.updateLicense(
