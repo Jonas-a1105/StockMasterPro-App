@@ -15,7 +15,7 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 8px rgb(0, 0, 0, 0.08);
 }
 
 .header {
@@ -30,8 +30,8 @@
 }
 
 .header h2 {
-  font-size: 18px;
-  font-weight: 700;
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
   color: var(--text-dark);
   margin: 0;
 }
@@ -56,8 +56,8 @@
 }
 
 .field label {
-  font-size: 11px;
-  font-weight: 700;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
   text-transform: none;
   letter-spacing: 0.5px;
   color: var(--text-muted);
@@ -70,7 +70,7 @@
   color: var(--text-dark);
   border: var(--input-border-width, 1px) solid var(--border-color);
   border-radius: var(--input-radius);
-  font-size: 14px;
+  font-size: var(--font-size-md);
   outline: none;
   transition: border-color var(--transition-smooth);
 }
@@ -119,8 +119,8 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 13px;
-  font-weight: 600;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
   color: var(--color-success, #16a34a);
 }
 
@@ -138,8 +138,8 @@
   color: var(--text-dark);
   border: var(--input-border-width, 1px) solid var(--border-color);
   border-radius: var(--input-radius);
-  font-size: 12px;
-  font-weight: 600;
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-semibold);
   cursor: pointer;
   transition: border-color var(--transition-smooth), color var(--transition-smooth);
 }
@@ -157,7 +157,7 @@
   border: var(--input-border-width, 1px) solid var(--border-color);
   border-radius: var(--input-radius);
   font-family: monospace;
-  font-size: 12px;
+  font-size: var(--font-size-caption);
   line-height: 1.5;
   resize: none;
   outline: none;

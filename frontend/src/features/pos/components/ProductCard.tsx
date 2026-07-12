@@ -23,7 +23,7 @@ export function ProductCard({
         {product.imageUrl ? (
           <img src={product.imageUrl} alt="" />
         ) : (
-          <Package size={28} style={{ color: 'var(--text-muted)' }} />
+          <Package size={28} className={styles.placeholderIcon} />
         )}
         {addedQty > 0 && <div className={styles.prodCartCountBadge}>{addedQty}</div>}
         {product.stock === 0 ? (

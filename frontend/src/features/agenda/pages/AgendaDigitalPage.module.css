@@ -25,16 +25,16 @@
 }
 
 .headerTitle {
-  font-size: 15px;
-  font-weight: 700;
+  font-size: var(--font-size-md-plus);
+  font-weight: var(--font-weight-bold);
   color: var(--text-main);
   margin: 0;
 }
 
 .headerSub {
-  font-size: 12px;
+  font-size: var(--font-size-caption);
   color: var(--text-muted);
-  margin: 4px 0 0 0;
+  margin: 4px 0 0;
 }
 
 .headerControls {
@@ -70,8 +70,8 @@
   background-color: var(--bg-main);
   padding: 0 16px;
   height: 36px;
-  font-size: 13px;
-  font-weight: 600;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
   color: var(--text-dark);
   border: 1px solid var(--border-color);
   border-radius: var(--btn-radius);
@@ -88,8 +88,8 @@
   border: none;
   padding: 0 16px;
   height: 36px;
-  font-size: 13px;
-  font-weight: 600;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
   border-radius: var(--btn-radius);
   cursor: pointer;
   transition: all 0.2s ease;
@@ -107,12 +107,12 @@
   justify-content: center;
   gap: 6px;
   background-color: var(--color-success);
-  color: #fff;
+  color: var(--text-on-primary, #fff);
   border: none;
   padding: 0 16px;
   height: 36px;
-  font-size: 13px;
-  font-weight: 600;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
   border-radius: var(--btn-radius);
   cursor: pointer;
   transition: all 0.2s ease;
@@ -154,8 +154,8 @@
 }
 
 .weekday {
-  font-size: 11px;
-  font-weight: 700;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
   color: var(--text-muted);
 }
 
@@ -213,8 +213,8 @@
 
 /* Day Number */
 .dayNum {
-  font-size: 13px;
-  font-weight: 700;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
   align-self: flex-end;
   color: var(--text-main);
 }
@@ -242,7 +242,7 @@
 .dayDot {
   width: 12px;
   height: 4px;
-  border-radius: 2px;
+  border-radius: var(--border-radius-sm);
   display: inline-block;
 }
 
@@ -267,13 +267,13 @@
 }
 
 .sidebarTitle {
-  font-size: 13px;
-  font-weight: 700;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
   color: var(--color-primary);
 }
 
 .sidebarSub {
-  font-size: 12px;
+  font-size: var(--font-size-caption);
   color: var(--text-muted);
   margin: 0;
   line-height: 1.4;
@@ -296,7 +296,7 @@
 
 .eventsList::-webkit-scrollbar-thumb {
   background-color: var(--border-color);
-  border-radius: 2px;
+  border-radius: var(--border-radius-sm);
 }
 
 .emptyEvents {
@@ -307,7 +307,7 @@
   gap: 8px;
   padding: 40px 10px;
   color: var(--text-muted);
-  font-size: 13px;
+  font-size: var(--font-size-sm);
   font-style: italic;
   text-align: center;
 }
@@ -325,6 +325,7 @@
   flex-direction: column;
   gap: 4px;
   transition: all 0.2s ease;
+  background-color: var(--event-bg, rgb(136,136,136,0.1));
 }
 
 .eventCard:hover {
@@ -340,25 +341,25 @@
   bottom: 8px;
   width: 4px;
   background-color: var(--event-color, var(--text-muted));
-  border-radius: 2px;
+  border-radius: var(--border-radius-sm);
 }
 
 .eventLabel {
-  font-size: 12px;
-  font-weight: 700;
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-bold);
   color: var(--text-main);
 }
 
 .eventDesc {
-  font-size: 12px;
+  font-size: var(--font-size-caption);
   color: var(--text-muted);
   margin: 0;
   line-height: 1.4;
 }
 
 .eventType {
-  font-size: 10px;
-  font-weight: 700;
+  font-size: var(--font-size-2xs);
+  font-weight: var(--font-weight-bold);
   color: var(--text-light);
   margin-top: 2px;
 }
@@ -374,8 +375,8 @@
 
 .statsTitle {
   display: block;
-  font-size: 11px;
-  font-weight: 700;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
   color: var(--text-muted);
   margin-bottom: 8px;
 }
@@ -384,14 +385,14 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 12px;
+  font-size: var(--font-size-caption);
   color: var(--text-muted);
   margin-top: 6px;
 }
 
 .statValue {
-  font-weight: 800;
-  font-size: 14px;
+  font-weight: var(--font-weight-extrabold, 800);
+  font-size: var(--font-size-md);
 }
 
 /* Responsive */
@@ -417,3 +418,152 @@
     padding: 6px 8px;
   }
 }
+
+/* ── Modal Form ── */
+.formColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 8px 0;
+}
+
+.formLabel {
+  font-size: var(--font-size-caption);
+  color: var(--text-muted, #888);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.formInput {
+  width: 100%;
+  padding: 0 12px;
+  height: 38px;
+  font-size: var(--font-size-sm);
+  border: 1px solid var(--border-color);
+  border-radius: var(--btn-radius);
+  background: var(--bg-main);
+  color: var(--text-main);
+}
+
+.formInput:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+.formTextarea {
+  width: 100%;
+  padding: 8px 12px;
+  font-size: var(--font-size-sm);
+  resize: vertical;
+  border: 1px solid var(--border-color);
+  border-radius: var(--btn-radius);
+  background: var(--bg-main);
+  color: var(--text-main);
+  font-family: inherit;
+}
+
+.formGrid2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.colorPicker {
+  display: flex;
+  gap: 8px;
+}
+
+.colorCircle {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.15s;
+  background-color: var(--circle-color);
+}
+
+.colorCircle:hover {
+  transform: scale(1.1);
+}
+
+.colorCircleSelected {
+  outline: 2px solid var(--text-dark, #fff);
+  outline-offset: 2px;
+}
+
+.checkboxRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.checkboxLabel {
+  font-size: var(--font-size-caption);
+  color: var(--text-muted, #888);
+}
+
+.submitBtn {
+  padding: 10px 16px;
+  background: var(--color-primary, #f05a28);
+  color: var(--text-on-primary, #fff);
+  border: none;
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  margin-top: 4px;
+  border-radius: var(--btn-radius);
+  transition: filter 0.2s;
+}
+
+.submitBtn:hover {
+  filter: brightness(1.1);
+}
+
+/* ── Skeleton ── */
+.skeletonColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+/* ── Event Card ── */
+.deleteBtn {
+  background: none;
+  border: none;
+  color: var(--text-muted, #888);
+  cursor: pointer;
+  padding: 2px;
+}
+
+.deleteBtn:hover {
+  color: var(--color-danger);
+}
+
+.eventHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+/* ── Form utilities ── */
+.formColumn { display: flex; flex-direction: column; gap: 14px; padding: 8px 0; }
+.formLabel { font-size: var(--font-size-caption); color: var(--text-muted, #888); display: block; margin-bottom: 4px; }
+.formInput { width: 100%; padding: 0 12px; height: 38px; font-size: var(--font-size-sm); border: 1px solid var(--border-color); border-radius: var(--input-radius, 6px); background: var(--bg-card); color: var(--text-main); }
+.formTextarea { width: 100%; padding: 8px 12px; font-size: var(--font-size-sm); border: 1px solid var(--border-color); border-radius: var(--input-radius, 6px); background: var(--bg-card); color: var(--text-main); resize: vertical; }
+.formGrid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.formFlex { display: flex; gap: 8px; }
+.colorPicker { display: flex; gap: 8px; }
+.colorCircle { width: 24px; height: 24px; border-radius: 50%; cursor: pointer; }
+.colorCircleSelected { outline: 2px solid var(--text-dark, #fff); outline-offset: 2px; }
+.checkboxRow { display: flex; align-items: center; gap: 8px; }
+.checkboxLabel { font-size: var(--font-size-caption); color: var(--text-muted, #888); }
+.submitBtn { padding: 10px 16px; background: var(--color-primary, #f05a28); color: var(--text-on-primary, #fff); border: none; font-weight: var(--font-weight-semibold); font-size: var(--font-size-sm); cursor: pointer; margin-top: 4px; border-radius: var(--btn-radius); }
+.loadingSkeleton { display: flex; flex-direction: column; gap: 10px; width: 100%; }
+.loadingText { color: var(--text-muted, #555); font-size: var(--font-size-caption); }
+.iconMuted { color: var(--text-muted, #555); opacity: 0.4; }
+.statValueOrange { color: var(--list-accent-color, #f97316); }
+.statValueGreen { color: var(--color-success, #16a34a); }
+.deleteBtn { background: none; border: none; color: var(--text-muted, #888); cursor: pointer; padding: 2px; }
+.eventCardFlex { display: flex; justify-content: space-between; align-items: flex-start; }
+.dayDot { width: 6px; height: 6px; border-radius: 50%; background-color: var(--dot-color, #888); }

@@ -6,6 +6,7 @@ import { SALES_REPOSITORY } from '../application/ports/sale.repository.interface
 import { InventoryModule } from '../../inventory';
 import { AccountsReceivableModule } from '../../accounts-receivable';
 import { CashRegisterModule } from '../../cash-register';
+import { FiscalModule } from '../../fiscal/fiscal.module';
 import { ProcessSaleUseCase } from '../application/use-cases/process-sale.use-case';
 import { ProcessBulkSalesUseCase } from '../application/use-cases/process-bulk-sales.use-case';
 import { FindAllSalesUseCase } from '../application/use-cases/find-all-sales.use-case';
@@ -20,6 +21,7 @@ import { VoidSaleUseCase } from '../application/use-cases/void-sale.use-case';
     InventoryModule,
     AccountsReceivableModule,
     CashRegisterModule,
+    FiscalModule,
   ],
   controllers: [SalesController],
   providers: [

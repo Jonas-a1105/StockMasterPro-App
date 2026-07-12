@@ -16,7 +16,7 @@ interface UpdateCountInput {
 @Injectable()
 export class UpdateInventoryCountUseCase {
   constructor(
-    @Inject('INVENTORY_COUNT_REPOSITORY')
+    @Inject(INVENTORY_COUNT_REPOSITORY)
     private readonly countRepo: InventoryCountRepository,
   ) {}
 
@@ -44,7 +44,7 @@ interface StartCountInput {
 @Injectable()
 export class StartInventoryCountUseCase {
   constructor(
-    @Inject('INVENTORY_COUNT_REPOSITORY')
+    @Inject(INVENTORY_COUNT_REPOSITORY)
     private readonly countRepo: InventoryCountRepository,
   ) {}
 
@@ -69,7 +69,7 @@ interface CompleteCountInput {
 @Injectable()
 export class CompleteInventoryCountUseCase {
   constructor(
-    @Inject('INVENTORY_COUNT_REPOSITORY')
+    @Inject(INVENTORY_COUNT_REPOSITORY)
     private readonly countRepo: InventoryCountRepository,
   ) {}
 
@@ -95,7 +95,7 @@ interface ApproveCountInput {
 @Injectable()
 export class ApproveInventoryCountUseCase {
   constructor(
-    @Inject('INVENTORY_COUNT_REPOSITORY')
+    @Inject(INVENTORY_COUNT_REPOSITORY)
     private readonly countRepo: InventoryCountRepository,
   ) {}
 
@@ -120,7 +120,7 @@ interface CancelCountInput {
 @Injectable()
 export class CancelInventoryCountUseCase {
   constructor(
-    @Inject('INVENTORY_COUNT_REPOSITORY')
+    @Inject(INVENTORY_COUNT_REPOSITORY)
     private readonly countRepo: InventoryCountRepository,
   ) {}
 

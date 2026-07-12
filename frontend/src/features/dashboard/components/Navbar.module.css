@@ -49,8 +49,8 @@
   background-color: var(--bg-success, #f0fdf4);
   border: 1px solid var(--color-success, #bbf7d0);
   border-radius: var(--btn-radius, 8px);
-  font-size: 13px;
-  font-weight: 600;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
   color: var(--color-success, #16a34a);
   white-space: nowrap;
   cursor: pointer;
@@ -63,17 +63,17 @@
 
 .dolarSign {
   color: var(--color-success, #16a34a);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
 }
 
 .dolarValue {
   color: var(--color-success, #16a34a);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
 }
 
 .dolarTag {
-  font-size: 11px;
-  font-weight: 400;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-normal);
   color: var(--text-muted, #6b7280);
   margin-left: 4px;
 }
@@ -93,9 +93,9 @@
   top: -4px;
   right: -4px;
   background-color: var(--color-danger, #ef4444);
-  color: var(--text-on-primary, #ffffff);
-  font-size: 10px;
-  font-weight: 700;
+  color: var(--text-on-primary, #fff);
+  font-size: var(--font-size-2xs);
+  font-weight: var(--font-weight-bold);
   width: 16px;
   height: 16px;
   border-radius: 50%;
@@ -113,8 +113,8 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 13.5px;
-  font-weight: 600;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
   color: var(--text-main);
 }
 
@@ -134,7 +134,7 @@
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: var(--card-radius, 12px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 25px rgb(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   z-index: 200;
@@ -164,8 +164,8 @@
 }
 
 .notifModalTitle {
-  font-size: 11px;
-  font-weight: 700;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
   text-transform: none;
   letter-spacing: 0.6px;
   color: var(--text-main);
@@ -175,8 +175,8 @@
 }
 
 .notifModalClearAll {
-  font-size: 11px;
-  font-weight: 700;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
   text-transform: none;
   color: var(--text-muted);
   cursor: pointer;
@@ -209,7 +209,7 @@
 
 .notifModalFeed::-webkit-scrollbar-thumb {
   background-color: var(--text-muted);
-  border-radius: 6px;
+  border-radius: var(--border-radius-md);
 }
 
 .notifModalItem {
@@ -250,7 +250,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 13px;
+  font-size: var(--font-size-sm);
   flex-shrink: 0;
   border: 1px solid var(--border-color);
 }
@@ -279,8 +279,8 @@
 }
 
 .notifModalTitleText {
-  font-size: 13px;
-  font-weight: 700;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
   line-height: 1.3;
   color: var(--text-main);
   white-space: nowrap;
@@ -289,9 +289,9 @@
 }
 
 .notifModalMessage {
-  font-size: 11px;
+  font-size: var(--font-size-xs);
   color: var(--text-muted);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   line-height: 1.3;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -300,8 +300,8 @@
 }
 
 .notifModalTime {
-  font-size: 10px;
-  font-weight: 700;
+  font-size: var(--font-size-2xs);
+  font-weight: var(--font-weight-bold);
   color: var(--text-muted);
   text-transform: none;
   margin-top: 2px;
@@ -319,8 +319,8 @@
 }
 
 .notifModalEmpty span {
-  font-size: 13px;
-  font-weight: 600;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
 }
 
 .notifModalFooter {
@@ -336,8 +336,8 @@
   padding: 10px;
   background-color: var(--bg-app);
   color: var(--text-main);
-  font-size: 13px;
-  font-weight: 700;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
   text-transform: none;
   letter-spacing: 0.5px;
   border-radius: var(--btn-radius, 8px);
@@ -362,3 +362,11 @@
     max-width: 400px;
   }
 }
+
+/* ── Utility classes ── */
+.flexRow { display: flex; flex-direction: row; align-items: center; gap: 8px; }
+.cursorDefault { cursor: default; }
+.bgTransparent { background: transparent; }
+.borderTransparent { border-color: transparent; }
+.colorPrimary { color: var(--color-primary); }
+.colorMuted { color: var(--text-muted); }

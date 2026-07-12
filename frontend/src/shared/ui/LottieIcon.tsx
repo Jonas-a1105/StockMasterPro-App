@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import lottie from 'lottie-web';
+import styles from './LottieIcon.module.css';
 
 interface Props {
   data?: any;
@@ -54,8 +55,8 @@ export function LottieIcon({ data, src, size = 24, play = true, hoverPlay }: Pro
       ref={ref}
       onMouseEnter={hoverPlay ? handleMouseEnter : undefined}
       onMouseLeave={hoverPlay ? handleMouseLeave : undefined}
-      className="lottie-icon"
-      style={{ width: size, height: size, display: 'inline-flex', cursor: hoverPlay ? 'pointer' : undefined }}
+      className={`lottie-icon ${styles.icon} ${hoverPlay ? styles.iconClickable : ''}`}
+      style={{ '--lottie-size': size } as React.CSSProperties}
     />
   );
 }

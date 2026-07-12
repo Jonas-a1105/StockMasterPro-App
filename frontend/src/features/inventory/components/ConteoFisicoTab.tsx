@@ -6,7 +6,7 @@ import { LoadingDots } from '@shared/ui/LoadingDots';
 import { SkeletonTablePage } from '@shared/ui/Skeleton';
 import { Modal } from '@shared/ui/Modal';
 import { ButtonLoader } from '@shared/ui/ButtonLoader';
-import { FileText, Plus, X, Check, ChevronRight, Search, RotateCcw, FileDown } from 'lucide-react';
+import { FileText, Plus, X, Check, ChevronRight, Search, RotateCcw, FileDown, FileUp } from 'lucide-react';
 import { formatUsd } from '@shared/lib/format/currency';
 import { exportToExcel, type ColumnMapping } from '@shared/lib/excelHelper';
 import { ImportModal } from '@shared/ui/ImportModal';
@@ -61,6 +61,24 @@ const STATUS_STYLES: Record<string, string> = {
   approved: 'status-approved',
   cancelled: 'status-cancelled',
 };
+
+function renderLoadingRows(config: any) {
+  if (!config.skeletonEnabled) {
+    return <tr><td colSpan={8} className={styles.emptyRow}><LoadingDots text="Cargando conteos..." /></td></tr>;
+  }
+  return Array.from({ length: 5 }).map((_, idx) => (
+    <tr key={`loader-${idx}`}>
+      <td><div className={`skeleton ${styles.skeletonWidth60}`} /></td>
+      <td><div className={`skeleton ${styles.skeletonWidth120}`} /></td>
+      <td><div className={`skeleton ${styles.skeletonWidth100}`} /></td>
+      <td><div className={`skeleton ${styles.skeletonWidth80}`} /></td>
+      <td><div className={`skeleton ${styles.skeletonWidth40}`} /></td>
+      <td><div className={`skeleton ${styles.skeletonWidth60b}`} /></td>
+      <td><div className={`skeleton ${styles.skeletonWidth100b}`} /></td>
+      <td></td>
+    </tr>
+  ));
+}
 
 export function ConteoFisicoTab() {
   const { showToast } = useToast();
@@ -295,79 +313,60 @@ export function ConteoFisicoTab() {
               <th>ID</th>
               <th>Nombre</th>
               <th>Almacén</th>
-              <th style={{ textAlign: 'center' }}>Estado</th>
-              <th style={{ textAlign: 'center' }}>Items</th>
-              <th style={{ textAlign: 'center' }}>Diferencias</th>
+              <th className={styles.textCenter}>Estado</th>
+              <th className={styles.textCenter}>Items</th>
+              <th className={styles.textCenter}>Diferencias</th>
               <th>Creado</th>
-              <th style={{ textAlign: 'center' }}>Acciones</th>
+              <th className={styles.textCenter}>Acciones</th>
             </tr>
           </thead>
           <tbody>
-            {loading ? (
-              config.skeletonEnabled ? (
-                Array.from({ length: 5 }).map((_, idx) => (
-                  <tr key={`loader-${idx}`}>
-                    <td><div className="skeleton" style={{ width: '60px', height: '14px' }} /></td>
-                    <td><div className="skeleton" style={{ width: '120px', height: '14px' }} /></td>
-                    <td><div className="skeleton" style={{ width: '100px', height: '14px' }} /></td>
-                    <td><div className="skeleton" style={{ width: '80px', height: '20px' }} /></td>
-                    <td><div className="skeleton" style={{ width: '40px', height: '14px' }} /></td>
-                    <td><div className="skeleton" style={{ width: '60px', height: '14px' }} /></td>
-                    <td><div className="skeleton" style={{ width: '100px', height: '14px' }} /></td>
-                    <td></td>
-                  </tr>
-                ))
-              ) : (
-                <tr><td colSpan={8} style={{ textAlign: 'center', padding: 40 }}><LoadingDots text="Cargando conteos..." /></td></tr>
-              )
-            ) : (
-              filteredCounts.map(count => (
+            {loading ? renderLoadingRows(config) : filteredCounts.map(count => (
                 <tr key={count.id}>
-                  <td style={{ fontFamily: 'monospace', fontWeight: 700, color: 'var(--text-muted)' }}>{count.id.slice(0, 8)}</td>
+                  <td className={`${styles.monoFont} ${styles.textMuted}`}>{count.id.slice(0, 8)}</td>
                   <td><span className="lista-name-text">{count.name || '—'}</span></td>
                   <td>{count.warehouse?.name || 'Todos'}</td>
-                  <td style={{ textAlign: 'center' }}>
+                  <td className={styles.textCenter}>
                     <span className={`${styles.badge} ${STATUS_STYLES[count.status]}`}>{STATUS_LABELS[count.status]}</span>
                   </td>
-                  <td style={{ textAlign: 'center' }}>{count.items.length}</td>
-                  <td style={{ textAlign: 'center' }}>
-                    <span style={{ fontWeight: 600, color: count.items.some(i => i.difference !== 0) ? 'var(--color-danger)' : 'var(--color-success)' }}>
+                  <td className={styles.textCenter}>{count.items.length}</td>
+                  <td className={styles.textCenter}>
+                    <span className={`${styles.fontWeight600} ${count.items.some(i => i.difference !== 0) ? styles.textDanger : styles.textSuccess}`}>
                       {count.items.filter(i => i.difference !== 0).length}
                     </span>
                   </td>
                   <td>{new Date(count.createdAt).toLocaleDateString()}</td>
-                  <td style={{ textAlign: 'center', whiteSpace: 'nowrap' }}>
+                  <td className={`${styles.textCenter} ${styles.textCenterWhiteSpace}`}>
                     <div className={styles.actionGroup}>
                       <button className={styles.iconBtn} onClick={() => openDetail(count)} title="Ver detalle"><FileText size={14} /></button>
                       {count.status === 'draft' && (
                         <>
                           <button className={styles.iconBtn} onClick={() => setShowStartConfirm(count)} title="Iniciar"><ChevronRight size={14} /></button>
-                          <button className={styles.iconBtn danger} onClick={() => setShowCancelConfirm(count)} title="Cancelar"><X size={14} /></button>
+                          <button className={`${styles.iconBtn} danger`} onClick={() => setShowCancelConfirm(count)} title="Cancelar"><X size={14} /></button>
                         </>
-                      }
+                      )}
                       {count.status === 'in_progress' && (
                         <>
                           <button className={styles.iconBtn} onClick={() => setShowCompleteConfirm(count)} title="Completar"><Check size={14} /></button>
-                          <button className={styles.iconBtn danger} onClick={() => setShowCancelConfirm(count)} title="Cancelar"><X size={14} /></button>
+                          <button className={`${styles.iconBtn} danger`} onClick={() => setShowCancelConfirm(count)} title="Cancelar"><X size={14} /></button>
                         </>
-                      }
+                      )}
                       {count.status === 'completed' && (
                         <>
                           <button className={styles.iconBtn} onClick={() => setShowApproveConfirm(count)} title="Aprobar"><Check size={14} /></button>
-                          <button className={styles.iconBtn danger} onClick={() => setShowCancelConfirm(count)} title="Cancelar"><X size={14} /></button>
+                          <button className={`${styles.iconBtn} danger`} onClick={() => setShowCancelConfirm(count)} title="Cancelar"><X size={14} /></button>
                         </>
-                      }
+                      )}
                       {count.status === 'approved' && (
-                        <button className={styles.iconBtn success} onClick={() => handleApplyAdjustments(count)} title="Aplicar ajustes al stock"><RotateCcw size={14} /></button>
+                        <button className={`${styles.iconBtn} success`} onClick={() => handleApplyAdjustments(count)} title="Aplicar ajustes al stock"><RotateCcw size={14} /></button>
                       )}
                     </div>
                   </td>
                 </tr>
               ))}
               {filteredCounts.length === 0 && (
-                <tr><td colSpan={8} style={{ textAlign: 'center', padding: 40, color: 'var(--text-muted)' }}>No hay conteos de inventario</td></tr>
+                <tr><td colSpan={8} className={styles.emptyRow}>No hay conteos de inventario</td></tr>
               )}
-            )}
           </tbody>
         </table>
       </div>
@@ -496,9 +495,9 @@ function CountDetailModal({ open, onClose, count, onUpdateItem, savingItem }: an
         <thead>
           <tr>
             <th>Producto</th>
-            <th style={{ textAlign: 'center' }}>Stock Sistema</th>
-            <th style={{ textAlign: 'center' }}>Contado</th>
-            <th style={{ textAlign: 'center' }}>Diferencia</th>
+            <th className={styles.thCenter}>Stock Sistema</th>
+            <th className={styles.thCenter}>Contado</th>
+            <th className={styles.thCenter}>Diferencia</th>
             <th>Notas</th>
           </tr>
         </thead>
@@ -506,18 +505,18 @@ function CountDetailModal({ open, onClose, count, onUpdateItem, savingItem }: an
           {count.items.map((item: any) => (
             <tr key={item.id}>
               <td>{item.product?.name || item.productId.slice(0, 8)}</td>
-              <td style={{ textAlign: 'center' }}>{item.systemQty}</td>
-              <td style={{ textAlign: 'center' }}>
+              <td className={styles.tdCenter}>{item.systemQty}</td>
+              <td className={styles.tdCenter}>
                 <input
                   type="number"
                   min="0"
                   value={item.countedQty ?? ''}
                   onChange={e => onUpdateItem(count.id, item.id, parseInt(e.target.value) || 0, item.notes)}
-                  style={{ width: '80px', textAlign: 'center', padding: '4px 8px', borderRadius: 4, border: '1px solid var(--border)' }}
+                  className={styles.inputCell}
                   disabled={count.status !== 'in_progress'}
                 />
               </td>
-              <td style={{ textAlign: 'center', fontWeight: 600, color: item.difference !== 0 ? 'var(--color-danger)' : 'var(--color-success)' }}>
+              <td className={`${styles.tdCenter} ${styles.fontWeight600} ${styles.colorVar}`} style={{ '--color-var': item.difference !== 0 ? 'var(--color-danger)' : 'var(--color-success)' } as React.CSSProperties}>
                 {item.difference >= 0 ? '+' : ''}{item.difference}
               </td>
               <td>
@@ -525,7 +524,7 @@ function CountDetailModal({ open, onClose, count, onUpdateItem, savingItem }: an
                   type="text"
                   value={item.notes || ''}
                   onChange={e => onUpdateItem(count.id, item.id, item.countedQty ?? item.systemQty, e.target.value)}
-                  style={{ width: '100%', padding: '4px 8px', borderRadius: 4, border: '1px solid var(--border)' }}
+                  className={styles.inputFull}
                   disabled={count.status !== 'in_progress'}
                 />
               </td>

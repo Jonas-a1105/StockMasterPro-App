@@ -1,7 +1,7 @@
 import { useRef, useState, useCallback } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useAuth } from '@contexts/AuthContext';
-import { LayoutDashboard, ShoppingCart, Package, Settings, LogOut, BarChart3, ChevronRight, Users, Contact, Receipt, ReceiptText, RotateCcw, DollarSign, AlertTriangle, Building2, CalendarDays, Shield, Lock, Share2, Wallet, Bell, Tag, RotateCcw as ReturnIcon, ArrowRightLeft, Boxes, FileText } from 'lucide-react';
+import { LayoutDashboard, ShoppingCart, Package, Settings, LogOut, BarChart3, BarChart2, ChevronRight, Users, Contact, Receipt, ReceiptText, RotateCcw, DollarSign, AlertTriangle, Building2, CalendarDays, Shield, Lock, Share2, Wallet, Bell, Tag, RotateCcw as ReturnIcon, ArrowRightLeft, Boxes, FileText } from 'lucide-react';
 import type { SidebarMode } from './DashboardLayout';
 import styles from './Sidebar.module.css';
 

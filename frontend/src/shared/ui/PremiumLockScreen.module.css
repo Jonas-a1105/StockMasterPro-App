@@ -31,26 +31,30 @@
 }
 
 .title {
-  font-size: 18px;
-  font-weight: 700;
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
   text-transform: none;
   letter-spacing: 1px;
-  color: var(--text-dark, #ffffff);
-  margin: 0 0 12px 0;
+  color: var(--text-dark, #fff);
+  margin: 0 0 12px;
 }
 
 .subtitle {
-  font-size: 13px;
-  color: var(--text-muted, #888888);
+  font-size: var(--font-size-sm);
+  color: var(--text-muted, #888);
   line-height: 1.5;
-  margin: 0 0 16px 0;
+  margin: 0 0 16px;
+}
+
+.subtitle strong {
+  color: var(--text-dark, #fff);
 }
 
 .desc {
-  font-size: 11px;
-  color: var(--text-muted, #666666);
+  font-size: var(--font-size-xs);
+  color: var(--text-muted, #666);
   line-height: 1.6;
-  margin: 0 0 24px 0;
+  margin: 0 0 24px;
   max-width: 320px;
 }
 

@@ -6,18 +6,18 @@ import { FindInventoryCountUseCase } from '@modules/inventory-counts/application
 import { StartInventoryCountUseCase, CompleteInventoryCountUseCase, ApproveInventoryCountUseCase, CancelInventoryCountUseCase, UpdateInventoryCountUseCase } from '@modules/inventory-counts/application/use-cases/update-inventory-count.use-case';
 import { UpdateInventoryCountItemUseCase } from '@modules/inventory-counts/application/use-cases/update-inventory-count-item.use-case';
 import { ApplyInventoryCountAdjustmentsUseCase } from '@modules/inventory-counts/application/use-cases/apply-inventory-count-adjustments.use-case';
+import { INVENTORY_COUNT_REPOSITORY } from '@modules/inventory-counts/application/ports/inventory-count.repository.interface';
 
 @Module({
   controllers: [InventoryCountController],
   providers: [
-    PostgresInventoryCountRepo,
     CreateInventoryCountUseCase,
     FindInventoryCountUseCase,
     {
-      provide: 'INVENTORY_COUNT_REPOSITORY',
+      provide: INVENTORY_COUNT_REPOSITORY,
       useClass: PostgresInventoryCountRepo,
     },
   ],
-  exports: ['INVENTORY_COUNT_REPOSITORY'],
+  exports: [INVENTORY_COUNT_REPOSITORY],
 })
 export class InventoryCountsModule {}

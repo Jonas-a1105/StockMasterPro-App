@@ -1,7 +1,7 @@
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgb(0, 0, 0, 0.4);
   z-index: 900;
   opacity: 0;
   pointer-events: none;
@@ -20,13 +20,13 @@
   bottom: 0;
   width: 360px;
   max-width: 100vw;
-  background-color: var(--bg-card, #ffffff);
+  background-color: var(--bg-card, #fff);
   z-index: 950;
   transform: translateX(100%);
   transition: transform var(--transition-duration, 0.3s) cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   flex-direction: column;
-  box-shadow: -2px 0 20px rgba(0, 0, 0, 0.15);
+  box-shadow: -2px 0 20px rgb(0, 0, 0, 0.15);
 }
 
 .panelOpen {
@@ -38,7 +38,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 16px 20px;
-  border-bottom: var(--card-border-width, 1px) solid var(--border-color, #eeeeee);
+  border-bottom: var(--card-border-width, 1px) solid var(--border-color, #eee);
   flex-shrink: 0;
 }
 
@@ -46,9 +46,9 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 15px;
-  font-weight: 700;
-  color: var(--text-dark, #333333);
+  font-size: var(--font-size-md-plus);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-dark, #333);
 }
 
 .closeBtn {
@@ -66,7 +66,7 @@
 }
 
 .closeBtn:hover {
-  background-color: var(--bg-hover, rgba(0,0,0,0.04));
+  background-color: var(--bg-hover, rgb(0,0,0,0.04));
   color: var(--text-dark, #333);
 }
 
@@ -86,15 +86,15 @@
   background: none;
   cursor: pointer;
   color: var(--text-dark, #333);
-  font-size: 12px;
-  font-weight: 700;
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-bold);
   text-transform: none;
   letter-spacing: 0.5px;
   transition: background 0.15s ease;
 }
 
 .sectionHeader:hover {
-  background-color: var(--bg-hover, rgba(0,0,0,0.04));
+  background-color: var(--bg-hover, rgb(0,0,0,0.04));
 }
 
 .sectionTitle {
@@ -117,8 +117,8 @@
 }
 
 .fieldLabel {
-  font-size: 11px;
-  font-weight: 600;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
   color: var(--text-muted, #888);
   text-transform: none;
   letter-spacing: 0.3px;
@@ -153,7 +153,7 @@
   padding: 4px 8px;
   border-color: var(--border-color); border-style: solid;
   border-radius: var(--input-radius, 4px);
-  font-size: 11px;
+  font-size: var(--font-size-xs);
   font-family: monospace;
   background-color: var(--bg-input, #fff);
   color: var(--text-dark, #333);
@@ -179,8 +179,8 @@
 }
 
 .sliderValue {
-  font-size: 11px;
-  font-weight: 600;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
   color: var(--text-muted, #888);
   min-width: 35px;
   text-align: right;
@@ -200,7 +200,7 @@
   border-radius: var(--card-radius);
   border: none;
   cursor: pointer;
-  background-color: #ccc;
+  background-color: var(--color-gray-300, #ccc);
   transition: background 0.2s ease;
   padding: 0;
 }
@@ -218,7 +218,7 @@
   border-radius: 50%;
   background-color: white;
   transition: transform 0.2s ease;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  box-shadow: 0 1px 3px rgb(0,0,0,0.2);
 }
 
 .toggleOn .toggleKnob {
@@ -232,7 +232,7 @@
   border-radius: var(--input-radius, 4px);
   background-color: var(--bg-input, #fff);
   color: var(--text-dark, #333);
-  font-size: 12px;
+  font-size: var(--font-size-caption);
   cursor: pointer;
 }
 
@@ -243,7 +243,7 @@
   border-radius: var(--input-radius, 4px);
   background-color: var(--bg-input, #fff);
   color: var(--text-dark, #333);
-  font-size: 12px;
+  font-size: var(--font-size-caption);
 }
 
 .saveRow {
@@ -260,8 +260,8 @@
   border-radius: var(--btn-radius, 4px);
   background-color: var(--color-primary, #f05a28);
   color: var(--text-on-primary, #fff);
-  font-size: 11px;
-  font-weight: 700;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
   cursor: pointer;
   white-space: nowrap;
   transition: opacity 0.2s ease;
@@ -277,7 +277,7 @@
 }
 
 .empty {
-  font-size: 12px;
+  font-size: var(--font-size-caption);
   color: var(--text-muted, #888);
   text-align: center;
   padding: 12px 0;
@@ -301,7 +301,7 @@
   border-radius: var(--input-radius, 4px);
   background-color: var(--bg-input, #fff);
   color: var(--text-dark, #333);
-  font-size: 12px;
+  font-size: var(--font-size-caption);
   cursor: pointer;
   text-align: left;
   transition: all 0.15s ease;
@@ -365,7 +365,7 @@
 }
 
 .paletteName {
-  font-size: 11px;
+  font-size: var(--font-size-xs);
   color: var(--text-dark, #333);
 }
 
@@ -388,14 +388,14 @@
   border-radius: var(--btn-radius, 4px);
   background: none;
   color: var(--text-dark, #333);
-  font-size: 12px;
-  font-weight: 600;
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-semibold);
   cursor: pointer;
   transition: all 0.15s ease;
 }
 
 .darkToggle:hover {
-  background-color: var(--bg-hover, rgba(0,0,0,0.04));
+  background-color: var(--bg-hover, rgb(0,0,0,0.04));
 }
 
 .oledToggle {
@@ -408,19 +408,19 @@
   border-radius: var(--btn-radius, 4px);
   background: none;
   color: var(--text-dark, #333);
-  font-size: 12px;
-  font-weight: 600;
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-semibold);
   cursor: pointer;
   transition: all 0.15s ease;
 }
 
 .oledToggle:hover {
-  background-color: var(--bg-hover, rgba(0,0,0,0.04));
+  background-color: var(--bg-hover, rgb(0,0,0,0.04));
 }
 
 .oledToggleOn {
   background-color: var(--color-primary, #f05a28) !important;
-  color: #000 !important;
+  color: var(--color-black, #000) !important;
   border-color: var(--color-primary, #f05a28) !important;
 }
 
@@ -438,8 +438,8 @@
   border-radius: var(--btn-radius, 4px);
   background: none;
   color: var(--color-danger, #d9534f);
-  font-size: 12px;
-  font-weight: 600;
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-semibold);
   cursor: pointer;
   transition: all 0.15s ease;
 }
@@ -447,4 +447,24 @@
 .resetBtn:hover {
   background-color: var(--bg-danger, #f8d7da);
   border-color: var(--color-danger, #d9534f);
+}
+
+/* ── Utility classes for inline style replacement ── */
+.flexRow { display: flex; flex-direction: row; align-items: center; gap: 8px; }
+.flexCol { display: flex; flex-direction: column; }
+.flexGap8 { display: flex; gap: 8px; }
+.itemsCenter { align-items: center; }
+.justifyCenter { justify-content: center; }
+.w16 { width: 16px; }
+.h16 { height: 16px; }
+.w24 { width: 24px; }
+.h24 { height: 24px; }
+.bgRadial { background: radial-gradient(circle at 30% 30%, #fff, #888); }
+.roundedCard { border-radius: var(--card-radius, 4px); }
+
+.swatch {
+  width: 18px;
+  height: 18px;
+  border-radius: var(--card-radius);
+  background-color: var(--swatch-color);
 }

@@ -4,14 +4,15 @@ import { Skeleton } from '@shared/ui/Skeleton';
 import { api } from '@shared/lib/http/client';
 import { formatUsd } from '@shared/lib/format/currency';
 import type { SocialCatalog, SocialCatalogItem } from '@types';
+import styles from './SocialCatalogs.module.css';
 
 function CatalogGridSkeleton() {
   return (
     <div className="ig-catalog-grid">
       {[1, 2, 3].map(i => (
-        <div key={i} className="ig-catalog-card" style={{ pointerEvents: 'none' }}>
+        <div key={i} className={`ig-catalog-card ${styles.skeletonCard}`}>
           <Skeleton height={200} width="100%" borderRadius={0} />
-          <div style={{ padding: 12, display: 'flex', flexDirection: 'column', gap: 6 }}>
+          <div className={styles.skeletonBody}>
             <Skeleton height={14} width="70%" />
             <Skeleton height={10} width="40%" />
           </div>
@@ -99,7 +100,7 @@ export function SocialCatalogs() {
 
       {showCreate && (
         <div className="ig-modal-overlay" onClick={() => setShowCreate(false)}>
-          <div className="ig-modal-content" style={{ maxWidth: '500px' }} onClick={e => e.stopPropagation()}>
+          <div className={`ig-modal-content ${styles.modalContent}`} onClick={e => e.stopPropagation()}>
             <div className="ig-modal-header">
               <h2>Crear Nuevo Catálogo</h2>
               <button className="ig-modal-close-btn" onClick={() => setShowCreate(false)}>×</button>
@@ -120,11 +121,7 @@ export function SocialCatalogs() {
         <div className="ig-catalog-grid">
           {catalogs.map(catalog => (
             <div key={catalog.id} className="ig-catalog-card" onClick={() => openDetail(catalog)}>
-              <div className="ig-catalog-cover" style={{
-                background: catalog.coverImage
-                  ? `url(${catalog.coverImage}) center/cover`
-                  : 'linear-gradient(135deg, var(--color-primary), var(--color-secondary, #667eea))',
-              }}>
+              <div className={`ig-catalog-cover ${styles.coverBg}`} style={{ '--cover-bg': catalog.coverImage ? `url(${catalog.coverImage}) center/cover` : 'linear-gradient(135deg, var(--color-primary), var(--color-secondary, #667eea))' } as React.CSSProperties}>
                 <span className={`ig-catalog-badge ${catalog.status}`}>
                   {catalog.status === 'published' ? 'Publicado' : 'Borrador'}
                 </span>

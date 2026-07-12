@@ -1,7 +1,7 @@
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgb(0, 0, 0, 0.7);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -51,27 +51,27 @@
 }
 
 .headerTitle {
-  font-size: 14px;
-  font-weight: 600;
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
   letter-spacing: 1px;
   color: var(--text-dark);
   text-transform: none;
 }
 
 .headerBadge {
-  font-size: 9px;
+  font-size: var(--font-size-2xs);
   background-color: var(--bg-hover);
   border: 1px solid var(--border-color);
   padding: 3px 8px;
   color: var(--color-primary);
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   text-transform: none;
   letter-spacing: 1px;
-  border-radius: 4px;
+  border-radius: var(--border-radius-sm);
 }
 
 .headerSubtitle {
-  font-size: 11px;
+  font-size: var(--font-size-xs);
   color: var(--text-muted);
 }
 
@@ -93,10 +93,10 @@
 }
 
 .rateInputLabel {
-  font-size: 10px;
+  font-size: var(--font-size-2xs);
   color: var(--text-muted);
   text-transform: none;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
 }
 
 .rateInput {
@@ -104,12 +104,12 @@
   background-color: var(--bg-card) !important;
   border: 1px solid var(--input-border) !important;
   color: var(--text-dark);
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   padding: 4px 8px;
   text-align: right;
   outline: none;
-  font-size: 13px;
-  border-radius: 4px;
+  font-size: var(--font-size-sm);
+  border-radius: var(--border-radius-sm);
 }
 
 .rateInput:focus {
@@ -117,7 +117,7 @@
 }
 
 .rateInputUnit {
-  font-size: 10px;
+  font-size: var(--font-size-2xs);
   color: var(--text-muted);
 }
 
@@ -159,10 +159,10 @@
 }
 
 .kpiLabel {
-  font-size: 10px;
+  font-size: var(--font-size-2xs);
   color: var(--text-muted);
   text-transform: none;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   letter-spacing: 1px;
 }
 
@@ -174,31 +174,29 @@
 }
 
 .kpiValuePrefix {
-  font-size: 11px;
+  font-size: var(--font-size-xs);
   color: var(--text-muted);
 
 }
 
 .kpiValueNum {
-  font-size: 24px;
-  font-weight: 700;
-
+  font-size: var(--font-size-4xl);
+  font-weight: var(--font-weight-bold);
   color: var(--text-dark);
   letter-spacing: -0.5px;
 }
 
 .kpiValueTag {
-  font-size: 11px;
+  font-size: var(--font-size-xs);
   color: var(--text-muted);
   text-transform: none;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   margin-left: 4px;
 }
 
 .kpiChange {
-  font-size: 10px;
+  font-size: var(--font-size-2xs);
   color: var(--color-success);
-
   margin-top: 4px;
 }
 
@@ -208,16 +206,14 @@
 }
 
 .kpiSub {
-  font-size: 10px;
+  font-size: var(--font-size-2xs);
   color: var(--text-muted);
-
   margin-top: 4px;
 }
 
 .kpiDanger {
-  font-size: 10px;
+  font-size: var(--font-size-2xs);
   color: var(--color-danger);
-
   margin-top: 4px;
 }
 
@@ -245,15 +241,15 @@
 }
 
 .chartPanelTitle {
-  font-size: 11px;
-  font-weight: 600;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
   letter-spacing: 1px;
   text-transform: none;
   color: var(--text-muted);
 }
 
 .chartPanelSub {
-  font-size: 10px;
+  font-size: var(--font-size-2xs);
   color: var(--text-muted);
 }
 
@@ -275,8 +271,8 @@
 }
 
 .converterTitle {
-  font-size: 11px;
-  font-weight: 600;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
   letter-spacing: 1px;
   text-transform: none;
   color: var(--text-muted);
@@ -300,11 +296,11 @@
 }
 
 .converterLabel {
-  font-size: 9px;
+  font-size: var(--font-size-2xs);
   color: var(--text-muted);
   text-transform: none;
   letter-spacing: 1px;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
 }
 
 .converterInput {
@@ -312,9 +308,8 @@
   background-color: var(--bg-input);
   border: 1px solid var(--border-color);
   padding: 8px 10px;
-
-  font-size: 14px;
-  font-weight: 700;
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-bold);
   color: var(--text-dark);
   text-align: right;
   outline: none;
@@ -329,18 +324,17 @@
 }
 
 .converterLabelResult {
-  font-size: 9px;
+  font-size: var(--font-size-2xs);
   color: var(--color-success);
   text-transform: none;
   letter-spacing: 1px;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
 }
 
 .converterResult {
   text-align: right;
-
-  font-size: 16px;
-  font-weight: 700;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
   color: var(--color-success);
   margin-top: 2px;
 }
@@ -352,15 +346,14 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  font-size: 11px;
+  font-size: var(--font-size-xs);
 
 }
 
 .arbitrageTitle {
-  font-size: 9px;
+  font-size: var(--font-size-2xs);
   color: var(--text-muted);
-
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   text-transform: none;
   letter-spacing: 1px;
 }
@@ -393,15 +386,15 @@
 }
 
 .projectionTitle {
-  font-size: 11px;
-  font-weight: 600;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
   letter-spacing: 1px;
   text-transform: none;
   color: var(--text-muted);
 }
 
 .projectionSub {
-  font-size: 10px;
+  font-size: var(--font-size-2xs);
   color: var(--text-muted);
   margin-top: -12px;
 }
@@ -421,25 +414,23 @@
 .projectionBarLabel {
   display: flex;
   justify-content: space-between;
-  font-size: 11px;
+  font-size: var(--font-size-xs);
 }
 
 .projectionBarText {
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-dark);
   text-transform: none;
   letter-spacing: 0.5px;
 }
 
 .projectionBarPctRed {
-
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   color: var(--color-danger);
 }
 
 .projectionBarPctGreen {
-
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   color: var(--color-success);
 }
 
@@ -482,25 +473,23 @@
 }
 
 .supportLabel {
-  font-size: 9px;
+  font-size: var(--font-size-2xs);
   color: var(--text-muted);
   text-transform: none;
 
 }
 
 .supportValueRed {
-  font-size: 14px;
-  font-weight: 700;
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-bold);
   color: var(--text-dark);
-
   margin-top: 2px;
 }
 
 .supportValueGreen {
-  font-size: 14px;
-  font-weight: 700;
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-bold);
   color: var(--text-dark);
-
   margin-top: 2px;
 }
 
@@ -516,21 +505,21 @@
 }
 
 .indexTitle {
-  font-size: 11px;
-  font-weight: 600;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
   letter-spacing: 1px;
   text-transform: none;
   color: var(--text-muted);
 }
 
 .indexSub {
-  font-size: 10px;
+  font-size: var(--font-size-2xs);
   color: var(--text-muted);
 }
 
 .indexTable {
   overflow-x: auto;
-  font-size: 11px;
+  font-size: var(--font-size-xs);
 }
 
 .indexTableHeader {
@@ -540,9 +529,8 @@
   background-color: var(--bg-main);
   color: var(--text-muted);
   text-transform: none;
-  font-size: 9px;
+  font-size: var(--font-size-2xs);
   letter-spacing: 1px;
-
   padding: 8px 10px;
   border-bottom: 1px solid var(--border-color);
 }
@@ -554,7 +542,6 @@
   padding: 10px;
   border-bottom: 1px solid var(--border-color);
   color: var(--text-muted);
-
   align-items: center;
 }
 
@@ -563,8 +550,7 @@
 }
 
 .indexColAsset {
-
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-dark);
 }
 
@@ -580,7 +566,7 @@
 .indexColVesReval {
   text-align: right;
   color: var(--color-success);
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
 }
 
 @media (max-width: 900px) {
@@ -605,4 +591,32 @@
   .kpiRow {
     grid-template-columns: 1fr;
   }
+}
+
+/* ── Progress bar width utilities ── */
+.progress74 { width: 74.2%; }
+.progress25 { width: 25.8%; }
+.roundedRadiusVar { border-radius: var(--card-radius); }
+
+/* KPI Card Flex variants */
+.kpiCardFlex {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+}
+
+.kpiIconWrapper {
+  width: 42px;
+  height: 42px;
+  border-radius: var(--card-radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.kpiContent {
+  flex: 1;
+  min-width: 0;
 }

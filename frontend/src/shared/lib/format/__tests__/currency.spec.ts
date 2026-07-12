@@ -1,6 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { formatUsd, formatBs, formatPrice } from '../currency';
-import type { CurrencyConfig } from '../currency';
+import { formatUsd, formatBs, formatPrice, type CurrencyConfig } from '../currency';
 
 const defaultConfig: CurrencyConfig = {
   symbol: 'Bs',

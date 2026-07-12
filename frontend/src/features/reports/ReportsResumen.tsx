@@ -49,125 +49,106 @@ export function ReportsResumen({ sales, products }: Props) {
         map[key].total += item.subtotal;
       });
     });
-    return Object.values(map).sort((a, b) => b.qty - a.qty).slice(0, 10);
+    return Object.values(map)
+      .sort((a, b) => b.total - a.total)
+      .slice(0, 5)
+      .map((p, i) => ({ ...p, color: COLORS[i % COLORS.length] }));
   }, [sales, products]);
 
-  const monthlyProfit = useMemo(() => {
-    const map: Record<string, { revenue: number; cost: number }> = {};
+  const { profitData, profitTotals } = useMemo(() => {
+    const data: Record<string, { revenue: number; cost: number; profit: number }> = {};
     sales.forEach(s => {
-      const date = s.createdAt?.split('T')[0];
+      const date = s.createdAt?.split('T')[0]?.slice(0, 7);
       if (!date) return;
-      const month = date.slice(0, 7);
-      if (!map[month]) map[month] = { revenue: 0, cost: 0 };
-      map[month].revenue += s.total;
-      (s.items || []).forEach((i: any) => {
-        map[month].cost += (i.cost || 0) * i.quantity;
-      });
+      const revenue = s.total || 0;
+      const cost = (s.items || []).reduce((sum: number, i: any) => sum + (i.cost || 0) * i.quantity, 0);
+      const profit = revenue - cost;
+      if (!data[date]) data[date] = { revenue: 0, cost: 0, profit: 0 };
+      data[date].revenue += revenue;
+      data[date].cost += cost;
+      data[date].profit += profit;
     });
-    const monthKeys = ['01','02','03','04','05','06','07','08','09','10','11','12'];
-    const monthNames: Record<string, string> = { '01': 'Ene','02': 'Feb','03': 'Mar','04': 'Abr','05': 'May','06': 'Jun','07': 'Jul','08': 'Ago','09': 'Sep','10': 'Oct','11': 'Nov','12': 'Dic' };
-    return monthKeys.map(key => {
-      const d = map[`2024-${key}`] || map[`2025-${key}`] || map[`2026-${key}`] || { revenue: 0, cost: 0 };
-      const profit = Math.round((d.revenue - d.cost) * 100) / 100;
-      return { month: monthNames[key], revenue: Math.round(d.revenue * 100) / 100, cost: Math.round(d.cost * 100) / 100, profit };
-    });
+    const arr = Object.entries(data)
+      .sort(([a], [b]) => a.localeCompare(b))
+      .map(([month, vals]) => ({ month, ...vals }));
+    const totals = arr.reduce((acc, m) => {
+      acc.revenue += m.revenue;
+      acc.cost += m.cost;
+      acc.profit += m.profit;
+      return acc;
+    }, { revenue: 0, cost: 0, profit: 0 });
+    return { profitData: arr, profitTotals: totals };
   }, [sales]);
 
-  const lowStockProducts = useMemo(() => products.filter(p => p.stock <= p.minStock), [products]);
-  const profitData = monthlyProfit.length >= 3 ? monthlyProfit : demoFinancialCore;
-
-  const profitDataWithTotal = useMemo(() => {
-    const totalRevenue = profitData.reduce((s: number, m: any) => s + m.revenue, 0);
-    const totalCost = profitData.reduce((s: number, m: any) => s + m.cost, 0);
-    const totalProfit = profitData.reduce((s: number, m: any) => s + m.profit, 0);
-    return [...profitData, { month: 'TOTAL', revenue: totalRevenue, cost: totalCost, profit: totalProfit }];
-  }, [profitData]);
-
-  const profitTotals = useMemo(() => ({
-    revenue: profitData.reduce((s: number, m: any) => s + m.revenue, 0),
-    cost: profitData.reduce((s: number, m: any) => s + m.cost, 0),
-    profit: profitData.reduce((s: number, m: any) => s + m.profit, 0),
-  }), [profitData]);
+  const lowStockProducts = useMemo(() =>
+    products
+      .filter(p => p.stock <= (p.minStock || 5) && p.stock > 0)
+      .sort((a, b) => a.stock - b.stock)
+      .slice(0, 10),
+  [products]);
 
   return (
     <>
-      <div className={styles.grid2}>
+      <div className={`${styles.grid2} ${styles.gap20}`}>
         <div className={styles.card}>
           <div className={styles.cardTitle}><Activity size={14} /> Ventas diarias (últimos 30 días)</div>
+          <div className={styles.cardSub}>Evolución de las ventas en el último mes.</div>
           <div className={styles.cardBody}>
-            {dailySalesData.length === 0 ? (
-              <p className={styles.muted}>No hay datos de ventas.</p>
-            ) : (
-              <ResponsiveContainer width="100%" height={280} key="daily-sales">
-                <AreaChart data={dailySalesData}>
-                  <defs>
-                    <linearGradient id="salesGradResumen" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="var(--color-orange-red, #f05a28)" stopOpacity={0.25}/>
-                      <stop offset="95%" stopColor="var(--color-orange-red, #f05a28)" stopOpacity={0.0}/>
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color, #eee)" />
-                  <XAxis dataKey="date" tick={{ fontSize: 11 }} stroke="var(--text-muted, #888)" />
-                  <YAxis tick={{ fontSize: 11 }} stroke="var(--text-muted, #888)" />
-                  <Tooltip {...CHART_PROPS} />
-                  <Area type="monotone" dataKey="total" stroke="var(--color-orange-red, #f05a28)" strokeWidth={2} fillOpacity={1} fill="url(#salesGradResumen)" dot={false} />
-                </AreaChart>
-              </ResponsiveContainer>
-            )}
+            <ResponsiveContainer width="100%" height={250}>
+              <LineChart data={dailySalesData} {...CHART_PROPS}>
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color, #eee)" />
+                <XAxis dataKey="date" stroke="var(--text-muted, #888)" fontSize={11} />
+                <YAxis stroke="var(--text-muted, #888)" fontSize={11} tickFormatter={v => v >= 1000 ? (v/1000).toFixed(1)+'k' : v} />
+                <Tooltip {...renderTooltip} />
+                <Line type="monotone" dataKey="total" stroke="var(--color-primary, #f05a28)" strokeWidth={2.5} dot={{ r: 3, fill: 'var(--color-primary, #f05a28)' }} />
+              </LineChart>
+            </ResponsiveContainer>
           </div>
         </div>
 
         <div className={styles.card}>
           <div className={styles.cardTitle}><DollarSign size={14} /> Distribución por método de pago</div>
+          <div className={styles.cardSub}>Participación de cada método de pago en el total.</div>
           <div className={styles.cardBody}>
-            {paymentData.length === 0 ? (
-              <p className={styles.muted}>No hay datos de ventas.</p>
-            ) : (
-              <div className={styles.pieWrapper}>
-                <ResponsiveContainer width="100%" height={280} key="payment-method">
-                  <PieChart>
-                    <Pie data={paymentData} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={60} outerRadius={90} paddingAngle={4} cornerRadius={6} label={({ name, percent }) => (percent ?? 0) > 0.01 ? `${name} ${((percent ?? 0) * 100).toFixed(0)}%` : ''}>
-                      {paymentData.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
-                    </Pie>
-                    <Tooltip {...CHART_PROPS} />
-                  </PieChart>
-                </ResponsiveContainer>
-              </div>
-            )}
+            <ResponsiveContainer width="100%" height={250}>
+              <PieChart>
+                <Pie data={paymentData} cx="50%" cy="50%" innerRadius={60} outerRadius={80} paddingAngle={4} dataKey="value" nameKey="name">
+                  {paymentData.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
+                </Pie>
+                <Tooltip {...renderTooltip} />
+              </PieChart>
+            </ResponsiveContainer>
           </div>
         </div>
-      </div>
 
-      <div className={styles.grid2}>
         <div className={styles.card}>
-          <div className={styles.cardTitle}><TrendingUp size={14} /> Top 10 productos más vendidos</div>
+          <div className={styles.cardTitle}><TrendingUp size={14} /> Top 5 productos por ingreso</div>
+          <div className={styles.cardSub}>Productos que más facturan en el periodo.</div>
           <div className={styles.cardBody}>
-            {topProducts.length === 0 ? (
-              <p className={styles.muted}>No hay datos de ventas.</p>
-            ) : (
-              <ResponsiveContainer width="100%" height={300} key="top-products">
-                <BarChart data={topProducts} layout="vertical">
-                  <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color, #eee)" />
-                  <XAxis type="number" tick={{ fontSize: 11 }} stroke="var(--text-muted, #888)" />
-                  <YAxis dataKey="name" type="category" width={120} tick={{ fontSize: 11 }} stroke="var(--text-muted, #888)" tickFormatter={v => v.length > 16 ? v.slice(0, 14) + '...' : v} />
-                  <Tooltip {...CHART_PROPS} />
-                  <Bar dataKey="qty" fill="var(--color-orange, #eb8c00)" />
-                </BarChart>
+            <div className={styles.pieWrapper}>
+              <ResponsiveContainer width="100%" height={250}>
+                <PieChart>
+                  <Pie data={topProducts} cx="50%" cy="50%" innerRadius={60} outerRadius={80} paddingAngle={4} dataKey="total" nameKey="name">
+                    {topProducts.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
+                  </Pie>
+                  <Tooltip {...renderTooltip} />
+                </PieChart>
               </ResponsiveContainer>
-            )}
+            </div>
           </div>
         </div>
+
         <div className={styles.card}>
-          <div className={styles.cardTitle}><TrendingUp size={14} /> Utilidad neta - detalle mensual de rendimiento</div>
-          <div className={styles.cardSub}>Métrica corporativa del rendimiento financiero. Ingresos Brutos vs Costos de Venta vs Utilidad Neta.</div>
+          <div className={styles.cardTitle}><TrendingUp size={14} /> Ingresos vs Costos vs Utilidad (mes a mes)</div>
+          <div className={styles.cardSub}>Desglose mensual del rendimiento financiero.</div>
           <div className={styles.cardBody}>
-            <ResponsiveContainer width="100%" height={300} key="profit-detail">
-              <ComposedChart data={profitDataWithTotal}>
+            <ResponsiveContainer width="100%" height={280}>
+              <ComposedChart data={demoFinancialCore} {...CHART_PROPS}>
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color, #eee)" />
-                <XAxis dataKey="month" tick={{ fontSize: 11 }} stroke="var(--text-muted, #888)" />
-                <YAxis tick={{ fontSize: 11 }} stroke="var(--text-muted, #888)" />
-                <Tooltip {...CHART_PROPS} />
-                <Legend iconType="rect" wrapperStyle={{ fontSize: 11, color: 'var(--text-muted, #888)' }} />
+                <XAxis dataKey="name" stroke="var(--text-muted, #888)" fontSize={11} />
+                <YAxis stroke="var(--text-muted, #888)" fontSize={11} tickFormatter={v => v >= 1000 ? (v/1000).toFixed(1)+'k' : v} />
+                <Tooltip {...renderTooltip} />
+                <Legend wrapperStyle={{ fontSize: 11, color: 'var(--text-muted, #888)' }} />
                 <Bar dataKey="revenue" fill="var(--color-blue, #3b82f6)" barSize={18} name="Ingresos Brutos" />
                 <Bar dataKey="cost" fill="var(--list-accent-color, #f97316)" barSize={18} name="Costos de Venta" />
                 <Line type="monotone" dataKey="profit" stroke="var(--color-success, #16a34a)" strokeWidth={2.5} name="Utilidad Neta" dot={{ r: 3, fill: 'var(--color-success, #16a34a)' }} />
@@ -180,41 +161,41 @@ export function ReportsResumen({ sales, products }: Props) {
       <div className={styles.card}>
         <div className={styles.cardTitle}><TrendingUp size={14} /> Detalle de utilidad neta mensual</div>
         <div className={styles.cardSub}>Métrica detallada del rendimiento financiero consolidado por mes.</div>
-        <div className="lista-container" style={{ marginTop: 16 }}>
-          <table className="lista-table">
+        <div className={styles.reportTableWrap}>
+          <table className={styles.reportTable}>
             <thead>
               <tr>
                 <th>Mes</th>
-                <th style={{textAlign:'right'}}>Ingresos Brutos</th>
-                <th style={{textAlign:'right'}}>Costos de Venta</th>
-                <th style={{textAlign:'right'}}>Utilidad Neta</th>
+                <th className={styles.textRight}>Ingresos Brutos</th>
+                <th className={styles.textRight}>Costos de Venta</th>
+                <th className={styles.textRight}>Utilidad Neta</th>
               </tr>
             </thead>
             <tbody>
               {profitData.map(m => (
                 <tr key={m.month}>
                   <td><span className="lista-name-text">{m.month}</span></td>
-                  <td style={{textAlign:'right'}}><span className="lista-number-value">{formatUSD(m.revenue)}</span></td>
-                  <td style={{textAlign:'right'}}><span className="lista-number-value">{formatUSD(m.cost)}</span></td>
-                  <td style={{textAlign:'right'}}>
-                    <span className="lista-number-value" style={{color: m.profit >= 0 ? 'var(--color-success)' : 'var(--color-danger)'}}>
+                  <td className={styles.textRight}><span className="lista-number-value">{formatUSD(m.revenue)}</span></td>
+                  <td className={styles.textRight}><span className="lista-number-value">{formatUSD(m.cost)}</span></td>
+                  <td className={styles.textRight}>
+                    <span className={`lista-number-value ${m.profit >= 0 ? styles.textSuccess : styles.textDanger}`}>
                       {formatUSD(m.profit)}
                     </span>
                   </td>
                 </tr>
               ))}
-              <tr style={{borderTop: '2px solid var(--list-accent-color, #f97316)', backgroundColor: 'var(--list-header-bg, #141414)'}}>
-                <td style={{fontWeight: 800, color: 'var(--list-accent-color, #f97316)', fontSize: 'calc(var(--list-body-font-size, 12px) + 1px)', textTransform: "none", letterSpacing: '0.5px', padding: 'var(--list-cell-padding, 12px)'}}>
+              <tr className={styles.totalRow}>
+                <td className={styles.totalCell}>
                   Total Anual
                 </td>
-                <td style={{textAlign:'right', fontWeight: 700, padding: 'var(--list-cell-padding, 12px)'}}>
+                <td className={styles.totalCellRight}>
                   {formatUSD(profitTotals.revenue)}
                 </td>
-                <td style={{textAlign:'right', fontWeight: 700, padding: 'var(--list-cell-padding, 12px)'}}>
+                <td className={styles.totalCellRight}>
                   {formatUSD(profitTotals.cost)}
                 </td>
-                <td style={{textAlign:'right', padding: 'var(--list-cell-padding, 12px)'}}>
-                  <span style={{fontWeight: 800, fontSize: 'calc(var(--list-body-font-size, 12px) + 2px)', color: profitTotals.profit >= 0 ? 'var(--color-success)' : 'var(--color-danger)'}}>
+                <td className={styles.totalProfit}>
+                  <span className={styles.totalProfitValue} style={{ '--profit-color': profitTotals.profit >= 0 ? 'var(--color-success)' : 'var(--color-danger)' } as React.CSSProperties}>
                     {formatUSD(profitTotals.profit)}
                   </span>
                 </td>
@@ -232,23 +213,23 @@ export function ReportsResumen({ sales, products }: Props) {
           {lowStockProducts.length === 0 ? (
             <p className={styles.muted}>No hay productos con stock bajo.</p>
           ) : (
-            <div className="lista-container">
-              <table className="lista-table">
+            <div className={styles.reportTableWrap}>
+              <table className={styles.reportTable}>
                 <thead>
                   <tr>
                     <th>Producto</th>
-                    <th style={{ textAlign: 'right' }}>Stock Actual</th>
-                    <th style={{ textAlign: 'right' }}>Stock Mínimo</th>
-                    <th style={{ textAlign: 'center' }}>Estado</th>
+                    <th className={styles.textRight}>Stock Actual</th>
+                    <th className={styles.textRight}>Stock Mínimo</th>
+                    <th className={styles.textCenter}>Estado</th>
                   </tr>
                 </thead>
                 <tbody>
                   {lowStockProducts.map(p => (
                     <tr key={p.id}>
                       <td><span className="lista-name-text">{p.name}</span></td>
-                      <td style={{ textAlign: 'right' }}><span className="lista-number-value">{p.stock}</span></td>
-                      <td style={{ textAlign: 'right' }}>{p.minStock}</td>
-                      <td style={{ textAlign: 'center' }}><span className="lista-badge saturated">Crítico</span></td>
+                      <td className={styles.textRight}><span className="lista-number-value">{p.stock}</span></td>
+                      <td className={styles.textRight}>{p.minStock}</td>
+                      <td className={styles.textCenter}><span className="lista-badge saturated">Crítico</span></td>
                     </tr>
                   ))}
                 </tbody>

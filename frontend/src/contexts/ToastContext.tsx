@@ -1,5 +1,4 @@
-import { createContext, useContext, useCallback } from 'react';
-import type { ReactNode } from 'react';
+import { createContext, useContext, useCallback, type ReactNode } from 'react';
 import { sileo } from 'sileo';
 
 export type FlashType = 'success' | 'alert' | 'info';

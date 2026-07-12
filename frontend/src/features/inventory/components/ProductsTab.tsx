@@ -14,8 +14,7 @@ import { ProductDetailPanel } from '../pages/ProductDetailPanel';
 import { Modal } from '@shared/ui/Modal';
 import { ConfirmModal } from '@shared/ui/ConfirmModal';
 import { PremiumLockButton } from '@shared/ui/PremiumLockButton';
-import { SkeletonTable, SkeletonCards } from '@shared/ui/Skeleton';
-import { Skeleton } from '@shared/ui/Skeleton';
+import { SkeletonTable, SkeletonCards, Skeleton } from '@shared/ui/Skeleton';
 import { ImportModal } from '@shared/ui/ImportModal';
 import { exportToExcel, type ColumnMapping } from '@shared/lib/excelHelper';
 import { exportToPdf } from '@shared/lib/print/pdfHelper';
@@ -185,8 +184,8 @@ export function ProductsTab() {
           {showToolsMenu && (
             <div className={styles.toolsDropdownMenu}>
               {licenseStatus?.tier === 'free' ? (
-                <button className={styles.toolsMenuItem} onClick={() => { setShowToolsMenu(false); showToast('Esta función requiere Plan Intermedio o superior', 'info'); navigate('/settings?tab=licenses&upgrade=intermedio'); }} style={{ opacity: 0.65, display: 'flex', alignItems: 'center' }}>
-                  <Download size={14} className={styles.toolsMenuIcon} /> <span>Exportar Excel</span> <Lock size={12} style={{ marginLeft: 'auto', color: 'var(--color-primary)' }} />
+<button className={`${styles.toolsMenuItem} ${styles.disabledMenuItem}`} onClick={() => { setShowToolsMenu(false); showToast('Esta función requiere Plan Intermedio o superior', 'info'); navigate('/settings?tab=licenses&upgrade=intermedio'); }}>
+              <Download size={14} className={styles.toolsMenuIcon} /> <span>Exportar Excel</span> <Lock size={12} className={styles.lockIcon} />
                 </button>
               ) : (
                 <button className={styles.toolsMenuItem} onClick={() => { handleExportProducts(); setShowToolsMenu(false); }}><Download size={14} className={styles.toolsMenuIcon} /> <span>Exportar Excel</span></button>
@@ -195,8 +194,8 @@ export function ProductsTab() {
                 <button className={styles.toolsMenuItem} onClick={() => { exportToPdf(products, PRODUCT_COLUMNS, 'Inventario - Productos', 'inventario_productos'); setShowToolsMenu(false); }}><Download size={14} className={styles.toolsMenuIcon} /> <span>Exportar PDF</span></button>
               )}
               {licenseStatus?.tier === 'free' ? (
-                <button className={styles.toolsMenuItem} onClick={() => { setShowToolsMenu(false); showToast('Esta función requiere Plan Intermedio o superior', 'info'); navigate('/settings?tab=licenses&upgrade=intermedio'); }} style={{ opacity: 0.65, display: 'flex', alignItems: 'center' }}>
-                  <Upload size={14} className={styles.toolsMenuIcon} /> <span>Importar Archivo</span> <Lock size={12} style={{ marginLeft: 'auto', color: 'var(--color-primary)' }} />
+<button className={`${styles.toolsMenuItem} ${styles.disabledMenuItem}`} onClick={() => { setShowToolsMenu(false); showToast('Esta función requiere Plan Intermedio o superior', 'info'); navigate('/settings?tab=licenses&upgrade=intermedio'); }}>
+              <Upload size={14} className={styles.toolsMenuIcon} /> <span>Importar Archivo</span> <Lock size={12} className={styles.lockIcon} />
                 </button>
               ) : (
                 <button className={styles.toolsMenuItem} onClick={() => { setShowImport(true); setShowToolsMenu(false); }}><Upload size={14} className={styles.toolsMenuIcon} /> <span>Importar Archivo</span></button>
@@ -229,7 +228,7 @@ export function ProductsTab() {
             return (
               <div key={product.id} className={`${styles.productCard} ${isBajo ? styles.prodLowStock : ''}`}>
                 <div className={styles.prodImageContainer} onClick={() => handleViewDetails(product)}>
-                  {product.imageUrl ? <img src={product.imageUrl} alt="" /> : <Package size={28} style={{ color: 'var(--text-muted)' }} />}
+                  {product.imageUrl ? <img src={product.imageUrl} alt="" /> : <Package size={28} className={styles.textMuted} />}
                   {product.stock === 0 ? <div className={`${styles.prodBadge} ${styles.prodBadgeOut}`}>Agotado</div> : isBajo ? <div className={`${styles.prodBadge} ${styles.prodBadgeLow}`}>Bajo Stock</div> : null}
                 </div>
                 <div className={styles.prodInfoGrid}>
@@ -260,11 +259,11 @@ export function ProductsTab() {
             <thead>
               <tr>
                 <th>Producto</th><th>Marca</th><th>Categoría</th><th>Código</th>
-                <th style={{ textAlign: 'right' }}>Precio ($)</th><th style={{ textAlign: 'right' }}>Precio (Bs)</th>
-                <th style={{ textAlign: 'right' }}>Costo ($)</th><th style={{ textAlign: 'right' }}>Costo (Bs)</th>
-                <th style={{ textAlign: 'right' }}>Ganancia ($)</th><th style={{ textAlign: 'right' }}>Ganancia (Bs)</th>
-                <th style={{ textAlign: 'right' }}>Stock</th><th style={{ textAlign: 'right' }}>Min.</th>
-                <th style={{ textAlign: 'center' }}>Estado</th><th style={{ textAlign: 'center' }}>Acción</th>
+                <th className={styles.textRight}>Precio ($)</th><th className={styles.textRight}>Precio (Bs)</th>
+                <th className={styles.textRight}>Costo ($)</th><th className={styles.textRight}>Costo (Bs)</th>
+                <th className={styles.textRight}>Ganancia ($)</th><th className={styles.textRight}>Ganancia (Bs)</th>
+                <th className={styles.textRight}>Stock</th><th className={styles.textRight}>Min.</th>
+                <th className={styles.textCenter}>Estado</th><th className={styles.textCenter}>Acción</th>
               </tr>
             </thead>
             <tbody>
@@ -272,20 +271,20 @@ export function ProductsTab() {
                 const profit = product.price - product.cost;
                 return (
                   <tr key={product.id}>
-                    <td><div className="lista-name-cell">{product.imageUrl ? <img src={product.imageUrl} alt="" style={{ width: 28, height: 28, objectFit: 'cover', flexShrink: 0 }} /> : <span style={{ width: 28, height: 28, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'var(--bg-main)', flexShrink: 0 }}><Package size={14} /></span>}<span className="lista-name-text">{product.name}</span></div></td>
-                    <td style={{ color: 'var(--text-muted)' }}>{(product as any).brand || '—'}</td>
-                    <td style={{ color: 'var(--text-muted)' }}>{getCategoryName(product.categoryId)}</td>
+                    <td><div className="lista-name-cell">{product.imageUrl ? <img src={product.imageUrl} alt="" className={`${styles.objectCover} ${styles.w28h28} ${styles.flexShrink0}`} /> : <span className={`${styles.w28h28} ${styles.flexCenter} ${styles.flexShrink0} ${styles.bgMain}`}><Package size={14} /></span>}<span className="lista-name-text">{product.name}</span></div></td>
+                    <td className={styles.textMuted}>{(product as any).brand || '—'}</td>
+                    <td className={styles.textMuted}>{getCategoryName(product.categoryId)}</td>
                     <td><span className="lista-code">{product.barcode || '—'}</span></td>
-                    <td style={{ textAlign: 'right' }}><span className="lista-number-value">{formatUsd(product.price)}</span></td>
-                    <td style={{ textAlign: 'right' }}><span className="lista-number-value">{formatBs(product.price)}</span></td>
-                    <td style={{ textAlign: 'right' }}><span className="lista-number-value">{formatUsd(product.cost)}</span></td>
-                    <td style={{ textAlign: 'right' }}><span className="lista-number-value">{formatBs(product.cost)}</span></td>
-                    <td style={{ textAlign: 'right' }}><span className="lista-number-value" style={{ color: profit >= 0 ? 'var(--color-success)' : 'var(--color-danger)' }}>{formatUsd(profit)}</span></td>
-                    <td style={{ textAlign: 'right' }}><span className="lista-number-value" style={{ color: profit >= 0 ? 'var(--color-success)' : 'var(--color-danger)' }}>{formatBs(profit)}</span></td>
-                    <td style={{ textAlign: 'right' }}><span className="lista-number-value">{product.stock}</span></td>
-                    <td style={{ textAlign: 'right' }}>{product.minStock}</td>
-                    <td style={{ textAlign: 'center' }}><span className={`lista-badge ${product.stock <= product.minStock ? 'saturated' : 'active'}`}>{product.stock <= product.minStock ? 'Stock Bajo' : 'OK'}</span></td>
-                    <td style={{ textAlign: 'center' }}>
+                    <td className={styles.textRight}><span className="lista-number-value">{formatUsd(product.price)}</span></td>
+                    <td className={styles.textRight}><span className="lista-number-value">{formatBs(product.price)}</span></td>
+                    <td className={styles.textRight}><span className="lista-number-value">{formatUsd(product.cost)}</span></td>
+                    <td className={styles.textRight}><span className="lista-number-value">{formatBs(product.cost)}</span></td>
+                    <td className={styles.textRight}><span className={`lista-number-value ${profit >= 0 ? styles.textSuccess : styles.textDanger}`}>{formatUsd(profit)}</span></td>
+                    <td className={styles.textRight}><span className={`lista-number-value ${profit >= 0 ? styles.textSuccess : styles.textDanger}`}>{formatBs(profit)}</span></td>
+                    <td className={styles.textRight}><span className="lista-number-value">{product.stock}</span></td>
+                    <td className={styles.textRight}>{product.minStock}</td>
+                    <td className={styles.textCenter}><span className={`lista-badge ${product.stock <= product.minStock ? 'saturated' : 'active'}`}>{product.stock <= product.minStock ? 'Stock Bajo' : 'OK'}</span></td>
+                    <td className={styles.textCenter}>
                       <div className="lista-actions">
                         <button className="lista-action-btn" onClick={() => handleViewDetails(product)} title="Ver Detalles"><Eye size={14} /></button>
                         {user?.role !== 'cajero' && (<><button className="lista-action-btn" onClick={() => startEdit(product)} title="Editar"><Edit2 size={14} /></button><button className="lista-action-btn danger" onClick={() => handleDelete(product.id, product.name)} title="Eliminar"><Trash2 size={14} /></button></>)}
@@ -296,7 +295,7 @@ export function ProductsTab() {
               })}
             </tbody>
           </table>
-          {filteredProducts.length === 0 && <p style={{ textAlign: 'center', padding: 40, color: 'var(--text-muted)' }}>No hay productos registrados</p>}
+          {filteredProducts.length === 0 && <p className={styles.emptyState}>No hay productos registrados</p>}
         </div>
       )}
 

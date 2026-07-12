@@ -5,6 +5,7 @@ import { Skeleton } from '@shared/ui/Skeleton';
 import { api } from '@shared/lib/http/client';
 import type { SocialPost, FeedResponse } from '@types';
 import { SocialComments } from './SocialComments';
+import styles from './SocialFeed.module.css';
 
 const reactionEmojis: Record<string, string> = {
   like: '👍', love: '❤️', haha: '😂', wow: '😮', sad: '😢', angry: '😡',
@@ -14,14 +15,14 @@ function PostSkeleton() {
   return (
     <div className="ig-post ig-post-skeleton">
       <div className="ig-post-header">
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+        <div className={styles.headerRow}>
           <Skeleton variant="circle" width={32} height={32} />
           <Skeleton height={12} width={120} />
         </div>
       </div>
       <Skeleton height={400} width="100%" borderRadius={0} />
-      <div style={{ padding: 16, display: 'flex', flexDirection: 'column', gap: 10 }}>
-        <div style={{ display: 'flex', gap: 14 }}>
+      <div className={styles.bodyPadding}>
+        <div className={styles.actionRow}>
           <Skeleton variant="circle" width={22} height={22} />
           <Skeleton variant="circle" width={22} height={22} />
           <Skeleton variant="circle" width={22} height={22} />
@@ -193,7 +194,7 @@ export function SocialFeed() {
                 <div className="ig-post-media">
                   {post.images.length > 0 ? (
                     <div className="ig-carousel-container">
-                      <div className="ig-carousel-track" style={{ display: 'flex', transform: `translateX(-${activeIndex * 100}%)`, transition: 'transform 0.3s ease-in-out' }}>
+                      <div className={`ig-carousel-track ${styles.carouselTrack}`} style={{ '--tx': `translateX(-${activeIndex * 100}%)` } as React.CSSProperties}>
                         {post.images.map((img, idx) => (
                           <img key={idx} src={img} alt="" draggable="false" />
                         ))}
@@ -241,7 +242,7 @@ export function SocialFeed() {
                           key={idx}
                           className={`ig-dot ${activeIndex === idx ? 'active' : ''}`}
                           onClick={() => handleSetImageIndex(post.id, idx)}
-                          style={{ cursor: 'pointer' }}
+                          className={styles.dotCursor}
                         />
                       ))}
                     </div>

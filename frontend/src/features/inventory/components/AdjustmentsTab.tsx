@@ -64,21 +64,21 @@ export function AdjustmentsTab() {
         {loadingAdjustments ? (
           config.skeletonEnabled ? <SkeletonTable rows={6} cols={5} /> : <LoadingDots text="Cargando ajustes..." />
         ) : adjustments.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: 40, color: 'var(--text-muted)' }}>
+          <div className={styles.empty}>
             <AlertTriangle size={40} /><p>Presiona "Nuevo Ajuste" para registrar una entrada, salida, merma o devolución de inventario.</p>
           </div>
         ) : (
           <table className="lista-table">
             <thead>
-              <tr><th>Fecha</th><th>Producto</th><th>Tipo</th><th style={{ textAlign: 'right' }}>Cantidad</th><th>Notas</th><th>Usuario</th></tr>
+              <tr><th>Fecha</th><th>Producto</th><th>Tipo</th><th className={styles.textAlignRight}>Cantidad</th><th>Notas</th><th>Usuario</th></tr>
             </thead>
             <tbody>
               {adjustments.map((adj: any) => (
                 <tr key={adj.id}>
                   <td>{new Date(adj.createdAt).toLocaleDateString()}</td>
                   <td><span className="lista-name-text">{adj.product?.name || adj.productName || '—'}</span></td>
-                  <td style={{ color: 'var(--text-muted)' }}>{adj.type}</td>
-                  <td style={{ textAlign: 'right' }}><span className="lista-number-value" style={{ color: adj.quantity >= 0 ? 'var(--color-success)' : 'var(--color-danger)' }}>{adj.quantity >= 0 ? '+' : ''}{adj.quantity}</span></td>
+                  <td className={styles.textMuted}>{adj.type}</td>
+                  <td className={styles.textAlignRight}><span className={`lista-number-value ${styles.colorVar}`} style={{ '--color-var': adj.quantity >= 0 ? 'var(--color-success)' : 'var(--color-danger)' } as React.CSSProperties}>{adj.quantity >= 0 ? '+' : ''}{adj.quantity}</span></td>
                   <td>{adj.notes || '—'}</td>
                   <td>{adj.user?.name || adj.userName || '—'}</td>
                 </tr>

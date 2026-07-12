@@ -133,7 +133,7 @@ export function ProductDetailPanel({ product, movements, loadingMovements, getCa
         <div className={styles.panel}>
           <div className={styles.grid3}>
             {/* Columna Identidad Producto */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+            <div className={styles.flexColumnGap16}>
               <div className={styles.card}>
                 {product.imageUrl ? (
                   <img
@@ -275,7 +275,7 @@ export function ProductDetailPanel({ product, movements, loadingMovements, getCa
                   Métrica corporativa del rendimiento financiero.
                 </p>
               </div>
-              <div className={styles.chartContainer} style={{ flex: 1 }}>
+              <div className={`${styles.chartContainer} ${styles.flex1}`}>
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={profitChartData}>
                     <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color, #262626)" />
@@ -314,7 +314,7 @@ export function ProductDetailPanel({ product, movements, loadingMovements, getCa
               TENDENCIA DEL HISTORIAL DE STOCK
             </span>
             {loadingMovements ? (
-              <div style={{ padding: '20px 0' }}>
+              <div className={styles.padding20Y}>
                 <Skeleton height={200} borderRadius={6} />
               </div>
             ) : stockChartData.length <= 1 && product.stock === 0 ? (
@@ -377,7 +377,7 @@ export function ProductDetailPanel({ product, movements, loadingMovements, getCa
           </div>
 
           {loadingMovements ? (
-            <div style={{ marginTop: 20 }}>
+            <div className={styles.marginTop20}>
               <SkeletonTable rows={4} cols={5} />
             </div>
           ) : !movements.length ? (
@@ -392,9 +392,9 @@ export function ProductDetailPanel({ product, movements, loadingMovements, getCa
                     <tr>
                       <th>Fecha</th>
                       <th>Detalle / Concepto</th>
-                      <th style={{ textAlign: 'center' }}>Entrada</th>
-                      <th style={{ textAlign: 'center' }}>Salida</th>
-                      <th style={{ textAlign: 'right' }}>Saldo</th>
+                      <th className={styles.thCenter}>Entrada</th>
+                      <th className={styles.thCenter}>Salida</th>
+                      <th className={styles.thRight}>Saldo</th>
                     </tr>
                   </thead>
                   <tbody className={styles.tableBody}>

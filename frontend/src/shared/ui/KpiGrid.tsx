@@ -57,7 +57,7 @@ function getLottieData(label: string, lottieProp?: string) {
 export function KpiGrid({ items }: KpiGridProps) {
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
 
-  if (items.length === 0) return null;
+  if (!items || items.length === 0) return null;
 
   return (
     <div className={styles.wrapper}>

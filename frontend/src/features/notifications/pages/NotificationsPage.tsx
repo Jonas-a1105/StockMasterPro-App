@@ -77,7 +77,7 @@ export function NotificationsPage() {
           <span className={styles.kpiLabel}>Total</span>
         </div>
         <div className={styles.kpiCard}>
-          <span className={styles.kpiValue} style={{ color: '#f05a28' }}>{unreadCount}</span>
+          <span className={`${styles.kpiValue} ${styles.kpiValueOrange}`}>{unreadCount}</span>
           <span className={styles.kpiLabel}>Sin leer</span>
         </div>
       </div>
@@ -95,7 +95,7 @@ export function NotificationsPage() {
           <div className={styles.empty}><span>Cargando...</span></div>
         ) : filtered.length === 0 ? (
           <div className={styles.empty}>
-            <Bell size={32} style={{ color: 'var(--text-muted)' }} />
+            <Bell size={32} className={styles.bellMuted} />
             <span>No hay notificaciones</span>
           </div>
         ) : (

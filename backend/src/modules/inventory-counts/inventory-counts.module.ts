@@ -21,20 +21,27 @@ import {
 } from './application/use-cases/apply-inventory-count-adjustments.use-case';
 import { PostgresInventoryCountRepo } from './infrastructure/persistence/postgres-inventory-count.repository';
 import { INVENTORY_COUNT_REPOSITORY } from './application/ports/inventory-count.repository.interface';
+import { InventoryModule } from '@modules/inventory';
+import { WarehouseModule } from '@modules/warehouses';
 
 @Module({
+  imports: [InventoryModule, WarehouseModule],
   controllers: [InventoryCountController],
   providers: [
     CreateInventoryCountUseCase,
     FindInventoryCountUseCase,
+    StartInventoryCountUseCase,
+    CompleteInventoryCountUseCase,
+    ApproveInventoryCountUseCase,
+    CancelInventoryCountUseCase,
     UpdateInventoryCountUseCase,
     UpdateInventoryCountItemUseCase,
     ApplyInventoryCountAdjustmentsUseCase,
     {
-      provide: 'INVENTORY_COUNT_REPOSITORY',
+      provide: INVENTORY_COUNT_REPOSITORY,
       useClass: PostgresInventoryCountRepo,
     },
   ],
-  exports: ['INVENTORY_COUNT_REPOSITORY'],
+  exports: [INVENTORY_COUNT_REPOSITORY],
 })
 export class InventoryCountsModule {}

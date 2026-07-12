@@ -73,17 +73,17 @@ export function KardexTab() {
             <div className="lista-container">
               <table className="lista-table">
                 <thead>
-                  <tr><th>Fecha</th><th>Tipo</th><th style={{ textAlign: 'right' }}>Cantidad</th><th>Referencia</th><th>Usuario</th></tr>
+                  <tr><th>Fecha</th><th>Tipo</th><th className={styles.textAlignRight}>Cantidad</th><th>Referencia</th><th>Usuario</th></tr>
                 </thead>
                 <tbody>
                   {movements.length === 0 ? (
-                    <tr><td colSpan={5} style={{ textAlign: 'center', padding: 40, color: 'var(--text-muted)' }}>Sin movimientos</td></tr>
+                    <tr><td colSpan={5} className={styles.empty}>Sin movimientos</td></tr>
                   ) : (
                     movements.map(m => (
                       <tr key={m.id}>
                         <td>{new Date(m.createdAt).toLocaleString()}</td>
                         <td><span className={`lista-badge ${m.type === 'sale' || m.type === 'exit' ? 'saturated' : m.type === 'purchase' || m.type === 'entry' ? 'active' : 'warning'}`}>{typeLabel(m.type)}</span></td>
-                        <td style={{ textAlign: 'right' }}><span className="lista-number-value" style={{ color: m.quantity > 0 ? 'var(--color-success)' : 'var(--color-danger)' }}>{m.quantity > 0 ? '+' : ''}{m.quantity}</span></td>
+                        <td className={styles.textAlignRight}><span className={`lista-number-value ${styles.colorVar}`} style={{ '--color-var': m.quantity > 0 ? 'var(--color-success)' : 'var(--color-danger)' } as React.CSSProperties}>{m.quantity > 0 ? '+' : ''}{m.quantity}</span></td>
                         <td>{m.reference || '-'}</td>
                         <td>{m.userId ? m.userId.slice(0, 8) : '-'}</td>
                       </tr>

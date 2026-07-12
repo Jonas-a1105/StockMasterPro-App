@@ -176,17 +176,17 @@ export function WarehouseTransfersPage() {
               <th>ID</th>
               <th>Origen → Destino</th>
               <th>Productos</th>
-              <th style={{textAlign:'center'}}>Estado</th>
+              <th className={styles.textCenter}>Estado</th>
               <th>Fecha</th>
-              <th style={{textAlign:'center'}}>Acciones</th>
+              <th className={styles.textCenter}>Acciones</th>
             </tr>
           </thead>
           <tbody>
             {filtered.length === 0 ? (
-              <tr><td colSpan={6} style={{textAlign:'center',padding:40,color:'var(--text-muted)'}}>No hay transferencias</td></tr>
+              <tr><td colSpan={6} className={styles.emptyRow}>No hay transferencias</td></tr>
             ) : filtered.map(t => (
               <tr key={t.id}>
-                <td style={{fontFamily:'monospace',color:'var(--text-muted)'}}>{t.id.slice(0,8)}</td>
+                <td className={`${styles.fontMono} ${styles.textMuted}`}>{t.id.slice(0,8)}</td>
                 <td>
                   <div className={styles.transferRoute}>
                     <span>{t.fromWarehouse?.name}</span>
@@ -195,13 +195,13 @@ export function WarehouseTransfersPage() {
                   </div>
                 </td>
                 <td>{t.items?.length || 0} art.</td>
-                <td style={{textAlign:'center'}}>
-                  <span className={styles.badge} style={{background: STATUS_COLORS[t.status] + '20', color: STATUS_COLORS[t.status]}}>
+                <td className={styles.textCenter}>
+                  <span className={styles.badge} style={{ '--badge-bg': STATUS_COLORS[t.status] + '20', '--badge-color': STATUS_COLORS[t.status] } as React.CSSProperties}>
                     {STATUS_LABELS[t.status]}
                   </span>
                 </td>
                 <td>{new Date(t.createdAt).toLocaleDateString()}</td>
-                <td style={{textAlign:'center'}}>
+                <td className={styles.textCenter}>
                   <div className={styles.actions}>
                     <button className="lista-action-btn" onClick={() => setModal({ type: 'view', data: t })} title="Ver">
                       <Eye size={14} />
@@ -288,17 +288,17 @@ export function WarehouseTransfersPage() {
               <div className={styles.detailGrid}>
                 <div className={styles.detailField}><span className={styles.detailLabel}>Origen</span><span>{modal.data.fromWarehouse?.name}</span></div>
                 <div className={styles.detailField}><span className={styles.detailLabel}>Destino</span><span>{modal.data.toWarehouse?.name}</span></div>
-                <div className={styles.detailField}><span className={styles.detailLabel}>Estado</span><span><span className={styles.badge} style={{background: STATUS_COLORS[modal.data.status] + '20', color: STATUS_COLORS[modal.data.status]}}>{STATUS_LABELS[modal.data.status]}</span></span></div>
+                <div className={styles.detailField}><span className={styles.detailLabel}>Estado</span><span><span className={styles.badge} style={{ '--badge-bg': STATUS_COLORS[modal.data.status] + '20', '--badge-color': STATUS_COLORS[modal.data.status] } as React.CSSProperties}>{STATUS_LABELS[modal.data.status]}</span></span></div>
                 <div className={styles.detailField}><span className={styles.detailLabel}>Fecha</span><span>{new Date(modal.data.createdAt).toLocaleString()}</span></div>
                 {modal.data.notes && <div className={styles.detailField}><span className={styles.detailLabel}>Notas</span><span>{modal.data.notes}</span></div>}
               </div>
-              <h4 style={{fontSize:14,fontWeight:700,margin:'20px 0 10px'}}>Productos</h4>
+              <h4 className={styles.sectionTitle}>Productos</h4>
               <div className="lista-container">
                 <table className="lista-table">
-                  <thead><tr><th>Producto</th><th style={{textAlign:'right'}}>Cantidad</th></tr></thead>
+                  <thead><tr><th>Producto</th><th className={styles.textRight}>Cantidad</th></tr></thead>
                   <tbody>
                     {modal.data.items?.map((it: any) => (
-                      <tr key={it.id}><td>{it.product?.name || it.productId}</td><td style={{textAlign:'right'}}><span className="lista-number-value">{it.quantity}</span></td></tr>
+                      <tr key={it.id}><td>{it.product?.name || it.productId}</td><td className={styles.textRight}><span className="lista-number-value">{it.quantity}</span></td></tr>
                     ))}
                   </tbody>
                 </table>

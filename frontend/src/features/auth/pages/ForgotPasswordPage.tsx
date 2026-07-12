@@ -44,14 +44,14 @@ export function ForgotPasswordPage() {
 
         {sent ? (
           <>
-            <p style={{ color: 'var(--text-muted)', margin: '12px 0', fontSize: 14 }}>
+            <p className={`${styles.colorTextMuted} ${styles.fontSize14} ${styles.mt8} ${styles.mb8}`}>
               Si el correo <strong>{email}</strong> está registrado, recibirás un enlace para restablecer tu contraseña.
             </p>
-            <Link to="/login" className={styles.footerLinkAccent} style={{ display: 'block', textAlign: 'center', marginTop: 16 }}>Volver al inicio de sesión</Link>
+            <Link to="/login" className={`${styles.footerLinkAccent} ${styles.textCenter} ${styles.mt12}`}>Volver al inicio de sesión</Link>
           </>
         ) : (
           <form onSubmit={handleSubmit}>
-            <p style={{ color: 'var(--text-muted)', margin: '12px 0', fontSize: 14 }}>
+            <p className={`${styles.colorTextMuted} ${styles.fontSize14} ${styles.mt8} ${styles.mb8}`}>
               Ingresa tu correo y te enviaremos un enlace para restablecer tu contraseña.
             </p>
             {error && <div className={styles.error}>{error}</div>}
@@ -62,7 +62,7 @@ export function ForgotPasswordPage() {
             <button type="submit" className={`${styles.submitBtn} ${styles.btnShimmer}`} disabled={loading || !email}>
               {loading ? 'Enviando...' : 'Enviar enlace'}
             </button>
-            <Link to="/login" className={styles.footerLinkAccent} style={{ display: 'block', textAlign: 'center', marginTop: 16 }}>Volver al inicio de sesión</Link>
+            <Link to="/login" className={`${styles.footerLinkAccent} ${styles.textCenter} ${styles.mt12}`}>Volver al inicio de sesión</Link>
           </form>
         )}
       </div>

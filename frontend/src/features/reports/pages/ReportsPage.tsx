@@ -221,10 +221,10 @@ export const renderTooltip = (props: any) => {
   const { active, payload, label } = props;
   if (!active || !payload?.length) return null;
   return (
-    <div style={{ backgroundColor: 'var(--bg-card, #1e1e1e)', border: '1px solid var(--border-color, #2d2d2d)', padding: '8px 12px', fontSize: '12px', color: 'var(--text-dark, #e5e5e5)' }}>
-      <div style={{ fontWeight: 700, marginBottom: 4, fontSize: 11, color: 'var(--text-muted, #888)', textTransform: "none", letterSpacing: '0.5px' }}>{label}</div>
+    <div className={`${styles.tooltipBox}`}>
+      <div className={`${styles.tooltipLabel}`}>{label}</div>
       {payload.map((p: any, i: number) => (
-        <div key={i} style={{ color: p.color, marginTop: 2 }}>{p.name}: {typeof p.value === 'number' ? formatUsd(p.value) : p.value}</div>
+        <div key={i} className={`${styles.tooltipValue}`} style={{ '--tooltip-color': p.color } as React.CSSProperties}>{p.name}: {typeof p.value === 'number' ? formatUsd(p.value) : p.value}</div>
       ))}
     </div>
   );
@@ -422,41 +422,35 @@ export function ReportsPage() {
             <button className={styles.exportBtn} onClick={handleExportNetProfitPdf} title="Exportar a PDF"><Download size={14} /></button>
           </div>
             <div className={styles.cardSub}>Métrica detallada del rendimiento financiero consolidado por mes.</div>
-            <div className="lista-container" style={{ marginTop: 16 }}>
-              <table className="lista-table">
+            <div className={`${styles.reportTableWrap} ${styles.mt16}`}>
+              <table className={styles.reportTable}>
                 <thead>
                   <tr>
                     <th>Mes</th>
-                    <th style={{textAlign:'right'}}>Ingresos Brutos</th>
-                    <th style={{textAlign:'right'}}>Costos de Venta</th>
-                    <th style={{textAlign:'right'}}>Utilidad Neta</th>
+                    <th className={styles.textRight}>Ingresos Brutos</th>
+                    <th className={styles.textRight}>Costos de Venta</th>
+                    <th className={styles.textRight}>Utilidad Neta</th>
                   </tr>
                 </thead>
                 <tbody>
                   {profitData.map(m => (
                     <tr key={m.month}>
                       <td><span className="lista-name-text">{m.month}</span></td>
-                      <td style={{textAlign:'right'}}><span className="lista-number-value">{formatUsd(m.revenue)}</span></td>
-                      <td style={{textAlign:'right'}}><span className="lista-number-value">{formatUsd(m.cost)}</span></td>
-                      <td style={{textAlign:'right'}}>
-                        <span className="lista-number-value" style={{color: m.profit >= 0 ? 'var(--color-success)' : 'var(--color-danger)'}}>
+                      <td className={styles.textRight}><span className="lista-number-value">{formatUsd(m.revenue)}</span></td>
+                      <td className={styles.textRight}><span className="lista-number-value">{formatUsd(m.cost)}</span></td>
+                      <td className={styles.textRight}>
+                        <span className={`lista-number-value ${m.profit >= 0 ? styles.textSuccess : styles.textDanger}`}>
                           {formatUsd(m.profit)}
                         </span>
                       </td>
                     </tr>
                   ))}
-                  <tr style={{borderTop: '2px solid var(--list-accent-color, #f97316)', backgroundColor: 'var(--list-header-bg, #141414)'}}>
-                    <td style={{fontWeight: 800, color: 'var(--list-accent-color, #f97316)', fontSize: 'calc(var(--list-body-font-size, 12px) + 1px)', textTransform: "none", letterSpacing: '0.5px', padding: 'var(--list-cell-padding, 12px)'}}>
-                      Total Anual
-                    </td>
-                    <td style={{textAlign:'right', fontWeight: 700, padding: 'var(--list-cell-padding, 12px)'}}>
-                      {formatUsd(profitTotals.revenue)}
-                    </td>
-                    <td style={{textAlign:'right', fontWeight: 700, padding: 'var(--list-cell-padding, 12px)'}}>
-                      {formatUsd(profitTotals.cost)}
-                    </td>
-                    <td style={{textAlign:'right', padding: 'var(--list-cell-padding, 12px)'}}>
-                      <span style={{fontWeight: 800, fontSize: 'calc(var(--list-body-font-size, 12px) + 2px)', color: profitTotals.profit >= 0 ? 'var(--color-success)' : 'var(--color-danger)'}}>
+                  <tr className={styles.totalRow}>
+                    <td className={styles.totalCell}>Total Anual</td>
+                    <td className={styles.totalCellRight}>{formatUsd(profitTotals.revenue)}</td>
+                    <td className={styles.totalCellRight}>{formatUsd(profitTotals.cost)}</td>
+                    <td className={styles.totalProfit}>
+                      <span className={`${styles.totalProfitValue} ${profitTotals.profit >= 0 ? styles.totalProfitPositive : styles.totalProfitNegative}`}>
                         {formatUsd(profitTotals.profit)}
                       </span>
                     </td>
@@ -481,18 +475,18 @@ export function ReportsPage() {
                     <thead>
                       <tr>
                         <th>Producto</th>
-                        <th style={{ textAlign: 'right' }}>Stock Actual</th>
-                        <th style={{ textAlign: 'right' }}>Stock Mínimo</th>
-                        <th style={{ textAlign: 'center' }}>Estado</th>
+                        <th className={styles.textRight}>Stock Actual</th>
+                        <th className={styles.textRight}>Stock Mínimo</th>
+                        <th className={styles.textCenter}>Estado</th>
                       </tr>
                     </thead>
                     <tbody>
                       {lowStockProducts.map(p => (
                         <tr key={p.id}>
                           <td><span className="lista-name-text">{p.name}</span></td>
-                          <td style={{ textAlign: 'right' }}><span className="lista-number-value">{p.stock}</span></td>
-                          <td style={{ textAlign: 'right' }}>{p.minStock}</td>
-                          <td style={{ textAlign: 'center' }}><span className="lista-badge saturated">Crítico</span></td>
+                          <td className={styles.textRight}><span className="lista-number-value">{p.stock}</span></td>
+                          <td className={styles.textRight}>{p.minStock}</td>
+                          <td className={styles.textCenter}><span className="lista-badge saturated">Crítico</span></td>
                         </tr>
                       ))}
                     </tbody>
@@ -504,9 +498,9 @@ export function ReportsPage() {
         </>
       )}
 
-      {activeTab === 'finanzas' && (
+{activeTab === 'finanzas' && (
         <div className={styles.grid2}>
-          <div className={styles.card}>
+          <div className={`${styles.card} ${styles.colSpanFull}`}>
             <div className={styles.cardTitle}>Curva analítica de márgenes operativos</div>
             <ResponsiveContainer width="100%" height={280}>
               <ComposedChart data={demoFinancialCore}>
@@ -573,7 +567,7 @@ export function ReportsPage() {
 
       {activeTab === 'logistica' && (
         <div className={styles.grid2}>
-          <div className={styles.card} style={{ gridColumn: '1 / -1' }}>
+          <div className={`${styles.card} ${styles.colSpanFull}`}>
             <div className={styles.cardTitle}>Matriz ABC de rotación y densidad patrimonial inmovilizada</div>
             <ResponsiveContainer width="100%" height={300}>
               <ScatterChart>
@@ -622,7 +616,7 @@ export function ReportsPage() {
 
       {activeTab === 'operaciones' && (
         <div className={styles.grid2}>
-          <div className={styles.card} style={{ gridColumn: '1 / -1' }}>
+          <div className={`${styles.card} ${styles.colSpanFull}`}>
             <div className={styles.cardTitle}>Análisis cronológico de curva de tráfico y horas pico en POS</div>
             <ResponsiveContainer width="100%" height={280}>
               <LineChart data={demoPosHourly}>

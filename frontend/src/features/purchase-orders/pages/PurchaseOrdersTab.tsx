@@ -70,12 +70,12 @@ export function PurchaseOrdersTab() {
           <div className={styles.kpiContent}>          <span className={styles.kpiValue}>{totalOrders}</span><span className={styles.kpiLabel}>Total Órdenes</span></div>
         </div>
         <div className={styles.kpiCard}>
-          <div className={styles.kpiIconWrapper} style={{ backgroundColor: 'rgba(22, 163, 74, 0.1)', color: '#16a34a' }}><Package size={18} /></div>
-          <div className={styles.kpiContent}><span className={styles.kpiValue} style={{ color: '#16a34a' }}>{completedOrders}</span><span className={styles.kpiLabel}>Completadas</span></div>
+          <div className={`${styles.kpiIconWrapper} ${styles.kpiIconGreen}`}><Package size={18} /></div>
+          <div className={styles.kpiContent}><span className={`${styles.kpiValue} ${styles.kpiValueGreen}`}>{completedOrders}</span><span className={styles.kpiLabel}>Completadas</span></div>
         </div>
         <div className={styles.kpiCard}>
-          <div className={styles.kpiIconWrapper} style={{ backgroundColor: 'rgba(202, 138, 4, 0.1)', color: '#ca8a04' }}><AlertTriangle size={18} /></div>
-          <div className={styles.kpiContent}><span className={styles.kpiValue} style={{ color: '#ca8a04' }}>{pendingOrders}</span><span className={styles.kpiLabel}>Pendientes</span></div>
+          <div className={`${styles.kpiIconWrapper} ${styles.kpiIconYellow}`}><AlertTriangle size={18} /></div>
+          <div className={styles.kpiContent}><span className={`${styles.kpiValue} ${styles.kpiValueYellow}`}>{pendingOrders}</span><span className={styles.kpiLabel}>Pendientes</span></div>
         </div>
         <div className={styles.kpiCard}>
           <div className={styles.kpiIconWrapper}><DollarSign size={18} /></div>

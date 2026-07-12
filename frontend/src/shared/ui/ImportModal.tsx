@@ -121,7 +121,7 @@ export function ImportModal({
                   ref={fileInputRef}
                   onChange={handleFileChange}
                   accept=".xlsx,.xls,.csv"
-                  style={{ display: 'none' }}
+                  className={styles.hiddenInput}
                 />
               </div>
 
@@ -201,7 +201,7 @@ export function ImportModal({
               <div className={styles.progressBarBg}>
                 <div
                   className={styles.progressBarFill}
-                  style={{ width: `${(progress.current / progress.total) * 100}%` }}
+                  style={{ '--import-progress': `${(progress.current / progress.total) * 100}%` } as React.CSSProperties}
                 />
               </div>
             </div>

@@ -5,17 +5,18 @@ import { useAuth } from '@contexts/AuthContext';
 import { api } from '@shared/lib/http/client';
 import type { SocialProfile as SocialProfileType } from '@types';
 import { SocialComments } from './SocialComments';
+import styles from './SocialProfile.module.css';
 
 function ProfileSkeleton() {
   return (
-    <div className="ig-profile" style={{ pointerEvents: 'none' }}>
+    <div className={`ig-profile ${styles.skeletonProfile}`}>
       <div className="ig-profile-header">
         <div className="ig-profile-avatar-section">
           <Skeleton variant="circle" width={120} height={120} />
         </div>
         <div className="ig-profile-info">
           <Skeleton height={22} width={220} />
-          <div style={{ display: 'flex', gap: 40, margin: '16px 0' }}>
+          <div className={styles.statsRow}>
             <Skeleton height={16} width={60} />
             <Skeleton height={16} width={60} />
             <Skeleton height={16} width={60} />
@@ -186,7 +187,7 @@ export function SocialProfileView({ targetUserId }: { targetUserId?: string }) {
         </div>
       ) : (
         <div className="ig-profile-catalogs">
-          <p style={{ textAlign: 'center', color: 'var(--text-muted)', padding: 40 }}>Catálogos del usuario</p>
+          <p className={styles.emptyCatalogs}>Catálogos del usuario</p>
         </div>
       )}
     </div>

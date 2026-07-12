@@ -88,7 +88,7 @@ export function Navbar({ onToggleSidebar }: { onToggleSidebar: () => void }) {
 
       <div className={styles.actions}>
         {loading ? (
-          <div className={styles.dolarWidget} style={{ cursor: 'default', background: 'transparent', borderColor: 'transparent' }}>
+          <div className={`${styles.dolarWidget} ${styles.cursorDefault} ${styles.bgTransparent} ${styles.borderTransparent}`}>
             <Skeleton width={110} height={20} borderRadius={4} />
           </div>
         ) : rate > 0 && (
@@ -115,7 +115,7 @@ export function Navbar({ onToggleSidebar }: { onToggleSidebar: () => void }) {
             <div ref={notifModalRef} className={styles.notifModal} role="menu">
               <div className={styles.notifModalHeader}>
                 <div className={styles.notifModalTitle}>
-                  <BellRing size={14} style={{ color: 'var(--color-primary)' }} />
+                  <BellRing size={14} className={styles.colorPrimary} />
                   Notificaciones
                 </div>
                 {unreadCount > 0 && (
@@ -132,7 +132,7 @@ export function Navbar({ onToggleSidebar }: { onToggleSidebar: () => void }) {
                   </div>
                 ) : notifications.length === 0 ? (
                   <div className={styles.notifModalEmpty}>
-                    <Bell size={24} style={{ color: 'var(--text-muted)' }} />
+                    <Bell size={24} className={styles.colorMuted} />
                     <span>No tienes notificaciones</span>
                   </div>
                 ) : (

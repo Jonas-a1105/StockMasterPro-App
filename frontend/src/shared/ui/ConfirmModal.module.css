@@ -1,10 +1,7 @@
 .overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.6);
+  inset: 0;
+  background-color: rgb(0, 0, 0, 0.6);
   backdrop-filter: blur(4px);
   display: flex;
   justify-content: center;
@@ -14,9 +11,9 @@
 }
 
 .modal {
-  background-color: var(--bg-card, #ffffff);
+  background-color: var(--bg-card, #fff);
   border-radius: var(--card-radius, 12px);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 20px 25px -5px rgb(0, 0, 0, 0.1), 0 10px 10px -5px rgb(0, 0, 0, 0.04);
   width: 90%;
   max-width: 400px;
   padding: 24px;
@@ -33,7 +30,7 @@
   right: 16px;
   background: none;
   border: none;
-  color: var(--text-muted, #888888);
+  color: var(--text-muted, #888);
   cursor: pointer;
   padding: 4px;
   border-radius: 50%;
@@ -44,8 +41,8 @@
 }
 
 .closeBtn:hover {
-  background-color: var(--bg-hover, rgba(0, 0, 0, 0.05));
-  color: var(--text-dark, #333333);
+  background-color: var(--bg-hover, rgb(0, 0, 0, 0.05));
+  color: var(--text-dark, #333);
 }
 
 .content {
@@ -68,15 +65,15 @@
 }
 
 .warning {
-  background-color: rgba(245, 158, 11, 0.1);
+  background-color: rgb(245, 158, 11, 0.1);
 }
 
 .danger {
-  background-color: rgba(239, 68, 68, 0.1);
+  background-color: rgb(239, 68, 68, 0.1);
 }
 
 .info {
-  background-color: rgba(59, 130, 246, 0.1);
+  background-color: rgb(59, 130, 246, 0.1);
 }
 
 .warningIcon {
@@ -92,16 +89,16 @@
 }
 
 .title {
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--text-dark, #333333);
-  margin: 0 0 8px 0;
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-dark, #333);
+  margin: 0 0 8px;
   font-family: inherit;
 }
 
 .message {
-  font-size: 14px;
-  color: var(--text-muted, #666666);
+  font-size: var(--font-size-md);
+  color: var(--text-muted, #666);
   margin: 0;
   line-height: 1.5;
 }
@@ -115,28 +112,28 @@
 .cancelBtn {
   flex: 1;
   padding: 10px 16px;
-  background-color: var(--bg-card, #ffffff);
-  color: var(--text-dark, #333333);
-  border: var(--card-border-width, 1px) solid var(--border-color, #eeeeee);
+  background-color: var(--bg-card, #fff);
+  color: var(--text-dark, #333);
+  border: var(--card-border-width, 1px) solid var(--border-color, #eee);
   border-radius: var(--btn-radius, 6px);
-  font-weight: 600;
-  font-size: 14px;
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-md);
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .cancelBtn:hover {
-  background-color: var(--bg-hover, rgba(0, 0, 0, 0.03));
+  background-color: var(--bg-hover, rgb(0, 0, 0, 0.03));
 }
 
 .confirmBtn {
   flex: 1;
   padding: 10px 16px;
-  color: var(--text-on-primary, #ffffff);
+  color: var(--text-on-primary, #fff);
   border: none;
   border-radius: var(--btn-radius, 6px);
-  font-weight: 600;
-  font-size: 14px;
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-md);
   cursor: pointer;
   transition: all 0.2s;
 }
@@ -146,7 +143,7 @@
 }
 
 .warningConfirm:hover {
-  background-color: #d97706;
+  background-color: var(--color-orange);
 }
 
 .dangerConfirm {
@@ -154,7 +151,7 @@
 }
 
 .dangerConfirm:hover {
-  background-color: #dc2626;
+  background-color: var(--color-danger);
 }
 
 .infoConfirm {
@@ -162,7 +159,7 @@
 }
 
 .infoConfirm:hover {
-  background-color: #2563eb;
+  background-color: var(--color-blue);
 }
 
 @keyframes fadeIn {

@@ -84,10 +84,10 @@ export function LowStockPage() {
               <tr>
                 <th>Producto</th>
                 <th>SKU</th>
-                <th style={{textAlign:'right'}}>Stock Actual</th>
-                <th style={{textAlign:'right'}}>Stock Mínimo</th>
-                <th style={{textAlign:'center'}}>Estado</th>
-                <th style={{textAlign:'center'}}>Acción</th>
+                <th className={styles.textRight}>Stock Actual</th>
+                <th className={styles.textRight}>Stock Mínimo</th>
+                <th className={styles.textCenter}>Estado</th>
+                <th className={styles.textCenter}>Acción</th>
               </tr>
             </thead>
             <tbody>
@@ -97,15 +97,15 @@ export function LowStockPage() {
                   <tr key={p.id}>
                     <td><span className="lista-name-text">{p.name}</span></td>
                     <td><span className="lista-code">{p.barcode || '—'}</span></td>
-                    <td style={{textAlign:'right'}}><span className="lista-number-value">{p.stock}</span></td>
-                    <td style={{textAlign:'right'}}>{p.minStock}</td>
-                    <td style={{textAlign:'center'}}>
+                    <td className={styles.textRight}><span className="lista-number-value">{p.stock}</span></td>
+                    <td className={styles.textRight}>{p.minStock}</td>
+                    <td className={styles.textCenter}>
                       <span className={`lista-badge ${status.className === 'critical' ? 'saturated' : status.className === 'low' ? 'warning' : 'active'}`}>
                         {status.label}
                       </span>
                     </td>
-                    <td style={{textAlign:'center'}}>
-                      <div className="lista-actions" style={{justifyContent:'center'}}>
+                    <td className={styles.textCenter}>
+                      <div className={`lista-actions ${styles.justifyCenter}`}>
                         <button className="lista-action-btn" onClick={() => window.location.href = `/inventory?edit=${p.id}`} title="Ir al producto">
                           <Eye size={14} />
                         </button>

@@ -17,31 +17,31 @@
   height: 100px;
   margin: 0 auto 24px;
   border-radius: 50%;
-  background: rgba(239, 68, 68, 0.1);
+  background: rgb(239, 68, 68, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #ef4444;
+  color: var(--color-danger);
 }
 
 .code {
-  font-size: 80px;
-  font-weight: 800;
+  font-size: var(--font-size-hero);
+  font-weight: var(--font-weight-extrabold, 800);
   color: var(--text-muted, #888);
   line-height: 1;
   margin: 0 0 8px;
-  font-family: 'Courier New', monospace;
+  font-family: var(--font-family-mono);
 }
 
 .title {
-  font-size: 24px;
-  font-weight: 700;
+  font-size: var(--font-size-4xl);
+  font-weight: var(--font-weight-bold);
   color: var(--text-dark, #333);
   margin: 0 0 12px;
 }
 
 .message {
-  font-size: 16px;
+  font-size: var(--font-size-lg);
   color: var(--text-muted, #888);
   margin: 0 0 32px;
   line-height: 1.5;
@@ -61,11 +61,11 @@
   gap: 8px;
   padding: 14px 28px;
   border: none;
-  border-radius: 10px;
+  border-radius: var(--border-radius-lg);
   background: var(--color-primary, #f05a28);
   color: white;
-  font-size: 15px;
-  font-weight: 600;
+  font-size: var(--font-size-md-plus);
+  font-weight: var(--font-weight-semibold);
   text-decoration: none;
   cursor: pointer;
   transition: filter 0.2s;
@@ -78,11 +78,11 @@
   gap: 8px;
   padding: 14px 28px;
   border: 1px solid var(--border-color, #ddd);
-  border-radius: 10px;
+  border-radius: var(--border-radius-lg);
   background: var(--bg-card, white);
   color: var(--text-dark, #333);
-  font-size: 15px;
-  font-weight: 600;
+  font-size: var(--font-size-md-plus);
+  font-weight: var(--font-weight-semibold);
   cursor: pointer;
   transition: all 0.2s;
 }
@@ -97,7 +97,7 @@
   padding: 12px 20px;
   background: var(--bg-card, white);
   border: 1px solid var(--border-color, #eee);
-  border-radius: 8px;
-  font-size: 13px;
+  border-radius: var(--btn-radius);
+  font-size: var(--font-size-sm);
   color: var(--text-muted, #888);
 }

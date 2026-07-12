@@ -214,10 +214,10 @@ export function ExpensesPage() {
         onImport={() => setShowImport(true)}
         addBtn={{ label: 'Nuevo Gasto', onClick: openCreateModal }}
       >
-        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
-          <span style={{ fontSize: 12, color: 'var(--text-muted, #888)', fontWeight: 600 }}>Desde:</span>
+        <div className={styles.flexRowWrapCenter}>
+          <span className={`${styles.fontSize12} ${styles.colorMuted} ${styles.fontWeight600}`}>Desde:</span>
           <input type="date" value={dateRange.start} onChange={e => setDateRange(p => ({ ...p, start: e.target.value }))} className={styles.dateInput} />
-          <span style={{ fontSize: 12, color: 'var(--text-muted, #888)', fontWeight: 600 }}>Hasta:</span>
+          <span className={`${styles.fontSize12} ${styles.colorMuted} ${styles.fontWeight600}`}>Hasta:</span>
           <input type="date" value={dateRange.end} onChange={e => setDateRange(p => ({ ...p, end: e.target.value }))} className={styles.dateInput} />
           {(categoryFilter || dateRange.start || dateRange.end) && (
             <button onClick={() => { setCategoryFilter(''); setDateRange({ start: '', end: '' }); }} className={styles.clearFiltersBtn}>
@@ -234,21 +234,21 @@ export function ExpensesPage() {
               <th>Fecha</th>
               <th>Descripción</th>
               <th>Categoría</th>
-              <th style={{textAlign:'right'}}>Monto</th>
+              <th className={styles.textRight}>Monto</th>
               <th>Método Pago</th>
-              <th style={{textAlign:'center'}}>Acciones</th>
+              <th className={styles.textCenter}>Acciones</th>
             </tr>
           </thead>
           <tbody>
             {filteredExpenses.map(e => (
               <tr key={e.id}>
                 <td>{new Date(e.expenseDate).toLocaleDateString()}</td>
-                <td style={{color:'var(--text-muted)'}}>{e.description}</td>
+                <td className={styles.colorMuted}>{e.description}</td>
                 <td><span className="lista-badge warning">{categoryLabel(e.category)}</span></td>
-                <td style={{textAlign:'right'}}><span className="lista-number-value">{formatPrice(Number(e.amount))}</span></td>
+                <td className={styles.textRight}><span className="lista-number-value">{formatPrice(Number(e.amount))}</span></td>
                 <td>{paymentLabel(e.paymentMethod)}</td>
-                <td style={{textAlign:'center'}}>
-                  <div className="lista-actions" style={{justifyContent:'center'}}>
+                <td className={styles.textCenter}>
+                  <div className={`lista-actions ${styles.justifyCenter}`}>
                     <button className="lista-action-btn danger" onClick={() => handleDelete(e.id)} title="Eliminar">
                       <Trash2 size={14} />
                     </button>
@@ -258,7 +258,7 @@ export function ExpensesPage() {
             ))}
             {filteredExpenses.length === 0 && (
               <tr>
-                <td colSpan={6} style={{textAlign:'center',padding:40,color:'var(--text-muted)'}}>No hay gastos registrados</td>
+                <td colSpan={6} className={`${styles.textCenter} ${styles.p40} ${styles.colorMuted}`}>No hay gastos registrados</td>
               </tr>
             )}
           </tbody>

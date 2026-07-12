@@ -1,0 +1,4 @@
+.skeletonCard { pointer-events: none; }
+.skeletonBody { padding: 12px; display: flex; flex-direction: column; gap: 6px; }
+.modalContent { max-width: 500px; }
+.coverBg { background: var(--cover-bg, linear-gradient(135deg, var(--color-primary), var(--color-secondary, #667eea))); }

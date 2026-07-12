@@ -240,39 +240,39 @@ export function CustomersPage() {
               <th>Nombre</th>
               <th>Email</th>
               <th>Teléfono</th>
-              <th style={{textAlign:'right'}}>Límite Crédito</th>
-              <th style={{textAlign:'right'}}>Saldo Actual</th>
+              <th className={styles.textRight}>Límite Crédito</th>
+              <th className={styles.textRight}>Saldo Actual</th>
               <th>Estado</th>
-              <th style={{textAlign:'center'}}>Acciones</th>
+              <th className={styles.textCenter}>Acciones</th>
             </tr>
           </thead>
           <tbody>
             {filteredCustomers.map(c => (
               <tr key={c.id}>
                 <td><span className="lista-name-text">{c.name}</span></td>
-                <td style={{color:'var(--text-muted)'}}>{c.email || '—'}</td>
+                <td className={styles.colorMuted}>{c.email || '—'}</td>
                 <td>{c.phone || '—'}</td>
-                <td style={{textAlign:'right'}}><span className="lista-number-value">{formatPrice(c.creditLimit)}</span></td>
-                <td style={{textAlign:'right'}}>
-                  <span className="lista-number-value" style={{color: c.balance > (c.creditLimit * 0.8) ? 'var(--color-danger)' : c.balance > 0 ? 'var(--color-warning)' : 'var(--color-success)'}}>
+                <td className={styles.textRight}><span className="lista-number-value">{formatPrice(c.creditLimit)}</span></td>
+                <td className={styles.textRight}>
+                  <span className={`lista-number-value ${styles.balanceColor}`} style={{ '--balance-color': c.balance > (c.creditLimit * 0.8) ? 'var(--color-danger)' : c.balance > 0 ? 'var(--color-warning)' : 'var(--color-success)' } as React.CSSProperties}>
                     {formatPrice(c.balance)}
                   </span>
                 </td>
                 <td>
                   {c.creditLimit > 0 ? (
                     <div className="lista-progress-bar">
-                      <div className="lista-progress-track" style={{width:80}}>
-                        <div className={`lista-progress-fill ${c.balance > (c.creditLimit * 0.8) ? 'red' : c.balance > 0 ? 'orange' : 'green'}`}
-                          style={{ width: `${Math.min(100, (c.balance / c.creditLimit) * 100)}%` }}
+                      <div className={`lista-progress-track ${styles.w80px}`}>
+                        <div className={`lista-progress-fill ${styles.barFillWidth} ${c.balance > (c.creditLimit * 0.8) ? 'red' : c.balance > 0 ? 'orange' : 'green'}`}
+                          style={{ '--bar-fill-width': `${Math.min(100, (c.balance / c.creditLimit) * 100)}%` } as React.CSSProperties}
                         />
                       </div>
                     </div>
                   ) : (
-                    <span style={{fontSize:'11px',color:'var(--text-muted)'}}>Sin crédito</span>
+                    <span className={styles.noCredit}>Sin crédito</span>
                   )}
                 </td>
-                <td style={{textAlign:'center'}}>
-                  <div className="lista-actions" style={{justifyContent:'center'}}>
+                <td className={styles.textCenter}>
+                  <div className={`lista-actions ${styles.justifyCenter}`}>
                     {c.phone && (
                       <button className="lista-action-btn" onClick={() => openWhatsApp(c.phone!, c.name)} title="Enviar WhatsApp">
                         <MessageCircle size={14} />
@@ -297,7 +297,7 @@ export function CustomersPage() {
             ))}
             {filteredCustomers.length === 0 && (
               <tr>
-                <td colSpan={7} style={{textAlign:'center',padding:40,color:'var(--text-muted)'}}>No hay clientes registrados</td>
+                <td colSpan={7} className={`${styles.textCenter} ${styles.p40} ${styles.colorMuted}`}>No hay clientes registrados</td>
               </tr>
             )}
           </tbody>

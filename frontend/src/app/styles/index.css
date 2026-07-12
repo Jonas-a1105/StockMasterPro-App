@@ -29,6 +29,11 @@
   --layout-padding-x: 10px;
   --layout-padding-x-mobile: 8px;
   --layout-padding-bottom-mobile: 60px;
+  --border-radius-sm: 4px;
+  --border-radius-md: 6px;
+  --border-radius-lg: 10px;
+  --border-radius-xl: 16px;
+  --border-radius-full: 9999px;
   --card-radius: 12px;
   --btn-radius: 8px;
   --input-radius: 8px;
@@ -37,26 +42,51 @@
   --input-border-width: 1px;
   --btn-padding: 8px 16px;
   --btn-font-weight: 600;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
   --input-padding: 0 12px;
   --font-family: 'Outfit', 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+  --font-family-mono: 'Courier New', Courier, monospace;
+  --font-size-2xs: 10px;
   --font-size-xs: 11px;
+  --font-size-caption: 12px;
   --font-size-sm: 13px;
   --font-size-md: 14px;
+  --font-size-md-plus: 15px;
+  --font-size-lg: 16px;
+  --font-size-xl: 18px;
+  --font-size-2xl: 20px;
+  --font-size-3xl: 22px;
+  --font-size-4xl: 24px;
+  --font-size-hero: 80px;
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
   --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
   --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
   --transition-smooth: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 
   /* Card Titles — unificado globalmente */
-  --card-title-size: 14.5px;
+  --card-title-size: var(--font-size-md-plus);
   --card-title-weight: 600;
   --card-title-color: var(--text-main);
   --card-title-transform: none;
   --card-title-spacing: 0;
   --card-title-margin-bottom: 16px;
 
+  /* Card Body, Label, Small — unificado globalmente */
+  --card-body-size: var(--font-size-sm);
+  --card-label-size: var(--font-size-xs);
+  --card-sm-size: var(--font-size-2xs);
+
+  /* Modal Titles — unificado globalmente */
+  --modal-title-size: var(--font-size-lg);
+
+  /* Chart Titles — unificado globalmente */
+  --chart-title-size: var(--font-size-md);
+
   /* KPI Values — unificado globalmente */
-  --kpi-value-size: 18px;
+  --kpi-value-size: var(--font-size-xl);
   --kpi-value-weight: 700;
   --kpi-value-color: var(--text-main);
   --kpi-label-size: 10.5px;
@@ -101,7 +131,9 @@ body {
   min-height: 100vh;
 }
 
-input:not([class*="search" i]), select:not([class*="search" i]), textarea:not([class*="search" i]),
+input:not([class*="search" i]),
+select:not([class*="search" i]),
+textarea:not([class*="search" i]),
 [class*="formControl" i]:not([class*="search" i]),
 [class*="input" i]:not([class*="wrapper" i]):not([class*="container" i]):not([class*="group" i]):not([class*="icon" i]):not([class*="search" i]) {
   font-family: inherit;
@@ -114,7 +146,9 @@ input:not([class*="search" i]), select:not([class*="search" i]), textarea:not([c
   transition: all 0.15s ease-in-out;
 }
 
-input:not([class*="search" i]):focus, select:not([class*="search" i]):focus, textarea:not([class*="search" i]):focus,
+input:not([class*="search" i]):focus,
+select:not([class*="search" i]):focus,
+textarea:not([class*="search" i]):focus,
 [class*="formControl" i]:not([class*="search" i]):focus,
 [class*="input" i]:not([class*="wrapper" i]):not([class*="container" i]):not([class*="group" i]):not([class*="icon" i]):not([class*="search" i]):focus,
 [class*="input" i]:not([class*="wrapper" i]):not([class*="container" i]):not([class*="group" i]):not([class*="icon" i]):not([class*="search" i]):focus-within {
@@ -232,7 +266,12 @@ table td {
 }
 
 /* 3. Unificación y Jerarquía de Fuentes */
-h1, h2, h3, h4, h5, h6,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
 [class*="title" i],
 [class*="Title" i] {
   color: var(--text-main) !important;
@@ -240,9 +279,20 @@ h1, h2, h3, h4, h5, h6,
 }
 
 /* Formatear textos con las variables de color slate nítidas */
-[class*="textDark" i], [class*="text-dark" i] { color: var(--text-main) !important; }
-[class*="textMuted" i], [class*="text-muted" i] { color: var(--text-muted) !important; }
-[class*="textLight" i], [class*="text-light" i] { color: var(--text-light) !important; }
+[class*="textDark" i],
+[class*="text-dark" i] {
+  color: var(--text-main) !important;
+}
+
+[class*="textMuted" i],
+[class*="text-muted" i] {
+  color: var(--text-muted) !important;
+}
+
+[class*="textLight" i],
+[class*="text-light" i] {
+  color: var(--text-light) !important;
+}
 
 /* 3b. Títulos de tarjetas unificados */
 [class*="cardTitle" i],
@@ -304,7 +354,8 @@ h1, h2, h3, h4, h5, h6,
 .kpi-card .lottie-icon,
 [class*="kpiIconBox" i] .lottie-icon,
 [class*="iconWrapper" i] .lottie-icon {
-  filter: brightness(0) opacity(0.85) !important; /* Slate black/dark grey */
+  filter: brightness(0) opacity(0.85) !important;
+  /* Slate black/dark grey */
 }
 
 /* Modo Oscuro & OLED: Iconos de Lottie blancos */
@@ -312,6 +363,7 @@ html[data-theme="dark"] {
   --kpi-bg-opacity: 12%;
   --kpi-default-color: #94a3b8;
 }
+
 html[data-theme="oled"] {
   --kpi-bg-opacity: 10%;
   --kpi-default-color: #8a99ad;
@@ -327,7 +379,8 @@ html[data-theme="oled"] [class*="kpi-card" i] .lottie-icon,
 html[data-theme="oled"] .kpi-card .lottie-icon,
 html[data-theme="oled"] [class*="kpiIconBox" i] .lottie-icon,
 html[data-theme="oled"] [class*="iconWrapper" i] .lottie-icon {
-  filter: brightness(0) invert(1) !important; /* Pure white */
+  filter: brightness(0) invert(1) !important;
+  /* Pure white */
 }
 
 /* 3c. KPI Values — números grandes unificados */
@@ -362,8 +415,8 @@ html[data-theme="oled"] [class*="iconWrapper" i] .lottie-icon {
 }
 
 /* 5. Inputs y Formularios (Protegiendo el Punto de Venta) */
-input:not([class*="pos" i]):not([class*="checkout" i]):not([class*="search" i]), 
-select:not([class*="pos" i]):not([class*="search" i]), 
+input:not([class*="pos" i]):not([class*="checkout" i]):not([class*="search" i]),
+select:not([class*="pos" i]):not([class*="search" i]),
 textarea:not([class*="pos" i]):not([class*="search" i]) {
   border: 1px solid var(--input-border) !important;
   border-radius: var(--input-radius) !important;
@@ -373,8 +426,8 @@ textarea:not([class*="pos" i]):not([class*="search" i]) {
   font-size: 13.5px !important;
 }
 
-input:not([class*="pos" i]):not([class*="checkout" i]):not([class*="search" i]):focus, 
-select:not([class*="pos" i]):not([class*="search" i]):focus, 
+input:not([class*="pos" i]):not([class*="checkout" i]):not([class*="search" i]):focus,
+select:not([class*="pos" i]):not([class*="search" i]):focus,
 textarea:not([class*="pos" i]):not([class*="search" i]):focus {
   border-color: var(--brand-orange) !important;
   box-shadow: 0 0 0 3px var(--brand-orange-light) !important;
@@ -395,18 +448,37 @@ select:not([class*="pos" i]).global-search-select:focus {
 
 /* ── Transición Global de Modales, Menús y Formularios ── */
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slideUp {
-  from { transform: translateY(16px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+  from {
+    transform: translateY(16px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 @keyframes slideDownFade {
-  from { opacity: 0; transform: translateY(-6px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Aplicación global a overlays de modales y capas de fondo oscuro */
@@ -445,9 +517,11 @@ textarea {
   width: 6px;
   height: 6px;
 }
+
 ::-webkit-scrollbar-track {
   background: transparent;
 }
+
 ::-webkit-scrollbar-thumb {
   background-color: var(--text-muted);
   border-radius: 6px;
@@ -475,6 +549,7 @@ textarea {
     opacity: 0;
     transform: translateY(12px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -488,7 +563,8 @@ textarea {
 
 /* ── Sileo Toasts High Contrast Overrides ── */
 [data-sileo-viewport] {
-  z-index: 99999 !important; /* Float way above the fixed Navbar (z-index 100) */
+  z-index: 99999 !important;
+  /* Float way above the fixed Navbar (z-index 100) */
 }
 
 /* Enforce Outfit font on toasts */
@@ -502,14 +578,17 @@ textarea {
   font-weight: 700 !important;
   font-size: 14px !important;
 }
+
 [data-sileo-viewport][data-theme="light"] [data-sileo-description] {
   color: rgba(255, 255, 255, 0.9) !important;
   font-weight: 500 !important;
   font-size: 12.5px !important;
 }
+
 [data-sileo-viewport][data-theme="light"] [data-sileo-badge] {
   background-color: rgba(52, 211, 153, 0.2) !important;
-  color: #34d399 !important; /* Bright emerald checkmark */
+  color: #34d399 !important;
+  /* Bright emerald checkmark */
 }
 
 /* 2. App is in Dark/OLED Mode -> Toast has a LIGHT background (#f2f2f2) */
@@ -518,12 +597,15 @@ textarea {
   font-weight: 700 !important;
   font-size: 14px !important;
 }
+
 [data-sileo-viewport][data-theme="dark"] [data-sileo-description] {
   color: rgba(15, 23, 42, 0.85) !important;
   font-weight: 500 !important;
   font-size: 12.5px !important;
 }
+
 [data-sileo-viewport][data-theme="dark"] [data-sileo-badge] {
   background-color: rgba(5, 150, 105, 0.12) !important;
-  color: #059669 !important; /* Rich green checkmark */
+  color: #059669 !important;
+  /* Rich green checkmark */
 }

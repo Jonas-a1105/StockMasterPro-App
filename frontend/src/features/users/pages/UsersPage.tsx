@@ -141,30 +141,29 @@ export function UsersPage() {
               <th>Nombre</th>
               <th>Email</th>
               <th>Rol</th>
-              <th style={{textAlign:'center'}}>Estado</th>
+              <th className={styles.textCenter}>Estado</th>
               <th>Fecha Registro</th>
-              <th style={{textAlign:'center'}}>Acciones</th>
+              <th className={styles.textCenter}>Acciones</th>
             </tr>
           </thead>
           <tbody>
             {filteredUsers.map(u => (
               <tr key={u.id}>
                 <td><span className="lista-name-text">{u.name}</span></td>
-                <td style={{color:'var(--text-muted)'}}>{u.email}</td>
+                <td className={styles.textMuted}>{u.email}</td>
                 <td><span className={`lista-badge ${roleBadgeClass(u.role)}`}>{roleLabel(u.role)}</span></td>
-                <td style={{textAlign:'center'}}>
+                <td className={styles.textCenter}>
                   <span 
-                    className={`lista-badge ${u.isActive ? 'active' : 'inactive'}`}
+                    className={`lista-badge ${u.isActive ? 'active' : 'inactive'} ${styles.cursorPointer}`}
                     onClick={() => handleToggleActive(u)}
-                    style={{ cursor: 'pointer' }}
                     title="Click para cambiar estado"
                   >
                     {u.isActive ? 'Activo' : 'Inactivo'}
                   </span>
                 </td>
                 <td>{new Date(u.createdAt).toLocaleDateString()}</td>
-                <td style={{textAlign:'center'}}>
-                  <div className="lista-actions" style={{justifyContent:'center'}}>
+                <td className={styles.textCenter}>
+                  <div className={`lista-actions ${styles.justifyCenter}`}>
                     <button className="lista-action-btn" onClick={() => openEdit(u)} title="Editar">
                       <Pencil size={14} />
                     </button>
@@ -179,7 +178,7 @@ export function UsersPage() {
             ))}
             {filteredUsers.length === 0 && (
               <tr>
-                <td colSpan={6} style={{textAlign:'center',padding:40,color:'var(--text-muted)'}}>No hay usuarios registrados</td>
+                <td colSpan={6} className={styles.emptyRow}>No hay usuarios registrados</td>
               </tr>
             )}
           </tbody>

@@ -206,8 +206,8 @@ export function AccountsReceivablePage() {
           <form onSubmit={handlePay}>
             <div className={styles.formFields}>
               {error && <div className={styles.error}>{error}</div>}
-              <p style={{ marginBottom: 12 }}>Cliente: <strong>{payingReceivable.customer.name}</strong></p>
-              <p style={{ marginBottom: 12 }}>Pendiente: <strong>{formatPrice(payingReceivable.pendingAmount)}</strong></p>
+              <p className={styles.mb12}>Cliente: <strong>{payingReceivable.customer.name}</strong></p>
+              <p className={styles.mb12}>Pendiente: <strong>{formatPrice(payingReceivable.pendingAmount)}</strong></p>
               <label>Monto a cobrar *</label>
               <input type="number" step="0.01" min="0.01" max={payingReceivable.pendingAmount} value={payAmount || ''} onChange={e => setPayAmount(Number(e.target.value))} required />
               <label>Método de pago *</label>

@@ -104,30 +104,30 @@ export function WarehousePage() {
               <th>Nombre</th>
               <th>Código</th>
               <th>Dirección</th>
-              <th style={{textAlign:'center'}}>Estado</th>
-              <th style={{textAlign:'center'}}>Acciones</th>
+              <th className={styles.textCenter}>Estado</th>
+              <th className={styles.textCenter}>Acciones</th>
             </tr>
           </thead>
           <tbody>
             {filteredWarehouses.length === 0 ? (
-              <tr><td colSpan={5} style={{textAlign:'center',padding:40,color:'var(--text-muted)'}}>No hay almacenes registrados</td></tr>
+              <tr><td colSpan={5} className={styles.emptyRow}>No hay almacenes registrados</td></tr>
             ) : filteredWarehouses.map(w => (
               <tr key={w.id}>
                 <td>
                   <div className="lista-name-cell">
-                    <Building2 size={14} style={{color:'var(--list-accent-color)'}} />
+                    <Building2 size={14} className={styles.listAccent} />
                     <span className="lista-name-text">{w.name}</span>
                   </div>
                 </td>
                 <td><span className="lista-code">{w.code}</span></td>
-                <td style={{color:'var(--text-muted)'}}>{w.address || '—'}</td>
-                <td style={{textAlign:'center'}}>
+                <td className={styles.textMuted}>{w.address || '—'}</td>
+                <td className={styles.textCenter}>
                   <span className={`lista-badge ${w.isActive ? 'active' : 'inactive'}`}>
                     {w.isActive ? 'Activo' : 'Inactivo'}
                   </span>
                 </td>
-                <td style={{textAlign:'center'}}>
-                  <div className="lista-actions" style={{justifyContent:'center'}}>
+                <td className={styles.textCenter}>
+                  <div className={`lista-actions ${styles.justifyCenter}`}>
                     <button className="lista-action-btn" onClick={() => setModal({ type: 'edit', data: w })} title="Editar">
                       <Edit2 size={14} />
                     </button>

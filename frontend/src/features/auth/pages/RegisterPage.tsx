@@ -74,9 +74,8 @@ export function RegisterPage() {
   return (
     <div className={styles.authContainer}>
       {/* CONTENEDOR DE ENCABEZADO CENTRAL */}
-      <div className={styles.authHeader}>
-        <div style={{ display: 'inline-flex', marginBottom: '8px' }}>
-          <svg viewBox="0 0 240 240" fill="none" width="84" height="84" style={{ overflow: 'visible' }}>
+      <div className={`${styles.authHeader} ${styles.flexInline} ${styles.mb8}`}>
+          <svg viewBox="0 0 240 240" fill="none" width="84" height="84" className={styles.overflowVisible}>
             <path
               d="M 65 90 C 40 90, 40 115, 60 120 C 80 125, 80 150, 55 150 L 85 85 L 105 125 L 125 85 L 125 150 H 185 V 115 H 135 V 150"
               fill="none"
@@ -100,7 +99,7 @@ export function RegisterPage() {
       </div>
 
       {/* TARJETA PRINCIPAL */}
-      <div className={styles.authCard} style={{ borderColor: '#222222' }}>
+      <div className={`${styles.authCard} ${styles.borderColor222}`}>
         <div className={styles.sectionHeader}>
           <div className={styles.indicatorRow}>
             <div className={styles.indicatorDotRegister} />
@@ -111,10 +110,10 @@ export function RegisterPage() {
 
         {error && <div className={styles.error}>{error}</div>}
 
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+        <form onSubmit={handleSubmit} className={styles.flexColumnGap16}>
           {/* Nombre de la Empresa */}
           <div className={styles.field}>
-            <label style={{ fontSize: '10px', fontFamily: 'monospace', color: '#666666', textTransform: "none", letterSpacing: '0.5px' }}>
+            <label className={`${styles.fontSize10} ${styles.fontMono} ${styles.colorMuted} ${styles.textTransformNone} ${styles.letterSpacing05}`}>
               Nombre de la Empresa
             </label>
             <input
@@ -129,7 +128,7 @@ export function RegisterPage() {
 
           {/* Nombre del Operador */}
           <div className={styles.field}>
-            <label style={{ fontSize: '10px', fontFamily: 'monospace', color: '#666666', textTransform: "none", letterSpacing: '0.5px' }}>
+            <label className={`${styles.fontSize10} ${styles.fontMono} ${styles.colorMuted} ${styles.textTransformNone} ${styles.letterSpacing05}`}>
               Nombre del Operador
             </label>
             <input
@@ -144,7 +143,7 @@ export function RegisterPage() {
 
           {/* Correo Institucional */}
           <div className={styles.field}>
-            <label style={{ fontSize: '10px', fontFamily: 'monospace', color: '#666666', textTransform: "none", letterSpacing: '0.5px' }}>
+            <label className={`${styles.fontSize10} ${styles.fontMono} ${styles.colorMuted} ${styles.textTransformNone} ${styles.letterSpacing05}`}>
               Correo Institucional
             </label>
             <input
@@ -159,7 +158,7 @@ export function RegisterPage() {
 
           {/* Establecer Contraseña Maestra */}
           <div className={styles.field}>
-            <label style={{ fontSize: '10px', fontFamily: 'monospace', color: '#666666', textTransform: "none", letterSpacing: '0.5px' }}>
+            <label className={`${styles.fontSize10} ${styles.fontMono} ${styles.colorMuted} ${styles.textTransformNone} ${styles.letterSpacing05}`}>
               Establecer Contraseña Maestra
             </label>
             <div className={styles.inputWrap}>
@@ -183,15 +182,15 @@ export function RegisterPage() {
           </div>
 
           {/* Fuerza de Clave */}
-          <div className={styles.field} style={{ marginBottom: '8px' }}>
+          <div className={`${styles.field} ${styles.mb8}`}>
             <div className={styles.strengthHeader}>
               <span>Seguridad de Clave</span>
-              <span style={{ color: strengthColor, fontWeight: 'bold' }}>{strengthLabel}</span>
+              <span className={`${styles.fontWeightBold} ${styles.colorSuccess}`}>{strengthLabel}</span>
             </div>
             <div className={styles.strengthBarContainer}>
               <div
-                className={styles.strengthBar}
-                style={{ width: strengthWidth, backgroundColor: strengthBarColor }}
+                className={styles.strengthBarFill}
+                style={{ '--strength-width': strengthWidth, '--strength-color': strengthBarColor }}
               />
             </div>
           </div>
@@ -201,9 +200,9 @@ export function RegisterPage() {
             <div className={`${styles.requirementRow} ${checks.length ? styles.requirementRowActive : ''}`}>
               <div className={styles.reqIcon}>
                 {checks.length ? (
-                  <Check size={12} style={{ color: '#9ee63c' }} />
+                  <Check size={12} className={styles.colorSuccess} />
                 ) : (
-                  <X size={12} style={{ color: '#dc2626' }} />
+                  <X size={12} className={styles.colorDanger} />
                 )}
               </div>
               <span>Mínimo 8 caracteres obligatorios</span>
@@ -212,9 +211,9 @@ export function RegisterPage() {
             <div className={`${styles.requirementRow} ${checks.upper ? styles.requirementRowActive : ''}`}>
               <div className={styles.reqIcon}>
                 {checks.upper ? (
-                  <Check size={12} style={{ color: '#9ee63c' }} />
+                  <Check size={12} className={styles.colorSuccess} />
                 ) : (
-                  <X size={12} style={{ color: '#dc2626' }} />
+                  <X size={12} className={styles.colorDanger} />
                 )}
               </div>
               <span>Incluir al menos una letra mayúscula</span>
@@ -223,9 +222,9 @@ export function RegisterPage() {
             <div className={`${styles.requirementRow} ${checks.number ? styles.requirementRowActive : ''}`}>
               <div className={styles.reqIcon}>
                 {checks.number ? (
-                  <Check size={12} style={{ color: '#9ee63c' }} />
+                  <Check size={12} className={styles.colorSuccess} />
                 ) : (
-                  <X size={12} style={{ color: '#dc2626' }} />
+                  <X size={12} className={styles.colorDanger} />
                 )}
               </div>
               <span>Incluir al menos un dígito numérico</span>
@@ -249,14 +248,14 @@ export function RegisterPage() {
 
       {/* ENLACES INFERIORES */}
       <div className={styles.footerLinks}>
-        <p style={{ margin: 0, fontSize: '11px', color: '#666666' }}>
+        <p className={`${styles.m0} ${styles.fontSize11} ${styles.colorMuted}`}>
           ¿Ya tienes una cuenta?{' '}
           <Link to="/login" className={`${styles.footerLinkAccent} ${styles.footerLinkAccentLogin}`}>
             Inicia Sesión
           </Link>
         </p>
-        <p style={{ marginTop: '12px', fontSize: '11px' }}>
-          <Link to="/" style={{ color: '#666666', textDecoration: 'none' }}>➔ Volver al Inicio (Landing)</Link>
+        <p className={`${styles.mt12} ${styles.fontSize11}`}>
+          <Link to="/" className={`${styles.colorMuted} ${styles.textDecorationNone}`}>➔ Volver al Inicio (Landing)</Link>
         </p>
       </div>
     </div>

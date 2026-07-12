@@ -5,7 +5,7 @@ import { LoadingDots } from '@shared/ui/LoadingDots';
 import { TabNav } from '@shared/ui/TabNav';
 import { SkeletonReports } from '@shared/ui/Skeleton';
 import { useTheme } from '@contexts/ThemeContext';
-import { formatUsd } from '@shared/lib/format/currency';
+import { formatUsd as usdFormatter } from '@shared/lib/format/currency';
 import { Filter, TrendingUp, TrendingDown, PiggyBank, Percent, Download } from 'lucide-react';
 import { KpiGrid } from '@shared/ui/KpiGrid';
 import { Toolbar } from '@shared/ui/Toolbar';
@@ -158,11 +158,11 @@ export function NetProfitPage() {
             <LineChart data={chartData}>
               <CartesianGrid stroke="var(--border-color, #2d2d2d)" strokeDasharray="3 3" />
               <XAxis dataKey="label" tick={{ fill: 'var(--text-muted, #888)', fontSize: 11 }} axisLine={false} tickLine={false} />
-              <YAxis tick={{ fill: 'var(--text-muted, #888)', fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={(v: number) => formatUsd(v)} />
+              <YAxis tick={{ fill: 'var(--text-muted, #888)', fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={(v: number) => usdFormatter(v)} />
               <Tooltip
                 contentStyle={{ backgroundColor: 'var(--bg-card, #1e1e1e)', border: '1px solid var(--border-color, #2d2d2d)', borderRadius: 0, fontSize: 12 }}
                 labelStyle={{ color: 'var(--text-dark, #f5f5f5)' }}
-                formatter={(val: any) => [formatUsd(Number(val))]}
+                formatter={(val: any) => [usdFormatter(Number(val))]}
               />
               <Legend wrapperStyle={{ fontSize: 11, color: 'var(--text-muted, #888)' }} />
               <Line type="monotone" dataKey="Ingresos" stroke="#3b82f6" strokeWidth={2} dot={{ r: 3, fill: '#3b82f6' }} />
@@ -175,8 +175,8 @@ export function NetProfitPage() {
 
       <div className={styles.chartCard}>
         <div className={styles.tableWrapper}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-            <span style={{ fontWeight: 600, fontSize: 14 }}>Detalle Mensual</span>
+          <div className={styles.headerRow}>
+            <span className={styles.detailTitle}>Detalle Mensual</span>
             <button className={styles.exportBtn} onClick={handleExport} title="Exportar a Excel"><Download size={14} /></button>
           </div>
           <table className={styles.table}>
@@ -203,12 +203,12 @@ export function NetProfitPage() {
                     <td className={styles.cellNumberMuted}>{usdFormatter(m.cogs)}</td>
                     <td className={styles.cellNumberMuted}>{usdFormatter(m.expenses)}</td>
                     <td className={styles.cellNumber}>
-                      <span style={{ color: m.profit >= 0 ? 'var(--color-success, #10b981)' : 'var(--color-danger, #dc2626)', fontWeight: 700 }}>
+                      <span className={styles.profitValue} style={{ '--profit-color': m.profit >= 0 ? 'var(--color-success, #10b981)' : 'var(--color-danger, #dc2626)' } as React.CSSProperties}>
                         {usdFormatter(m.profit)}
                       </span>
                     </td>
                     <td className={styles.cellNumber}>
-                      <span style={{ color: marginPct >= 0 ? '#34d399' : '#f87171', fontWeight: 600 }}>
+                      <span className={styles.marginValue} style={{ '--margin-color': marginPct >= 0 ? '#34d399' : '#f87171' } as React.CSSProperties}>
                         {marginPct.toFixed(1)}%
                       </span>
                     </td>
@@ -223,11 +223,11 @@ export function NetProfitPage() {
                 <td className={styles.footNumberMuted}>{usdFormatter(totals.cogs)}</td>
                 <td className={styles.footNumberMuted}>{usdFormatter(totals.expenses)}</td>
                 <td className={styles.footNumber}>
-                  <span style={{ color: totals.profit >= 0 ? 'var(--color-success, #10b981)' : 'var(--color-danger, #dc2626)', fontWeight: 800 }}>
+                  <span className={styles.totalProfitValue} style={{ '--total-profit-color': totals.profit >= 0 ? 'var(--color-success, #10b981)' : 'var(--color-danger, #dc2626)' } as React.CSSProperties}>
                     {usdFormatter(totals.profit)}
                   </span>
                 </td>
-                <td className={styles.footNumber} style={{ color: '#f05a28' }}>{marginNet.toFixed(1)}%</td>
+                <td className={`${styles.footNumber} ${styles.footTotalColor}`}>{marginNet.toFixed(1)}%</td>
               </tr>
             </tfoot>
           </table>

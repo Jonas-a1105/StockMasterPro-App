@@ -157,26 +157,26 @@ export function ProductLotsPage() {
             <tr>
               <th>Producto</th>
               <th>N° Lote</th>
-              <th style={{textAlign:'right'}}>Stock</th>
+              <th className={styles.textRight}>Stock</th>
               <th>Vencimiento</th>
               <th>Estado</th>
-              <th style={{textAlign:'center'}}>Acciones</th>
+              <th className={styles.textCenter}>Acciones</th>
             </tr>
           </thead>
           <tbody>
             {filtered.length === 0 ? (
-              <tr><td colSpan={6} style={{textAlign:'center',padding:40,color:'var(--text-muted)'}}>No hay lotes</td></tr>
+              <tr><td colSpan={6} className={styles.emptyRow}>No hay lotes</td></tr>
             ) : filtered.map(lot => {
               const st = statusOf(lot);
               return (
                 <tr key={lot.id}>
                   <td><span className="lista-name-text">{lot.product?.name || lot.productId}</span></td>
                   <td><span className="lista-code">{lot.lotNumber}</span></td>
-                  <td style={{textAlign:'right'}}><span className="lista-number-value">{lot.quantity}</span></td>
+                  <td className={styles.textRight}><span className="lista-number-value">{lot.quantity}</span></td>
                   <td>{lot.expiryDate ? new Date(lot.expiryDate).toLocaleDateString() : '—'}</td>
-                  <td><span className={`lista-badge`} style={{background: st.color + '20', color: st.color}}>{st.label}</span></td>
-                  <td style={{textAlign:'center'}}>
-                    <div className="lista-actions" style={{justifyContent:'center'}}>
+                  <td><span className={`lista-badge ${styles.badgeDynamic}`} style={{ '--st-bg': st.color + '20', '--st-color': st.color } as React.CSSProperties}>{st.label}</span></td>
+                  <td className={styles.textCenter}>
+                    <div className={`lista-actions ${styles.justifyCenter}`}>
                       <button className="lista-action-btn" onClick={() => openEdit(lot)} title="Editar"><Eye size={14} /></button>
                       <button className="lista-action-btn danger" onClick={() => handleDelete(lot.id)} title="Eliminar"><Trash2 size={14} /></button>
                     </div>

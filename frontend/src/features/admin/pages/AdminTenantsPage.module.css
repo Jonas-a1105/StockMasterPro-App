@@ -12,15 +12,15 @@
 }
 
 .title {
-  font-size: 15px;
-  font-weight: 700;
+  font-size: var(--font-size-md-plus);
+  font-weight: var(--font-weight-bold);
   letter-spacing: 0.5px;
   color: var(--text-dark, #e5e5e5);
   margin: 0;
 }
 
 .subtitle {
-  font-size: 12px;
+  font-size: var(--font-size-caption);
   color: var(--text-muted, #888);
   margin: -8px 0 0;
 }
@@ -38,7 +38,7 @@
 
 .muted {
   color: var(--text-muted, #555);
-  font-size: 12px;
+  font-size: var(--font-size-caption);
   padding: 30px 18px;
   margin: 0;
   font-style: italic;
@@ -51,19 +51,19 @@
 .table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 12px;
+  font-size: var(--font-size-caption);
 }
 
 .table th {
   text-align: left;
   padding: 10px 14px;
-  font-size: 10px;
-  font-weight: 700;
+  font-size: var(--font-size-2xs);
+  font-weight: var(--font-weight-bold);
   text-transform: none;
   letter-spacing: 0.5px;
   color: var(--text-muted, #888);
   border-bottom: 1px solid var(--border-color, #2a2a2a);
-  font-family: 'Courier New', Courier, monospace;
+  font-family: var(--font-family-mono);
 }
 
 .table td {
@@ -73,7 +73,7 @@
 }
 
 .table tbody tr:hover {
-  background-color: rgba(255, 255, 255, 0.02);
+  background-color: rgb(255, 255, 255, 0.02);
 }
 
 .rowBlocked {
@@ -81,19 +81,19 @@
 }
 
 .cellName {
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-dark, #fff);
 }
 
 .cellDate {
-  font-family: 'Courier New', Courier, monospace;
+  font-family: var(--font-family-mono);
   color: var(--text-muted, #888);
-  font-size: 11px;
+  font-size: var(--font-size-xs);
 }
 
 .badge {
-  font-size: 10px;
-  font-weight: 700;
+  font-size: var(--font-size-2xs);
+  font-weight: var(--font-weight-bold);
   text-transform: none;
   letter-spacing: 0.5px;
   padding: 2px 10px;
@@ -101,24 +101,24 @@
 }
 
 .badgeFree {
-  background-color: rgba(136, 136, 136, 0.15);
-  color: #888;
+  background-color: rgb(136, 136, 136, 0.15);
+  color: var(--color-gray-400, #888);
 }
 
 .badgePro {
-  background-color: rgba(249, 115, 22, 0.15);
-  color: #f97316;
+  background-color: rgb(249, 115, 22, 0.15);
+  color: var(--color-orange, #f97316);
 }
 
 .badgeEnterprise {
-  background-color: rgba(139, 92, 246, 0.15);
-  color: #8b5cf6;
+  background-color: rgb(139, 92, 246, 0.15);
+  color: var(--color-purple, #8b5cf6);
 }
 
 .statusBadge {
-  font-size: 11px;
-  font-weight: 700;
-  font-family: 'Courier New', Courier, monospace;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  font-family: var(--font-family-mono);
 }
 
 .actions {
@@ -132,8 +132,8 @@
   align-items: center;
   gap: 4px;
   padding: 5px 10px;
-  font-size: 10px;
-  font-weight: 700;
+  font-size: var(--font-size-2xs);
+  font-weight: var(--font-weight-bold);
   text-transform: none;
   letter-spacing: 0.3px;
   background-color: var(--bg-main, #222);
@@ -155,10 +155,117 @@
 }
 
 .actionDanger {
-  color: #dc2626;
+  color: var(--color-danger);
 }
 
 .actionDanger:hover {
-  background-color: rgba(220, 38, 38, 0.15) !important;
-  color: #ef4444 !important;
+  background-color: rgb(220, 38, 38, 0.15) !important;
+  color: var(--color-danger) !important;
+}
+
+/* ── Access denied card ── */
+.accessDeniedCard {
+  text-align: center;
+  padding: 32px 16px;
+}
+
+.accessDeniedIcon {
+  color: var(--color-primary, var(--color-orange-red, #f05a28));
+  margin-bottom: 12px;
+}
+
+.accessDeniedTitle {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-dark, #e5e5e5);
+  margin: 0 0 8px;
+}
+
+.accessDeniedText {
+  color: var(--text-muted, #888);
+  font-size: var(--font-size-sm);
+  margin: 0;
+}
+
+/* ── Table ── */
+.table th:last-child {
+  width: 200px;
+}
+
+/* ── Status badge colors ── */
+.statusActive {
+  color: var(--color-success);
+}
+
+.statusExpired {
+  color: var(--color-orange, #f97316);
+}
+
+.statusCanceled {
+  color: var(--color-danger);
+}
+
+/* ── Icon colors ── */
+.iconDanger {
+  color: var(--color-danger);
+}
+
+.iconSuccess {
+  color: var(--color-success);
+}
+
+/* ── Modal form ── */
+.modalForm {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 8px 0;
+}
+
+.modalFormText {
+  font-size: var(--font-size-sm);
+  color: var(--text-muted, #888);
+  margin: 0;
+}
+
+.modalFormStrong {
+  color: var(--text-dark, #fff);
+}
+
+.modalFormLabel {
+  font-size: var(--font-size-caption);
+  color: var(--text-muted, #888);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.modalFormInput {
+  width: 100%;
+  padding: 8px 10px;
+  background: var(--bg-main, #1c1c1c);
+  border: 1px solid var(--border-color, #333);
+  color: var(--text-dark, #fff);
+  font-size: var(--font-size-sm);
+  box-sizing: border-box;
+}
+
+.modalFormBtn {
+  padding: 10px;
+  background: var(--color-orange-red, #f05a28);
+  color: var(--text-on-primary, #fff);
+  border: none;
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  margin-top: 4px;
+  transition: background 0.2s;
+}
+
+.modalFormBtn:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+
+.modalFormBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }

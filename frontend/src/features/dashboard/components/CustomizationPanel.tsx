@@ -235,9 +235,9 @@ export function CustomizationPanel({ open, onClose }: PanelProps) {
                     onClick={() => applyPreset({ ...config, primaryColor: p.primary, secondaryColor: p.secondary, sidebarBg: p.sidebar })}
                   >
                     <div className={styles.paletteSwatches}>
-                      <span style={{ backgroundColor: p.primary }} />
-                      <span style={{ backgroundColor: p.secondary }} />
-                      <span style={{ backgroundColor: p.sidebar }} />
+                      <span className={styles.swatch} style={{ '--swatch-color': p.primary }} />
+                      <span className={styles.swatch} style={{ '--swatch-color': p.secondary }} />
+                      <span className={styles.swatch} style={{ '--swatch-color': p.sidebar }} />
                     </div>
                     <span className={styles.paletteName}>{p.name}</span>
                   </button>
@@ -294,7 +294,7 @@ export function CustomizationPanel({ open, onClose }: PanelProps) {
               Modo OLED
             </button>
             <button className={`${styles.oledToggle} ${config.shadowEnabled ? styles.oledToggleOn : ''}`} onClick={() => updateConfig({ shadowEnabled: !config.shadowEnabled })}>
-              <span style={{ display: 'inline-block', width: 16, height: 16, background: 'radial-gradient(circle at 30% 30%, #fff, #888)' }} />
+              <span className={`${styles.w16} ${styles.h16} ${styles.bgRadial} ${styles.roundedCard}`} />
               Sombras globales
             </button>
             <button className={styles.resetBtn} onClick={resetTheme}>

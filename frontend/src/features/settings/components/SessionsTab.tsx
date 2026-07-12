@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { api } from '@shared/lib/http/client';
 import { useToast } from '@contexts/ToastContext';
 import { Smartphone, Monitor, Globe, XCircle } from 'lucide-react';
+import styles from './SessionsTab.module.css';
 
 export function SessionsTab() {
   const { showToast } = useToast();
@@ -48,47 +49,39 @@ export function SessionsTab() {
     return <Monitor size={16} />;
   };
 
-  if (loading) return <p style={{ color: 'var(--text-muted)', padding: 20 }}>Cargando sesiones...</p>;
+  if (loading) return <p className={styles.loadingText}>Cargando sesiones...</p>;
 
   return (
-    <div style={{ padding: '12px 0' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-        <h3 style={{ margin: 0 }}>Sesiones activas ({sessions.length})</h3>
+    <div className={styles.container}>
+      <div className={styles.header}>
+        <h3 className={styles.title}>Sesiones activas ({sessions.length})</h3>
         {sessions.length > 1 && (
-          <button onClick={logoutAll} style={{ padding: '6px 14px', border: '1px solid #ef4444', borderRadius: 6, background: 'transparent', color: '#ef4444', cursor: 'pointer', fontSize: 13 }}>
+          <button onClick={logoutAll} className={styles.logoutAllBtn}>
             Cerrar todas
           </button>
         )}
       </div>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+      <div className={styles.list}>
         {sessions.length === 0 ? (
-          <p style={{ color: 'var(--text-muted)' }}>No hay sesiones activas</p>
+          <p className={styles.emptyText}>No hay sesiones activas</p>
         ) : sessions.map((s: any) => {
           const ua = s.userAgent || '';
           const isMobile = /mobile|android|iphone|ipad/i.test(ua);
           return (
-            <div key={s.id || s.deviceId} style={{
-              display: 'flex', alignItems: 'center', gap: 12,
-              padding: '12px 16px', borderRadius: 8,
-              border: '1px solid var(--border-color)',
-              background: 'var(--bg-card)',
-            }}>
+            <div key={s.id || s.deviceId} className={styles.sessionCard}>
               {getDeviceIcon(ua)}
-              <div style={{ flex: 1 }}>
-                <div style={{ fontWeight: 500, fontSize: 14 }}>
+              <div className={styles.sessionInfo}>
+                <div className={styles.sessionName}>
                   {isMobile ? 'Dispositivo móvil' : 'Navegador web'}
-                  {s.isCurrent && <span style={{ marginLeft: 8, fontSize: 11, color: '#22c55e' }}>(actual)</span>}
+                  {s.isCurrent && <span className={styles.currentBadge}>(actual)</span>}
                 </div>
-                <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>
+                <div className={styles.sessionMeta}>
                   {s.ipAddress ? `IP: ${s.ipAddress}` : ''}
                   {s.lastActivity ? ` · Última actividad: ${new Date(s.lastActivity).toLocaleString()}` : ''}
                 </div>
               </div>
               {!s.isCurrent && (
-                <button onClick={() => logoutDevice(s.deviceId)} style={{
-                  padding: '6px 10px', border: 'none', borderRadius: 6,
-                  background: 'transparent', color: 'var(--text-muted)', cursor: 'pointer',
-                }} title="Cerrar sesión"><XCircle size={16} /></button>
+                <button onClick={() => logoutDevice(s.deviceId)} className={styles.logoutBtn} title="Cerrar sesión"><XCircle size={16} /></button>
               )}
             </div>
           );

@@ -66,22 +66,22 @@ export function PurchaseOrderForm({
           <div className={styles.poItems}>
             {form.items.map((item, idx) => (
               <div key={idx} className={styles.poItemRow}>
-                <div className={styles.field} style={{ flex: 2 }}>
+                <div className={`${styles.field} ${styles.flex2}`}>
                   <label>Producto</label>
                   <select value={item.productId} onChange={e => updateItem(idx, 'productId', e.target.value)} required>
                     <option value="">Seleccionar...</option>
                     {products.map(p => (<option key={p.id} value={p.id}>{p.name} ({formatPrice(p.cost)})</option>))}
                   </select>
                 </div>
-                <div className={styles.field} style={{ flex: 1 }}>
+                <div className={`${styles.field} ${styles.flex1}`}>
                   <label>Cantidad</label>
                   <input type="number" min="1" value={item.quantity || ''} onChange={e => updateItem(idx, 'quantity', Number(e.target.value))} required placeholder="1" />
                 </div>
-                <div className={styles.field} style={{ flex: 1 }}>
+                <div className={`${styles.field} ${styles.flex1}`}>
                   <label>Costo Uni.</label>
                   <input type="number" step="0.01" min="0" value={item.cost || ''} onChange={e => updateItem(idx, 'cost', Number(e.target.value))} required placeholder="0.00" />
                 </div>
-                <div className={styles.field} style={{ flex: 1 }}>
+                <div className={`${styles.field} ${styles.flex1}`}>
                   <label>Subtotal</label>
                   <div className={styles.poSubtotal}>{formatPrice(item.quantity * item.cost)}</div>
                 </div>

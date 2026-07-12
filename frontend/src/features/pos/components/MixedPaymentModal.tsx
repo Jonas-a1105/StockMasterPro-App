@@ -4,7 +4,7 @@ import { Modal } from '@shared/ui/Modal';
 import { useExchangeRate } from '@contexts/ExchangeRateContext';
 import type { PaymentMethod } from '../types';
 import styles from '../pages/POSPage.module.css';
-import { Plus, DollarSign, CreditCard, Landmark, Smartphone, SmartphoneNfc, Users, X, ChevronRight, RotateCcw } from 'lucide-react';
+import { Plus, DollarSign, CreditCard, Landmark, SmartphoneNfc, Users } from 'lucide-react';
 
 const METHOD_CONFIG = {
   cash: { label: 'Efectivo', icon: DollarSign, color: '#16a34a', bg: '#dcfce7' },
@@ -81,41 +81,30 @@ export function MixedPaymentModal({
     await onSubmit(payments);
   };
 
-  const METHOD_CONFIG = {
-    cash: { label: 'Efectivo', icon: DollarSign, color: '#16a34a', bg: '#dcfce7' },
-    card: { label: 'Tarjeta', icon: CreditCard, color: '#2563eb', bg: '#dbeafe' },
-    mobile: { label: 'Pago Móvil', icon: SmartphoneNfc, color: '#7c3aed', bg: '#ede9fe' },
-    transfer: { label: 'Transferencia', icon: Landmark, color: '#0891b2', bg: '#cffafe' },
-    credit: { label: 'Crédito', icon: Users, color: '#ca8a04', bg: '#fef9c3' },
-  };
-
-  const methods = Object.entries(METHOD_CONFIG).map(([key, config]) => ({ key: key, ...config }));
+  const paidStyle = paidTotal > total ? styles.paymentSummaryDanger : paidTotal === total ? styles.paymentSummarySuccess : styles.paymentSummaryWarning;
+  const remStyle = remaining > 0 ? styles.paymentSummaryWarning : remaining < 0 ? styles.paymentSummaryDanger : styles.paymentSummarySuccess;
 
   if (!open) return null;
 
   return (
     <Modal open={open} onClose={onClose} title="Pago Mixto" wide>
       <form onSubmit={handleSubmit}>
-        <p style={{ marginBottom: 16, color: 'var(--text-muted)', fontSize: 14 }}>
-          Total a pagar: <strong>{formatPrice(total)}</strong> &nbsp;|&nbsp;
-          Pagado: <strong style={{ color: paidTotal > total ? '#ef4444' : paidTotal === total ? '#16a34a' : '#ca8a04' }}>{formatPrice(paidTotal)}</strong> &nbsp;|&nbsp;
-          Pendiente: <strong style={{ color: remaining > 0 ? '#f59e0b' : remaining < 0 ? '#ef4444' : '#16a34a' }}>{formatPrice(Math.max(0, remaining))}</strong>
+        <p className={styles.paymentSummary}>
+          Total a pagar: <strong className={styles.paymentSummaryStrong}>{formatPrice(total)}</strong> &nbsp;|&nbsp;
+          Pagado: <strong className={`${styles.paymentSummaryStrong} ${paidStyle}`}>{formatPrice(paidTotal)}</strong> &nbsp;|&nbsp;
+          Pendiente: <strong className={`${styles.paymentSummaryStrong} ${remStyle}`}>{formatPrice(Math.max(0, remaining))}</strong>
         </p>
 
-        {error && (
-          <div style={{ padding: '12px', background: 'rgba(239,68,68,0.1)', border: '1px solid #ef4444', borderRadius: 8, marginBottom: 16, color: '#dc2626', fontSize: 13 }}>
-            {error}
-          </div>
-        )}
+        {error && <div className={styles.paymentError}>{error}</div>}
 
-        <table className="lista-table" style={{ marginBottom: 16 }}>
+        <table className={`lista-table ${styles.mb16}`}>
           <thead>
             <tr>
               <th>Método</th>
-              <th style={{ width: 120, textAlign: 'center' }}>Monto</th>
-              <th style={{ width: 140 }}>Tasa</th>
-              <th style={{ width: 140 }}>Referencia</th>
-              <th style={{ width: 50 }}></th>
+              <th className={`${styles.w120} ${styles.textCenter}`}>Monto</th>
+              <th className={styles.w140}>Tasa</th>
+              <th className={styles.w140}>Referencia</th>
+              <th className={styles.w50}></th>
             </tr>
           </thead>
           <tbody>
@@ -127,10 +116,10 @@ export function MixedPaymentModal({
                     <select
                       value={payment.paymentMethod}
                       onChange={e => updatePayment(idx, 'paymentMethod', e.target.value)}
-                      style={{ width: 100, padding: '6px 10px', borderRadius: 6, border: '1px solid var(--border)', background: 'var(--bg-secondary)', fontSize: 14 }}
+                      className={styles.selectField}
                     >
                       {Object.entries(METHOD_CONFIG).map(([key, m]) => (
-                        <option key={m.key} value={m.key} style={{ background: m.bg }}>
+                        <option key={key} value={key} className={styles.optionBg} style={{ '--option-bg': m.bg } as React.CSSProperties}>
                           {m.icon} {m.label}
                         </option>
                       ))}
@@ -144,10 +133,10 @@ export function MixedPaymentModal({
                       max={total}
                       value={payment.amount || ''}
                       onChange={e => updatePayment(idx, 'amount', parseFloat(e.target.value) || 0)}
-                      style={{ width: '100%', padding: '6px 10px', borderRadius: 6, border: '1px solid var(--border)', background: 'var(--bg-secondary)', fontSize: 14, textAlign: 'right' }}
+                      className={`${styles.inputField} ${styles.inputFieldRight}`}
                     />
                   </td>
-                  <td style={{ textAlign: 'center' }}>
+                  <td className={styles.textCenter}>
                     {payment.paymentMethod === 'transfer' || payment.paymentMethod === 'mobile' ? (
                       <input
                         type="number"
@@ -156,47 +145,47 @@ export function MixedPaymentModal({
                         value={payment.exchangeRate || ''}
                         onChange={e => updatePayment(idx, 'exchangeRate', parseFloat(e.target.value) || undefined)}
                         placeholder="Tasa"
-                        style={{ width: '100%', padding: '6px 10px', borderRadius: 6, border: '1px solid var(--border)', background: 'var(--bg-secondary)', textAlign: 'right' }}
+                        className={`${styles.inputField} ${styles.inputFieldRight}`}
                       />
                     ) : (
-                      <span style={{ color: 'var(--text-muted)', fontSize: 12 }}>—</span>
+                      <span className={`${styles.textMuted} ${styles.fontSize12}`}>—</span>
                     )}
                   </td>
-                  <td style={{ textAlign: 'center' }}>
+                  <td className={styles.textCenter}>
                     <input
                       type="text"
                       value={payment.reference || ''}
                       onChange={e => updatePayment(idx, 'reference', e.target.value)}
                       placeholder="Ref/Últ. 4 díg."
-                      style={{ width: '100%', padding: '6px 10px', borderRadius: 6, border: '1px solid var(--border)', background: 'var(--bg-secondary)', fontSize: 14, textAlign: 'center' }}
+                      className={`${styles.inputField} ${styles.inputFieldCenter}`}
                     />
                   </td>
-                  <td style={{ textAlign: 'center' }}>
+                  <td className={styles.textCenter}>
                     {payments.length > 1 && (
-                      <button type="button" onClick={() => removePayment(idx)} style={{ background: 'none', border: 'none', color: '#dc2626', cursor: 'pointer', fontSize: 18, padding: 4 }}>
+                      <button type="button" onClick={() => removePayment(idx)} className={styles.removeBtn}>
                         ✕
                       </button>
                     )}
                   </td>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              );
+            })}
+          </tbody>
+        </table>
 
-          {paidTotal < total && (
-            <button type="button" className={styles.addPaymentBtn} onClick={addPayment} style={{ marginBottom: 16, width: '100%' }}>
-              <Plus size={16} /> Agregar otro método de pago (Pendiente: {formatPrice(Math.max(0, remaining))})
-            </button>
-          )}
+        {paidTotal < total && (
+          <button type="button" className={styles.addPaymentBtn} onClick={addPayment}>
+            <Plus size={16} /> Agregar otro método de pago (Pendiente: {formatPrice(Math.max(0, remaining))})
+          </button>
+        )}
 
-          <div className={styles.formActions}>
-            <button type="button" className={styles.cancelBtn} onClick={onClose}>Cancelar</button>
-            <button type="submit" className={styles.saveBtn} disabled={loading}>
-              {loading ? <span className="spinner" style={{width:16,height:16,border:'2px solid var(--border)',borderTopColor:'var(--brand)',borderRadius:'50%',animation:'spin 0.8s linear infinite'}} /> : 'Cobrar'}
-            </button>
-          </div>
-        </form>
-      </Modal>
-    )
+        <div className={styles.formActions}>
+          <button type="button" className={styles.cancelBtn} onClick={onClose}>Cancelar</button>
+          <button type="submit" className={styles.saveBtn} disabled={loading}>
+            {loading ? <span className={styles.spinnerInline} /> : 'Cobrar'}
+          </button>
+        </div>
+      </form>
+    </Modal>
   );
 }

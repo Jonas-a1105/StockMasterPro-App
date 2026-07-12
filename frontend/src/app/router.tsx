@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { lazy, Suspense, useEffect } from 'react';
+import { lazy, Suspense, useEffect, useState, useCallback, type ReactNode } from 'react';
 import { useAuth } from '@contexts/AuthContext';
 import { useTheme } from '@contexts/ThemeContext';
 import { DashboardLayout } from '@features/dashboard/components/DashboardLayout';
@@ -8,8 +8,6 @@ import { PremiumActivationAnimation } from '@shared/ui/PremiumActivationAnimatio
 import { LoadingDots } from '@shared/ui/LoadingDots';
 import { SkeletonTablePage, SkeletonReports, SkeletonPOSLayout, SkeletonForm, SkeletonKPI, SkeletonChart, SkeletonCards } from '@shared/ui/Skeleton';
 import { startOfflineSync } from '@shared/lib/sync/sync';
-import { useState, useCallback } from 'react';
-import type { ReactNode } from 'react';
 import { SplashScreen } from '@shared/ui/SplashScreen';
 import { PremiumLockScreen } from '@shared/ui/PremiumLockScreen';
 import { ErrorBoundary } from '@shared/ui/ErrorBoundary';

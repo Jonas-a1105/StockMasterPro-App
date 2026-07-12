@@ -1,6 +1,7 @@
 import { useRef, useEffect } from 'react';
 import lottie, { type AnimationItem } from 'lottie-web';
 import spinnerData from '@assets/lottie/spinner-dashes.json';
+import styles from './Spinner.module.css';
 
 interface SpinnerProps {
   size?: number;
@@ -22,5 +23,5 @@ export function Spinner({ size = 18 }: SpinnerProps) {
     return () => anim.destroy();
   }, []);
 
-  return <div ref={ref} style={{ width: size, height: size, display: 'inline-flex' }} />;
+  return <div ref={ref} className={styles.spinner} style={{ '--spinner-size': size } as React.CSSProperties} />;
 }

@@ -93,13 +93,12 @@ export function SettingsPage() {
             return (
               <button
                 key={tab.key}
-                className={`${styles.tabBtn} ${activeTab === tab.key ? styles.tabBtnActive : ''}`}
+                className={`${styles.tabBtn} ${activeTab === tab.key ? styles.tabBtnActive : ''} ${locked ? styles.tabBtnLocked : ''}`}
                 onClick={() => handleTabChange(tab.key)}
-                style={locked ? { opacity: 0.65, display: 'flex', alignItems: 'center', gap: '6px' } : {}}
               >
                 <Icon size={22} />
                 <span>{tab.label}</span>
-                {locked && <Lock size={12} style={{ color: 'var(--color-primary, #f05a28)' }} />}
+                {locked && <Lock size={12} className={styles.iconPrimary} />}
               </button>
             );
           })}
@@ -264,11 +263,10 @@ function TaxCurrencyTab() {
                 min="0"
                 max="100"
                 step="0.01"
-                className={styles.formControl}
+                className={`${styles.formControl} ${styles.paddingRightLarge}`}
                 value={taxRate}
                 onChange={e => setTaxRate(e.target.value)}
                 placeholder="16"
-                style={{ paddingRight: '42px' }}
               />
               <div className={styles.inputAddon}>%</div>
             </div>
@@ -358,7 +356,7 @@ function TaxCurrencyTab() {
               placeholder="+58 4XX XXX XXXX"
             />
           </div>
-          <div className={styles.formGroup} style={{ gridColumn: '1 / -1' }}>
+          <div className={`${styles.formGroup} ${styles.gridColFull}`}>
             <label className={styles.fieldLabel}>Dirección fiscal</label>
             <input
               type="text"
@@ -378,7 +376,7 @@ function TaxCurrencyTab() {
           <h2 className={styles.bentoCardTitle}>Visualización en tiempo real</h2>
         </div>
         <div className={styles.formGroup}>
-          <label className={styles.fieldLabel} style={{ marginBottom: '8px' }}>Vista previa (Bolívares)</label>
+          <label className={`${styles.fieldLabel} ${styles.mb8}`}>Vista previa (Bolívares)</label>
           <div>
             <div className={styles.previewBox}>
               {currencyPosition === 'before'
@@ -424,7 +422,7 @@ function PersonalizationTab() {
             <span className={styles.pToggleKnob} />
           </button>
         </div>
-<div className={styles.toggleRow} style={{ marginTop: 8 }}>
+<div className={`${styles.toggleRow} ${styles.mt8}`}>
         <span className={styles.pFieldLabel}>Modo OLED</span>
         <button 
           className={`${styles.pToggle} ${config.oledMode ? styles.pToggleOn : ''}`} 
@@ -433,7 +431,7 @@ function PersonalizationTab() {
           <span className={styles.pToggleKnob} />
         </button>
       </div>
-      <div className={styles.toggleRow} style={{ marginTop: 8 }}>
+      <div className={`${styles.toggleRow} ${styles.mt8}`}>
         <span className={styles.pFieldLabel}>Bordes en tarjetas/KPI</span>
         <button 
           className={`${styles.pToggle} ${config.cardBorderEnabled ? styles.pToggleOn : ''}`} 
@@ -442,7 +440,7 @@ function PersonalizationTab() {
           <span className={styles.pToggleKnob} />
         </button>
       </div>
-      <div className={styles.toggleRow} style={{ marginTop: 8 }}>
+      <div className={`${styles.toggleRow} ${styles.mt8}`}>
         <span className={styles.pFieldLabel}>Bordes en header</span>
         <button 
           className={`${styles.pToggle} ${config.headerBorderEnabled ? styles.pToggleOn : ''}`} 
@@ -451,7 +449,7 @@ function PersonalizationTab() {
           <span className={styles.pToggleKnob} />
         </button>
       </div>
-      <div className={styles.toggleRow} style={{ marginTop: 8 }}>
+      <div className={`${styles.toggleRow} ${styles.mt8}`}>
         <span className={styles.pFieldLabel}>Bordes en footer</span>
         <button 
           className={`${styles.pToggle} ${config.footerBorderEnabled ? styles.pToggleOn : ''}`} 
@@ -460,7 +458,7 @@ function PersonalizationTab() {
           <span className={styles.pToggleKnob} />
         </button>
       </div>
-<div className={styles.toggleRow} style={{ marginTop: 8 }}>
+<div className={`${styles.toggleRow} ${styles.mt8}`}>
         <span className={styles.pFieldLabel}>Sombras globales</span>
         <button 
           className={`${styles.pToggle} ${config.shadowEnabled ? styles.pToggleOn : ''}`} 
@@ -618,8 +616,8 @@ function BranchesTab() {
                 <th>Nombre</th>
                 <th>Código</th>
                 <th>Dirección</th>
-                <th style={{textAlign:'center'}}>Estado</th>
-                <th style={{textAlign:'center'}}>Acciones</th>
+                <th className={styles.textCenter}>Estado</th>
+                <th className={styles.textCenter}>Acciones</th>
               </tr>
             </thead>
             <tbody>
@@ -627,19 +625,19 @@ function BranchesTab() {
                 <tr key={w.id}>
                   <td>
                     <div className="lista-name-cell">
-                      <Store size={14} style={{color:'var(--list-accent-color)'}} />
+                      <Store size={14} className={styles.iconAccent} />
                       <span className="lista-name-text">{w.name}</span>
                     </div>
                   </td>
                   <td><span className="lista-code">{w.code}</span></td>
-                  <td style={{color:'var(--text-muted)'}}>{w.address || '—'}</td>
-                  <td style={{textAlign:'center'}}>
+                  <td className={styles.textMuted}>{w.address || '—'}</td>
+                  <td className={styles.textCenter}>
                     <span className={`lista-badge ${w.isActive ? 'active' : 'inactive'}`}>
                       {w.isActive ? 'Activo' : 'Inactivo'}
                     </span>
                   </td>
-                  <td style={{textAlign:'center'}}>
-                    <div className="lista-actions" style={{justifyContent:'center'}}>
+                  <td className={styles.textCenter}>
+                    <div className={`${styles.listaActions} ${styles.flexCenter}`}>
                       <button className="lista-action-btn" onClick={() => setModal({ type: 'edit', data: w })} title="Editar">
                         <Edit2 size={14} />
                       </button>
@@ -822,7 +820,7 @@ function NotificationsTab() {
           <div className={styles.notifMetrics}>
             <div className={styles.notifMetricTile}>
               <span className={styles.notifMetricLabel}>No leídas</span>
-              <span className={styles.notifMetricValue} style={{ color: 'var(--color-primary)' }}>{unreadCount}</span>
+              <span className={`${styles.notifMetricValue} ${styles.colorPrimary}`}>{unreadCount}</span>
             </div>
             <div className={styles.notifMetricTile}>
               <span className={styles.notifMetricLabel}>Entregadas hoy</span>
@@ -958,9 +956,9 @@ function DownloadsTab() {
             Distribución de Software y Núcleo
           </div>
           <div className={styles.updateAlertBox}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
+            <div className={`${styles.flexBetween} ${styles.flexWrap} ${styles.gap10}`}>
               <span className={styles.updateVersionTag}>Nueva actualización detectada</span>
-              <span style={{ fontSize: '12px', fontWeight: 700, color: 'var(--color-primary)' }}>Tamaño: 2.4 GB</span>
+              <span className={`${styles.fontSize12} ${styles.fontWeight700} ${styles.colorPrimary}`}>Tamaño: 2.4 GB</span>
             </div>
             <div className={styles.updateInfoTitle}>Versión Estable del Core v2.4.0</div>
             <p className={styles.updateChangelog}>
@@ -981,43 +979,35 @@ function DownloadsTab() {
         </div>
 
         {/* TARJETA: ESTADO DEL ENTORNO */}
-        <div className={styles.downloadCard} style={{ position: 'relative' }}>
+        <div className={`${styles.downloadCard} ${styles.relative}`}>
           {currentPlan === 'free' && (
-            <div style={{
-              position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
-              backgroundColor: 'rgba(20, 20, 20, 0.85)', zIndex: 10,
-              display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px'
-            }}>
+            <div className={styles.absFullOverlay}>
               <PremiumLockButton requiredPlan="intermedio" label="Bloqueado" sublabel="Mantén pulsado para Intermedio" width="90%" height="40px" />
             </div>
           )}
           <div className={styles.backupCardTitle}>
             <Server size={16} />
             Estado del Entorno
-          </div>
-          <div className={styles.metaGrid} style={{ gridTemplateColumns: '1fr', gap: '12px', backgroundColor: 'var(--bg-input)' }}>
+</div>
+          <div className={`${styles.metaGrid} ${styles.metaGridSingle}`}>
             <div className={styles.metaItem}>
               <span className={styles.metaLabel}>Versión Actual</span>
               <span className={styles.metaValue}>v2.3.9-build_stable</span>
             </div>
             <div className={styles.metaItem}>
               <span className={styles.metaLabel}>Último Análisis de Integridad</span>
-              <span className={styles.metaValue} style={{ color: 'var(--color-success)' }}><CheckCircle size={14} /> Correcto</span>
+              <span className={`${styles.metaValue} ${styles.colorSuccess}`}><CheckCircle size={14} /> Correcto</span>
             </div>
           </div>
-          <p className={styles.updateChangelog} style={{ fontSize: '12px' }}>
+          <p className={`${styles.updateChangelog} ${styles.fontSize12}`}>
             El sistema está configurado para escalar dinámicamente según la carga de descarga concurrente asignada.
           </p>
         </div>
 
         {/* TARJETA: MÉTRICAS Y VELOCIDAD DE RED */}
-        <div className={styles.downloadCard} style={{ position: 'relative' }}>
+        <div className={`${styles.downloadCard} ${styles.relative}`}>
           {currentPlan === 'free' && (
-            <div style={{
-              position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
-              backgroundColor: 'rgba(20, 20, 20, 0.85)', zIndex: 10,
-              display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px'
-            }}>
+            <div className={`${styles.absolute} ${styles.inset0} ${styles.bgOverlay} ${styles.flexCenter} ${styles.p16} ${styles.z10}`}>
               <PremiumLockButton requiredPlan="intermedio" label="Bloqueado" sublabel="Mantén pulsado para Intermedio" width="90%" height="40px" />
             </div>
           )}
@@ -1038,7 +1028,7 @@ function DownloadsTab() {
               <span className={styles.rangeValue}>{bandwidthLimit} MB/s</span>
             </div>
           </div>
-          <div style={{ marginTop: 'auto' }}>
+          <div className={styles.mtAuto}>
             <button className={`${styles.backupBtnSecondary} ${styles.btnFull}`} onClick={pauseAll}>
               <Pause size={16} />
               Pausar toda la cola
@@ -1047,19 +1037,15 @@ function DownloadsTab() {
         </div>
 
         {/* TARJETAS INDIVIDUALES: CADA DESCARGA ACTIVA ES SU PROPIA TARJETA */}
-        {activeDownloads.length === 0 ? (
-          <div className={styles.downloadCard} style={{ position: 'relative' }}>
-            {currentPlan === 'free' && (
-              <div style={{
-                position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
-                backgroundColor: 'rgba(20, 20, 20, 0.85)', zIndex: 10,
-                display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px'
-              }}>
+{activeDownloads.length === 0 ? (
+<div className={`${styles.downloadCard} ${styles.relative}`}>
+  {currentPlan === 'free' && (
+    <div className={styles.absFullOverlay}>
                 <PremiumLockButton requiredPlan="intermedio" label="Bloqueado" sublabel="Mantén pulsado para Intermedio" width="90%" height="40px" />
               </div>
             )}
             <div className={styles.emptyState}>
-              <Loader2 size={32} style={{ color: 'var(--text-muted)' }} />
+              <Loader2 size={32} className={styles.iconMuted} />
               <span className={styles.emptyText}>No hay descargas activas</span>
             </div>
           </div>
@@ -1071,21 +1057,17 @@ function DownloadsTab() {
             const displayDownloaded = d.total >= 1 ? d.downloaded : (d.downloaded * 1024).toFixed(0);
             const displayTotal = d.total >= 1 ? d.total : (d.total * 1024).toFixed(0);
             return (
-              <div key={d.id} className={`${styles.downloadCard} ${d.status === 'paused' ? '' : ''}`} style={{ position: 'relative' }}>
+              <div key={d.id} className={`${styles.downloadCard} ${styles.relative}`}>
                 {currentPlan === 'free' && (
-                  <div style={{
-                    position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
-                    backgroundColor: 'rgba(20, 20, 20, 0.85)', zIndex: 10,
-                    display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px'
-                  }}>
+                  <div className={styles.freeOverlay}>
                     <PremiumLockButton requiredPlan="intermedio" label="Bloqueado" sublabel="Mantén pulsado para Intermedio" width="90%" height="40px" />
                   </div>
                 )}
-                <div className={styles.backupCardTitle} style={{ border: 'none', padding: 0 }}>
+                <div className={`${styles.backupCardTitle} ${styles.cardTitleNoBorder}`}>
                   <Icon size={16} />
                   {d.name}
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 10 }}>
+                <div className={`${styles.flexBetween} ${styles.itemsCenter} ${styles.gap10}`}>
                   <span className={styles.fileSizeStatus}>
                     {isPaused ? 'En pausa' : 'Descargando de ' + d.source} • {displayDownloaded} {unit} de {displayTotal} {unit}
                   </span>
@@ -1101,13 +1083,12 @@ function DownloadsTab() {
                 <div className={styles.progressContainer}>
                   <div className={styles.progressBarBg}>
                     <div
-                      className={`${styles.progressBarFill} ${d.progress === 100 ? styles.progressCompleted : ''}`}
-                      style={{ width: `${d.progress}%`, backgroundColor: isPaused ? 'var(--accent-charcoal, #3d3535)' : undefined }}
+                      className={`${styles.progressBarFill} ${d.progress === 100 ? styles.progressCompleted : ''} ${isPaused ? styles.progressPaused : ''}`}
                     />
                   </div>
                   <div className={styles.progressDetails}>
                     <span>{d.progress}% • {displayDownloaded} {unit} / {displayTotal} {unit}</span>
-                    <span style={{ color: isPaused ? 'var(--text-muted)' : 'var(--color-success)' }}>
+                    <span className={`${isPaused ? styles.textMuted : styles.colorSuccess}`}>
                       {isPaused ? '— En pausa' : `${d.speed} MB/s — Quedan ${Math.ceil((d.total - d.downloaded) * 1024 / d.speed)}s`}
                     </span>
                   </div>
@@ -1118,13 +1099,9 @@ function DownloadsTab() {
         )}
 
         {/* TARJETA: AJUSTES AVANZADOS */}
-        <div className={styles.downloadCard} style={{ position: 'relative' }}>
+        <div className={`${styles.downloadCard} ${styles.relative}`}>
           {currentPlan === 'free' && (
-            <div style={{
-              position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
-              backgroundColor: 'rgba(20, 20, 20, 0.85)', zIndex: 10,
-              display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px'
-            }}>
+            <div className={styles.absFullOverlay}>
               <PremiumLockButton requiredPlan="intermedio" label="Bloqueado" sublabel="Mantén pulsado para Intermedio" width="90%" height="40px" />
             </div>
           )}
@@ -1156,7 +1133,7 @@ function DownloadsTab() {
               </select>
             </div>
           </div>
-          <div style={{ marginTop: 'auto' }}>
+          <div className={styles.mtAuto}>
             <button className={`${styles.backupBtnPrimary} ${styles.btnFull}`} onClick={applySettings}>
               <Save size={16} />
               Aplicar Ajustes
@@ -1165,33 +1142,29 @@ function DownloadsTab() {
         </div>
 
         {/* TARJETA: HISTORIAL (SPAN 4) */}
-        <div className={`${styles.downloadCard} ${styles.downloadCardDouble}`} style={{ position: 'relative' }}>
-          {currentPlan === 'free' && (
-            <div style={{
-              position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
-              backgroundColor: 'rgba(20, 20, 20, 0.85)', zIndex: 10,
-              display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px'
-            }}>
-              <PremiumLockButton requiredPlan="intermedio" label="Bloqueado" sublabel="Mantén pulsado para Intermedio" width="90%" height="40px" />
+        <div className={`${styles.downloadCard} ${styles.downloadCardDouble} ${styles.relative}`}>
+{currentPlan === 'free' && (
+              <div className={styles.absFullOverlay}>
+                <PremiumLockButton requiredPlan="intermedio" label="Bloqueado" sublabel="Mantén pulsado para Intermedio" width="90%" height="40px" />
+              </div>
+            )}
+            <div className={styles.backupCardTitle}>
+              <History size={16} />
+              Historial de Archivos Guardados
             </div>
-          )}
-          <div className={styles.backupCardTitle}>
-            <History size={16} />
-            Historial de Archivos Guardados
-          </div>
-          {history.length === 0 ? (
-            <div className={styles.emptyState}>
-              <History size={32} style={{ color: 'var(--text-muted)' }} />
-              <span className={styles.emptyText}>No hay archivos en el historial</span>
-            </div>
-          ) : (
+            {history.length === 0 ? (
+              <div className={`${styles.emptyState} ${styles.p40_20}`}>
+                <History size={32} className={styles.colorMuted} />
+                <span className={styles.emptyText}>No hay archivos en el historial</span>
+              </div>
+            ) : (
             <div className={styles.historyList}>
               {history.map(h => (
                 <div key={h.id} className={styles.historyItem}>
                   <div className={styles.fileInfo}>
                     <span className={styles.badgeCategory}>{h.category}</span>
                     <div>
-                      <div className={styles.fileName} style={{ fontSize: '13.5px' }}>{h.name}</div>
+                      <div className={`${styles.fileName} ${styles.fontSize13_5}`}>{h.name}</div>
                       <div className={styles.fileSizeStatus}>{h.completed}</div>
                     </div>
                   </div>
@@ -1249,7 +1222,7 @@ function BitacoraTab() {
       <div className={styles.downloadGrid}>
         {/* Widget 1: Eventos Hoy */}
         <div className={styles.downloadCard}>
-          <div className={styles.statBlock} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px', backgroundColor: 'var(--bg-inner-block, var(--bg-input))' }}>
+          <div className={`${styles.statBlockFlex} ${styles.bitIconBox}`}>
             <div>
               <span className={styles.statLabel}>Eventos Hoy</span>
               <div className={styles.statValue}>1,402</div>
@@ -1260,29 +1233,29 @@ function BitacoraTab() {
 
         {/* Widget 2: Alertas Críticas */}
         <div className={styles.downloadCard}>
-          <div className={styles.statBlock} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px', backgroundColor: 'var(--bg-inner-block, var(--bg-input))' }}>
+          <div className={`${styles.statBlockFlex} ${styles.bitIconBoxRed}`}>
             <div>
               <span className={styles.statLabel}>Alertas Críticas</span>
-              <div className={styles.statValue} style={{ color: '#e53935' }}>2</div>
+              <div className={`${styles.statValue} ${styles.statValueRed}`}>2</div>
             </div>
-            <div className={styles.bitIconBox} style={{ backgroundColor: 'rgba(229, 57, 53, 0.15)', color: '#e53935' }}><TriangleAlert size={18} /></div>
+            <div className={styles.bitIconBoxRed}><TriangleAlert size={18} /></div>
           </div>
         </div>
 
         {/* Widget 3: Tasa de Éxito */}
         <div className={styles.downloadCard}>
-          <div className={styles.statBlock} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px', backgroundColor: 'var(--bg-inner-block, var(--bg-input))' }}>
+          <div className={`${styles.statBlockFlex} ${styles.bitIconBoxGreen}`}>
             <div>
               <span className={styles.statLabel}>Tasa de Éxito</span>
-              <div className={styles.statValue} style={{ color: 'var(--color-success)' }}>99.8%</div>
+              <div className={`${styles.statValue} ${styles.statValueGreen}`}>99.8%</div>
             </div>
-            <div className={styles.bitIconBox} style={{ backgroundColor: 'rgba(16, 185, 129, 0.15)', color: 'var(--color-success)' }}><ShieldCheck size={18} /></div>
+            <div className={styles.bitIconBoxGreen}><ShieldCheck size={18} /></div>
           </div>
         </div>
 
         {/* Widget 4: Operadores Activos */}
         <div className={styles.downloadCard}>
-          <div className={styles.statBlock} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px', backgroundColor: 'var(--bg-inner-block, var(--bg-input))' }}>
+          <div className={`${styles.statBlockFlex} ${styles.bitIconBox}`}>
             <div>
               <span className={styles.statLabel}>Operadores Activos</span>
               <div className={styles.statValue}>5</div>
@@ -1324,15 +1297,15 @@ function BitacoraTab() {
           <div className={styles.activityBreakdown}>
             <div className={styles.progressItem}>
               <div className={styles.progressInfoText}><span>SGEN-Support (Soporte)</span><span>542 eventos</span></div>
-              <div className={styles.barTrack}><div className={styles.barFill} style={{ width: '55%', backgroundColor: 'var(--color-primary)' }} /></div>
+              <div className={styles.barTrack}><div className={`${styles.barFill} ${styles.progress55}`} /></div>
             </div>
             <div className={styles.progressItem}>
               <div className={styles.progressInfoText}><span>Stock Master Pro (Inventario)</span><span>310 eventos</span></div>
-              <div className={styles.barTrack}><div className={styles.barFill} style={{ width: '32%', backgroundColor: 'var(--accent-charcoal, #3d3535)' }} /></div>
+              <div className={styles.barTrack}><div className={`${styles.barFill} ${styles.progress32}`} /></div>
             </div>
             <div className={styles.progressItem}>
               <div className={styles.progressInfoText}><span>Infraestructura y Seguridad</span><span>124 eventos</span></div>
-              <div className={styles.barTrack}><div className={styles.barFill} style={{ width: '13%', backgroundColor: 'var(--color-success)' }} /></div>
+              <div className={styles.barTrack}><div className={`${styles.barFill} ${styles.progress13}`} /></div>
             </div>
           </div>
         </div>
@@ -1341,7 +1314,7 @@ function BitacoraTab() {
         <div className={`${styles.downloadCard} ${styles.downloadCardDouble}`}>
           <div className={styles.filtersRow}>
             <div className={styles.searchContainer}>
-              <Search size={15} style={{ color: 'var(--text-muted)', flexShrink: 0 }} />
+              <Search size={15} className={styles.colorMutedFlex} />
               <input type="text" className={styles.searchInput} placeholder="Buscar por acción, IP, operador..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
             </div>
             <div className={styles.selectBox}>
@@ -1369,12 +1342,12 @@ function BitacoraTab() {
               <div>Módulo</div>
               <div>Dirección IP</div>
               <div>Severidad</div>
-              <div style={{ textAlign: 'right', paddingRight: 10 }}>Marca de Tiempo</div>
+              <div className={styles.textRightPad10}>Marca de Tiempo</div>
             </div>
 
             {filteredLogs.length === 0 ? (
-              <div className={styles.emptyState} style={{ padding: '40px 20px' }}>
-                <Search size={32} style={{ color: 'var(--text-muted)' }} />
+              <div className={`${styles.emptyState} ${styles.p40_20}`}>
+                <Search size={32} className={styles.colorMuted} />
                 <span className={styles.emptyText}>No se encontraron registros</span>
               </div>
             ) : (
@@ -1383,7 +1356,7 @@ function BitacoraTab() {
                 return (
                   <div key={l.id} className={styles.tableRow}>
                     <div className={styles.bitUserCell}>
-                      <div className={styles.bitAvatar} style={{ backgroundColor: l.avatarColor }}>{l.initials}</div>
+                      <div className={`${styles.bitAvatar} ${styles.avatarDynamic}`} style={{ '--avatar-color': l.avatarColor }}>{l.initials}</div>
                       <span>{l.user}</span>
                     </div>
                     <div className={styles.bitActionCell}>{l.action}</div>
@@ -1397,7 +1370,7 @@ function BitacoraTab() {
             )}
           </div>
 
-          <button className={styles.backupBtnPrimary} onClick={() => showToast('Generando paquete consolidado de auditoría...', 'success')} style={{ marginTop: 4 }}>
+          <button className={`${styles.backupBtnPrimary} ${styles.mt4}`} onClick={() => showToast('Generando paquete consolidado de auditoría...', 'success')}>
             <FileDown size={16} />
             Exportar Registro
           </button>
@@ -1545,29 +1518,26 @@ function LicensesTab() {
                   <Shield size={16} />
                   Licencia actual
                 </div>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                <div className={`${styles.backupCard} ${styles.gridCols2Gap16}`}>
                   <div className={styles.configGroup}>
                     <span className={styles.backupFieldLabel}>Plan</span>
-                    <span style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text-dark)', textTransform: "none" }}>{licenseStatus.tier}</span>
+                    <span className={styles.fontSize16Bold}>{licenseStatus.tier}</span>
                   </div>
                   <div className={styles.configGroup}>
                     <span className={styles.backupFieldLabel}>Estado</span>
-                    <span style={{
-                      fontSize: '14px', fontWeight: 700,
-                      color: licenseBlocked || isExpired ? '#dc2626' : '#16a34a'
-                    }}>
+                    <span className={styles.colorGreenWeight600}>
                       {licenseBlocked || isExpired ? 'Bloqueada / Expirada' : 'Activa'}
                     </span>
                   </div>
                   <div className={styles.configGroup}>
                     <span className={styles.backupFieldLabel}>Fecha de activación</span>
-                    <span style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-dark)' }}>
+                    <span className={styles.fontSize14Weight600}>
                       {licenseStatus.activatedAt ? new Date(licenseStatus.activatedAt).toLocaleDateString() : '—'}
                     </span>
                   </div>
                   <div className={styles.configGroup}>
                     <span className={styles.backupFieldLabel}>Fecha de expiración</span>
-                    <span style={{ fontSize: '14px', fontWeight: 600, color: isExpired ? '#dc2626' : 'var(--text-dark)' }}>
+                    <span className={`${styles.fontSize14Weight600} ${isExpired ? styles.colorRed : ''}`}>
                       {licenseStatus.expiresAt ? new Date(licenseStatus.expiresAt).toLocaleDateString() : '—'}
                     </span>
                   </div>
@@ -1586,50 +1556,48 @@ function LicensesTab() {
             {licenseStatus?.tier === 'free' ? (
               <div className={`${styles.backupCard} ${styles.backupCardDouble}`}>
                 <div className={styles.backupCardTitle}>
-                  <Sparkles size={16} style={{ color: 'var(--color-primary, #f05a28)' }} />
+                  <Sparkles size={16} className={styles.colorPrimary} />
                   Planes de Suscripción Premium (Stripe)
                 </div>
                 <p className={styles.backupCardDesc}>
                   Desbloquea instantáneamente todas las funciones profesionales y de auditoría. Elige el plan que mejor se adapte a tu negocio.
                 </p>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '20px', marginTop: '20px' }}>
-                  <div style={{ padding: '20px', border: '1px solid var(--border-color, #eeeeee)', borderRadius: 'var(--card-radius, 4px)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', backgroundColor: 'var(--bg-card)' }}>
-                    <div>
-                      <h4 style={{ margin: '0 0 8px 0', fontSize: '15px', fontWeight: 700, color: 'var(--text-dark)' }}>Plan PRO</h4>
-                      <p style={{ fontSize: '11px', color: 'var(--text-muted, #888888)', margin: '0 0 15px 0', lineHeight: '1.4' }}>Ideal para comercios en crecimiento con personal a cargo y control de stock.</p>
-                      <div style={{ fontSize: '22px', fontWeight: 800, color: 'var(--color-primary, #f05a28)', margin: '0 0 15px 0' }}>$39 <span style={{ fontSize: '11px', fontWeight: 500, color: 'var(--text-muted)' }}>/ mes</span></div>
-                      <ul style={{ paddingLeft: '18px', margin: '0 0 20px 0', fontSize: '11px', display: 'flex', flexDirection: 'column', gap: '6px', color: 'var(--text-dark)', lineHeight: '1.3' }}>
-                        <li>Productos e inventario ilimitados</li>
-                        <li>Hasta 5 usuarios concurrentes</li>
-                        <li>Hasta 2 almacenes / sucursales</li>
-                        <li>Cuentas por pagar y gastos fijos</li>
-                        <li>Clientes con límite de crédito</li>
-                      </ul>
-                    </div>
-                    <button className={styles.backupBtnPrimary} style={{ width: '100%', marginTop: '10px' }} onClick={() => { setSelectedPlanForStripe('pro'); setShowStripeModal(true); }}>
-                      Suscribirse a PRO
-                    </button>
-                  </div>
-
-                  <div className={styles.laserBorderCard}>
-                    <div style={{ padding: '20px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', position: 'relative', backgroundColor: 'var(--bg-card)', width: '100%', height: '100%', zIndex: 10 }}>
-                      <span style={{ position: 'absolute', top: '0', right: '0', backgroundColor: 'var(--color-primary, #f05a28)', color: '#000000', padding: '3px 8px', fontSize: '9px', fontWeight: 700, letterSpacing: '0.5px' }}>RECOMENDADO</span>
+                <div className={styles.gridAutoFit220}>
+<div className={`${styles.cardBorder} ${styles.flexColumnGap6Col}`}>
                       <div>
-                        <h4 style={{ margin: '0 0 8px 0', fontSize: '15px', fontWeight: 700, color: 'var(--text-dark)' }}>Plan Enterprise</h4>
-                        <p style={{ fontSize: '11px', color: 'var(--text-muted, #888888)', margin: '0 0 15px 0', lineHeight: '1.4' }}>Auditoría avanzada para operaciones de alta facturación y múltiples sucursales.</p>
-                        <div style={{ fontSize: '22px', fontWeight: 800, color: 'var(--color-primary, #f05a28)', margin: '0 0 15px 0' }}>$79 <span style={{ fontSize: '11px', fontWeight: 500, color: 'var(--text-muted)' }}>/ mes</span></div>
-                        <ul style={{ paddingLeft: '18px', margin: '0 0 20px 0', fontSize: '11px', display: 'flex', flexDirection: 'column', gap: '6px', color: 'var(--text-dark)', lineHeight: '1.3' }}>
-                          <li>Todo lo del plan PRO e ilimitado</li>
-                          <li>Usuarios y almacenes ilimitados</li>
-                          <li>Notas de crédito y proveedores</li>
-                          <li>PWA offline (POS sin internet)</li>
-                          <li>Soporte técnico prioritario</li>
-                        </ul>
+                        <h4 className={styles.fontSize15Bold}>Plan PRO</h4>
+                        <p className={styles.subtitle11Muted}>Ideal para comercios en crecimiento con personal a cargo y control de stock.</p>
+                        <div className={styles.fontSize22Bold}>$39 <span className={styles.fontSize11Weight500}>/ mes</span></div>
+                        <ul className={styles.listItemFlex}>
+                          <li>Productos e inventario ilimitados</li>
+                          <li>Hasta 5 usuarios concurrentes</li>
+                          <li>Hasta 2 almacenes / sucursales</li>
+                          <li>Cuentas por pagar y gastos fijos</li>
+                          <li>Clientes con límite de crédito</li>
+</ul>
                       </div>
-                      <button className={`${styles.backupBtnPrimary} ${styles.btnShimmerActive}`} style={{ width: '100%', marginTop: '10px' }} onClick={() => { setSelectedPlanForStripe('enterprise'); setShowStripeModal(true); }}>
-                        Suscribirse a Enterprise
+                      <button className={`${styles.backupBtnPrimary} ${styles.btnFullWidth} ${styles.mt10}`} onClick={() => { setSelectedPlanForStripe('pro'); setShowStripeModal(true); }}>
+                        Suscribirse a PRO
                       </button>
                     </div>
+
+                  <div className={`${styles.laserBorderCard} ${styles.flexColumnGap6Col}`}>
+                    <div className={styles.absTopRightZero}>RECOMENDADO</div>
+                    <div className={styles.flexColumnGap6Col}>
+                      <h4 className={styles.fontSize15Bold}>Plan Enterprise</h4>
+                      <p className={styles.subtitle11Muted}>Auditoría avanzada para operaciones de alta facturación y múltiples sucursales.</p>
+                      <div className={styles.fontSize22Bold}>$79 <span className={styles.fontSize11Weight500}>/ mes</span></div>
+                      <ul className={styles.listItemFlex}>
+                        <li>Todo lo del plan PRO e ilimitado</li>
+                        <li>Usuarios y almacenes ilimitados</li>
+                        <li>Notas de crédito y proveedores</li>
+                        <li>PWA offline (POS sin internet)</li>
+                        <li>Soporte técnico prioritario</li>
+                      </ul>
+                    </div>
+                    <button className={`${styles.backupBtnPrimary} ${styles.btnShimmerActive} ${styles.btnFullWidth} ${styles.mt10}`} onClick={() => { setSelectedPlanForStripe('enterprise'); setShowStripeModal(true); }}>
+                      Suscribirse a Enterprise
+                    </button>
                   </div>
                 </div>
               </div>
@@ -1660,7 +1628,7 @@ function LicensesTab() {
                   ? 'Tu licencia está bloqueada o expirada. Ingresa un código de activación para reactivar el sistema.'
                   : 'Si tienes un código de activación, ingrésalo aquí para asociarlo a tu cuenta.'}
               </p>
-              <form onSubmit={handleActivate} style={{ display: 'flex', flexDirection: 'column', gap: '12px', width: '100%' }}>
+              <form onSubmit={handleActivate} className={styles.flexColumnGap12}>
                 <input
                   className={styles.tcInput}
                   type="text"
@@ -1687,32 +1655,29 @@ function LicensesTab() {
                     <p className={styles.backupCardDesc}>
                       Al cancelar, tu licencia será bloqueada y perderás acceso al sistema.
                     </p>
-                    <button
-                      className={styles.btnSecondary}
-                      style={{ alignSelf: 'flex-start', color: '#dc2626', borderColor: '#dc2626' }}
-                      onClick={() => setCancelStep(1)}
-                    >
-                      Cancelar suscripción
-                    </button>
+<button
+                        className={`${styles.btnSecondary} ${styles.confirmBtnRed}`}
+                        onClick={() => setCancelStep(1)}
+                      >
+                        Cancelar suscripción
+                      </button>
                   </>
                 )}
 
                 {cancelStep === 1 && (
                   <>
-                    <p className={styles.backupCardDesc} style={{ color: '#dc2626', fontWeight: 600 }}>
+                    <p className={`${styles.backupCardDesc} ${styles.colorRedWeight600}`}>
                       ¿Estás completamente seguro? Esta acción bloqueará tu licencia de forma inmediata.
                     </p>
-                    <div style={{ display: 'flex', gap: '12px', width: '100%' }}>
+                    <div className={styles.flexGap12Full}>
                       <button
-                        className={styles.btnSecondary}
-                        style={{ flex: 1 }}
+                        className={`${styles.btnSecondary} ${styles.btnFlex1}`}
                         onClick={() => { setCancelStep(0); setCancelConfirmText(''); }}
                       >
                         Volver
                       </button>
                       <button
-                        className={styles.btnSecondary}
-                        style={{ flex: 1, color: '#dc2626', borderColor: '#dc2626' }}
+                        className={`${styles.btnSecondary} ${styles.btnFlex1Red}`}
                         onClick={() => setCancelStep(2)}
                       >
                         Sí, continuar
@@ -1723,7 +1688,7 @@ function LicensesTab() {
 
                 {cancelStep === 2 && (
                   <>
-                    <p className={styles.backupCardDesc} style={{ color: '#dc2626', fontWeight: 600 }}>
+                    <p className={`${styles.backupCardDesc} ${styles.colorRedWeight600}`}>
                       Confirmación final. Escribe <strong>CANCELAR</strong> para confirmar la cancelación.
                     </p>
                     <input
@@ -1732,24 +1697,16 @@ function LicensesTab() {
                       value={cancelConfirmText}
                       onChange={e => setCancelConfirmText(e.target.value)}
                       placeholder="Escribe CANCELAR"
-                      style={{ borderColor: cancelConfirmText === 'CANCELAR' ? '#dc2626' : undefined }}
                     />
-                    <div style={{ display: 'flex', gap: '12px', width: '100%' }}>
+                    <div className={styles.flexGap12Full}>
                       <button
-                        className={styles.btnSecondary}
-                        style={{ flex: 1 }}
+                        className={`${styles.btnSecondary} ${styles.btnFlex1}`}
                         onClick={() => { setCancelStep(0); setCancelConfirmText(''); }}
                       >
                         Atrás
                       </button>
                       <button
-                        className={styles.btnSecondary}
-                        style={{
-                          flex: 1,
-                          color: cancelConfirmText === 'CANCELAR' ? '#dc2626' : 'var(--text-muted)',
-                          borderColor: cancelConfirmText === 'CANCELAR' ? '#dc2626' : 'var(--border-color)',
-                          cursor: cancelConfirmText === 'CANCELAR' ? 'pointer' : 'not-allowed',
-                        }}
+                        className={`${styles.btnSecondary} ${styles.confirmBtnRedConditional}`}
                         disabled={cancelConfirmText !== 'CANCELAR' || cancelling}
                         onClick={handleCancel}
                       >
@@ -1770,16 +1727,15 @@ function LicensesTab() {
                 <p className={styles.backupCardDesc}>
                   La licencia está cancelada pero aún no ha expirado. Puedes reactivarla.
                 </p>
-                <button
-                  className={styles.backupBtnPrimary}
-                  style={{ alignSelf: 'flex-start' }}
-                  onClick={() => {
-                    if (window.confirm('¿Reactivar la suscripción? El tenant volverá a tener acceso inmediato.')) {
-                      handleReactivate();
-                    }
-                  }}
-                  disabled={reactivating}
-                >
+<button
+                    className={`${styles.backupBtnPrimary} ${styles.selfStart}`}
+                    onClick={() => {
+                      if (window.confirm('¿Reactivar la suscripción? El tenant volverá a tener acceso inmediato.')) {
+                        handleReactivate();
+                      }
+                    }}
+                    disabled={reactivating}
+                  >
                   {reactivating ? 'Reactivando...' : 'Reactivar suscripción'}
                 </button>
               </div>
@@ -1787,7 +1743,7 @@ function LicensesTab() {
           </div>
 
           {user?.email === 'admin@stockmaster.com' && (
-            <div className={styles.backupGrid} style={{ marginTop: '20px' }}>
+            <div className={`${styles.backupGrid} ${styles.mt20}`}>
               <div className={styles.backupCard}>
                 <div className={styles.backupCardTitle}>
                   <Shield size={16} />
@@ -1814,14 +1770,14 @@ function LicensesTab() {
                   {generating ? 'Generando...' : 'Generar Código'}
                 </button>
                 {generatedCode && (
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', width: '100%' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span className={styles.backupFieldLabel} style={{ color: '#16a34a' }}>Código generado</span>
-                      <button className={styles.btnSecondary} style={{ padding: '4px 12px', fontSize: '11px' }} onClick={copyToClipboard}>
+                  <div className={styles.flexColumnGap8}>
+                    <div className={styles.flexBetweenCenter}>
+                      <span className={`${styles.backupFieldLabel} ${styles.colorGreenWeight600}`}>Código generado</span>
+                      <button className={`${styles.btnSecondary} ${styles.p8} ${styles.fontSize11}`} onClick={copyToClipboard}>
                         Copiar
                       </button>
                     </div>
-                    <textarea className={styles.tcInput} value={generatedCode} readOnly rows={3} style={{ fontFamily: 'monospace', fontSize: '11px' }} />
+                    <textarea className={`${styles.tcInput} ${styles.fontMono11}`} value={generatedCode} readOnly rows={3} />
                   </div>
                 )}
               </div>

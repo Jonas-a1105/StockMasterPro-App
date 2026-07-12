@@ -132,7 +132,7 @@ export function ExchangeRateWidget({ onClose, onOpenAnalytics }: { onClose: () =
                   </div>
                   <p className={styles.sourceLabel}>Origen de datos: {source || 've.dolarapi.com'}</p>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                <div className={styles.flexRow}>
                   <div className={styles.variationBadge}>+0.24%</div>
                   {onOpenAnalytics && (
                     <button className={styles.analyticsBtn} onClick={() => { onOpenAnalytics(); onClose(); }} title="Analítica cambiaria">

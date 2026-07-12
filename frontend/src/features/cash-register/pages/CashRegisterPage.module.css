@@ -1,7 +1,7 @@
 .sessionCard {
   background: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-radius: 10px;
+  border-radius: var(--border-radius-lg);
   padding: 20px;
   margin-bottom: 16px;
 }
@@ -16,30 +16,30 @@
 .sessionBadgeOpen {
   display: inline-block;
   padding: 3px 10px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 600;
-  background: #d1fae5;
-  color: #065f46;
+  border-radius: var(--border-radius-xl);
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-semibold);
+  background: var(--bg-success-light, #d1fae5);
+  color: var(--color-green-800, #065f46);
 }
 
 .sessionBadgeClosed {
   display: inline-block;
   padding: 3px 10px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 600;
-  background: #e5e7eb;
-  color: #374151;
+  border-radius: var(--border-radius-xl);
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-semibold);
+  background: var(--color-gray-200, #e5e7eb);
+  color: var(--color-gray-700, #374151);
 }
 
 .sessionDate {
-  font-size: 13px;
+  font-size: var(--font-size-sm);
   color: var(--text-muted);
 }
 
 .sessionNotes {
-  font-size: 13px;
+  font-size: var(--font-size-sm);
   color: var(--text-muted);
   margin-bottom: 12px;
 }
@@ -54,36 +54,36 @@
 .actionBtn, .actionBtnDanger, .actionBtnClose {
   padding: 8px 16px;
   border: none;
-  border-radius: 6px;
-  font-size: 13px;
-  font-weight: 500;
+  border-radius: var(--border-radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
   cursor: pointer;
   transition: opacity 0.15s;
 }
 
-.actionBtn { background: #d1fae5; color: #065f46; }
-.actionBtnDanger { background: #fee2e2; color: #991b1b; }
-.actionBtnClose { background: var(--color-primary); color: #fff; }
+.actionBtn { background: var(--bg-success-light, #d1fae5); color: var(--color-green-800, #065f46); }
+.actionBtnDanger { background: var(--bg-danger-light, #fee2e2); color: var(--color-red-800, #991b1b); }
+.actionBtnClose { background: var(--color-primary); color: var(--text-on-primary, #fff); }
 .actionBtn:hover, .actionBtnDanger:hover, .actionBtnClose:hover { opacity: 0.85; }
 
 .txnTable h4 {
   margin-bottom: 8px;
-  font-size: 14px;
+  font-size: var(--font-size-md);
   color: var(--text-primary);
 }
 
 .txnTable table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 13px;
+  font-size: var(--font-size-sm);
 }
 
 .txnTable th {
   text-align: left;
   padding: 8px 10px;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-muted);
-  font-size: 11px;
+  font-size: var(--font-size-xs);
   text-transform: uppercase;
   border-bottom: 1px solid var(--border-color);
 }
@@ -96,20 +96,20 @@
 .txnTypeBadge {
   display: inline-block;
   padding: 2px 8px;
-  border-radius: 12px;
-  font-size: 11px;
-  font-weight: 600;
+  border-radius: var(--card-radius);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
   text-transform: capitalize;
 }
 
-.txnIncome { background: #d1fae5; color: #065f46; }
-.txnExpense { background: #fee2e2; color: #991b1b; }
-.txnSale { background: #dbeafe; color: #1e40af; }
+.txnIncome { background: var(--bg-success-light, #d1fae5); color: var(--color-green-800, #065f46); }
+.txnExpense { background: var(--bg-danger-light, #fee2e2); color: var(--color-red-800, #991b1b); }
+.txnSale { background: var(--bg-primary-light, #dbeafe); color: var(--color-blue-800, #1e40af); }
 
-.amountPositive { color: #059669; font-weight: 600; }
-.amountNegative { color: #dc2626; font-weight: 600; }
+.amountPositive { color: var(--color-success, #059669); font-weight: var(--font-weight-semibold); }
+.amountNegative { color: var(--color-danger); font-weight: var(--font-weight-semibold); }
 
-.txnTime { color: var(--text-muted); font-size: 12px; }
+.txnTime { color: var(--text-muted); font-size: var(--font-size-caption); }
 
 .emptyState {
   display: flex;
@@ -124,11 +124,11 @@
 .openBtn {
   padding: 10px 24px;
   border: none;
-  border-radius: 8px;
+  border-radius: var(--btn-radius);
   background: var(--color-primary);
-  color: #fff;
-  font-size: 14px;
-  font-weight: 500;
+  color: var(--text-on-primary, #fff);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-medium);
   cursor: pointer;
 }
 
@@ -141,7 +141,7 @@
 .historyCard {
   background: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-radius: 8px;
+  border-radius: var(--btn-radius);
   padding: 14px 16px;
 }
 
@@ -153,20 +153,20 @@
 }
 
 .historyDate {
-  font-size: 12px;
+  font-size: var(--font-size-caption);
   color: var(--text-muted);
 }
 
 .historyDetails {
   display: flex;
   gap: 16px;
-  font-size: 13px;
+  font-size: var(--font-size-sm);
   color: var(--text-primary);
   flex-wrap: wrap;
 }
 
-.diffPositive { color: #059669; font-weight: 500; }
-.diffNegative { color: #dc2626; font-weight: 500; }
+.diffPositive { color: var(--color-success, #059669); font-weight: var(--font-weight-medium); }
+.diffNegative { color: var(--color-danger); font-weight: var(--font-weight-medium); }
 
 .formFields {
   display: flex;
@@ -176,19 +176,19 @@
 }
 
 .formFields label {
-  font-size: 13px;
-  font-weight: 500;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
   color: var(--text-primary);
 }
 
 .formFields input,
 .formFields select {
   padding: 8px 12px;
-  border-radius: 6px;
+  border-radius: var(--border-radius-md);
   border: 1px solid var(--border-color);
   background: var(--bg-card);
   color: var(--text-primary);
-  font-size: 14px;
+  font-size: var(--font-size-md);
 }
 
 .formActions {
@@ -203,21 +203,21 @@
 .cancelBtn {
   padding: 8px 20px;
   border: 1px solid var(--border-color);
-  border-radius: 6px;
+  border-radius: var(--border-radius-md);
   background: transparent;
   color: var(--text-primary);
-  font-size: 14px;
+  font-size: var(--font-size-md);
   cursor: pointer;
 }
 
 .saveBtn {
   padding: 8px 20px;
   border: none;
-  border-radius: 6px;
+  border-radius: var(--border-radius-md);
   background: var(--color-primary);
-  color: #fff;
-  font-size: 14px;
-  font-weight: 500;
+  color: var(--text-on-primary, #fff);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-medium);
   cursor: pointer;
 }
 
@@ -227,28 +227,28 @@
 }
 
 .error {
-  background: #fee2e2;
-  color: #991b1b;
+  background: var(--bg-danger-light, #fee2e2);
+  color: var(--color-red-800, #991b1b);
   padding: 8px 12px;
-  border-radius: 6px;
-  font-size: 13px;
+  border-radius: var(--border-radius-md);
+  font-size: var(--font-size-sm);
 }
 
 .summaryRow {
   display: flex;
   justify-content: space-between;
   padding: 6px 0;
-  font-size: 14px;
+  font-size: var(--font-size-md);
 }
 
 .summaryTotal {
   border-top: 1px solid var(--border-color);
   padding-top: 8px;
   margin-top: 4px;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
 }
 
 .summaryDiff {
   padding-top: 8px;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
 }

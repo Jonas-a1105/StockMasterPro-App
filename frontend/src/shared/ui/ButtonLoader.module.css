@@ -10,7 +10,7 @@
 .dot {
   width: 6px;
   height: 6px;
-  background-color: currentColor; /* Automatically inherits the button text/icon color */
+  background-color: currentcolor; /* Automatically inherits the button text/icon color */
   border-radius: 50%;
   opacity: 0.6;
   animation: bounce 1.4s infinite ease-in-out both;

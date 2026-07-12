@@ -128,10 +128,10 @@ export function CategoriesPage() {
             <button className={styles.closeBtn} onClick={() => setShowDelete(null)}><X size={18} /></button>
           </div>
           <div className={styles.modalBody}>
-            <p style={{ margin: 0 }}>¿Eliminar <strong>{showDelete.name}</strong>?</p>
+            <p className={styles.m0}>¿Eliminar <strong>{showDelete.name}</strong>?</p>
             {productCount > 0 && (
-              <p style={{ margin: '8px 0 0', fontSize: 13, color: '#ef4444' }}>
-                <Package size={14} style={{ verticalAlign: 'middle', marginRight: 4 }} />
+              <p className={styles.warningText}>
+                <Package size={14} className={styles.inlineIcon} />
                 {productCount} producto{productCount !== 1 ? 's' : ''} perderán esta categoría.
               </p>
             )}
@@ -177,16 +177,16 @@ export function CategoriesPage() {
           <thead>
             <tr>
               <th>Nombre</th>
-              <th style={{ textAlign: 'center', width: 100 }}>Productos</th>
-              <th style={{ width: 180 }}>Creada</th>
-              <th style={{ width: 100, textAlign: 'center' }}>Acciones</th>
+              <th className={styles.thCenter100}>Productos</th>
+              <th className={styles.thWidth180}>Creada</th>
+              <th className={styles.thCenter100}>Acciones</th>
             </tr>
           </thead>
           <tbody>
             {loading ? (
-              <tr><td colSpan={4} style={{ textAlign: 'center', padding: 40, color: 'var(--text-muted)' }}>Cargando...</td></tr>
+              <tr><td colSpan={4} className={styles.emptyCell}>Cargando...</td></tr>
             ) : filtered.length === 0 ? (
-              <tr><td colSpan={4} style={{ textAlign: 'center', padding: 40, color: 'var(--text-muted)' }}>
+              <tr><td colSpan={4} className={styles.emptyCell}>
                 {search ? 'Sin resultados' : 'No hay categorías. Crea la primera.'}
               </td></tr>
             ) : (
@@ -198,9 +198,9 @@ export function CategoriesPage() {
                       <span>{c.name}</span>
                     </div>
                   </td>
-                  <td style={{ textAlign: 'center' }}>{c._count?.products ?? 0}</td>
+                  <td className={styles.textCenter}>{c._count?.products ?? 0}</td>
                   <td>{new Date(c.createdAt).toLocaleDateString()}</td>
-                  <td style={{ textAlign: 'center' }}>
+                  <td className={styles.textCenter}>
                     <div className={styles.actions}>
                       <button className={styles.actionBtn} onClick={() => { setShowEdit(c); setName(c.name); }} title="Editar">
                         <Pencil size={14} />

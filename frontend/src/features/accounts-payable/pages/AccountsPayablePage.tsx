@@ -135,11 +135,11 @@ export function AccountsPayablePage() {
           <thead>
             <tr>
               <th>Proveedor</th>
-              <th style={{textAlign:'right'}}>Monto Total</th>
-              <th style={{textAlign:'right'}}>Pendiente</th>
+              <th className={styles.textRight}>Monto Total</th>
+              <th className={styles.textRight}>Pendiente</th>
               <th>Vencimiento</th>
-              <th style={{textAlign:'center'}}>Estado</th>
-              <th style={{textAlign:'center'}}>Acciones</th>
+              <th className={styles.textCenter}>Estado</th>
+              <th className={styles.actionsCol}>Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -148,16 +148,16 @@ export function AccountsPayablePage() {
               return (
                 <tr key={p.id}>
                   <td><span className="lista-name-text">{p.supplier?.name || '—'}</span></td>
-                  <td style={{textAlign:'right'}}><span className="lista-number-value">{formatPrice(p.totalAmount)}</span></td>
-                  <td style={{textAlign:'right'}}>
-                    <span className="lista-number-value" style={{color: p.pendingAmount > 0 ? 'var(--color-warning)' : 'var(--color-success)'}}>
+                  <td className={styles.textRight}><span className="lista-number-value">{formatPrice(p.totalAmount)}</span></td>
+                  <td className={styles.textRight}>
+                    <span className={`lista-number-value ${p.pendingAmount > 0 ? styles.textWarning : styles.textSuccess}`}>
                       {formatPrice(p.pendingAmount)}
                     </span>
                   </td>
                   <td>{new Date(p.dueDate).toLocaleDateString()}</td>
-                  <td style={{textAlign:'center'}}>{statusBadge(p.status, p.dueDate)}</td>
-                  <td style={{textAlign:'center'}}>
-                    <div className="lista-actions" style={{justifyContent:'center'}}>
+                  <td className={styles.textCenter}>{statusBadge(p.status, p.dueDate)}</td>
+                  <td className={styles.textCenter}>
+                    <div className={`${styles.actions} ${styles.actionsCenter}`}>
                       {p.status !== 'paid' && (
                         <button className="lista-action-btn" onClick={() => { setPayingPayable(p); setPayAmount(0); setPayMethod('cash'); setShowPayModal(true); }} title="Abonar">
                           <DollarSign size={14} />
@@ -170,7 +170,7 @@ export function AccountsPayablePage() {
             })}
             {filteredPayables.length === 0 && (
               <tr>
-                <td colSpan={6} style={{textAlign:'center',padding:40,color:'var(--text-muted)'}}>No hay cuentas por pagar</td>
+                <td colSpan={6} className={styles.emptyRow}>No hay cuentas por pagar</td>
               </tr>
             )}
           </tbody>

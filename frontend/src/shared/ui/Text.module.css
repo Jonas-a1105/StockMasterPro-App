@@ -1,0 +1,107 @@
+.h1 {
+  font-size: var(--font-xxl, 28px);
+  font-weight: var(--font-weight-bold, 700);
+  line-height: var(--line-height-tight, 1.2);
+  color: var(--text-color-main);
+}
+
+.h2 {
+  font-size: var(--font-xl, 22px);
+  font-weight: var(--font-weight-semibold, 600);
+  line-height: var(--line-height-tight, 1.2);
+  color: var(--text-color-main);
+}
+
+.h3 {
+  font-size: var(--font-lg, 18px);
+  font-weight: var(--font-weight-semibold, 600);
+  line-height: var(--line-height-normal, 1.5);
+  color: var(--text-color-main);
+}
+
+.h4 {
+  font-size: var(--font-md, 15px);
+  font-weight: var(--font-weight-semibold, 600);
+  line-height: var(--line-height-normal, 1.5);
+  color: var(--text-color-main);
+}
+
+.body {
+  font-size: var(--font-md, 15px);
+  font-weight: var(--font-weight-normal, 400);
+  line-height: var(--line-height-normal, 1.5);
+  color: var(--text-color-main);
+}
+
+.bodySm {
+  font-size: var(--font-sm, 13px);
+  font-weight: var(--font-weight-normal, 400);
+  line-height: var(--line-height-normal, 1.5);
+  color: var(--text-color-main);
+}
+
+.description {
+  font-size: var(--font-sm, 13px);
+  font-weight: var(--font-weight-normal, 400);
+  line-height: var(--line-height-relaxed, 1.75);
+  color: var(--text-color-muted);
+}
+
+.caption {
+  font-size: var(--font-xs, 11px);
+  font-weight: var(--font-weight-medium, 500);
+  line-height: var(--line-height-normal, 1.5);
+  color: var(--text-color-muted);
+  letter-spacing: 0.3px;
+}
+
+.label {
+  font-size: var(--font-xs, 11px);
+  font-weight: var(--font-weight-semibold, 600);
+  line-height: var(--line-height-normal, 1.5);
+  color: var(--text-color-main);
+  text-transform: none;
+}
+
+.badge {
+  font-size: var(--font-xs, 11px);
+  font-weight: var(--font-weight-semibold, 600);
+  line-height: 1;
+  color: var(--text-color-main);
+}
+
+.colorMuted {
+  color: var(--text-color-muted);
+}
+
+.colorLight {
+  color: var(--text-color-light);
+}
+
+.colorPrimary {
+  color: var(--text-color-primary);
+}
+
+.colorDanger {
+  color: var(--text-color-danger);
+}
+
+.colorSuccess {
+  color: var(--text-color-success);
+}
+
+.weightNormal {
+  font-weight: var(--font-weight-normal, 400);
+}
+
+.weightMedium {
+  font-weight: var(--font-weight-medium, 500);
+}
+
+.weightSemibold {
+  font-weight: var(--font-weight-semibold, 600);
+}
+
+.weightBold {
+  font-weight: var(--font-weight-bold, 700);
+}

@@ -145,10 +145,10 @@ export function CreditNotesPage() {
               <th>Fecha</th>
               <th>Cliente</th>
               <th>Motivo</th>
-              <th style={{textAlign:'right'}}>Total</th>
+              <th className={styles.textRight}>Total</th>
               <th>Método</th>
-              <th style={{textAlign:'center'}}>Estado</th>
-              <th style={{textAlign:'center'}}>Acciones</th>
+              <th className={styles.textCenter}>Estado</th>
+              <th className={styles.textCenter}>Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -156,16 +156,16 @@ export function CreditNotesPage() {
               <tr key={n.id}>
                 <td>{new Date(n.createdAt).toLocaleDateString()}</td>
                 <td><span className="lista-name-text">{n.customer?.name || '—'}</span></td>
-                <td style={{color:'var(--text-muted)'}}>{n.reason}</td>
-                <td style={{textAlign:'right'}}><span className="lista-number-value">{formatPrice(Number(n.total))}</span></td>
+                <td className={styles.textMuted}>{n.reason}</td>
+                <td className={styles.textRight}><span className="lista-number-value">{formatPrice(Number(n.total))}</span></td>
                 <td>{methodLabel(n.refundMethod)}</td>
-                <td style={{textAlign:'center'}}>
+                <td className={styles.textCenter}>
                   <span className={`lista-badge ${n.status === 'active' ? 'active' : 'inactive'}`}>
                     {n.status === 'active' ? 'Activa' : 'Anulada'}
                   </span>
                 </td>
-                <td style={{textAlign:'center'}}>
-                  <div className="lista-actions" style={{justifyContent:'center'}}>
+                <td className={styles.textCenter}>
+                  <div className={`lista-actions ${styles.flexCenter}`}>
                     <button className="lista-action-btn" onClick={() => setViewNote(n)} title="Ver detalle">
                       <Eye size={14} />
                     </button>
@@ -175,7 +175,7 @@ export function CreditNotesPage() {
             ))}
             {filteredNotes.length === 0 && (
               <tr>
-                <td colSpan={7} style={{textAlign:'center',padding:40,color:'var(--text-muted)'}}>No hay notas de crédito registradas</td>
+                <td colSpan={7} className={styles.emptyCell}>No hay notas de crédito registradas</td>
               </tr>
             )}
           </tbody>
@@ -320,23 +320,23 @@ export function CreditNotesPage() {
             </div>
 
             <div className="lista-container">
-              <h4 style={{fontSize:'12px',fontWeight:700,textTransform: "none",color:'var(--text-muted)',marginBottom:8}}>Productos</h4>
+              <h4 className={styles.sectionTitle}>Productos</h4>
               <table className="lista-table">
                 <thead>
                   <tr>
                     <th>Producto</th>
-                    <th style={{textAlign:'right'}}>Cant.</th>
-                    <th style={{textAlign:'right'}}>Precio</th>
-                    <th style={{textAlign:'right'}}>Subtotal</th>
+                    <th className={styles.textRight}>Cant.</th>
+                    <th className={styles.textRight}>Precio</th>
+                    <th className={styles.textRight}>Subtotal</th>
                   </tr>
                 </thead>
                 <tbody>
                   {viewNote.items?.map((it: any) => (
                     <tr key={it.id}>
                       <td>{it.product?.name || it.productId}</td>
-                      <td style={{textAlign:'right'}}><span className="lista-number-value">{it.quantity}</span></td>
-                      <td style={{textAlign:'right'}}><span className="lista-number-value">{formatPrice(Number(it.price))}</span></td>
-                      <td style={{textAlign:'right'}}><span className="lista-number-value">{formatPrice(Number(it.subtotal))}</span></td>
+                      <td className={styles.textRight}><span className="lista-number-value">{it.quantity}</span></td>
+                      <td className={styles.textRight}><span className="lista-number-value">{formatPrice(Number(it.price))}</span></td>
+                      <td className={styles.textRight}><span className="lista-number-value">{formatPrice(Number(it.subtotal))}</span></td>
                     </tr>
                   ))}
                 </tbody>

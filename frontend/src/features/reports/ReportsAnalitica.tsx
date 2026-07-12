@@ -15,13 +15,13 @@ interface Props {
 export function ReportsAnalitica({ sales, products }: Props) {
   return (
     <div className={styles.grid2}>
-      <div className={styles.card} style={{ gridColumn: '1 / -1' }}>
+      <div className={`${styles.card} ${styles.colSpanFull}`}>
         <div className={styles.cardTitle}>Heatmap de anomalías operativas (semana × hora)</div>
         <ResponsiveContainer width="100%" height={300} key="heatmap-anomalias">
           <ResponsiveContainer width="100%" height={300}>
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-              <div style={{ width: '100%', maxWidth: 600 }}>
-                <svg viewBox="0 0 600 300" style={{ width: '100%', height: '100%' }}>
+            <div className={styles.flexCenterFull}>
+              <div className={`${styles.w100} ${styles.maxW600}`}>
+                <svg viewBox="0 0 600 300" className={styles.svgFill}>
                   {demoHeatmap.map((d: any, i: any) => {
                     const x = (d.hour / 24) * 560 + 20;
                     const y = (d.day / 8) * 260 + 20;

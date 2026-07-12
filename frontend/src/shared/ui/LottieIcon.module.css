@@ -1,0 +1,9 @@
+.icon {
+  display: inline-flex;
+  width: var(--lottie-size, 24px);
+  height: var(--lottie-size, 24px);
+}
+
+.iconClickable {
+  cursor: pointer;
+}

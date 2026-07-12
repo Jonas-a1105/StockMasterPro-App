@@ -4,10 +4,11 @@ import { Skeleton } from '@shared/ui/Skeleton';
 import { useAuth } from '@contexts/AuthContext';
 import { api } from '@shared/lib/http/client';
 import type { SocialThread, SocialMessage } from '@types';
+import styles from './SocialMessages.module.css';
 
 function ThreadSkeleton() {
   return (
-    <div className="ig-dm-chat-item" style={{ pointerEvents: 'none' }}>
+    <div className={`ig-dm-chat-item ${styles.skeletonChatItem}`}>
       <Skeleton variant="circle" width={44} height={44} />
       <div className="ig-dm-chat-info">
         <Skeleton height={12} width="60%" />

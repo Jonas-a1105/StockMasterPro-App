@@ -76,7 +76,7 @@ export function PremiumLockButton({
   return (
     <div
       className={styles.container}
-      style={{ width, height, ...style }}
+      style={{ '--plb-w': width, '--plb-h': height, ...style } as React.CSSProperties}
       onMouseDown={startHold}
       onMouseUp={endHold}
       onMouseLeave={endHold}
@@ -118,7 +118,7 @@ export function PremiumLockButton({
           {isUnlocked ? '¡Desbloqueado!' : isPressing ? 'Cargando...' : sublabel}
         </span>
         {/* Progress bar overlay */}
-        <div className={styles.progress} style={{ width: `${progress}%` }} />
+        <div className={styles.progress} style={{ '--plb-progress': `${progress}%` } as React.CSSProperties} />
       </button>
     </div>
   );

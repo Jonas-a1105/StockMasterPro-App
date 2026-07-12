@@ -11,7 +11,6 @@ import { DollarSign, ShoppingCart, Eye, Printer, RotateCcw, XCircle, FileText } 
 import { useExchangeRate } from '@contexts/ExchangeRateContext';
 import { printTicket } from '@shared/lib/print/ticket';
 import { generateFiscalInvoicePdf } from '@shared/lib/print/invoicePdf';
-import { api } from '@shared/lib/http/client';
 import styles from './SalesHistoryPage.module.css';
 
 export function SalesHistoryPage() {

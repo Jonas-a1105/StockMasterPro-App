@@ -217,7 +217,7 @@ export function AgendaDigitalPage() {
                   {dayEvents.length > 0 && (
                     <div className={styles.dayDots}>
                       {dayEvents.map((ev, j) => (
-                        <span key={j} className={styles.dayDot} style={{ backgroundColor: ev.color || '#888' }} />
+                        <span key={j} className={styles.dayDot} style={{ '--dot-color': ev.color || '#888' }} />
                       ))}
                     </div>
                   )}
@@ -237,19 +237,19 @@ export function AgendaDigitalPage() {
           <div className={styles.eventsList}>
             {loading ? (
               config.skeletonEnabled ? (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 10, width: '100%' }}>
+                <div className={styles.loadingSkeleton}>
                   <Skeleton height={60} borderRadius={6} />
                   <Skeleton height={60} borderRadius={6} />
                   <Skeleton height={60} borderRadius={6} />
                 </div>
               ) : (
                 <div className={styles.emptyEvents}>
-                  <p style={{ color: 'var(--text-muted, #555)', fontSize: 12 }}>Cargando eventos...</p>
+                  <p className={styles.loadingText}>Cargando eventos...</p>
                 </div>
               )
             ) : selectedDateEvents.length === 0 ? (
               <div className={styles.emptyEvents}>
-                <FileText size={24} style={{ color: 'var(--text-muted, #555)', opacity: 0.4 }} />
+                <FileText size={24} className={styles.iconMuted} />
                 <p>No hay eventos registrados para esta fecha.</p>
               </div>
             ) : (
@@ -259,14 +259,14 @@ export function AgendaDigitalPage() {
                   className={styles.eventCard}
                   style={{
                     '--event-color': ev.color || 'var(--text-muted)',
-                    backgroundColor: ev.color ? `${ev.color}15` : 'rgba(136,136,136,0.1)'
+                    '--event-bg': ev.color ? `${ev.color}15` : 'rgba(136,136,136,0.1)'
                   } as React.CSSProperties}
                 >
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                  <div className={styles.eventCardFlex}>
                     <span className={styles.eventLabel}>{ev.title}</span>
                     <button
                       onClick={() => handleDelete(ev.id)}
-                      style={{ background: 'none', border: 'none', color: 'var(--text-muted, #888)', cursor: 'pointer', padding: 2 }}
+                      className={styles.deleteBtn}
                       title="Eliminar evento"
                     >
                       <X size={12} />
@@ -286,82 +286,77 @@ export function AgendaDigitalPage() {
             <span className={styles.statsTitle}>Resumen del Período</span>
             <div className={styles.statRow}>
               <span>Alertas Técnicas</span>
-              <span className={styles.statValue} style={{ color: 'var(--list-accent-color, #f97316)' }}>{monthStats.alerts}</span>
+              <span className={`${styles.statValue} ${styles.statValueOrange}`}>{monthStats.alerts}</span>
             </div>
             <div className={styles.statRow}>
               <span>Auditorías Completadas</span>
-              <span className={styles.statValue} style={{ color: 'var(--color-success, #16a34a)' }}>{monthStats.audits}</span>
+              <span className={`${styles.statValue} ${styles.statValueGreen}`}>{monthStats.audits}</span>
             </div>
           </div>
         </div>
       </div>
 
       <Modal open={showCreateModal} onClose={() => setShowCreateModal(false)} title="Nuevo Evento">
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 14, padding: '8px 0' }}>
+        <div className={styles.formColumn}>
           <div>
-            <label style={{ fontSize: 12, color: 'var(--text-muted, #888)', display: 'block', marginBottom: 4 }}>Título</label>
+            <label className={styles.formLabel}>Título</label>
             <input
               value={formTitle}
               onChange={e => setFormTitle(e.target.value)}
-              style={{ width: '100%', padding: '0 12px', height: '38px', fontSize: 13 }}
+              className={styles.formInput}
               placeholder="Ej: Reunión con proveedores"
             />
           </div>
           <div>
-            <label style={{ fontSize: 12, color: 'var(--text-muted, #888)', display: 'block', marginBottom: 4 }}>Descripción</label>
+            <label className={styles.formLabel}>Descripción</label>
             <textarea
               value={formDesc}
               onChange={e => setFormDesc(e.target.value)}
               rows={3}
-              style={{ width: '100%', padding: '8px 12px', fontSize: 13, resize: 'vertical' }}
+              className={styles.formTextarea}
               placeholder="Descripción opcional"
             />
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+          <div className={styles.formGrid2}>
             <div>
-              <label style={{ fontSize: 12, color: 'var(--text-muted, #888)', display: 'block', marginBottom: 4 }}>Inicio</label>
+              <label className={styles.formLabel}>Inicio</label>
               <input
                 type="datetime-local"
                 value={formStart}
                 onChange={e => setFormStart(e.target.value)}
-                style={{ width: '100%', padding: '0 12px', height: '38px', fontSize: 13 }}
+                className={styles.formInput}
               />
             </div>
             <div>
-              <label style={{ fontSize: 12, color: 'var(--text-muted, #888)', display: 'block', marginBottom: 4 }}>Fin</label>
+              <label className={styles.formLabel}>Fin</label>
               <input
                 type="datetime-local"
                 value={formEnd}
                 onChange={e => setFormEnd(e.target.value)}
-                style={{ width: '100%', padding: '0 12px', height: '38px', fontSize: 13 }}
+                className={styles.formInput}
               />
             </div>
           </div>
           <div>
-            <label style={{ fontSize: 12, color: 'var(--text-muted, #888)', display: 'block', marginBottom: 4 }}>Color</label>
-            <div style={{ display: 'flex', gap: 8 }}>
+            <label className={styles.formLabel}>Color</label>
+            <div className={styles.colorPicker}>
               {EVENT_COLORS.map(c => (
                 <div
                   key={c}
                   onClick={() => setFormColor(c)}
-                  style={{
-                    width: 24, height: 24, borderRadius: '50%', backgroundColor: c, cursor: 'pointer',
-                    outline: formColor === c ? '2px solid var(--text-dark, #fff)' : 'none', outlineOffset: 2,
-                  }}
+                  className={`${styles.colorCircle} ${formColor === c ? styles.colorCircleSelected : ''}`}
+                  style={{ '--circle-color': c } as React.CSSProperties}
                 />
               ))}
             </div>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <div className={styles.checkboxRow}>
             <input type="checkbox" id="allDay" checked={formAllDay} onChange={e => setFormAllDay(e.target.checked)} />
-            <label htmlFor="allDay" style={{ fontSize: 12, color: 'var(--text-muted, #888)' }}>Todo el día</label>
+            <label htmlFor="allDay" className={styles.checkboxLabel}>Todo el día</label>
           </div>
           <button
             onClick={handleCreate}
-            style={{
-              padding: '10px 16px', background: 'var(--color-primary, #f05a28)', color: 'var(--text-on-primary, #fff)',
-              border: 'none', fontWeight: 600, fontSize: 13, cursor: 'pointer', marginTop: 4, borderRadius: 'var(--btn-radius)'
-            }}
+            className={styles.submitBtn}
           >
             Crear Evento
           </button>

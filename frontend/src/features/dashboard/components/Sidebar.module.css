@@ -17,7 +17,7 @@
   z-index: 300;
   transition: width 0.25s ease-out;
   will-change: width;
-  border-right: 1px solid rgba(255, 255, 255, 0.03);
+  border-right: 1px solid rgb(255, 255, 255, 0.03);
 }
 
 .sidebar.open {
@@ -25,8 +25,8 @@
 }
 
 .brandBox {
-  padding: 0 24px 20px 24px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 0 24px 20px;
+  border-bottom: 1px solid rgb(255, 255, 255, 0.05);
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -39,7 +39,7 @@
   width: auto;
   height: 90%;
   max-height: 85px;
-  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.3));
+  filter: drop-shadow(0 2px 6px rgb(0, 0, 0, 0.3));
   transition: transform 0.3s ease;
 }
 
@@ -49,7 +49,7 @@
 
 .sidebarStroke {
   fill: none;
-  stroke: var(--sidebar-text, #FFFFFF);
+  stroke: var(--sidebar-text, #FFF);
   stroke-width: 5;
   stroke-linecap: round;
   stroke-linejoin: round;
@@ -65,10 +65,10 @@
 
 .sidebarPro {
   fill: var(--brand-orange, #F07F19);
-  font-size: 18px;
-  font-weight: 900;
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-black, 900);
   letter-spacing: 0.05em;
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family: var(--font-family);
 }
 
 .menu {
@@ -78,8 +78,7 @@
   justify-content: flex-start;
   padding-top: 24px;
   flex: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: hidden auto;
   width: 100%;
   min-width: 0;
   overscroll-behavior: contain;
@@ -94,17 +93,17 @@
 }
 
 .menu::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.12);
-  border-radius: 6px;
+  background: rgb(255, 255, 255, 0.12);
+  border-radius: var(--border-radius-md);
 }
 
 .menu::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgb(255, 255, 255, 0.2);
 }
 
 .menu {
   scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.12) transparent;
+  scrollbar-color: rgb(255, 255, 255, 0.12) transparent;
 }
 
 .menuItem {
@@ -115,8 +114,8 @@
   padding: 10px 0;
   color: var(--sidebar-text-muted, #94a3b8);
   text-decoration: none;
-  font-size: 13.5px;
-  font-weight: 500;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
   white-space: nowrap;
   transition: all 0.2s ease;
 }
@@ -128,13 +127,13 @@
 }
 
 .menuItem:hover {
-  background: rgba(255, 255, 255, 0.03);
-  color: var(--sidebar-text, #ffffff);
+  background: rgb(255, 255, 255, 0.03);
+  color: var(--sidebar-text, #fff);
 }
 
 .active {
-  background: rgba(255, 255, 255, 0.05) !important;
-  color: var(--sidebar-text, #ffffff) !important;
+  background: rgb(255, 255, 255, 0.05) !important;
+  color: var(--sidebar-text, #fff) !important;
   border-left: 4px solid var(--brand-orange);
   padding-left: 20px !important;
 }
@@ -181,7 +180,7 @@
 
 .divider {
   height: 1px;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgb(255, 255, 255, 0.05);
   margin: 8px 16px;
 }
 
@@ -205,9 +204,9 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 16px 24px 8px 24px;
-  font-size: 11px;
-  font-weight: 700;
+  padding: 16px 24px 8px;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
   text-transform: none;
   letter-spacing: 0.05em;
   color: var(--sidebar-section, #57534e);
@@ -227,7 +226,7 @@
 }
 
 .sidebar.open .footer {
-  padding: 15px 24px 0 24px;
+  padding: 15px 24px 0;
 }
 
 .exitBtn {
@@ -237,12 +236,12 @@
   gap: 8px;
   width: 100%;
   background: var(--brand-orange, #f59e0b);
-  color: #1e1b1c;
+  color: var(--sidebar-bg, #1e1b1c);
   border: none;
   padding: 10px;
   border-radius: var(--btn-radius, 8px);
-  font-weight: 600;
-  font-size: 13.5px;
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-sm);
   cursor: pointer;
   transition: background 0.2s;
   white-space: nowrap;
@@ -269,7 +268,7 @@
     display: block;
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgb(0, 0, 0, 0.5);
     z-index: 250;
   }
 

@@ -50,19 +50,19 @@ export function ReceiveModal({
   return (
     <Modal open={open} onClose={onClose} title="Recibir Orden de Compra" wide>
       <form onSubmit={handleSubmit}>
-        <p style={{ marginBottom: 16, color: 'var(--text-muted)', fontSize: 14 }}>
+        <p className={`${styles.colorMuted} ${styles.fontSize14} ${styles.mb16}`}>
           Orden #{order.id.slice(0, 8)} — Ajusta las cantidades a recibir por producto.
         </p>
-        <table className="lista-table" style={{ marginBottom: 16 }}>
+        <table className="lista-table" className={styles.mb16}>
           <thead>
             <tr>
               <th>Producto</th>
-              <th style={{ textAlign: 'center' }}>Pedido</th>
-              <th style={{ textAlign: 'center' }}>Recibido</th>
-              <th style={{ textAlign: 'center' }}>Por recibir</th>
-              <th style={{ textAlign: 'center', width: 100 }}>Recibir ahora</th>
-              <th style={{ textAlign: 'right' }}>Costo</th>
-              <th style={{ textAlign: 'right' }}>Subtotal</th>
+              <th className={styles.textCenter}>Pedido</th>
+              <th className={styles.textCenter}>Recibido</th>
+              <th className={styles.textCenter}>Por recibir</th>
+              <th className={`${styles.textCenter} ${styles.w100}`}>Recibir ahora</th>
+              <th className={styles.textRight}>Costo</th>
+              <th className={styles.textRight}>Subtotal</th>
             </tr>
           </thead>
           <tbody>
@@ -71,19 +71,19 @@ export function ReceiveModal({
               return (
                 <tr key={item.id}>
                   <td>{item.productId.slice(0, 8)}</td>
-                  <td style={{ textAlign: 'center' }}>{item.quantity}</td>
-                  <td style={{ textAlign: 'center' }}>{item.receivedQty}</td>
-                  <td style={{ textAlign: 'center' }}>{remaining}</td>
-                  <td style={{ textAlign: 'center' }}>
+                  <td className={styles.textCenter}>{item.quantity}</td>
+                  <td className={styles.textCenter}>{item.receivedQty}</td>
+                  <td className={styles.textCenter}>{remaining}</td>
+                  <td className={styles.textCenter}>
                     <input
                       type="number" min={0} max={remaining}
                       value={quantities[item.id] ?? 0}
                       onChange={e => updateQty(item.id, item, Number(e.target.value))}
-                      style={{ width: 70, padding: '4px 8px', borderRadius: 6, border: '1px solid var(--border)', textAlign: 'center' }}
+                      className={`${styles.w70} ${styles.p4px8} ${styles.rounded6} ${styles.borderBorder} ${styles.textCenter}`}
                     />
                   </td>
-                  <td style={{ textAlign: 'right' }}>{formatPrice(item.cost)}</td>
-                  <td style={{ textAlign: 'right' }}>{formatPrice((quantities[item.id] ?? 0) * Number(item.cost))}</td>
+                  <td className={styles.textRight}>{formatPrice(item.cost)}</td>
+                  <td className={styles.textRight}>{formatPrice((quantities[item.id] ?? 0) * Number(item.cost))}</td>
                 </tr>
               );
             })}
@@ -91,8 +91,8 @@ export function ReceiveModal({
           <tfoot>
             <tr>
               <td colSpan={5}></td>
-              <td style={{ textAlign: 'right', fontWeight: 600 }}>Total:</td>
-              <td style={{ textAlign: 'right', fontWeight: 600 }}>{formatPrice(total)}</td>
+              <td className={`${styles.textRight} ${styles.bold}`}>Total:</td>
+              <td className={`${styles.textRight} ${styles.bold}`}>{formatPrice(total)}</td>
             </tr>
           </tfoot>
         </table>

@@ -3,12 +3,13 @@ import { Bell, Heart, MessageCircle, UserPlus, Mail, CheckCheck } from 'lucide-r
 import { Skeleton } from '@shared/ui/Skeleton';
 import { api } from '@shared/lib/http/client';
 import type { SocialNotification } from '@types';
+import styles from './SocialNotifications.module.css';
 
 function NotifSkeleton() {
   return (
-    <div className="ig-notif-item" style={{ pointerEvents: 'none' }}>
+    <div className={`ig-notif-item ${styles.skeletonNotifItem}`}>
       <Skeleton variant="circle" width={44} height={44} />
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 6 }}>
+      <div className={styles.skeletonNotifBody}>
         <Skeleton height={12} width="70%" />
         <Skeleton height={10} width="40%" />
       </div>

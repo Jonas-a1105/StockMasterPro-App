@@ -1,0 +1,5 @@
+.headerRow { display: flex; align-items: center; gap: 10px; }
+.bodyPadding { padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+.actionRow { display: flex; gap: 14px; }
+.carouselTrack { display: flex; transition: transform 0.3s ease-in-out; transform: translateX(var(--tx, 0)); }
+.dotCursor { cursor: pointer; }

@@ -7,7 +7,6 @@ export function AppLogo({ size = 32 }: { size?: number }) {
       viewBox="0 0 240 240"
       width={size}
       height={size}
-      style={{ overflow: 'visible' }}
     >
       <defs>
         <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="0%">

@@ -15,7 +15,7 @@ interface ApplyAdjustmentsInput {
 @Injectable()
 export class ApplyInventoryCountAdjustmentsUseCase {
   constructor(
-    @Inject('INVENTORY_COUNT_REPOSITORY')
+    @Inject(INVENTORY_COUNT_REPOSITORY)
     private readonly countRepo: InventoryCountRepository,
     @Inject(PRODUCT_REPOSITORY)
     private readonly productRepo: ProductRepository,

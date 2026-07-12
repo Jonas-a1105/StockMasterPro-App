@@ -19,7 +19,7 @@ export function PremiumLockScreen({ sectionName, requiredPlan }: PremiumLockScre
         </div>
         <h2 className={styles.title}>Función Bloqueada</h2>
         <p className={styles.subtitle}>
-          El acceso a <strong style={{ color: 'var(--text-dark, #fff)' }}>{sectionName}</strong> no está disponible en tu plan actual.
+          El acceso a <strong>{sectionName}</strong> no está disponible en tu plan actual.
         </p>
         <p className={styles.desc}>
           Esta característica premium requiere contar con una suscripción activa al <strong>{planLabel}</strong> o superior.

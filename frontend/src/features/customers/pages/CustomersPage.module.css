@@ -30,11 +30,11 @@
   align-items: center;
   gap: 6px;
   padding: 10px 14px;
-  background-color: var(--bg-card, #ffffff);
-  color: var(--text-dark, #333333);
-  border: var(--card-border-width, 1px) solid var(--border-color, #eeeeee);
+  background-color: var(--bg-card, #fff);
+  color: var(--text-dark, #333);
+  border: var(--card-border-width, 1px) solid var(--border-color, #eee);
   border-radius: var(--btn-radius, var(--card-radius, 4px));
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   font-size: var(--font-size-sm);
   cursor: pointer;
   transition: var(--transition-smooth);
@@ -51,11 +51,11 @@
   align-items: center;
   gap: 6px;
   padding: 10px 14px;
-  background-color: var(--bg-card, #ffffff);
+  background-color: var(--bg-card, #fff);
   color: var(--color-orange-red, #f05a28);
-  border: 1px solid rgba(240, 90, 40, 0.25);
+  border: 1px solid rgb(240, 90, 40, 0.25);
   border-radius: var(--btn-radius, var(--card-radius, 4px));
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   font-size: var(--font-size-sm);
   cursor: pointer;
   transition: var(--transition-smooth);
@@ -63,14 +63,14 @@
 }
 
 .importBtn:hover {
-  background-color: rgba(240, 90, 40, 0.06);
+  background-color: rgb(240, 90, 40, 0.06);
   transform: translateY(-1px);
 }
 
 .tableCard {
-  background-color: var(--bg-card, #ffffff);
+  background-color: var(--bg-card, #fff);
   border-radius: var(--card-radius, 4px);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 3px rgb(0, 0, 0, 0.05);
   overflow: hidden;
 }
 
@@ -82,42 +82,42 @@
 .table th {
   text-align: left;
   padding: 12px 16px;
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--text-muted, #888888);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-muted, #888);
   text-transform: none;
   letter-spacing: 0.5px;
-  border-bottom: var(--card-border-width, 1px) solid var(--border-color, #eeeeee);
-  background-color: var(--bg-hover, rgba(0, 0, 0, 0.02));
+  border-bottom: var(--card-border-width, 1px) solid var(--border-color, #eee);
+  background-color: var(--bg-hover, rgb(0, 0, 0, 0.02));
 }
 
 .table td {
   padding: 12px 16px;
-  font-size: 13px;
-  color: var(--text-dark, #333333);
-  border-bottom: var(--card-border-width, 1px) solid var(--border-color, #eeeeee);
+  font-size: var(--font-size-sm);
+  color: var(--text-dark, #333);
+  border-bottom: var(--card-border-width, 1px) solid var(--border-color, #eee);
 }
 
 .nameCell {
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
 }
 
 .creditOk {
-  color: #16a34a;
+  color: var(--color-success);
 }
 
 .creditWarning {
-  color: #ea580c;
+  color: var(--color-primary);
 }
 
 .creditDanger {
-  color: #dc2626;
+  color: var(--color-danger);
 }
 
 .creditBarContainer {
   width: 80px;
   height: 6px;
-  background-color: var(--border-color, #eeeeee);
+  background-color: var(--border-color, #eee);
   border-radius: var(--card-radius);
   overflow: hidden;
 }
@@ -141,8 +141,8 @@
 }
 
 .noCredit {
-  font-size: 11px;
-  color: var(--text-muted, #888888);
+  font-size: var(--font-size-xs);
+  color: var(--text-muted, #888);
 }
 
 .actions {
@@ -160,35 +160,35 @@
   border-radius: var(--card-radius, 4px);
   background: none;
   cursor: pointer;
-  color: var(--text-muted, #888888);
+  color: var(--text-muted, #888);
   transition: all 0.2s ease;
 }
 
 .actionBtn:hover {
-  background-color: var(--bg-hover, rgba(0, 0, 0, 0.04));
-  color: var(--text-dark, #333333);
+  background-color: var(--bg-hover, rgb(0, 0, 0, 0.04));
+  color: var(--text-dark, #333);
 }
 
 .payBtn:hover {
-  background-color: #f0fdf4;
-  color: #16a34a;
-  border-color: #16a34a;
+  background-color: var(--bg-success);
+  color: var(--color-success);
+  border-color: var(--color-success);
 }
 
 .deleteBtn:hover {
-  background-color: #fef2f2;
-  color: #dc2626;
-  border-color: #dc2626;
+  background-color: var(--bg-danger);
+  color: var(--color-danger);
+  border-color: var(--color-danger);
 }
 
 .whatsappBtn {
-  color: #25D366;
+  color: var(--color-whatsapp, #25D366);
 }
 
 .whatsappBtn:hover {
-  background-color: #e8fdf0;
-  color: #128C7E;
-  border-color: #25D366;
+  background-color: var(--bg-whatsapp, #e8fdf0);
+  color: var(--color-whatsapp-dark, #128C7E);
+  border-color: var(--color-whatsapp, #25D366);
 }
 
 .modalContent {
@@ -198,9 +198,9 @@
 
 .modalContent h3 {
   margin: 0 0 20px;
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--text-dark, #333333);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-dark, #333);
 }
 
 .form {
@@ -216,19 +216,19 @@
 }
 
 .field label {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--text-dark, #333333);
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-dark, #333);
 }
 
 .field input {
   padding: 10px 12px;
-  border-color: var(--border-color, #eeeeee); border-style: solid;
+  border-color: var(--border-color, #eee); border-style: solid;
   border-radius: var(--card-radius, 4px);
-  font-size: 13px;
+  font-size: var(--font-size-sm);
   outline: none;
-  background-color: var(--bg-card, #ffffff);
-  color: var(--text-dark, #333333);
+  background-color: var(--bg-card, #fff);
+  color: var(--text-dark, #333);
   transition: border-color 0.2s ease;
 }
 
@@ -248,15 +248,15 @@
   border-color: var(--border-color); border-style: solid;
   border-radius: var(--card-radius, 4px);
   background: none;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-dark, #333333);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-dark, #333);
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .cancelBtn:hover {
-  background-color: var(--bg-hover, rgba(0, 0, 0, 0.04));
+  background-color: var(--bg-hover, rgb(0, 0, 0, 0.04));
 }
 
 .saveBtn {
@@ -265,8 +265,8 @@
   color: white;
   border: none;
   border-radius: var(--card-radius, 4px);
-  font-size: 13px;
-  font-weight: 700;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -281,18 +281,18 @@
 }
 
 .error {
-  background-color: #fef2f2;
-  color: #dc2626;
+  background-color: var(--bg-danger);
+  color: var(--color-danger);
   padding: 10px 12px;
   border-radius: var(--card-radius, 4px);
-  font-size: 12px;
+  font-size: var(--font-size-caption);
 }
 
 .empty {
   text-align: center;
-  color: var(--text-muted, #888888);
+  color: var(--text-muted, #888);
   padding: 30px !important;
-  font-size: 13px;
+  font-size: var(--font-size-sm);
 }
 
 .payInfo {
@@ -301,26 +301,26 @@
   gap: 8px;
   margin-bottom: 16px;
   padding: 12px;
-  background-color: var(--bg-hover, rgba(0, 0, 0, 0.02));
+  background-color: var(--bg-hover, rgb(0, 0, 0, 0.02));
   border-radius: var(--card-radius, 4px);
 }
 
 .payRow {
   display: flex;
   justify-content: space-between;
-  font-size: 13px;
-  color: var(--text-dark, #333333);
+  font-size: var(--font-size-sm);
+  color: var(--text-dark, #333);
 }
 
 .payValue {
-  font-weight: 700;
-  font-size: 15px;
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-md-plus);
 }
 
-.inputPrefix, .inputSuffix { border: var(--input-border-width, 1px) solid var(--border-color, #eeeeee);
+.inputPrefix, .inputSuffix { border: var(--input-border-width, 1px) solid var(--border-color, #eee);
   border-radius: var(--card-radius, 4px);
   overflow: hidden;
-  background-color: var(--bg-card, #ffffff);
+  background-color: var(--bg-card, #fff);
   transition: border-color 0.2s ease;
 }
 
@@ -333,26 +333,36 @@
   border: none !important;
   border-radius: 0 !important;
   padding: 10px 12px;
-  font-size: 13px;
+  font-size: var(--font-size-sm);
   outline: none;
   background: none;
-  color: var(--text-dark, #333333);
+  color: var(--text-dark, #333);
 }
 
 .inputPrefix span, .inputSuffix span {
   padding: 10px 12px;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-muted, #888888);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-muted, #888);
   background-color: var(--bg-main, #ededed);
   user-select: none;
   white-space: nowrap;
 }
 
 .inputPrefix span {
-  border-right: var(--card-border-width, 1px) solid var(--border-color, #eeeeee);
+  border-right: var(--card-border-width, 1px) solid var(--border-color, #eee);
 }
 
 .inputSuffix span {
-  border-left: var(--card-border-width, 1px) solid var(--border-color, #eeeeee);
+  border-left: var(--card-border-width, 1px) solid var(--border-color, #eee);
 }
+
+/* ── Utility classes for inline style replacement ── */
+.textRight { text-align: right; }
+.textCenter { text-align: center; }
+.justifyCenter { justify-content: center; }
+.colorMuted { color: var(--text-muted); }
+.w80px { width: 80px; }
+.p40 { padding: 40px; }
+.balanceColor { color: var(--balance-color); }
+.barFillWidth { width: var(--bar-fill-width); }

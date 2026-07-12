@@ -115,7 +115,7 @@ export function SuppliersTab() {
       <div className={styles.header}>
         <h3 className={styles.sectionTitle}>Proveedores</h3>
         {user?.role !== 'cajero' && (
-          <div style={{ display: 'flex', gap: 8 }}>
+          <div className={styles.flexRow}>
             <button className={styles.exportBtn} onClick={handleExport}><Download size={16} /> Exportar</button>
             <button className={styles.importBtn} onClick={() => setShowImport(true)}><Upload size={16} /> Importar</button>
             <button className={styles.addBtn} onClick={() => { setShowForm(true); setEditingId(null); setForm({ name: '', contact: '', phone: '', email: '', address: '', taxId: '', fiscalAddress: '' }); }}>

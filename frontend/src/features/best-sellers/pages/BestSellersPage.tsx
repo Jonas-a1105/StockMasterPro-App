@@ -11,6 +11,7 @@ import { KpiGrid } from '@shared/ui/KpiGrid';
 import { Toolbar } from '@shared/ui/Toolbar';
 import { exportToExcel } from '@shared/lib/excelHelper';
 import styles from './BestSellersPage.module.css';
+import { Download } from 'lucide-react';
 function formatDate(d: string | null) {
   if (!d) return '\u2014';
   return new Date(d).toLocaleDateString('es-MX', { year: 'numeric', month: 'short', day: 'numeric' });
@@ -135,31 +136,31 @@ export function BestSellersPage() {
         search={{ value: search, onChange: setSearch, placeholder: tab === 'best' ? 'Buscar más vendidos...' : 'Buscar productos muertos...' }}
       >
         {tab === 'best' ? (
-          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
-            <span style={{ fontSize: 12, color: 'var(--text-muted, #888)', fontWeight: 600 }}>Desde:</span>
-            <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} style={{ padding: '7px 12px', fontSize: 12, border: '1px solid var(--border-color, #eee)', borderRadius: 'var(--card-radius, 6px)', background: 'var(--bg-main, #f5f5f5)', color: 'var(--text-dark, #555)' }} />
-            <span style={{ fontSize: 12, color: 'var(--text-muted, #888)', fontWeight: 600 }}>Hasta:</span>
-            <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} style={{ padding: '7px 12px', fontSize: 12, border: '1px solid var(--border-color, #eee)', borderRadius: 'var(--card-radius, 6px)', background: 'var(--bg-main, #f5f5f5)', color: 'var(--text-dark, #555)' }} />
-            <select value={bestLimit} onChange={e => setBestLimit(Number(e.target.value))} style={{ padding: '7px 12px', fontSize: 12, border: '1px solid var(--border-color, #eee)', borderRadius: 'var(--card-radius, 6px)', background: 'var(--bg-main, #f5f5f5)', color: 'var(--text-dark, #555)', fontWeight: 600, cursor: 'pointer' }}>
+          <div className={styles.toolbarFilters}>
+            <span className={styles.filterLabel}>Desde:</span>
+            <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} className={styles.dateInput} />
+            <span className={styles.filterLabel}>Hasta:</span>
+            <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} className={styles.dateInput} />
+            <select value={bestLimit} onChange={e => setBestLimit(Number(e.target.value))} className={styles.selectFilter}>
               <option value={5}>Top 5</option>
               <option value={10}>Top 10</option>
               <option value={20}>Top 20</option>
               <option value={50}>Top 50</option>
             </select>
-            <button onClick={applyFilters} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '7px 14px', fontSize: 12, fontWeight: 600, border: '1px solid var(--color-orange-red, #f05a28)', borderRadius: 'var(--card-radius, 6px)', background: 'var(--color-orange-red, #f05a28)', color: 'white', cursor: 'pointer' }}>
+            <button onClick={applyFilters} className={styles.filterBtn}>
               <Filter size={14} /> Filtrar
             </button>
           </div>
         ) : (
-          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
-            <select value={deadDays} onChange={e => setDeadDays(Number(e.target.value))} style={{ padding: '7px 12px', fontSize: 12, border: '1px solid var(--border-color, #eee)', borderRadius: 'var(--card-radius, 6px)', background: 'var(--bg-main, #f5f5f5)', color: 'var(--text-dark, #555)', fontWeight: 600, cursor: 'pointer' }}>
+          <div className={styles.toolbarFiltersDead}>
+            <select value={deadDays} onChange={e => setDeadDays(Number(e.target.value))} className={styles.selectFilter}>
               <option value={30}>30 días</option>
               <option value={60}>60 días</option>
               <option value={90}>90 días</option>
               <option value={180}>180 días</option>
               <option value={365}>365 días</option>
             </select>
-            <button onClick={applyFilters} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '7px 14px', fontSize: 12, fontWeight: 600, border: '1px solid var(--color-orange-red, #f05a28)', borderRadius: 'var(--card-radius, 6px)', background: 'var(--color-orange-red, #f05a28)', color: 'white', cursor: 'pointer' }}>
+            <button onClick={applyFilters} className={styles.filterBtn}>
               <Filter size={14} /> Filtrar
             </button>
           </div>
@@ -176,23 +177,23 @@ export function BestSellersPage() {
                     <th>#</th>
                     <th>Producto</th>
                     <th>Código</th>
-                    <th style={{textAlign:'right'}}>Cant. Vendida</th>
-                    <th style={{textAlign:'right'}}>Ingreso Total</th>
+                    <th className={styles.textRight}>Cant. Vendida</th>
+                    <th className={styles.textRight}>Ingreso Total</th>
                     <th>% del Total <button className={styles.exportBtn} onClick={handleExportBest} title="Exportar a Excel"><Download size={14} /></button></th>
                   </tr>
                 </thead>
                 <tbody>
                   {filteredBest.map((p, i) => (
                     <tr key={p.id}>
-                      <td style={{fontWeight:700,color:'var(--text-muted)'}}>{i + 1}</td>
+                      <td className={styles.rankCell}>{i + 1}</td>
                       <td><span className="lista-name-text">{p.name}</span></td>
                       <td><span className="lista-code">{p.barcode || '\u2014'}</span></td>
-                      <td style={{textAlign:'right'}}><span className="lista-number-value">{p.totalQty}</span></td>
-                      <td style={{textAlign:'right'}}><span className="lista-number-value">{formatPrice(p.totalRevenue)}</span></td>
+                      <td className={styles.textRight}><span className="lista-number-value">{p.totalQty}</span></td>
+                      <td className={styles.textRight}><span className="lista-number-value">{formatPrice(p.totalRevenue)}</span></td>
                       <td>
                         <div className="lista-progress-bar">
                           <div className="lista-progress-track">
-                            <div className="lista-progress-fill orange" style={{ width: p.percentage + '%' }} />
+                            <div className="lista-progress-fill orange progressBarFill" style={{ '--progress-width': p.percentage + '%' }} />
                           </div>
                           <span className="lista-progress-value white">{p.percentage.toFixed(1)}%</span>
                         </div>
@@ -218,10 +219,10 @@ export function BestSellersPage() {
                       <tr>
                         <th>Producto <button className={styles.exportBtn} onClick={handleExportDead} title="Exportar a Excel"><Download size={14} /></button></th>
                         <th>Código</th>
-                        <th style={{textAlign:'right'}}>Stock Actual</th>
+                        <th className={styles.textRight}>Stock Actual</th>
                         <th>Última Venta</th>
-                        <th style={{textAlign:'right'}}>Días Sin Vender</th>
-                        <th style={{textAlign:'center'}}>Acción</th>
+                        <th className={styles.textRight}>Días Sin Vender</th>
+                        <th className={styles.textCenter}>Acción</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -229,11 +230,11 @@ export function BestSellersPage() {
                         <tr key={p.id}>
                           <td><span className="lista-name-text">{p.name}</span></td>
                           <td><span className="lista-code">{p.barcode || '\u2014'}</span></td>
-                          <td style={{textAlign:'right'}}><span className="lista-number-value">{p.stock}</span></td>
+                          <td className={styles.textRight}><span className="lista-number-value">{p.stock}</span></td>
                           <td>{formatDate(p.lastSale)}</td>
-                          <td style={{textAlign:'right'}}>{p.daysWithoutSale !== null ? `${p.daysWithoutSale} días` : 'Nunca vendido'}</td>
-                          <td style={{textAlign:'center'}}>
-                            <div className="lista-actions" style={{justifyContent:'center'}}>
+                          <td className={styles.textRight}>{p.daysWithoutSale !== null ? `${p.daysWithoutSale} días` : 'Nunca vendido'}</td>
+                          <td className={styles.textCenter}>
+                            <div className={styles.actionCell}>
                               <button className="lista-action-btn" onClick={() => window.location.href = `/inventory?edit=${p.id}`} title="Ver producto">
                                 <Eye size={14} />
                               </button>

@@ -17,15 +17,15 @@
   padding: 12px 24px;
   background: var(--brand);
   color: white;
-  font-weight: 600;
-  font-size: 14px;
-  border-radius: 8px;
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-md);
+  border-radius: var(--btn-radius);
   text-decoration: none;
   text-align: center;
   transform: translateY(-100%);
   opacity: 0;
   transition: all 0.2s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 12px rgb(0, 0, 0, 0.15);
 }
 
 .skip-link:focus,

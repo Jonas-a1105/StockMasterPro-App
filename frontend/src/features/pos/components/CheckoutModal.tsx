@@ -20,9 +20,9 @@ export function CheckoutModal({
 
   const showMixed = lastSale.paymentMethod === 'mixed' && lastSale.payments && lastSale.payments.length > 1;
 
-  return createPortal(
-    <div className={styles.modalOverlay} onClick={() => {}}>
-      <div className={styles.modalCard} onClick={e => e.stopPropagation()} style={{ maxWidth: 420, padding: 0 }}>
+  return createPortal((
+    <div className={`${styles.modalOverlay} ${styles.overlayClickBlocker}`}>
+      <div className={`${styles.modalCard} ${styles.modalCardInline}`} onClick={e => e.stopPropagation()}>
         <div className={styles.successModalContent}>
           <div className={styles.successIconWrapper}>
             <svg className={styles.checkmark} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
@@ -45,9 +45,9 @@ export function CheckoutModal({
             <div className={styles.ticketDetails}>
               <div>Fecha: {lastSale.date.toLocaleDateString()} {lastSale.date.toLocaleTimeString()}</div>
               {showMixed ? (
-                <div style={{ fontSize: 11, color: '#6b7280', marginTop: 4 }}>
+                <div className={styles.mixedPaymentsWarning}>
                   {lastSale.payments?.map((p, i) => (
-                    <div key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '2px 0', borderBottom: '1px dashed #e5e7eb' }}>
+                    <div key={i} className={styles.paymentRow}>
                       <span>{paymentLabel(p.paymentMethod)}</span>
                       <span>${p.amount.toFixed(2)}</span>
                     </div>
@@ -86,7 +86,7 @@ export function CheckoutModal({
             </button>
           </div>
         </div>
-      </div>,
-    document.body
-  );
+      </div>
+    </div>
+  ), document.body);
 }

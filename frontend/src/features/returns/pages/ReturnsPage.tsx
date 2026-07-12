@@ -147,14 +147,14 @@ export function ReturnsPage() {
               return (
                 <div key={item.id} className={styles.tableRow}>
                   <span>{item.product?.name || item.name}</span>
-                  <span style={{ textAlign: 'center' }}>{maxQty}</span>
-                  <span style={{ textAlign: 'right' }}>{formatPrice(item.price)}</span>
-                  <span style={{ textAlign: 'right' }}>{formatPrice(itemTotal(item))}</span>
+                  <span className={styles.textCenter}>{maxQty}</span>
+                  <span className={styles.textRight}>{formatPrice(item.price)}</span>
+                  <span className={styles.textRight}>{formatPrice(itemTotal(item))}</span>
                   <div className={styles.qtyControls}>
                     <button onClick={() => handleQtyChange(item.id, -1)} disabled={returnQty === 0}><Minus size={16} /></button>
                     <span className={styles.qtyValue}>{returnQty}</span>
                     <button onClick={() => handleQtyChange(item.id, 1)} disabled={returnQty >= maxQty}><Plus size={16} /></button>
-                    <span style={{ marginLeft: 8, color: 'var(--text-muted)', fontSize: 12 }}>máx {maxQty}</span>
+                    <span className={styles.maxHint}>máx {maxQty}</span>
                   </div>
                 </div>
               );
@@ -200,10 +200,10 @@ export function ReturnsPage() {
                 <th>Fecha</th>
                 <th>Cliente</th>
                 <th>Productos</th>
-                <th style={{textAlign:'right'}}>Total</th>
-                <th style={{textAlign:'center'}}>Método</th>
-                <th style={{textAlign:'center'}}>Estado</th>
-                <th style={{textAlign:'center'}}>Acción</th>
+                <th className={styles.textRight}>Total</th>
+                <th className={styles.textCenter}>Método</th>
+                <th className={styles.textCenter}>Estado</th>
+                <th className={styles.textCenter}>Acción</th>
               </tr>
             </thead>
             <tbody>
@@ -212,13 +212,13 @@ export function ReturnsPage() {
                   <td>{new Date(s.createdAt).toLocaleDateString()}</td>
                   <td><span className="lista-name-text">{s.customer?.name || 'Consumidor final'}</span></td>
                   <td>{s.items?.length || 0} art.</td>
-                  <td style={{textAlign:'right'}}><span className="lista-number-value">{formatPrice(s.total)}</span></td>
+                  <td className={styles.textRight}><span className="lista-number-value">{formatPrice(s.total)}</span></td>
                   <td>{s.paymentMethod}</td>
-                  <td style={{textAlign:'center'}}><span className={`lista-badge ${s.status === 'completed' ? 'active' : 'inactive'}`}>{s.status === 'completed' ? 'Completada' : s.status}</span></td>
-                  <td style={{textAlign:'center'}}><button className="lista-action-btn" onClick={e => { e.stopPropagation(); setSelectedSale(s); setReturnItems({}); setReason(''); }} title="Iniciar devolución"><RotateCcw size={14} /></button></td>
+                  <td className={styles.textCenter}><span className={`lista-badge ${s.status === 'completed' ? 'active' : 'inactive'}`}>{s.status === 'completed' ? 'Completada' : s.status}</span></td>
+                  <td className={styles.textCenter}><button className="lista-action-btn" onClick={e => { e.stopPropagation(); setSelectedSale(s); setReturnItems({}); setReason(''); }} title="Iniciar devolución"><RotateCcw size={14} /></button></td>
                 </tr>
               ))}
-              {filteredSales.length === 0 && <tr><td colSpan={7} style={{textAlign:'center',padding:40,color:'var(--text-muted)'}}>No hay ventas registradas</td></tr>}
+              {filteredSales.length === 0 && <tr><td colSpan={7} className={styles.emptyCell}>No hay ventas registradas</td></tr>}
             </tbody>
           </table>
         </div>

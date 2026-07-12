@@ -1,0 +1,5 @@
+.backBtnRelative { position: relative; }
+.progressSvg { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-90deg); pointer-events: none; }
+.createPostModal { max-width: 500px; padding: 0; }
+.fileInputHidden { display: none; }
+.exploreCard { pointer-events: none; }

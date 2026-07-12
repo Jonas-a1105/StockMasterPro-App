@@ -5,8 +5,8 @@
 }
 
 .label {
-  font-size: 13px;
-  font-weight: 600;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
   color: var(--text-main, #0f172a);
 }
 
@@ -15,11 +15,11 @@
 }
 
 .error {
-  font-size: 12px;
+  font-size: var(--font-size-caption);
   color: var(--color-danger, #e5484d);
 }
 
 .helper {
-  font-size: 12px;
+  font-size: var(--font-size-caption);
   color: var(--text-light, #64748b);
 }

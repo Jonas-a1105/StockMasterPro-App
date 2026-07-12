@@ -25,7 +25,7 @@ export function DashboardPage() {
     return (
       <>
         <SkeletonKPI count={6} />
-        <div className={styles.grid} style={{ marginTop: 16 }}>
+        <div className={`${styles.grid} ${styles.mt16}`}>
           <div className={styles.card}><SkeletonChart height={250} /></div>
           <div className={styles.card}><SkeletonChart height={250} /></div>
         </div>

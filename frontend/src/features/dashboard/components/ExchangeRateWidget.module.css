@@ -1,7 +1,7 @@
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgb(0, 0, 0, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -32,8 +32,8 @@
   flex: 1;
   text-align: center;
   padding: 12px 14px;
-  font-size: 13px;
-  font-weight: 500;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
   cursor: pointer;
   border: none;
   background: none;
@@ -51,7 +51,7 @@
 .tabActive {
   composes: tab;
   color: var(--brand-orange) !important;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   background: none !important;
 }
 
@@ -92,15 +92,15 @@
 }
 
 .titleLabel {
-  font-size: 11px;
-  font-weight: 600;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
   color: var(--text-dark);
   letter-spacing: 1px;
   text-transform: none;
 }
 
 .sourceLabel {
-  font-size: 9px;
+  font-size: var(--font-size-2xs);
   color: var(--text-muted);
   margin-top: 2px;
 }
@@ -110,9 +110,9 @@
   color: var(--color-success);
   border: 1px solid var(--border-color);
   padding: 3px 10px;
-  font-size: 11px;
-  font-weight: 700;
-  border-radius: 4px;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  border-radius: var(--border-radius-sm);
 }
 
 .rateBlock {
@@ -123,16 +123,16 @@
 }
 
 .rateValue {
-  font-size: 38px;
-  font-weight: 700;
+  font-size: var(--font-size-5xl, 38px);
+  font-weight: var(--font-weight-bold);
   color: var(--text-dark);
   letter-spacing: -1px;
   line-height: 1;
 }
 
 .rateUnit {
-  font-size: 11px;
-  font-weight: 600;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
   color: var(--color-success);
   letter-spacing: 2px;
   text-transform: none;
@@ -145,11 +145,11 @@
 }
 
 .chartLabel {
-  font-size: 9px;
+  font-size: var(--font-size-2xs);
   color: var(--text-muted, #888);
   text-transform: none;
   letter-spacing: 1px;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
 }
 
 .chartBox {
@@ -167,7 +167,7 @@
 .chartDates {
   display: flex;
   justify-content: space-between;
-  font-size: 9px;
+  font-size: var(--font-size-2xs);
   color: var(--text-muted, #888);
 }
 
@@ -177,7 +177,7 @@
   align-items: center;
   padding-top: 12px;
   border-top: 1px solid var(--border-color);
-  font-size: 10px;
+  font-size: var(--font-size-2xs);
 }
 
 .footerTime {
@@ -186,7 +186,7 @@
 
 .footerConvertBtn {
   color: var(--color-primary);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   text-transform: none;
   letter-spacing: 1px;
   background: none;
@@ -195,7 +195,7 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 10px;
+  font-size: var(--font-size-2xs);
   transition: color 0.15s;
 }
 
@@ -216,15 +216,15 @@
   position: absolute;
   right: 10px;
   top: 8px;
-  font-size: 9px;
+  font-size: var(--font-size-2xs);
   letter-spacing: 1px;
   text-transform: none;
   color: var(--color-primary);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   background-color: var(--bg-hover);
   padding: 2px 8px;
   border: 1px solid var(--border-color);
-  border-radius: 4px;
+  border-radius: var(--border-radius-sm);
 }
 
 .calcInputRow {
@@ -234,8 +234,8 @@
 }
 
 .calcSymbol {
-  font-size: 13px;
-  font-weight: 600;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
   color: var(--text-muted);
   width: 20px;
 }
@@ -244,8 +244,8 @@
   width: 100%;
   background: transparent;
   text-align: right;
-  font-size: 20px;
-  font-weight: 700;
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
   color: var(--text-dark);
   border: none;
   outline: none;
@@ -261,8 +261,8 @@
 }
 
 .calcResultSymbol {
-  font-size: 11px;
-  font-weight: 600;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
   color: var(--color-success);
   width: 30px;
 }
@@ -270,8 +270,8 @@
 .calcResultValue {
   width: 100%;
   text-align: right;
-  font-size: 15px;
-  font-weight: 700;
+  font-size: var(--font-size-md-plus);
+  font-weight: var(--font-weight-bold);
   color: var(--color-success);
 }
 
@@ -279,8 +279,8 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 8px;
-  font-size: 13px;
-  font-weight: 700;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
 }
 
 .key {
@@ -294,7 +294,7 @@
   justify-content: center;
   transition: background-color 0.1s;
   user-select: none;
-  border-radius: 4px;
+  border-radius: var(--border-radius-sm);
 }
 
 .key:hover {
@@ -310,13 +310,13 @@
   composes: key;
   background-color: var(--brand-orange-light) !important;
   color: var(--color-primary) !important;
-  font-size: 11px;
+  font-size: var(--font-size-xs);
   text-transform: none;
   letter-spacing: 1px;
 }
 
 .keyClear:hover {
-  background-color: rgba(234, 88, 12, 0.15) !important;
+  background-color: rgb(234, 88, 12, 0.15) !important;
 }
 
 .keySwap {
@@ -348,8 +348,8 @@
   background-color: var(--color-primary) !important;
   border: 1px solid var(--color-primary) !important;
   color: white !important;
-  font-size: 11px;
-  font-weight: 600;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
   text-transform: none;
   letter-spacing: 1px;
   padding: 10px 0;
@@ -394,7 +394,7 @@
   justify-content: center;
   transition: color 0.15s, background-color 0.15s;
   flex-shrink: 0;
-  border-radius: 4px;
+  border-radius: var(--border-radius-sm);
 }
 
 .analyticsBtn:hover {
@@ -406,3 +406,6 @@
 .panelWrapper {
   position: relative;
 }
+
+/* ── Utility classes ── */
+.flexRow { display: flex; flex-direction: row; align-items: center; gap: 6px; }

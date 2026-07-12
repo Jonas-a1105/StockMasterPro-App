@@ -9,6 +9,7 @@ import { SocialMessages } from './components/SocialMessages';
 import { SocialProfileView } from './components/SocialProfile';
 import { useAuth } from '@contexts/AuthContext';
 import { api } from '@shared/lib/http/client';
+import styles from './SocialPage.module.css';
 
 type SocialTab = 'feed' | 'explore' | 'catalogs' | 'notifications' | 'messages' | 'profile' | 'create';
 
@@ -177,11 +178,11 @@ export function SocialPage() {
                 onTouchStart={handleStartPress}
                 onTouchEnd={handleEndPress}
                 onClick={(e) => e.preventDefault()}
-                style={{ position: 'relative' }}
+                className={styles.backBtnRelative}
               >
                 <ArrowLeft size={22} />
                 {progress > 0 && (
-                  <svg className="ig-longpress-progress" width="30" height="30" viewBox="0 0 30 30" style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%) rotate(-90deg)', pointerEvents: 'none' }}>
+                  <svg className={`ig-longpress-progress ${styles.progressSvg}`} width="30" height="30" viewBox="0 0 30 30">
                     <circle
                       cx="15"
                       cy="15"
@@ -240,7 +241,7 @@ export function SocialPage() {
       </nav>
       {showCreatePostModal && (
         <div className="ig-modal-overlay" onClick={() => setShowCreatePostModal(false)}>
-          <div className="ig-modal-content ig-create-post-modal" style={{ maxWidth: '500px', padding: 0 }} onClick={e => e.stopPropagation()}>
+          <div className={`ig-modal-content ig-create-post-modal ${styles.createPostModal}`} onClick={e => e.stopPropagation()}>
             <CreatePostView 
               onCreated={() => {
                 setShowCreatePostModal(false);
@@ -350,7 +351,7 @@ function CreatePostView({ onCreated, onClose }: { onCreated: () => void; onClose
               <><Camera className="ig-create-icon" size={48} /><p>Haz clic para subir un archivo o pega una URL</p></>
             )}
           </div>
-          <input ref={fileRef} type="file" accept="image/*" style={{ display: 'none' }} onChange={handleFile} />
+          <input ref={fileRef} type="file" accept="image/*" className={styles.fileInputHidden} onChange={handleFile} />
           <div className="ig-create-url-row">
             <input className="ig-create-url-input" type="text" placeholder="https://ejemplo.com/imagen.jpg" value={urlInput} onChange={e => setUrlInput(e.target.value)} onKeyDown={handleKeyDown} />
             <button className="ig-btn-secondary" onClick={addImage} disabled={!urlInput.trim()}>+</button>
@@ -393,7 +394,7 @@ function ExploreSection({ onSelectUser }: { onSelectUser: (id: string) => void }
       <div className="ig-explore-grid">
         {loading ? (
           [1,2,3,4,5,6].map(i => (
-            <div key={i} className="ig-explore-card" style={{ pointerEvents: 'none' }}>
+            <div key={i} className={`ig-explore-card ${styles.exploreCard}`}>
               <Skeleton variant="circle" width={48} height={48} />
               <Skeleton height={10} width="60%" />
             </div>

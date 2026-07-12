@@ -1,0 +1,5 @@
+.spinner {
+  display: inline-flex;
+  width: var(--spinner-size, 18px);
+  height: var(--spinner-size, 18px);
+}

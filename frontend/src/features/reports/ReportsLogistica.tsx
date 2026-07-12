@@ -15,7 +15,7 @@ interface Props {
 export function ReportsLogistica({ sales, products }: Props) {
   return (
     <div className={styles.grid2}>
-      <div className={styles.card} style={{ gridColumn: '1 / -1' }}>
+      <div className={`${styles.card} ${styles.colSpanFull}`}>
         <div className={styles.cardTitle}>Matriz ABC de rotación y densidad patrimonial inmovilizada</div>
         <ResponsiveContainer width="100%" height={300} key="matriz-abc">
           <ScatterChart>

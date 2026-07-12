@@ -102,10 +102,10 @@ export function AdminTenantsPage() {
   if (user?.role !== 'admin') {
     return (
       <div className={styles.container}>
-        <div className={styles.card} style={{ textAlign: 'center', padding: 60 }}>
-          <AlertTriangle size={32} style={{ color: 'var(--color-danger, #dc2626)', marginBottom: 12 }} />
-          <h2 style={{ color: 'var(--text-dark, #fff)', margin: 0 }}>Acceso restringido</h2>
-          <p style={{ color: 'var(--text-muted, #888)', marginTop: 8, fontSize: 13 }}>
+        <div className={`${styles.card} ${styles.accessDeniedCard}`}>
+          <AlertTriangle size={32} className={styles.iconDanger} />
+          <h2 className={styles.accessDeniedTitle}>Acceso restringido</h2>
+          <p className={styles.accessDeniedText}>
             Solo los administradores pueden acceder al panel de gestión de licencias.
           </p>
         </div>
@@ -141,13 +141,14 @@ export function AdminTenantsPage() {
                   <th>Estado</th>
                   <th>Vencimiento</th>
                   <th>Bloqueado</th>
-                  <th style={{ width: 200 }}>Acciones</th>
+                  <th className={styles.actionsCol}>Acciones</th>
                 </tr>
               </thead>
               <tbody>
                 {tenants.map(t => {
                   const isExpired = new Date(t.licenseExpiresAt) < new Date();
                   const isCanceled = t.subscriptionStatus === 'canceled';
+                  const statusClass = isCanceled ? styles.statusCanceled : isExpired ? styles.statusExpired : styles.statusActive;
                   return (
                     <tr key={t.id} className={t.isBlocked ? styles.rowBlocked : ''}>
                       <td>
@@ -159,21 +160,19 @@ export function AdminTenantsPage() {
                         </span>
                       </td>
                       <td>
-                        <span className={styles.statusBadge} style={{
-                          color: isCanceled ? '#dc2626' : isExpired ? '#f97316' : '#16a34a',
-                        }}>
+                        <span className={`${styles.statusBadge} ${statusClass}`}>
                           {isCanceled ? 'Cancelada' : isExpired ? 'Expirada' : 'Activa'}
                         </span>
                       </td>
                       <td className={styles.cellDate}>{formatDate(t.licenseExpiresAt)}</td>
                       <td>
                         {t.isBlocked ? (
-                          <XCircle size={16} style={{ color: '#dc2626' }} />
+                          <XCircle size={16} className={styles.iconDanger} />
                         ) : (
-                          <CheckCircle size={16} style={{ color: '#16a34a' }} />
+                          <CheckCircle size={16} className={styles.iconSuccess} />
                         )}
                       </td>
-                      <td>
+                      <td className={styles.actionsCol}>
                         <div className={styles.actions}>
                           {t.isBlocked ? (
                             <button className={styles.actionBtn} onClick={() => handleUnblock(t.id)} disabled={actionLoading === t.id} title="Desbloquear">
@@ -203,27 +202,24 @@ export function AdminTenantsPage() {
 
       <Modal open={!!extendModal} onClose={() => setExtendModal(null)} title="Extender Licencia">
         {extendModal && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 14, padding: '8px 0' }}>
-            <p style={{ fontSize: 13, color: 'var(--text-muted, #888)', margin: 0 }}>
-              Extender licencia de <strong style={{ color: 'var(--text-dark, #fff)' }}>{extendModal.name}</strong>
+          <div className={styles.modalForm}>
+            <p className={styles.modalFormText}>
+              Extender licencia de <strong className={styles.modalFormStrong}>{extendModal.name}</strong>
             </p>
             <div>
-              <label style={{ fontSize: 12, color: 'var(--text-muted, #888)', display: 'block', marginBottom: 4 }}>Días a extender</label>
+              <label className={styles.modalFormLabel}>Días a extender</label>
               <input
                 type="number"
                 value={extendDays}
                 onChange={e => setExtendDays(Math.max(1, Number(e.target.value)))}
                 min={1}
-                style={{ width: '100%', padding: '8px 10px', background: 'var(--bg-main, #1c1c1c)', border: '1px solid var(--border-color, #333)', color: 'var(--text-dark, #fff)', fontSize: 13 }}
+                className={styles.modalFormInput}
               />
             </div>
             <button
               onClick={handleExtend}
               disabled={actionLoading === extendModal.id}
-              style={{
-                padding: '10px', background: 'var(--color-orange-red, #f05a28)', color: '#fff',
-                border: 'none', fontWeight: 600, fontSize: 13, cursor: 'pointer', marginTop: 4,
-              }}
+              className={styles.modalFormBtn}
             >
               {actionLoading === extendModal.id ? 'Extendiendo...' : 'Extender Licencia'}
             </button>
@@ -233,16 +229,16 @@ export function AdminTenantsPage() {
 
       <Modal open={!!planModal} onClose={() => setPlanModal(null)} title="Cambiar Plan">
         {planModal && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 14, padding: '8px 0' }}>
-            <p style={{ fontSize: 13, color: 'var(--text-muted, #888)', margin: 0 }}>
-              Cambiar plan de <strong style={{ color: 'var(--text-dark, #fff)' }}>{planModal.name}</strong>
+          <div className={styles.modalForm}>
+            <p className={styles.modalFormText}>
+              Cambiar plan de <strong className={styles.modalFormStrong}>{planModal.name}</strong>
             </p>
             <div>
-              <label style={{ fontSize: 12, color: 'var(--text-muted, #888)', display: 'block', marginBottom: 4 }}>Nuevo plan</label>
+              <label className={styles.modalFormLabel}>Nuevo plan</label>
               <select
                 value={newPlan}
                 onChange={e => setNewPlan(e.target.value)}
-                style={{ width: '100%', padding: '8px 10px', background: 'var(--bg-main, #1c1c1c)', border: '1px solid var(--border-color, #333)', color: 'var(--text-dark, #fff)', fontSize: 13 }}
+                className={styles.modalFormInput}
               >
                 {PLAN_OPTIONS.map(p => (
                   <option key={p} value={p}>{p.charAt(0).toUpperCase() + p.slice(1)}</option>
@@ -252,10 +248,7 @@ export function AdminTenantsPage() {
             <button
               onClick={handleChangePlan}
               disabled={actionLoading === planModal.id}
-              style={{
-                padding: '10px', background: 'var(--color-orange-red, #f05a28)', color: '#fff',
-                border: 'none', fontWeight: 600, fontSize: 13, cursor: 'pointer', marginTop: 4,
-              }}
+              className={styles.modalFormBtn}
             >
               {actionLoading === planModal.id ? 'Cambiando...' : 'Cambiar Plan'}
             </button>

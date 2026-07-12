@@ -7,7 +7,6 @@ import { useTheme } from '@contexts/ThemeContext';
 import { AlertTriangle, Package, Download, RefreshCw, FileText, X } from 'lucide-react';
 import { exportToExcel, type ColumnMapping } from '@shared/lib/excelHelper';
 import { exportToPdf } from '@shared/lib/print/pdfHelper';
-import { useToast } from '@contexts/ToastContext';
 import { formatPrice } from '@shared/lib/format/currency';
 import { useExchangeRate } from '@contexts/ExchangeRateContext';
 import styles from './DeadProductsPage.module.css';
@@ -68,7 +67,7 @@ export function DeadProductsPage() {
     showToast('Exportado a PDF', 'success');
   };
 
-  if (loading) return config.skeletonEnabled ? <SkeletonTablePage rows={8} cols={6} kpi={0} /> : <div style={{padding:40,textAlign:'center',color:'var(--text-muted)'}}>Cargando...</div>;
+  if (loading) return config.skeletonEnabled ? <SkeletonTablePage rows={8} cols={6} kpi={0} /> : <div className={styles.loadingCenter}>Cargando...</div>;
 
   return (
     <div className={styles.container}>
@@ -107,18 +106,18 @@ export function DeadProductsPage() {
 
       <div className={styles.stats}>
         <div className={styles.stat}><span className={styles.statValue}>{products.length}</span><span className={styles.statLabel}>Productos muertos</span></div>
-        <div className={styles.stat}><span className={styles.statValue}>{products.filter(p => p.stock > 0).length}</span><span className={styles.statLabel}>Con stock > 0</span></div>
-        <div className={styles.stat}><span className={styles.statValue} style={{color:'var(--color-red)'}}>{products.filter(p => p.stock <= 0).length}</span><span className={styles.statLabel}>Sin stock</span></div>
+        <div className={styles.stat}><span className={styles.statValue}>{products.filter(p => p.stock > 0).length}</span><span className={styles.statLabel}>Con stock {'>'} 0</span></div>
+        <div className={styles.stat}><span className={`${styles.statValue} ${styles.colorRed}`}>{products.filter(p => p.stock <= 0).length}</span><span className={styles.statLabel}>Sin stock</span></div>
       </div>
 
       <div className={styles.tableContainer}>
         <table className={styles.table}>
-          <thead>
+<thead>
             <tr>
               <th>Producto</th>
               <th>Código</th>
-              <th style={{textAlign:'center'}}>Días sin venta</th>
-              <th style={{textAlign:'right'}}>Stock</th>
+              <th className={styles.textCenter}>Días sin venta</th>
+              <th className={styles.textRight}>Stock</th>
               <th>Última venta</th>
               <th>Categoría</th>
             </tr>
@@ -131,12 +130,12 @@ export function DeadProductsPage() {
                 <tr key={p.productId}>
                   <td><span className={styles.productName}>{p.name}</span></td>
                   <td><span className={styles.barcode}>{p.barcode || '—'}</span></td>
-                  <td style={{textAlign:'center'}}><span className={styles.daysBadge}>{p.daysSinceSale}</span></td>
-                  <td style={{textAlign:'right'}}><span className={p.stock <= 0 ? styles.stockZero : styles.stockOk}>{p.stock}</span></td>
+                  <td className={styles.textCenter}><span className={styles.daysBadge}>{p.daysSinceSale}</span></td>
+                  <td className={styles.textRight}><span className={p.stock <= 0 ? styles.stockZero : styles.stockOk}>{p.stock}</span></td>
                   <td>{p.lastSaleDate ? new Date(p.lastSaleDate).toLocaleDateString() : '—'}</td>
                   <td>{p.category || '—'}</td>
                 </tr>
-              ))}
+)))}
           </tbody>
         </table>
       </div>

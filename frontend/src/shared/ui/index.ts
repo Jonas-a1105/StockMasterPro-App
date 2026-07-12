@@ -11,3 +11,5 @@ export { Skeleton } from './Skeleton';
 export { Spinner } from './Spinner';
 export { ErrorBoundary } from './ErrorBoundary';
 export { KpiGrid } from './KpiGrid';
+export { Text } from './Text';
+export { Card } from './Card';

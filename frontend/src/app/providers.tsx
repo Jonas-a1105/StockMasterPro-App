@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import { useState, useCallback, type ReactNode } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider, useTheme } from '@contexts/ThemeContext';
 import { AuthProvider } from '@contexts/AuthContext';
@@ -7,7 +7,6 @@ import { ExchangeRateProvider } from '@contexts/ExchangeRateContext';
 import { Toaster } from 'sileo';
 import 'sileo/styles.css';
 import { SplashScreen } from '@shared/ui/SplashScreen';
-import { useState, useCallback } from 'react';
 import { AppRouter } from './router';
 import { QueryProvider } from '@shared/lib/query/QueryProvider';
 

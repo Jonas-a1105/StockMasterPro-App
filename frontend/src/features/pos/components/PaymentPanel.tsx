@@ -83,7 +83,7 @@ export function PaymentPanel({
             ))}
           </select>
           {creditExceeded && selectedCustomer && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 8, padding: '8px 10px', backgroundColor: 'rgba(220,38,38,0.1)', borderLeft: '3px solid #dc2626', fontSize: 12, color: '#ef4444' }}>
+            <div className={styles.creditExceededAlert}>
               <AlertTriangle size={14} />
               <span>Límite de crédito excedido. Saldo actual: {formatUsd(Number(selectedCustomer.balance))}</span>
             </div>

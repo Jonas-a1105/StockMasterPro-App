@@ -81,15 +81,15 @@ export function AnalyticsModal({ onClose }: { onClose: () => void }) {
         {/* KPI Row */}
         <div className={styles.kpiRow}>
           <div
-            className={`${styles.kpiCard} kpi-card`}
-            style={{ '--kpi-color': 'var(--color-green)', display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 12 } as React.CSSProperties}
+            className={`${styles.kpiCard} ${styles.kpiCardFlex}`}
+            style={{ '--kpi-color': 'var(--color-green)' }}
             onMouseEnter={() => setHoveredKpi(0)}
             onMouseLeave={() => setHoveredKpi(null)}
           >
-            <div className="kpi-icon-wrapper" style={{ width: 42, height: 42, borderRadius: 'var(--card-radius)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            <div className={styles.kpiIconWrapper}>
               <LottieIcon data={analyticsData} size={22} play={hoveredKpi === 0} />
             </div>
-            <div style={{ flex: 1, minWidth: 0 }}>
+            <div className={styles.kpiContent}>
               <span className={styles.kpiLabel}>Tipo de Cambio Oficial</span>
               <div className={styles.kpiValue}>
                 <span className={styles.kpiValuePrefix}>Bs.</span>
@@ -99,15 +99,15 @@ export function AnalyticsModal({ onClose }: { onClose: () => void }) {
             </div>
           </div>
           <div
-            className={`${styles.kpiCard} kpi-card`}
-            style={{ '--kpi-color': 'var(--color-orange)', display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 12 } as React.CSSProperties}
+            className={`${styles.kpiCard} ${styles.kpiCardFlex}`}
+            style={{ '--kpi-color': 'var(--color-orange)' }}
             onMouseEnter={() => setHoveredKpi(1)}
             onMouseLeave={() => setHoveredKpi(null)}
           >
-            <div className="kpi-icon-wrapper" style={{ width: 42, height: 42, borderRadius: 'var(--card-radius)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            <div className={styles.kpiIconWrapper}>
               <LottieIcon data={trendingUpData} size={22} play={hoveredKpi === 1} />
             </div>
-            <div style={{ flex: 1, minWidth: 0 }}>
+            <div className={styles.kpiContent}>
               <span className={styles.kpiLabel}>Volatilidad Mensual (Varianza)</span>
               <div className={styles.kpiValue}>
                 <span className={styles.kpiValueNum}>1.84%</span>
@@ -117,15 +117,15 @@ export function AnalyticsModal({ onClose }: { onClose: () => void }) {
             </div>
           </div>
           <div
-            className={`${styles.kpiCard} kpi-card`}
-            style={{ '--kpi-color': 'var(--color-blue)', display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 12 } as React.CSSProperties}
+            className={`${styles.kpiCard} ${styles.kpiCardFlex}`}
+            style={{ '--kpi-color': 'var(--color-blue)' }}
             onMouseEnter={() => setHoveredKpi(2)}
             onMouseLeave={() => setHoveredKpi(null)}
           >
-            <div className="kpi-icon-wrapper" style={{ width: 42, height: 42, borderRadius: 'var(--card-radius)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            <div className={styles.kpiIconWrapper}>
               <LottieIcon data={creditCardData} size={22} play={hoveredKpi === 2} />
             </div>
-            <div style={{ flex: 1, minWidth: 0 }}>
+            <div className={styles.kpiContent}>
               <span className={styles.kpiLabel}>Brecha / Spread de Mercado</span>
               <div className={styles.kpiValue}>
                 <span className={styles.kpiValueNum}>3.15%</span>
@@ -135,15 +135,15 @@ export function AnalyticsModal({ onClose }: { onClose: () => void }) {
             </div>
           </div>
           <div
-            className={`${styles.kpiCard} kpi-card`}
-            style={{ '--kpi-color': 'var(--color-red)', display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 12 } as React.CSSProperties}
+            className={`${styles.kpiCard} ${styles.kpiCardFlex}`}
+            style={{ '--kpi-color': 'var(--color-red)' }}
             onMouseEnter={() => setHoveredKpi(3)}
             onMouseLeave={() => setHoveredKpi(null)}
           >
-            <div className="kpi-icon-wrapper" style={{ width: 42, height: 42, borderRadius: 'var(--card-radius)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            <div className={styles.kpiIconWrapper}>
               <LottieIcon data={warningData} size={22} play={hoveredKpi === 3} />
             </div>
-            <div style={{ flex: 1, minWidth: 0 }}>
+            <div className={styles.kpiContent}>
               <span className={styles.kpiLabel}>Exposición de Inventario</span>
               <div className={styles.kpiValue}>
                 <span className={styles.kpiValueNum}>72.4%</span>
@@ -224,7 +224,7 @@ export function AnalyticsModal({ onClose }: { onClose: () => void }) {
                   <span className={styles.projectionBarPctRed}>74.2%</span>
                 </div>
                 <div className={styles.projectionBarTrack}>
-                  <div className={styles.projectionBarRed} style={{ width: '74.2%' }} />
+                  <div className={`${styles.projectionBarRed} ${styles.progress74}`} />
                 </div>
               </div>
               <div className={styles.projectionBarGroup}>
@@ -233,7 +233,7 @@ export function AnalyticsModal({ onClose }: { onClose: () => void }) {
                   <span className={styles.projectionBarPctGreen}>25.8%</span>
                 </div>
                 <div className={styles.projectionBarTrack}>
-                  <div className={styles.projectionBarGreen} style={{ width: '25.8%' }} />
+                  <div className={`${styles.projectionBarGreen} ${styles.progress25}`} />
                 </div>
               </div>
             </div>

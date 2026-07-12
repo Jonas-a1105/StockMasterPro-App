@@ -1,5 +1,6 @@
 import { Edit2, Trash2, MessageCircle } from 'lucide-react';
 import type { Supplier } from '@types';
+import styles from './SuppliersList.module.css';
 
 export function SuppliersList({
   suppliers, userRole, onEdit, onDelete, onWhatsApp,
@@ -16,18 +17,18 @@ export function SuppliersList({
             <th>Contacto</th>
             <th>Teléfono</th>
             <th>Email</th>
-            {userRole !== 'cajero' && <th style={{ textAlign: 'center' }}>Acción</th>}
+            {userRole !== 'cajero' && <th className={styles.textCenter}>Acción</th>}
           </tr>
         </thead>
         <tbody>
           {suppliers.map(supplier => (
             <tr key={supplier.id}>
               <td><span className="lista-name-text">{supplier.name}</span></td>
-              <td style={{ color: 'var(--text-muted)' }}>{supplier.contact || '—'}</td>
+              <td className={styles.textMuted}>{supplier.contact || '—'}</td>
               <td>{supplier.phone || '—'}</td>
               <td>{supplier.email || '—'}</td>
               {userRole !== 'cajero' && (
-                <td style={{ textAlign: 'center' }}>
+                <td className={styles.textCenter}>
                   <div className="lista-actions">
                     {supplier.phone && (
                       <button className="lista-action-btn" onClick={() => onWhatsApp(supplier.phone!, supplier.name)} title="Enviar WhatsApp">
@@ -43,7 +44,7 @@ export function SuppliersList({
           ))}
         </tbody>
       </table>
-      {suppliers.length === 0 && <p style={{ textAlign: 'center', padding: 40, color: 'var(--text-muted)' }}>No hay proveedores registrados</p>}
+      {suppliers.length === 0 && <p className={styles.emptyState}>No hay proveedores registrados</p>}
     </div>
   );
 }

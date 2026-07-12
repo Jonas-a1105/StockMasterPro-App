@@ -1,7 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
-import { AlertTriangle, RotateCcw, DollarSign, TrendingUp, TrendingDown, Users, BarChart2, RotateCcw as RefreshIcon, Activity } from 'lucide-react';
+import { AlertTriangle, RotateCcw, DollarSign, TrendingUp, TrendingDown, Users, BarChart2, Activity } from 'lucide-react';
 import { api } from '@shared/lib/http/client';
 import { useTheme } from '@contexts/ThemeContext';
+import { useExchangeRate } from '@contexts/ExchangeRateContext';
 import { LoadingDots } from '@shared/ui/LoadingDots';
 import { Skeleton } from '@shared/ui/Skeleton';
 import styles from './SuperAdminDashboard.module.css';
@@ -37,14 +38,14 @@ interface CohortMetrics {
 }
 
 export function SuperAdminDashboard() {
-  const { formatPrice } = useTheme();
+  const { config } = useTheme();
+  const { formatPrice } = useExchangeRate();
   const [mrr, setMrr] = useState<any>(null);
   const [churn, setChurn] = useState<any>(null);
   const [ltv, setLtv] = useState<any>(null);
   const [cohorts, setCohorts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { config } = useTheme();
 
   const fetchMetrics = useCallback(async () => {
     setLoading(true);
@@ -84,7 +85,7 @@ export function SuperAdminDashboard() {
       <header className={styles.header}>
         <h1><BarChart2 size={24} /> Super-Admin SaaS Metrics</h1>
         <button className={styles.refreshBtn} onClick={fetchMetrics} disabled={loading}>
-          <RefreshIcon size={16} className={loading ? 'animate-spin' : ''} /> Actualizar
+          <RotateCcw size={16} className={loading ? 'animate-spin' : ''} /> Actualizar
         </button>
       </header>
 
@@ -130,7 +131,7 @@ export function SuperAdminDashboard() {
       </div>
 
       <div className={styles.chartsGrid}>
-        <Card title={<><BarChart2 size={18} /> MRR por Plan</Card> fullWidth={false}>
+        <Card title={<><BarChart2 size={18} /> MRR por Plan</>} fullWidth={false}>
           <CardContent>
             <ChartContainer>
               {plans.map(plan => (
@@ -146,7 +147,7 @@ export function SuperAdminDashboard() {
           </CardContent>
         </Card>
 
-        <Card title={<><TrendingDown size={18} /> Churn por Plan</Card> fullWidth={false}>
+        <Card title={<><TrendingDown size={18} /> Churn por Plan</>} fullWidth={false}>
           <CardContent>
             <ChartContainer>
               {plans.map(plan => (
@@ -163,7 +164,7 @@ export function SuperAdminDashboard() {
           </CardContent>
         </Card>
 
-        <Card title={<><Activity size={18} /> LTV por Plan</Card> fullWidth={false}>
+        <Card title={<><Activity size={18} /> LTV por Plan</>} fullWidth={false}>
           <CardContent>
             <ChartContainer>
               {plans.map(plan => (
@@ -179,7 +180,7 @@ export function SuperAdminDashboard() {
           </CardContent>
         </Card>
 
-        <Card title={<><BarChart2 size={18} /> Cohortes de Retención</Card> fullWidth>
+        <Card title={<><BarChart2 size={18} /> Cohortes de Retención</>} fullWidth>
           <CardContent>
             <TableResponsive>
               <CohortTable cohorts={cohorts} />
@@ -193,14 +194,19 @@ export function SuperAdminDashboard() {
 
 function KPICard({ icon, label, value, color, trend }: any) {
   const trendColor = trend > 0 ? '#16a34a' : trend < 0 ? '#ef4444' : '#6b7280';
+  const borderClass = color.includes('16a34a') ? styles.borderLeftSuccess : 
+                      color.includes('ef4444') ? styles.borderLeftDanger :
+                      color.includes('f59e0b') ? styles.borderLeftWarning :
+                      color.includes('3b82f6') ? styles.borderLeftInfo :
+                      styles.borderLeftPrimary;
   return (
-    <div className={styles.kpiCard} style={{ borderLeftColor: color }}>
+    <div className={`${styles.kpiCard} ${borderClass}`}>
       <div className={styles.kpiHeader}>
         <span className={styles.kpiLabel}>{label}</span>
       </div>
-      <div className={styles.kpiValue} style={{ color }}>{value}</div>
+      <div className={`${styles.kpiValue} ${color.includes('16a34a') ? styles.textSuccess : color.includes('ef4444') ? styles.textDanger : color.includes('f59e0b') ? styles.textWarning : color.includes('3b82f6') ? styles.textInfo : styles.textPrimary}`}>{value}</div>
       {trend !== undefined && (
-        <div className={styles.kpiTrend} style={{ color: trendColor }}>
+        <div className={`${styles.kpiTrend} ${trend > 0 ? styles.trendPositive : trend < 0 ? styles.trendNegative : styles.trendNeutral}`}>
           {trend >= 0 ? <TrendingUp size={12} /> : <TrendingDown size={12} />}
           <span>{trend >= 0 ? '+' : ''}{trend.toFixed(1)}%</span>
         </div>
@@ -228,11 +234,16 @@ function ChartContainer({ children }: any) {
 
 function PlanBarRow({ label, value, max, color, suffix = '' }: any) {
   const percentage = max > 0 ? Math.min((value / max) * 100, 100) : 0;
+  const colorClass = color.includes('16a34a') ? styles.textSuccess : 
+                     color.includes('ef4444') ? styles.textDanger :
+                     color.includes('f59e0b') ? styles.textWarning :
+                     color.includes('3b82f6') ? styles.textInfo :
+                     styles.textPrimary;
   return (
     <div className={styles.planBarRow}>
-      <span className={styles.planLabel} style={{ color }}>▸ {label}</span>
+      <span className={`${styles.planLabel} ${colorClass}`}>▸ {label}</span>
       <div className={styles.barContainer}>
-        <div className={styles.barFill} style={{ width: `${percentage}%`, background: color }}></div>
+        <div className={styles.barFill} style={{ '--bar-width': `${percentage}%`, '--bar-bg': color } as React.CSSProperties}></div>
       </div>
       <span className={styles.planValue}>{value.toLocaleString()}{suffix}</span>
     </div>
@@ -304,64 +315,3 @@ function SkeletonDashboard() {
   );
 }
 
-const RefreshIcon = ({ size = 16, className = '' }: any) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-    <path d="M23 4v6h-6"></path>
-    <path d="M1 20v-6h6"></path>
-    <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
-  </svg>
-);
-
-function formatPrice(amount: number) {
-  return new Intl.NumberFormat('es-VE', { style: 'currency', currency: 'USD', minimumFractionDigits: 2 }).format(amount);
-}
-
-const AlertTriangle = ({ size = 16 }: any) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L21.71 3.86a2 2 0 0 0-3.42 0L12 22.5 10.29 3.86z"></path>
-    <path d="M12 9v4"></path>
-    <path d="M12 17h.01"></path>
-  </svg>
-);
-
-const BarChart2 = ({ size = 16 }: any) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <line x1="18" y1="20" x2="18" y2="10"></line>
-    <line x1="12" y1="20" x2="12" y2="4"></line>
-    <line x1="6" y1="20" x2="6" y2="16"></line>
-  </svg>
-);
-
-const TrendingUp = ({ size = 16, color }: any) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color || "currentColor"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
-    <polyline points="17 6 23 6 23 12"></polyline>
-  </svg>
-);
-
-const TrendingDown = ({ size = 16, color }: any) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color || "currentColor"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
-    <polyline points="17 18 23 18 23 12"></polyline>
-  </svg>
-);
-
-const Users = ({ size = 16 }: any) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-    <circle cx="9" cy="7" r="4"></circle>
-    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-  </svg>
-);
-
-const DollarSign = ({ size = 16 }: any) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <line x1="12" y1="2" x2="12" y2="22"></line>
-    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H9"></path>
-  </svg>
-);
-
-const formatPrice = (amount: number) => {
-  return new Intl.NumberFormat('es-VE', { style: 'currency', currency: 'USD', minimumFractionDigits: 2 }).format(amount);
-}

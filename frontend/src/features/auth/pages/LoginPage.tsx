@@ -38,8 +38,8 @@ export function LoginPage() {
     <div className={styles.authContainer}>
       {/* CONTENEDOR DE ENCABEZADO CENTRAL */}
       <div className={styles.authHeader}>
-        <div style={{ display: 'inline-flex', marginBottom: '8px' }}>
-          <svg viewBox="0 0 240 240" fill="none" width="84" height="84" style={{ overflow: 'visible' }}>
+        <div className={styles.logoBox}>
+          <svg viewBox="0 0 240 240" fill="none" width="84" height="84" className={styles.overflowVisible}>
             <path
               d="M 65 90 C 40 90, 40 115, 60 120 C 80 125, 80 150, 55 150 L 85 85 L 105 125 L 125 85 L 125 150 H 185 V 115 H 135 V 150"
               fill="none"
@@ -74,12 +74,12 @@ export function LoginPage() {
 
         {error && <div className={styles.error}>{error}</div>}
 
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        <form onSubmit={handleSubmit} className={styles.flexColumnGap16}>
           {/* Identificador */}
           <div className={styles.field}>
             <div className={styles.fieldHeader}>
               <label>Identificador de Usuario</label>
-              <User size={14} style={{ color: '#444444' }} />
+              <User size={14} className={styles.colorIcon} />
             </div>
             <input
               type="email"
@@ -158,15 +158,15 @@ export function LoginPage() {
       </div>
 
       {/* ENLACES INFERIORES */}
-      <div className={styles.footerLinks}>
-        <p style={{ margin: 0, fontSize: '11px', color: '#666666' }}>
+<div className={styles.footerLinks}>
+        <p className={`${styles.m0} ${styles.fontSize11} ${styles.colorMuted}`}>
           ¿No tienes una cuenta?{' '}
           <Link to="/register" className={`${styles.footerLinkAccent} ${styles.footerLinkAccentRegister}`}>
             Regístrate
           </Link>
         </p>
-        <p style={{ marginTop: '12px', fontSize: '11px' }}>
-          <Link to="/" style={{ color: '#666666', textDecoration: 'none' }}>➔ Volver al Inicio (Landing)</Link>
+        <p className={`${styles.mt12} ${styles.fontSize11}`}>
+          <Link to="/" className={`${styles.textDecorationNone} ${styles.colorMuted}`}>➔ Volver al Inicio (Landing)</Link>
         </p>
       </div>
     </div>

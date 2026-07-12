@@ -10,20 +10,20 @@
   justify-content: space-between;
   align-items: center;
   background-color: var(--bg-hover, #fafafa);
-  border: 1px solid var(--border-color, #eeeeee);
+  border: 1px solid var(--border-color, #eee);
   padding: 10px 12px;
   border-radius: var(--card-radius, 4px);
 }
 
 .planLabel {
-  font-size: 12px;
-  color: var(--text-muted, #888888);
-  font-weight: 500;
+  font-size: var(--font-size-caption);
+  color: var(--text-muted, #888);
+  font-weight: var(--font-weight-medium);
 }
 
 .planValue {
-  font-size: 13px;
-  font-weight: 700;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
   color: var(--color-primary, #f05a28);
 }
 
@@ -40,9 +40,9 @@
 }
 
 .label {
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--text-muted, #888888);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-muted, #888);
   text-transform: none;
   letter-spacing: 0.3px;
 }
@@ -50,12 +50,12 @@
 .input {
   width: 100%;
   padding: 7px 10px;
-  border: 1px solid var(--border-color, #eeeeee);
+  border: 1px solid var(--border-color, #eee);
   border-radius: var(--input-radius, 4px);
-  font-size: 12px;
+  font-size: var(--font-size-caption);
   outline: none;
   background-color: var(--bg-input, #f5f5f5);
-  color: var(--text-dark, #333333);
+  color: var(--text-dark, #333);
   box-sizing: border-box;
 }
 
@@ -65,7 +65,7 @@
 
 .cardElementWrap {
   padding: 8px 10px;
-  border: 1px solid var(--border-color, #eeeeee);
+  border: 1px solid var(--border-color, #eee);
   border-radius: var(--input-radius, 4px);
   background-color: var(--bg-input, #f5f5f5);
   box-sizing: border-box;
@@ -80,7 +80,7 @@
   color: var(--color-danger, #dc2626);
   padding: 8px 10px;
   border-radius: var(--card-radius, 4px);
-  font-size: 12px;
+  font-size: var(--font-size-caption);
 }
 
 .actions {
@@ -93,18 +93,18 @@
 .btnCancel {
   padding: 7px 14px;
   background-color: transparent;
-  border: 1px solid var(--border-color, #eeeeee);
-  color: var(--text-muted, #888888);
-  font-size: 12px;
-  font-weight: 600;
+  border: 1px solid var(--border-color, #eee);
+  color: var(--text-muted, #888);
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-semibold);
   border-radius: var(--card-radius, 4px);
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .btnCancel:hover:not(:disabled) {
-  background-color: var(--bg-hover, rgba(0, 0, 0, 0.04));
-  color: var(--text-dark, #333333);
+  background-color: var(--bg-hover, rgb(0, 0, 0, 0.04));
+  color: var(--text-dark, #333);
 }
 
 .btnCancel:disabled {
@@ -116,9 +116,9 @@
   padding: 7px 14px;
   background-color: var(--color-primary, #f05a28);
   border: none;
-  color: var(--text-on-primary, #ffffff);
-  font-size: 12px;
-  font-weight: 700;
+  color: var(--text-on-primary, #fff);
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-bold);
   border-radius: var(--card-radius, 4px);
   cursor: pointer;
   display: flex;
@@ -147,22 +147,22 @@
 }
 
 .loaderArea h4, .successArea h4 {
-  margin: 14px 0 8px 0;
-  font-size: 15px;
-  font-weight: 700;
-  color: var(--text-dark, #333333);
+  margin: 14px 0 8px;
+  font-size: var(--font-size-md-plus);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-dark, #333);
 }
 
 .loaderArea p, .successArea p {
   margin: 0;
-  font-size: 12px;
-  color: var(--text-muted, #888888);
+  font-size: var(--font-size-caption);
+  color: var(--text-muted, #888);
   max-width: 320px;
   line-height: 1.5;
 }
 
 .successIconWrap {
-  background-color: rgba(22, 163, 74, 0.1);
+  background-color: rgb(22, 163, 74, 0.1);
   color: var(--color-success, #16a34a);
   padding: 12px;
   border-radius: 50%;

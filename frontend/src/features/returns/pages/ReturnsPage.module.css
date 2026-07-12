@@ -10,14 +10,14 @@
 
 .header h2 {
   margin: 0 0 4px;
-  font-size: 22px;
-  font-weight: 700;
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
 }
 
 .subtitle {
   margin: 0;
   color: var(--text-muted);
-  font-size: 14px;
+  font-size: var(--font-size-md);
 }
 
 .searchBar {
@@ -27,7 +27,7 @@
   padding: 10px 14px;
   background: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-radius: 10px;
+  border-radius: var(--border-radius-lg);
   margin-bottom: 20px;
 }
 
@@ -41,14 +41,14 @@
   border: none;
   outline: none;
   background: transparent;
-  font-size: 14px;
+  font-size: var(--font-size-md);
   color: var(--text-dark);
 }
 
 .salesTable {
   background: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-radius: 12px;
+  border-radius: var(--card-radius);
   overflow: hidden;
 }
 
@@ -56,7 +56,7 @@
 .returnForm {
   background: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-radius: 12px;
+  border-radius: var(--card-radius);
   padding: 24px;
 }
 
@@ -67,10 +67,10 @@
   margin-bottom: 20px;
   padding: 8px 14px;
   border: 1px solid var(--border-color);
-  border-radius: 8px;
+  border-radius: var(--btn-radius);
   background: transparent;
   color: var(--text-dark);
-  font-size: 13px;
+  font-size: var(--font-size-sm);
   cursor: pointer;
 }
 
@@ -84,17 +84,17 @@
   gap: 12px;
   padding: 16px;
   background: var(--bg-main);
-  border-radius: 8px;
+  border-radius: var(--btn-radius);
   margin-bottom: 20px;
 }
 
 .saleRow {
-  font-size: 13px;
+  font-size: var(--font-size-sm);
 }
 
 .sectionTitle {
-  font-size: 14px;
-  font-weight: 600;
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
   margin: 20px 0 12px;
   color: var(--text-dark);
 }
@@ -109,9 +109,9 @@
   gap: 12px;
   padding: 10px 12px;
   background: var(--bg-muted);
-  border-radius: 8px 8px 0 0;
-  font-size: 12px;
-  font-weight: 600;
+  border-radius: var(--btn-radius) var(--border-radius-md) 0 0;
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-semibold);
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -124,7 +124,7 @@
   padding: 12px;
   border-bottom: 1px solid var(--border-color);
   align-items: center;
-  font-size: 13px;
+  font-size: var(--font-size-sm);
 }
 
 .qtyControls {
@@ -137,7 +137,7 @@
   width: 28px;
   height: 28px;
   border: 1px solid var(--border-color);
-  border-radius: 6px;
+  border-radius: var(--border-radius-md);
   background: var(--bg-card);
   color: var(--text-dark);
   cursor: pointer;
@@ -154,7 +154,7 @@
 .qtyValue {
   min-width: 30px;
   text-align: center;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
 }
 
 .totals {
@@ -162,8 +162,8 @@
   justify-content: flex-end;
   padding: 12px;
   background: var(--bg-muted);
-  border-radius: 0 0 8px 8px;
-  font-size: 14px;
+  border-radius: 0 0 var(--border-radius-md) var(--border-radius-md);
+  font-size: var(--font-size-md);
 }
 
 .totalRow {
@@ -173,7 +173,7 @@
 }
 
 .totalRow strong {
-  font-size: 16px;
+  font-size: var(--font-size-lg);
   color: var(--color-primary);
 }
 
@@ -183,8 +183,8 @@
 
 .formGroup label {
   display: block;
-  font-size: 13px;
-  font-weight: 600;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
   margin-bottom: 6px;
   color: var(--text-dark);
 }
@@ -194,10 +194,10 @@
   width: 100%;
   padding: 10px 12px;
   border: 1px solid var(--border-color);
-  border-radius: 8px;
+  border-radius: var(--btn-radius);
   background: var(--bg-main);
   color: var(--text-dark);
-  font-size: 14px;
+  font-size: var(--font-size-md);
   box-sizing: border-box;
 }
 
@@ -222,11 +222,11 @@
   gap: 6px;
   padding: 10px 18px;
   border: 1px solid var(--border-color);
-  border-radius: 8px;
+  border-radius: var(--btn-radius);
   background: transparent;
   color: var(--text-dark);
-  font-size: 13px;
-  font-weight: 600;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
   cursor: pointer;
 }
 
@@ -236,15 +236,35 @@
   gap: 6px;
   padding: 10px 18px;
   border: none;
-  border-radius: 8px;
+  border-radius: var(--btn-radius);
   background: var(--color-primary);
   color: white;
-  font-size: 13px;
-  font-weight: 600;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
   cursor: pointer;
 }
 
 .createBtn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+.textCenter {
+  text-align: center;
+}
+
+.textRight {
+  text-align: right;
+}
+
+.maxHint {
+  margin-left: 8px;
+  color: var(--text-muted);
+  font-size: var(--font-size-caption);
+}
+
+.emptyCell {
+  text-align: center;
+  padding: 40px;
+  color: var(--text-muted);
 }

@@ -15,8 +15,8 @@
 }
 
 .header h1 {
-  font-size: 28px;
-  font-weight: 700;
+  font-size: var(--font-size-3xl, 28px);
+  font-weight: var(--font-weight-bold);
   color: var(--text-main);
 }
 
@@ -29,7 +29,7 @@
 
 .kpiCard {
   background: var(--bg-secondary);
-  border-radius: 12px;
+  border-radius: var(--card-radius);
   padding: 20px;
   border: 1px solid var(--border);
   border-left: 4px solid var(--brand);
@@ -38,7 +38,7 @@
 
 .kpiCard:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 24px rgb(0, 0, 0, 0.1);
 }
 
 .kpiHeader {
@@ -49,16 +49,16 @@
 }
 
 .kpiLabel {
-  font-size: 13px;
-  font-weight: 500;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
 .kpiValue {
-  font-size: 28px;
-  font-weight: 700;
+  font-size: var(--font-size-3xl, 28px);
+  font-weight: var(--font-weight-bold);
   color: var(--text-main);
   line-height: 1.2;
 }
@@ -68,8 +68,8 @@
   align-items: center;
   gap: 4px;
   margin-top: 8px;
-  font-size: 12px;
-  font-weight: 500;
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-medium);
 }
 
 .kpiTrend svg {
@@ -85,7 +85,7 @@
 
 .card {
   background: var(--bg-secondary);
-  border-radius: 12px;
+  border-radius: var(--card-radius);
   border: 1px solid var(--border);
   overflow: hidden;
 }
@@ -104,8 +104,8 @@
 }
 
 .cardHeader h3 {
-  font-size: 15px;
-  font-weight: 600;
+  font-size: var(--font-size-md-plus);
+  font-weight: var(--font-weight-semibold);
   color: var(--text-main);
   margin: 0;
 }
@@ -123,7 +123,7 @@
   background: linear-gradient(90deg, var(--border) 25%, var(--bg-tertiary) 50%, var(--border) 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
-  border-radius: 4px;
+  border-radius: var(--border-radius-sm);
 }
 
 @keyframes shimmer {
@@ -145,8 +145,8 @@
 
 .planLabel {
   width: 100px;
-  font-size: 13px;
-  font-weight: 600;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -155,21 +155,23 @@
   flex: 1;
   height: 24px;
   background: var(--bg-tertiary);
-  border-radius: 12px;
+  border-radius: var(--card-radius);
   overflow: hidden;
 }
 
 .barFill {
   height: 100%;
-  border-radius: 12px;
+  border-radius: var(--card-radius);
   transition: width 0.3s ease;
+  width: var(--bar-width);
+  background: var(--bar-bg);
 }
 
 .planValue {
   width: 100px;
   text-align: right;
-  font-size: 13px;
-  font-weight: 600;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
   color: var(--text-main);
   font-variant-numeric: tabular-nums;
 }
@@ -180,7 +182,7 @@
   justify-content: center;
   padding: 40px;
   color: var(--text-muted);
-  font-size: 14px;
+  font-size: var(--font-size-md);
 }
 
 .tableResponsive {
@@ -190,7 +192,7 @@
 .cohortTable {
   width: 100%;
   border-collapse: collapse;
-  font-size: 12px;
+  font-size: var(--font-size-caption);
 }
 
 .cohortTable th,
@@ -202,26 +204,26 @@
 
 .cohortTable th {
   background: var(--bg-tertiary);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-muted);
-  font-size: 11px;
+  font-size: var(--font-size-xs);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
 .cohortMonth {
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-main);
   text-align: left !important;
 }
 
 .cohortInitial {
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--brand);
 }
 
 .cohortCell {
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
 }
 
 .cohortCell.empty {
@@ -232,7 +234,7 @@
 .detailTable {
   width: 100%;
   border-collapse: collapse;
-  font-size: 13px;
+  font-size: var(--font-size-sm);
 }
 
 .detailTable th,
@@ -244,9 +246,9 @@
 
 .detailTable th {
   background: var(--bg-tertiary);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-muted);
-  font-size: 11px;
+  font-size: var(--font-size-xs);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -254,19 +256,19 @@
 .planBadge {
   display: inline-block;
   padding: 2px 8px;
-  border-radius: 999px;
-  font-size: 11px;
-  font-weight: 600;
+  border-radius: var(--border-radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
   text-transform: uppercase;
 }
 
 .textDanger {
-  color: #ef4444;
+  color: var(--color-danger);
 }
 
 .kpiCard {
   background: var(--bg-secondary);
-  border-radius: 12px;
+  border-radius: var(--card-radius);
   padding: 20px;
   border: 1px solid var(--border);
   border-left: 4px solid var(--brand);
@@ -275,7 +277,7 @@
 
 .kpiCard:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 24px rgb(0, 0, 0, 0.1);
 }
 
 .kpiHeader {
@@ -286,16 +288,16 @@
 }
 
 .kpiLabel {
-  font-size: 13px;
-  font-weight: 500;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
 .kpiValue {
-  font-size: 28px;
-  font-weight: 700;
+  font-size: var(--font-size-3xl, 28px);
+  font-weight: var(--font-weight-bold);
   color: var(--text-main);
   line-height: 1.2;
 }
@@ -305,325 +307,161 @@
   align-items: center;
   gap: 4px;
   margin-top: 8px;
-  font-size: 12px;
-  font-weight: 500;
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-medium);
 }
 
 .kpiTrend svg {
-  flex-shrink: 0;
+  flex-shrink: 0.
 }
 
 .chartContainer {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+  display: flex.
+  flex-direction: column.
+  gap: 12px.
 }
 
 .planBarRow {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+  display: flex.
+  align-items: center.
+  gap: 12px.
 }
 
 .planLabel {
-  width: 100px;
-  font-size: 13px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  width: 100px.
+  font-size: var(--font-size-sm).
+  font-weight: var(--font-weight-semibold).
+  text-transform: uppercase.
+  letter-spacing: 0.5px.
 }
 
 .barContainer {
-  flex: 1;
-  height: 24px;
-  background: var(--bg-tertiary);
-  border-radius: 12px;
-  overflow: hidden;
-}
-
-.barFill {
-  height: 100%;
-  border-radius: 12px;
-  transition: width 0.3s ease;
-}
-
-.planValue {
-  width: 100px;
-  text-align: right;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-main);
-  font-variant-numeric: tabular-nums;
-}
-
-.emptyState {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 40px;
-  color: var(--text-muted);
-  font-size: 14px;
-}
-
-.tableResponsive {
-  overflow-x: auto;
-}
-
-.cohortTable {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 12px;
-}
-
-.cohortTable th,
-.cohortTable td {
-  padding: 8px 12px;
-  text-align: center;
-  border-bottom: 1px solid var(--border);
-}
-
-.cohortTable th {
-  background: var(--bg-tertiary);
-  font-weight: 600;
-  color: var(--text-muted);
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.cohortMonth {
-  font-weight: 600;
-  color: var(--text-main);
-  text-align: left !important;
-}
-
-.cohortInitial {
-  font-weight: 600;
-  color: var(--brand);
-}
-
-.cohortCell {
-  font-weight: 500;
-}
-
-.cohortCell.empty {
-  color: var(--text-muted);
-  background: var(--bg-tertiary);
-}
-
-.detailTable {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 13px;
-}
-
-.detailTable th,
-.detailTable td {
-  padding: 10px 12px;
-  text-align: left;
-  border-bottom: 1px solid var(--border);
-}
-
-.detailTable th {
-  background: var(--bg-tertiary);
-  font-weight: 600;
-  color: var(--text-muted);
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.planBadge {
-  display: inline-block;
-  padding: 2px 8px;
-  border-radius: 999px;
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-}
-
-.textDanger {
-  color: #ef4444;
-}
-
-.kpiCard {
-  background: var(--bg-secondary);
-  border-radius: 12px;
-  padding: 20px;
-  border: 1px solid var(--border);
-  border-left: 4px solid var(--brand);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-
-.kpiCard:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-}
-
-.kpiHeader {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 8px;
-}
-
-.kpiLabel {
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.kpiValue {
-  font-size: 28px;
-  font-weight: 700;
-  color: var(--text-main);
-  line-height: 1.2;
-}
-
-.kpiTrend {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  margin-top: 8px;
-  font-size: 12px;
-  font-weight: 500;
-}
-
-.kpiTrend svg {
-  flex-shrink: 0;
-}
-
-.chartContainer {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.planBarRow {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.planLabel {
-  width: 100px;
-  font-size: 13px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.barContainer {
-  flex: 1;
-  height: 24px;
-  background: var(--bg-tertiary);
-  border-radius: 12px;
+  flex: 1.
+  height: 24px.
+  background: var(--bg-tertiary).
+  border-radius: var(--card-radius).
   overflow: hidden.
 }
 
 .barFill {
-  height: 100%;
-  border-radius: 12px;
+  height: 100%.
+  border-radius: var(--card-radius).
   transition: width 0.3s ease.
 }
 
 .planValue {
-  width: 100px;
-  text-align: right;
-  font-size: 13px;
-  font-weight: 600.
-  color: var(--text-main);
+  width: 100px.
+  text-align: right.
+  font-size: var(--font-size-sm).
+  font-weight: var(--font-weight-semibold).
+  color: var(--text-main).
   font-variant-numeric: tabular-nums.
 }
 
 .emptyState {
-  display: flex;
-  align-items: center
-  justify-content: center
-  padding: 40px
-  color: var(--text-muted)
-  font-size: 14px
+  display: flex.
+  align-items: center.
+  justify-content: center.
+  padding: 40px.
+  color: var(--text-muted).
+  font-size: var(--font-size-md).
 }
 
 .tableResponsive {
-  overflow-x: auto
+  overflow-x: auto.
 }
 
 .cohortTable {
-  width: 100%
-  border-collapse: collapse
-  font-size: 12px
+  width: 100%.
+  border-collapse: collapse.
+  font-size: var(--font-size-caption).
 }
 
 .cohortTable th,
 .cohortTable td {
-  padding: 8px 12px
-  text-align: center
-  border-bottom: 1px solid var(--border)
+  padding: 8px 12px.
+  text-align: center.
+  border-bottom: 1px solid var(--border).
 }
 
 .cohortTable th {
-  background: var(--bg-tertiary)
-  font-weight: 600
-  color: var(--text-muted)
-  font-size: 11px
-  text-transform: uppercase
-  letter-spacing: 0.5px
+  background: var(--bg-tertiary).
+  font-weight: var(--font-weight-semibold).
+  color: var(--text-muted).
+  font-size: var(--font-size-xs).
+  text-transform: uppercase.
+  letter-spacing: 0.5px.
 }
 
 .cohortMonth {
-  font-weight: 600
-  color: var(--text-main)
-  text-align: left !important
+  font-weight: var(--font-weight-semibold).
+  color: var(--text-main).
+  text-align: left !important.
 }
 
 .cohortInitial {
-  font-weight: 600
-  color: var(--brand)
+  font-weight: var(--font-weight-semibold).
+  color: var(--brand).
 }
 
 .cohortCell {
-  font-weight: 500
+  font-weight: var(--font-weight-medium).
 }
 
 .cohortCell.empty {
-  color: var(--text-muted)
-  background: var(--bg-tertiary)
+  color: var(--text-muted).
+  background: var(--bg-tertiary).
 }
 
 .detailTable {
-  width: 100%
-  border-collapse: collapse
-  font-size: 13px
+  width: 100%.
+  border-collapse: collapse.
+  font-size: var(--font-size-sm).
 }
 
 .detailTable th,
 .detailTable td {
-  padding: 10px 12px
-  text-align: left
-  border-bottom: 1px solid var(--border)
+  padding: 10px 12px.
+  text-align: left.
+  border-bottom: 1px solid var(--border).
 }
 
 .detailTable th {
-  background: var(--bg-tertiary)
-  font-weight: 600
-  color: var(--text-muted)
-  font-size: 11px
-  text-transform: uppercase
-  letter-spacing: 0.5px
+  background: var(--bg-tertiary).
+  font-weight: var(--font-weight-semibold).
+  color: var(--text-muted).
+  font-size: var(--font-size-xs).
+  text-transform: uppercase.
+  letter-spacing: 0.5px.
 }
 
 .planBadge {
-  display: inline-block
-  padding: 2px 8px
-  border-radius: 999px
-  font-size: 11px
-  font-weight: 600
-  text-transform: uppercase
+  display: inline-block.
+  padding: 2px 8px.
+  border-radius: var(--border-radius-full).
+  font-size: var(--font-size-xs).
+  font-weight: var(--font-weight-semibold).
+  text-transform: uppercase.
 }
 
 .textDanger {
-  color: #ef4444
+  color: var(--color-danger);
 }
+
+/* ── Dynamic color utilities ── */
+.borderLeftPrimary { border-left-color: var(--color-primary, #f05a28); }
+.borderLeftSuccess { border-left-color: var(--color-success, #16a34a); }
+.borderLeftWarning { border-left-color: var(--color-warning, #f59e0b); }
+.borderLeftDanger { border-left-color: var(--color-danger, #ef4444); }
+.borderLeftInfo { border-left-color: var(--color-info, #3b82f6); }
+
+.textPrimary { color: var(--color-primary, #f05a28); }
+.textSuccess { color: var(--color-success, #16a34a); }
+.textWarning { color: var(--color-warning, #f59e0b); }
+.textDanger { color: var(--color-danger, #ef4444); }
+.textInfo { color: var(--color-info, #3b82f6); }
+
+/* Trend colors */
+.trendPositive { color: var(--color-success, #16a34a); }
+.trendNegative { color: var(--color-danger, #ef4444); }
+.trendNeutral { color: var(--text-muted, #6b7280); }

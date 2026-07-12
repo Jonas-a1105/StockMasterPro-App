@@ -21,11 +21,11 @@ export function Skeleton({
     borderRadius ??
     (variant === 'circle' ? '50%' : variant === 'text' ? '4px' : 'var(--card-radius, 4px)');
 
-  const style: React.CSSProperties = {
-    width: typeof width === 'number' ? `${width}px` : width,
-    height: typeof height === 'number' ? `${height}px` : height,
-    borderRadius: typeof resolvedRadius === 'number' ? `${resolvedRadius}px` : resolvedRadius,
-  };
+  const style = {
+    '--sk-w': typeof width === 'number' ? `${width}px` : width,
+    '--sk-h': typeof height === 'number' ? `${height}px` : height,
+    '--sk-rad': typeof resolvedRadius === 'number' ? `${resolvedRadius}px` : resolvedRadius,
+  } as React.CSSProperties;
 
   if (count <= 1) {
     return <div className={`${styles.skeleton} ${className}`} style={style} />;
@@ -36,8 +36,8 @@ export function Skeleton({
       {Array.from({ length: count }).map((_, i) => (
         <div
           key={i}
-          className={`${styles.skeleton} ${className}`}
-          style={{ ...style, animationDelay: `${i * 0.08}s` }}
+          className={`${styles.skeleton} ${styles.animDelay} ${className}`}
+          style={{ ...style, '--sk-delay': `${i * 0.08}s` } as React.CSSProperties}
         />
       ))}
     </div>
@@ -58,8 +58,8 @@ export function SkeletonTable({ rows = 5, cols = 6 }: { rows?: number; cols?: nu
       {Array.from({ length: rows }).map((_, r) => (
         <div
           key={`r-${r}`}
-          className={styles.skeletonTableRow}
-          style={{ animationDelay: `${r * 0.06}s` }}
+          className={`${styles.skeletonTableRow} ${styles.animDelay}`}
+          style={{ '--sk-delay': `${r * 0.06}s` } as React.CSSProperties}
         >
           {Array.from({ length: cols }).map((_, c) => (
             <Skeleton key={`c-${c}`} height={12} width={`${55 + Math.random() * 35}%`} />
@@ -74,9 +74,9 @@ export function SkeletonCards({ count = 4 }: { count?: number }) {
   return (
     <div className={styles.skeletonCards}>
       {Array.from({ length: count }).map((_, i) => (
-        <div key={i} className={styles.skeletonCard} style={{ animationDelay: `${i * 0.1}s` }}>
+        <div key={i} className={`${styles.skeletonCard} ${styles.animDelay}`} style={{ '--sk-delay': `${i * 0.1}s` } as React.CSSProperties}>
           <div className={styles.skeletonCardHeader}>
-            <div style={{ flex: 1 }}>
+            <div className={styles.skeletonFlex}>
               <Skeleton height={14} width="70%" />
               <Skeleton height={10} width="40%" />
             </div>
@@ -90,7 +90,7 @@ export function SkeletonCards({ count = 4 }: { count?: number }) {
           </div>
           <div className={styles.skeletonCardFooter}>
             <Skeleton height={18} width="35%" borderRadius={12} />
-            <div style={{ display: 'flex', gap: 6 }}>
+            <div className={styles.skeletonFlexCenter2}>
               <Skeleton variant="circle" width={28} height={28} />
               <Skeleton variant="circle" width={28} height={28} />
             </div>
@@ -105,10 +105,10 @@ export function SkeletonKPI({ count = 4 }: { count?: number }) {
   return (
     <div className={styles.skeletonKPI}>
       {Array.from({ length: count }).map((_, i) => (
-        <div key={i} className={styles.skeletonKPICard} style={{ animationDelay: `${i * 0.08}s` }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+        <div key={i} className={`${styles.skeletonKPICard} ${styles.animDelay}`} style={{ '--sk-delay': `${i * 0.08}s` } as React.CSSProperties}>
+          <div className={styles.skeletonFlexCenter}>
             <Skeleton variant="circle" width={36} height={36} />
-            <div style={{ flex: 1 }}>
+            <div className={styles.skeletonFlex}>
               <Skeleton height={10} width="50%" />
               <Skeleton height={20} width="70%" />
             </div>
@@ -121,16 +121,16 @@ export function SkeletonKPI({ count = 4 }: { count?: number }) {
 
 export function SkeletonChart({ height = 250 }: { height?: number }) {
   return (
-    <div className={styles.skeletonChart} style={{ height }}>
+    <div className={`${styles.skeletonChart} ${styles.chartCustom}`} style={{ '--sk-chart-h': height } as React.CSSProperties}>
       <div className={styles.skeletonChartBars}>
         {Array.from({ length: 7 }).map((_, i) => (
           <div
             key={i}
-            className={styles.skeletonChartBar}
+            className={`${styles.skeletonChartBar} ${styles.barCustom}`}
             style={{
-              height: `${30 + Math.random() * 60}%`,
-              animationDelay: `${i * 0.1}s`,
-            }}
+              '--sk-bar-h': `${30 + Math.random() * 60}%`,
+              '--sk-bar-delay': `${i * 0.1}s`,
+            } as React.CSSProperties}
           />
         ))}
       </div>
@@ -155,7 +155,7 @@ export function SkeletonTablePage({ rows = 5, cols = 6, tabs = 1, kpi = 3 }: { r
       {kpi > 0 && <SkeletonKPI count={kpi} />}
       <div className={styles.skeletonPageToolbar}>
         <Skeleton height={36} width={240} borderRadius={6} />
-        <div style={{ display: 'flex', gap: 8 }}>
+        <div className={styles.skeletonFlexRow}>
           <Skeleton height={36} width={36} borderRadius={6} variant="circle" />
           <Skeleton height={36} width={120} borderRadius={6} />
         </div>

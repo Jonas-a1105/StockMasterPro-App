@@ -30,7 +30,7 @@ function UsageBar({ label, current, limit, unit }: { label: string; current: num
       <div className={styles.barTrack}>
         <div
           className={`${styles.barFill} ${isAtLimit ? styles.danger : isNearLimit ? styles.warning : ''}`}
-          style={{ width: `${pct}%` }}
+          style={{ '--bar-fill-pct': `${pct}%` } as React.CSSProperties}
         />
       </div>
     </div>
@@ -54,10 +54,10 @@ export function UsageMeter() {
           <Skeleton height={14} width="40%" />
           <Skeleton height={14} width="20%" />
         </div>
-        <div className={styles.bars} style={{ marginTop: 16 }}>
+        <div className={`${styles.bars} ${styles.barsLoading}`}>
           {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className={styles.barRow} style={{ marginBottom: 12 }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
+            <div key={i} className={`${styles.barRow} ${styles.barRowLoading}`}>
+              <div className={styles.barRowLoadingHeader}>
                 <Skeleton height={10} width="35%" />
                 <Skeleton height={10} width="15%" />
               </div>

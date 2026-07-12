@@ -1,6 +1,6 @@
 .page {
   min-height: 100vh;
-  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font-family);
   background: var(--bg-main);
   color: var(--text-dark);
 }
@@ -36,8 +36,8 @@
 }
 
 .logoText {
-  font-weight: 800;
-  font-size: 30px;
+  font-weight: var(--font-weight-extrabold, 800);
+  font-size: var(--font-size-4xl, 30px);
   letter-spacing: 2px;
   color: var(--color-primary);
 }
@@ -91,8 +91,8 @@
 
 .navLink {
   text-decoration: none;
-  font-size: 11px;
-  font-weight: 600;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
   letter-spacing: 1.5px;
   color: var(--text-muted);
   white-space: nowrap;
@@ -102,10 +102,10 @@
 
 .navCta {
   background: var(--color-primary);
-  color: #000 !important;
+  color: var(--color-black, #000) !important;
   text-decoration: none;
-  font-size: 11px;
-  font-weight: 700;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
   letter-spacing: 1.5px;
   padding: 10px 20px;
 }
@@ -122,7 +122,7 @@
 
 .heroTag {
   display: inline-block;
-  font-size: 10px;
+  font-size: var(--font-size-2xs);
   font-family: monospace;
   letter-spacing: 3px;
   padding: 4px 14px;
@@ -133,7 +133,7 @@
 
 .heroTitle {
   font-size: clamp(28px, 5vw, 52px);
-  font-weight: 800;
+  font-weight: var(--font-weight-extrabold, 800);
   margin: 20px 0 16px;
   line-height: 1.1;
   letter-spacing: -0.5px;
@@ -141,7 +141,7 @@
 }
 
 .heroSub {
-  font-size: 15px;
+  font-size: var(--font-size-md-plus);
   max-width: 500px;
   margin: 0 auto 36px;
   line-height: 1.6;
@@ -157,10 +157,10 @@
 
 .heroCta {
   background: var(--color-primary);
-  color: #000;
+  color: var(--color-black, #000);
   text-decoration: none;
-  font-size: 12px;
-  font-weight: 700;
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-bold);
   letter-spacing: 1.5px;
   padding: 14px 32px;
   transition: filter 0.15s, transform 0.15s;
@@ -170,7 +170,7 @@
 
 .heroSecondary {
   text-decoration: none;
-  font-size: 12px;
+  font-size: var(--font-size-caption);
   padding: 14px 28px;
   border: 1px solid var(--border-color);
   color: var(--text-muted);
@@ -192,7 +192,7 @@
 
 .sectionTitle {
   font-size: clamp(20px, 3vw, 28px);
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   text-align: center;
   margin-bottom: 8px;
   letter-spacing: 1px;
@@ -201,7 +201,7 @@
 
 .sectionSub {
   text-align: center;
-  font-size: 14px;
+  font-size: var(--font-size-md);
   margin-bottom: 48px;
   color: var(--text-muted);
 }
@@ -248,14 +248,14 @@
 }
 
 .featureTitle {
-  font-size: 12px;
-  font-weight: 700;
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-bold);
   letter-spacing: 1.5px;
   color: var(--text-dark);
 }
 
 .featureDesc {
-  font-size: 12px;
+  font-size: var(--font-size-caption);
   line-height: 1.5;
   color: var(--text-muted);
 }
@@ -278,14 +278,14 @@
 }
 
 .card:hover { transform: translateY(-3px); }
-.card.popular { background: #f05a28; }
+.card.popular { background: var(--color-primary, #f05a28); }
 
 
 .card.popular.selected::before {
   content: '';
   position: absolute;
   inset: -300%;
-  background: conic-gradient(from 0deg, #ea580c 75%, #ffaa66 92%, #ffffff 97%, #ea580c 100%);
+  background: conic-gradient(from 0deg, #ea580c 75%, #fa6 92%, #fff 97%, #ea580c 100%);
   animation: laserTravel 3.5s linear infinite;
   pointer-events: none;
 }
@@ -304,10 +304,10 @@
   top: 0;
   right: 0;
   background: var(--color-primary);
-  color: #000;
+  color: var(--color-black, #000);
   font-family: monospace;
-  font-size: 8px;
-  font-weight: 700;
+  font-size: var(--font-size-2xs);
+  font-weight: var(--font-weight-bold);
   letter-spacing: 2px;
   padding: 4px 10px;
   z-index: 20;
@@ -334,7 +334,7 @@
 }
 
 .cardLevel {
-  font-size: 9px;
+  font-size: var(--font-size-2xs);
   font-family: monospace;
   letter-spacing: 1px;
   color: var(--text-muted);
@@ -351,15 +351,15 @@
 .cardDotActive { background: var(--color-primary) !important; }
 
 .planName {
-  font-size: 16px;
-  font-weight: 700;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
   letter-spacing: 1px;
   color: var(--text-dark);
   text-transform: none;
 }
 
 .planDesc {
-  font-size: 11px;
+  font-size: var(--font-size-xs);
   line-height: 1.5;
   color: var(--text-muted);
 }
@@ -372,13 +372,13 @@
 }
 
 .priceValue {
-  font-size: 32px;
-  font-weight: 700;
+  font-size: var(--font-size-5xl, 32px);
+  font-weight: var(--font-weight-bold);
   color: var(--text-dark);
 }
 
 .pricePeriod {
-  font-size: 10px;
+  font-size: var(--font-size-2xs);
   color: var(--text-muted);
 }
 
@@ -396,7 +396,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 12px;
+  font-size: var(--font-size-caption);
   color: var(--text-dark);
 }
 
@@ -412,8 +412,8 @@
   width: 100%;
   text-align: center;
   text-decoration: none;
-  font-size: 10px;
-  font-weight: 700;
+  font-size: var(--font-size-2xs);
+  font-weight: var(--font-weight-bold);
   letter-spacing: 2px;
   padding: 12px;
   background: var(--bg-card);
@@ -428,7 +428,7 @@
 
 .ctaActive {
   background: var(--color-primary) !important;
-  color: #000 !important;
+  color: var(--color-black, #000) !important;
   border-color: var(--color-primary) !important;
 }
 
@@ -441,7 +441,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+  background: linear-gradient(90deg, transparent, rgb(255,255,255,0.5), transparent);
   animation: shimmer 3s infinite ease-in-out;
 }
 
@@ -478,13 +478,13 @@
 }
 
 .downloadTitle {
-  font-size: 14px;
-  font-weight: 700;
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-bold);
   letter-spacing: 1px;
 }
 
 .downloadSub {
-  font-size: 11px;
+  font-size: var(--font-size-xs);
   color: var(--text-muted);
 }
 
@@ -492,7 +492,7 @@
 .footer {
   text-align: center;
   padding: 24px;
-  font-size: 11px;
+  font-size: var(--font-size-xs);
   color: var(--text-muted);
   border-top: var(--footer-border-width, 1px) solid var(--border-color);
   background: transparent;

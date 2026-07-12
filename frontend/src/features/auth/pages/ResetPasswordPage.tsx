@@ -43,7 +43,7 @@ export function ResetPasswordPage() {
         </div>
         <div className={styles.authCard}>
           <h2 className={styles.title}>Enlace inválido</h2>
-          <p style={{ color: 'var(--text-muted)', margin: '12px 0', fontSize: 14 }}>
+          <p className={`${styles.colorTextMuted} ${styles.fontSize14} ${styles.mt8} ${styles.mb8}`}>
             El enlace de restablecimiento no es válido o ha expirado.
           </p>
           <Link to="/forgot-password" className={styles.footerLinkAccent}>Solicitar nuevo enlace</Link>
@@ -61,7 +61,7 @@ export function ResetPasswordPage() {
         </div>
         <div className={styles.authCard}>
           <h2 className={styles.title}>Contraseña actualizada</h2>
-          <p style={{ color: 'var(--text-muted)', margin: '12px 0', fontSize: 14 }}>
+          <p className={`${styles.colorTextMuted} ${styles.fontSize14} ${styles.mt8} ${styles.mb8}`}>
             Tu contraseña se ha restablecido correctamente.
           </p>
           <Link to="/login" className={styles.footerLinkAccent}>Iniciar sesión</Link>
@@ -98,7 +98,7 @@ export function ResetPasswordPage() {
           <button type="submit" className={`${styles.submitBtn} ${styles.btnShimmer}`} disabled={loading || !password || !confirm}>
             {loading ? 'Guardando...' : 'Restablecer contraseña'}
           </button>
-          <Link to="/login" className={styles.footerLinkAccent} style={{ display: 'block', textAlign: 'center', marginTop: 16 }}>Volver al inicio de sesión</Link>
+          <Link to="/login" className={`${styles.footerLinkAccent} ${styles.textCenter} ${styles.block} ${styles.mt16}`}>Volver al inicio de sesión</Link>
         </form>
       </div>
     </div>

@@ -11,6 +11,8 @@
   --space-3: 12px;
   --space-4: 16px;
   --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
 
   --radius-sm: 6px;
   --radius-md: 10px;
@@ -18,7 +20,26 @@
 
   --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.2);
 
+  --font-xs: 11px;
   --font-sm: 13px;
   --font-md: 15px;
   --font-lg: 18px;
+  --font-xl: 22px;
+  --font-xxl: 28px;
+
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  --line-height-tight: 1.2;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
+
+  --text-color-main: var(--text-main, #0f172a);
+  --text-color-muted: var(--text-muted, #475569);
+  --text-color-light: var(--text-light, #64748b);
+  --text-color-primary: var(--color-primary, #f5661e);
+  --text-color-danger: var(--color-danger, #e5484d);
+  --text-color-success: var(--color-success, #30a46c);
 }

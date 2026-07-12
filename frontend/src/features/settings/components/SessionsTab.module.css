@@ -1,0 +1,78 @@
+.loadingText {
+  color: var(--text-muted);
+  padding: 20px;
+}
+
+.container {
+  padding: 12px 0;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.title {
+  margin: 0;
+}
+
+.logoutAllBtn {
+  padding: 6px 14px;
+  border: 1px solid var(--color-danger, #ef4444);
+  border-radius: var(--btn-radius, 6px);
+  background: transparent;
+  color: var(--color-danger, #ef4444);
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.emptyText {
+  color: var(--text-muted);
+}
+
+.sessionCard {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: var(--btn-radius);
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+}
+
+.sessionInfo {
+  flex: 1;
+}
+
+.sessionName {
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-md);
+}
+
+.currentBadge {
+  margin-left: 8px;
+  font-size: var(--font-size-xs);
+  color: var(--color-success, #22c55e);
+}
+
+.sessionMeta {
+  font-size: var(--font-size-caption);
+  color: var(--text-muted);
+}
+
+.logoutBtn {
+  padding: 6px 10px;
+  border: none;
+  border-radius: var(--border-radius-md);
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+}

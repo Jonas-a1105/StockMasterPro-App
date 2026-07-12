@@ -12,20 +12,20 @@
   flex: 1 1 220px;
   max-width: 280px;
   width: 100%;
-  background-color: var(--bg-card, #ffffff);
+  background-color: var(--bg-card, #fff);
   border-radius: var(--card-radius, 8px);
   padding: 16px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 3px rgb(0, 0, 0, 0.05);
   display: flex;
   align-items: center;
   gap: 14px;
-  border: var(--card-border-width, 1px) solid var(--border-color, #eeeeee);
+  border: var(--card-border-width, 1px) solid var(--border-color, #eee);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 12px rgb(0, 0, 0, 0.08);
 }
 
 .iconWrapper {
@@ -35,7 +35,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgba(240, 90, 40, 0.1);
+  background-color: rgb(240, 90, 40, 0.1);
   color: var(--color-orange-red, #f05a28);
   flex-shrink: 0;
 }
@@ -48,18 +48,18 @@
 }
 
 .kpiValue {
-  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif !important;
-  font-size: 13px !important;
-  font-weight: 600 !important;
+  font-family: var(--font-family);
+  font-size: var(--kpi-value-size);
+  font-weight: var(--font-weight-semibold);
   font-variant-numeric: tabular-nums;
   line-height: 1.2;
 }
 
 .kpiSubValue {
   display: block;
-  font-size: 11px;
-  font-weight: 500;
-  color: var(--text-muted, #888888);
+  font-size: var(--kpi-label-size);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-muted, #888);
   margin-top: 2px;
 }
 

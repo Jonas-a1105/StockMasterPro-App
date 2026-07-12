@@ -3,7 +3,6 @@ import { createPortal } from 'react-dom';
 import { Search, X, ChevronRight, Loader2 } from 'lucide-react';
 import { api } from '@shared/lib/http/client';
 import { useGlobalSearch } from '../hooks/useGlobalSearch';
-import { useDebounce } from '../hooks/useGlobalSearch';
 import { Modal } from '@shared/ui/Modal';
 import { useKeyboardShortcut } from '@shared/hooks/useKeyboardShortcut';
 import { useTheme } from '@contexts/ThemeContext';
@@ -198,7 +197,7 @@ export function GlobalSearchModal() {
               >
                 <span 
                   className={styles.typeBadge} 
-                  style={{ backgroundColor: TYPE_CONFIG[result.type as any]?.color }}
+                  style={{ '--badge-bg': TYPE_CONFIG[result.type as any]?.color } as React.CSSProperties}
                 >
                   {TYPE_CONFIG[result.type as any]?.icon || '📦'}
                   {TYPE_CONFIG[result.type as any]?.label}

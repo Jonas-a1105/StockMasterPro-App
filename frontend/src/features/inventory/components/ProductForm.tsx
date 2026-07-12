@@ -86,7 +86,7 @@ export function ProductForm({
           <div className={styles.field}>
             <label>Costo ($)</label>
             <input type="number" step="0.01" value={form.cost || ''} onChange={e => setForm(p => ({ ...p, cost: Number(e.target.value) }))} placeholder="0.00" />
-            {form.cost > 0 && form.price > 0 && form.price < form.cost && <span style={{ color: '#f97316', fontSize: 11, marginTop: 2, display: 'block' }}>⚠️ Precio por debajo del costo (margen negativo: -${formatUsd(form.cost - form.price)})</span>}
+            {form.cost > 0 && form.price > 0 && form.price < form.cost && <span className={styles.warningText}>⚠️ Precio por debajo del costo (margen negativo: -${formatUsd(form.cost - form.price)})</span>}
           </div>
           <div className={styles.field}>
             <label>Stock</label>
@@ -110,7 +110,7 @@ export function ProductForm({
               accept="image/jpeg,image/png,image/webp,image/gif"
               onChange={handleImageUpload}
               disabled={uploading}
-              style={{ display: 'none' }}
+              className={styles.hidden}
               ref={fileInputRef}
             />
             <button
@@ -145,7 +145,7 @@ export function ProductForm({
     </Modal>
 
       <Modal open={showNewCategory} onClose={onShowNewCategory} title="Nueva Categoría" small>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 12, padding: '8px 0' }}>
+        <div className={styles.categoryFormContainer}>
           <input
             type="text"
             value={newCategoryName}
@@ -153,11 +153,11 @@ export function ProductForm({
             placeholder="Nombre de la categoría"
             autoFocus
             onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); onCreateCategory(); } }}
-            style={{ padding: '8px 12px', borderRadius: 6, border: '1px solid var(--border-color)', background: 'var(--bg-card)', color: 'var(--text-primary)', fontSize: 14 }}
+            className={styles.categoryFormInput}
           />
-          <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end' }}>
-            <button type="button" onClick={onShowNewCategory} style={{ padding: '6px 16px', borderRadius: 6, border: '1px solid var(--border-color)', background: 'transparent', color: 'var(--text-primary)', cursor: 'pointer' }}>Cancelar</button>
-            <button type="button" onClick={onCreateCategory} disabled={!newCategoryName.trim()} style={{ padding: '6px 16px', borderRadius: 6, border: 'none', background: 'var(--color-primary)', color: '#fff', cursor: 'pointer', opacity: !newCategoryName.trim() ? 0.5 : 1 }}>Crear</button>
+          <div className={styles.categoryFormActions}>
+            <button type="button" onClick={onShowNewCategory} className={styles.categoryFormCancelBtn}>Cancelar</button>
+            <button type="button" onClick={onCreateCategory} disabled={!newCategoryName.trim()} className={styles.categoryFormCreateBtn}>Crear</button>
           </div>
         </div>
       </Modal>
