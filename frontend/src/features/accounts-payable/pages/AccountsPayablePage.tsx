@@ -11,6 +11,7 @@ import { useTheme } from '@contexts/ThemeContext';
 import { DollarSign, Calendar } from 'lucide-react';
 import { useExchangeRate } from '@contexts/ExchangeRateContext';
 import styles from './AccountsPayablePage.module.css';
+import tableStyles from '@shared/ui/TableList.module.css';
 
 interface Payable {
   id: string;
@@ -130,8 +131,8 @@ export function AccountsPayablePage() {
         addBtn={{ label: 'Nueva Cuenta', onClick: openCreate }}
       />
 
-      <div className="lista-container">
-        <table className="lista-table">
+      <div className={tableStyles.tableContainer}>
+        <table className={tableStyles.table}>
           <thead>
             <tr>
               <th>Proveedor</th>
@@ -147,10 +148,10 @@ export function AccountsPayablePage() {
               const isOverdue = p.status === 'pending' && new Date() > new Date(p.dueDate);
               return (
                 <tr key={p.id}>
-                  <td><span className="lista-name-text">{p.supplier?.name || '—'}</span></td>
-                  <td className={styles.textRight}><span className="lista-number-value">{formatPrice(p.totalAmount)}</span></td>
+                  <td><span className={tableStyles.nameText}>{p.supplier?.name || '—'}</span></td>
+                  <td className={styles.textRight}><span className={tableStyles.numberValue}>{formatPrice(p.totalAmount)}</span></td>
                   <td className={styles.textRight}>
-                    <span className={`lista-number-value ${p.pendingAmount > 0 ? styles.textWarning : styles.textSuccess}`}>
+                    <span className={`${tableStyles.numberValue} ${p.pendingAmount > 0 ? styles.textWarning : styles.textSuccess}`}>
                       {formatPrice(p.pendingAmount)}
                     </span>
                   </td>
@@ -159,7 +160,7 @@ export function AccountsPayablePage() {
                   <td className={styles.textCenter}>
                     <div className={`${styles.actions} ${styles.actionsCenter}`}>
                       {p.status !== 'paid' && (
-                        <button className="lista-action-btn" onClick={() => { setPayingPayable(p); setPayAmount(0); setPayMethod('cash'); setShowPayModal(true); }} title="Abonar">
+                        <button className={tableStyles.actionBtn} onClick={() => { setPayingPayable(p); setPayAmount(0); setPayMethod('cash'); setShowPayModal(true); }} title="Abonar">
                           <DollarSign size={14} />
                         </button>
                       )}

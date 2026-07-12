@@ -11,6 +11,7 @@ import { KpiGrid } from '@shared/ui/KpiGrid';
 import { Toolbar } from '@shared/ui/Toolbar';
 import { exportToExcel } from '@shared/lib/excelHelper';
 import styles from './BestSellersPage.module.css';
+import tableStyles from '@shared/ui/TableList.module.css';
 function formatDate(d: string | null) {
   if (!d) return '\u2014';
   return new Date(d).toLocaleDateString('es-MX', { year: 'numeric', month: 'short', day: 'numeric' });
@@ -169,8 +170,8 @@ export function BestSellersPage() {
       {loading && config.skeletonEnabled ? <SkeletonTablePage rows={bestLimit} cols={6} tabs={2} kpi={3} /> : loading ? <LoadingDots text="Cargando..." /> : (
         <>
           {tab === 'best' && (
-            <div className="lista-container">
-              <table className="lista-table">
+            <div className={tableStyles.tableContainer}>
+              <table className={tableStyles.table}>
                 <thead>
                   <tr>
                     <th>#</th>
@@ -185,16 +186,16 @@ export function BestSellersPage() {
                   {filteredBest.map((p, i) => (
                     <tr key={p.id}>
                       <td className={styles.rankCell}>{i + 1}</td>
-                      <td><span className="lista-name-text">{p.name}</span></td>
-                      <td><span className="lista-code">{p.barcode || '\u2014'}</span></td>
-                      <td className={styles.textRight}><span className="lista-number-value">{p.totalQty}</span></td>
-                      <td className={styles.textRight}><span className="lista-number-value">{formatPrice(p.totalRevenue)}</span></td>
+                      <td><span className={tableStyles.nameText}>{p.name}</span></td>
+                      <td><span className={tableStyles.code}>{p.barcode || '\u2014'}</span></td>
+                      <td className={styles.textRight}><span className={tableStyles.numberValue}>{p.totalQty}</span></td>
+                      <td className={styles.textRight}><span className={tableStyles.numberValue}>{formatPrice(p.totalRevenue)}</span></td>
                       <td>
-                        <div className="lista-progress-bar">
-                          <div className="lista-progress-track">
-                            <div className="lista-progress-fill orange progressBarFill" style={{ '--progress-width': p.percentage + '%' }} />
+                        <div className={tableStyles.progressBar}>
+                          <div className={tableStyles.progressTrack}>
+                            <div className={`${tableStyles.progressFill} ${tableStyles.progressFillOrange} progressBarFill`} style={{ '--progress-width': p.percentage + '%' }} />
                           </div>
-                          <span className="lista-progress-value white">{p.percentage.toFixed(1)}%</span>
+                          <span className={`${tableStyles.progressValue} ${tableStyles.progressValueWhite}`}>{p.percentage.toFixed(1)}%</span>
                         </div>
                       </td>
                     </tr>
@@ -212,8 +213,8 @@ export function BestSellersPage() {
                   <p>No hay productos muertos en este per&iacute;odo</p>
                 </div>
               ) : (
-                <div className="lista-container">
-                  <table className="lista-table">
+                <div className={tableStyles.tableContainer}>
+                  <table className={tableStyles.table}>
                     <thead>
                       <tr>
                         <th>Producto <button className={styles.exportBtn} onClick={handleExportDead} title="Exportar a Excel"><Download size={14} /></button></th>
@@ -227,14 +228,13 @@ export function BestSellersPage() {
                     <tbody>
                       {filteredDead.map(p => (
                         <tr key={p.id}>
-                          <td><span className="lista-name-text">{p.name}</span></td>
-                          <td><span className="lista-code">{p.barcode || '\u2014'}</span></td>
-                          <td className={styles.textRight}><span className="lista-number-value">{p.stock}</span></td>
-                          <td>{formatDate(p.lastSale)}</td>
+                          <td><span className={tableStyles.nameText}>{p.name}</span></td>
+                          <td><span className={tableStyles.code}>{p.barcode || '\u2014'}</span></td>
+                          <td className={styles.textRight}><span className={tableStyles.numberValue}>{p.stock}</span></td>
                           <td className={styles.textRight}>{p.daysWithoutSale !== null ? `${p.daysWithoutSale} días` : 'Nunca vendido'}</td>
                           <td className={styles.textCenter}>
                             <div className={styles.actionCell}>
-                              <button className="lista-action-btn" onClick={() => window.location.href = `/inventory?edit=${p.id}`} title="Ver producto">
+                              <button className={tableStyles.actionBtn} onClick={() => window.location.href = `/inventory?edit=${p.id}`} title="Ver producto">
                                 <Eye size={14} />
                               </button>
                             </div>

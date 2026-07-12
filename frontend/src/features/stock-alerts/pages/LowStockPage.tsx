@@ -9,6 +9,7 @@ import { SkeletonTablePage } from '@shared/ui/Skeleton';
 import { useTheme } from '@contexts/ThemeContext';
 import { Search, AlertTriangle, Package, PackageX, Eye } from 'lucide-react';
 import styles from './LowStockPage.module.css';
+import tableStyles from '@shared/ui/TableList.module.css';
 
 function statusInfo(stock: number, minStock: number) {
   if (stock === 0) return { label: 'Crítico', className: 'critical' };
@@ -78,8 +79,8 @@ export function LowStockPage() {
           <p>Todos los productos tienen stock suficiente</p>
         </div>
       ) : (
-        <div className="lista-container">
-          <table className="lista-table">
+        <div className={tableStyles.container}>
+          <table className={tableStyles.table}>
             <thead>
               <tr>
                 <th>Producto</th>
@@ -95,18 +96,18 @@ export function LowStockPage() {
                 const status = statusInfo(p.stock, p.minStock);
                 return (
                   <tr key={p.id}>
-                    <td><span className="lista-name-text">{p.name}</span></td>
-                    <td><span className="lista-code">{p.barcode || '—'}</span></td>
-                    <td className={styles.textRight}><span className="lista-number-value">{p.stock}</span></td>
+                    <td><span className={tableStyles.nameText}>{p.name}</span></td>
+                    <td><span className={tableStyles.code}>{p.barcode || '—'}</span></td>
+                    <td className={styles.textRight}><span className={tableStyles.numberValue}>{p.stock}</span></td>
                     <td className={styles.textRight}>{p.minStock}</td>
                     <td className={styles.textCenter}>
-                      <span className={`lista-badge ${status.className === 'critical' ? 'saturated' : status.className === 'low' ? 'warning' : 'active'}`}>
+                      <span className={`${tableStyles.badge} ${status.className === 'critical' ? tableStyles.badgeSaturated : status.className === 'low' ? tableStyles.badgeWarning : tableStyles.badgeActive}`}>
                         {status.label}
                       </span>
                     </td>
                     <td className={styles.textCenter}>
-                      <div className={`lista-actions ${styles.justifyCenter}`}>
-                        <button className="lista-action-btn" onClick={() => window.location.href = `/inventory?edit=${p.id}`} title="Ir al producto">
+                      <div className={`${tableStyles.actions} ${styles.justifyCenter}`}>
+                        <button className={tableStyles.actionBtn} onClick={() => window.location.href = `/inventory?edit=${p.id}`} title="Ir al producto">
                           <Eye size={14} />
                         </button>
                       </div>

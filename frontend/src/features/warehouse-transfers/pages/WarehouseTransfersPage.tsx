@@ -12,6 +12,7 @@ import { Modal } from '@shared/ui/Modal';
 import { useExchangeRate } from '@contexts/ExchangeRateContext';
 import { formatUsd } from '@shared/lib/format/currency';
 import styles from './WarehouseTransfersPage.module.css';
+import tableStyles from '@shared/ui/TableList.module.css';
 
 const STATUS_LABELS: Record<string, string> = {
   pending: 'Pendiente',
@@ -169,8 +170,8 @@ export function WarehouseTransfersPage() {
         addBtn={{ label: 'Nueva Transferencia', onClick: () => setModal({ type: 'create' }) }}
       />
 
-      <div className="lista-container">
-        <table className="lista-table">
+      <div className={tableStyles.container}>
+        <table className={tableStyles.table}>
           <thead>
             <tr>
               <th>ID</th>
@@ -203,22 +204,22 @@ export function WarehouseTransfersPage() {
                 <td>{new Date(t.createdAt).toLocaleDateString()}</td>
                 <td className={styles.textCenter}>
                   <div className={styles.actions}>
-                    <button className="lista-action-btn" onClick={() => setModal({ type: 'view', data: t })} title="Ver">
+                    <button className={tableStyles.actionBtn} onClick={() => setModal({ type: 'view', data: t })} title="Ver">
                       <Eye size={14} />
                     </button>
                     {canEdit(t) && (
                       <>
-                        <button className="lista-action-btn" onClick={() => handleStatusChange(t.id, 'in_transit')} title="Enviar">
+                        <button className={tableStyles.actionBtn} onClick={() => handleStatusChange(t.id, 'in_transit')} title="Enviar">
                           <Truck size={14} />
                         </button>
-                        <button className="lista-action-btn danger" onClick={() => handleStatusChange(t.id, 'cancelled')} title="Cancelar">
+                        <button className={`${tableStyles.actionBtn} danger`} onClick={() => handleStatusChange(t.id, 'cancelled')} title="Cancelar">
                           <X size={14} />
                         </button>
                       </>
                     )}
                     {canTransit(t) && !canEdit(t) && (
                       <>
-                        <button className="lista-action-btn" onClick={() => handleStatusChange(t.id, 'completed')} title="Completar">
+                        <button className={tableStyles.actionBtn} onClick={() => handleStatusChange(t.id, 'completed')} title="Completar">
                           <CheckCircle size={14} />
                         </button>
                       </>
@@ -293,12 +294,12 @@ export function WarehouseTransfersPage() {
                 {modal.data.notes && <div className={styles.detailField}><span className={styles.detailLabel}>Notas</span><span>{modal.data.notes}</span></div>}
               </div>
               <h4 className={styles.sectionTitle}>Productos</h4>
-              <div className="lista-container">
-                <table className="lista-table">
+              <div className={tableStyles.container}>
+                <table className={tableStyles.table}>
                   <thead><tr><th>Producto</th><th className={styles.textRight}>Cantidad</th></tr></thead>
                   <tbody>
                     {modal.data.items?.map((it: any) => (
-                      <tr key={it.id}><td>{it.product?.name || it.productId}</td><td className={styles.textRight}><span className="lista-number-value">{it.quantity}</span></td></tr>
+                      <tr key={it.id}><td>{it.product?.name || it.productId}</td><td className={styles.textRight}><span className={tableStyles.numberValue}>{it.quantity}</span></td></tr>
                     ))}
                   </tbody>
                 </table>

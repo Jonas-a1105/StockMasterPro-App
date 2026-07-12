@@ -9,6 +9,7 @@ import { TabNav } from '@shared/ui/TabNav';
 import { KpiGrid } from '@shared/ui/KpiGrid';
 import { Toolbar } from '@shared/ui/Toolbar';
 import styles from './WarehousePage.module.css';
+import tableStyles from '@shared/ui/TableList.module.css';
 
 export function WarehousePage() {
   const { showToast } = useToast();
@@ -97,8 +98,8 @@ export function WarehousePage() {
         addBtn={{ label: 'Nuevo Almacén', onClick: () => setModal({ type: 'create', data: { name: '', code: '', address: '' } }) }}
       />
 
-      <div className="lista-container">
-        <table className="lista-table">
+      <div className={tableStyles.container}>
+        <table className={tableStyles.table}>
           <thead>
             <tr>
               <th>Nombre</th>
@@ -114,27 +115,27 @@ export function WarehousePage() {
             ) : filteredWarehouses.map(w => (
               <tr key={w.id}>
                 <td>
-                  <div className="lista-name-cell">
+                  <div className={tableStyles.nameCell}>
                     <Building2 size={14} className={styles.listAccent} />
-                    <span className="lista-name-text">{w.name}</span>
+                    <span className={tableStyles.nameText}>{w.name}</span>
                   </div>
                 </td>
-                <td><span className="lista-code">{w.code}</span></td>
+                <td><span className={tableStyles.code}>{w.code}</span></td>
                 <td className={styles.textMuted}>{w.address || '—'}</td>
                 <td className={styles.textCenter}>
-                  <span className={`lista-badge ${w.isActive ? 'active' : 'inactive'}`}>
+                  <span className={`${tableStyles.badge} ${w.isActive ? tableStyles.badgeActive : tableStyles.badgeInactive}`}>
                     {w.isActive ? 'Activo' : 'Inactivo'}
                   </span>
                 </td>
                 <td className={styles.textCenter}>
-                  <div className={`lista-actions ${styles.justifyCenter}`}>
-                    <button className="lista-action-btn" onClick={() => setModal({ type: 'edit', data: w })} title="Editar">
+                  <div className={`${tableStyles.actions} ${styles.justifyCenter}`}>
+                    <button className={tableStyles.actionBtn} onClick={() => setModal({ type: 'edit', data: w })} title="Editar">
                       <Edit2 size={14} />
                     </button>
-                    <button className="lista-action-btn" onClick={() => toggleActive(w)} title={w.isActive ? 'Desactivar' : 'Activar'}>
+                    <button className={tableStyles.actionBtn} onClick={() => toggleActive(w)} title={w.isActive ? 'Desactivar' : 'Activar'}>
                       {w.isActive ? <ToggleRight size={14} /> : <ToggleLeft size={14} />}
                     </button>
-                    <button className="lista-action-btn danger" onClick={() => handleDelete(w.id, w.name)} title="Eliminar">
+                    <button className={`${tableStyles.actionBtn} danger`} onClick={() => handleDelete(w.id, w.name)} title="Eliminar">
                       <Trash2 size={14} />
                     </button>
                   </div>

@@ -8,6 +8,7 @@ import { useExchangeRate } from '@contexts/ExchangeRateContext';
 import { formatUsd } from '@shared/lib/format/currency';
 import { Search, RefreshCw, RotateCcw, Eye, ArrowLeft, X, Plus, Minus } from 'lucide-react';
 import styles from './ReturnsPage.module.css';
+import tableStyles from '@shared/ui/TableList.module.css';
 
 const REFUND_METHODS = [
   { value: 'credit', label: 'Crédito en cuenta' },
@@ -194,33 +195,35 @@ export function ReturnsPage() {
         </div>
       ) : (
         <div className={styles.salesTable}>
-          <table className="lista-table">
-            <thead>
-              <tr>
-                <th>Fecha</th>
-                <th>Cliente</th>
-                <th>Productos</th>
-                <th className={styles.textRight}>Total</th>
-                <th className={styles.textCenter}>Método</th>
-                <th className={styles.textCenter}>Estado</th>
-                <th className={styles.textCenter}>Acción</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredSales.map(s => (
-                <tr key={s.id} onClick={() => { setSelectedSale(s); setReturnItems({}); setReason(''); }}>
-                  <td>{new Date(s.createdAt).toLocaleDateString()}</td>
-                  <td><span className="lista-name-text">{s.customer?.name || 'Consumidor final'}</span></td>
-                  <td>{s.items?.length || 0} art.</td>
-                  <td className={styles.textRight}><span className="lista-number-value">{formatPrice(s.total)}</span></td>
-                  <td>{s.paymentMethod}</td>
-                  <td className={styles.textCenter}><span className={`lista-badge ${s.status === 'completed' ? 'active' : 'inactive'}`}>{s.status === 'completed' ? 'Completada' : s.status}</span></td>
-                  <td className={styles.textCenter}><button className="lista-action-btn" onClick={e => { e.stopPropagation(); setSelectedSale(s); setReturnItems({}); setReason(''); }} title="Iniciar devolución"><RotateCcw size={14} /></button></td>
+          <div className={tableStyles.container}>
+            <table className={tableStyles.table}>
+              <thead>
+                <tr>
+                  <th>Fecha</th>
+                  <th>Cliente</th>
+                  <th>Productos</th>
+                  <th className={styles.textRight}>Total</th>
+                  <th className={styles.textCenter}>Método</th>
+                  <th className={styles.textCenter}>Estado</th>
+                  <th className={styles.textCenter}>Acción</th>
                 </tr>
-              ))}
-              {filteredSales.length === 0 && <tr><td colSpan={7} className={styles.emptyCell}>No hay ventas registradas</td></tr>}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {filteredSales.map(s => (
+                  <tr key={s.id} onClick={() => { setSelectedSale(s); setReturnItems({}); setReason(''); }}>
+                    <td>{new Date(s.createdAt).toLocaleDateString()}</td>
+                    <td><span className={tableStyles.nameText}>{s.customer?.name || 'Consumidor final'}</span></td>
+                    <td>{s.items?.length || 0} art.</td>
+                    <td className={styles.textRight}><span className={tableStyles.numberValue}>{formatPrice(s.total)}</span></td>
+                    <td>{s.paymentMethod}</td>
+                    <td className={styles.textCenter}><span className={`${tableStyles.badge} ${s.status === 'completed' ? tableStyles.badgeActive : tableStyles.badgeInactive}`}>{s.status === 'completed' ? 'Completada' : s.status}</span></td>
+                    <td className={styles.textCenter}><button className={tableStyles.actionBtn} onClick={e => { e.stopPropagation(); setSelectedSale(s); setReturnItems({}); setReason(''); }} title="Iniciar devolución"><RotateCcw size={14} /></button></td>
+                  </tr>
+                ))}
+                {filteredSales.length === 0 && <tr><td colSpan={7} className={styles.emptyCell}>No hay ventas registradas</td></tr>}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
     </div>

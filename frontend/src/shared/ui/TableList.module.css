@@ -1,0 +1,373 @@
+.container {
+  overflow-x: auto;
+  background-color: var(--color-surface) !important;
+  border: var(--border-width) solid var(--color-border) !important;
+  border-radius: var(--card-radius) !important;
+  box-shadow: var(--shadow-card) !important;
+  margin-bottom: var(--space-5) !important;
+}
+
+.container::-webkit-scrollbar {
+  height: 4px;
+  width: 4px;
+}
+
+.container::-webkit-scrollbar-thumb {
+  background-color: var(--color-border);
+}
+
+.table {
+  width: 100%;
+  text-align: left;
+  border-collapse: collapse;
+  font-size: var(--list-body-font-size, var(--font-size-sm));
+  min-width: 950px;
+}
+
+.table thead {
+  background-color: var(--list-header-bg) !important;
+  color: var(--list-header-text) !important;
+  border-bottom: 1px solid var(--list-border-color) !important;
+}
+
+.table thead tr th {
+  padding: var(--list-cell-padding);
+  font-size: var(--list-header-font-size);
+  font-weight: var(--list-header-font-weight);
+  font-family: var(--list-font-family);
+  text-transform: var(--list-header-uppercase);
+  letter-spacing: 0.5px;
+  color: var(--list-header-text) !important;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--list-border-color) !important;
+  background-color: var(--list-header-bg) !important;
+}
+
+.table thead tr th:first-child {
+  text-align: left;
+  border-top-left-radius: var(--card-radius);
+}
+
+.table thead tr th:last-child {
+  text-align: center;
+  border-top-right-radius: var(--card-radius);
+}
+
+.table tbody {
+  border-top: none;
+}
+
+.table tbody tr {
+  transition: background-color 0.15s ease;
+  border-bottom: 1px solid var(--list-border-color) !important;
+}
+
+.table tbody tr:last-child {
+  border-bottom: none !important;
+}
+
+.table tbody tr:last-child td:first-child {
+  border-bottom-left-radius: var(--card-radius);
+}
+
+.table tbody tr:last-child td:last-child {
+  border-bottom-right-radius: var(--card-radius);
+}
+
+.table tbody tr:hover {
+  background-color: var(--list-row-hover) !important;
+}
+
+.striped tbody tr:nth-child(even) {
+  background-color: var(--list-stripe);
+}
+
+.table tbody tr td {
+  padding: var(--list-cell-padding);
+  font-size: var(--list-body-font-size);
+  font-family: var(--list-font-family);
+  color: var(--color-text) !important;
+  vertical-align: middle;
+}
+
+.indicator {
+  width: 6px;
+  height: 12px;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.nameCell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nameText {
+  font-weight: var(--list-body-font-weight);
+  font-size: calc(var(--list-body-font-size) + 1px);
+  font-family: var(--list-font-family);
+  letter-spacing: 0.3px;
+  color: var(--color-text) !important;
+}
+
+.code {
+  font-family: var(--list-number-font-family) !important;
+  font-weight: var(--list-body-font-weight);
+  letter-spacing: 0.5px;
+  color: var(--list-accent-color);
+}
+
+.codeMuted {
+  font-family: var(--list-number-font-family) !important;
+  letter-spacing: 0.5px;
+  color: var(--color-text-muted);
+}
+
+.address {
+  color: var(--color-text-muted);
+  font-weight: 400;
+}
+
+.number {
+  text-align: right;
+  font-family: var(--list-number-font-family) !important;
+}
+
+.numberValue {
+  font-family: var(--list-number-font-family) !important;
+  font-weight: var(--list-body-font-weight);
+  color: var(--color-text) !important;
+}
+
+.numberSuffix {
+  font-size: calc(var(--list-body-font-size) - 2px);
+  color: var(--color-text-muted);
+  font-family: var(--list-font-family);
+  font-weight: 400;
+}
+
+.progressBar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.progressTrack {
+  width: 96px;
+  height: 8px;
+  background-color: var(--color-bg-hover) !important;
+  border: 1px solid var(--color-border) !important;
+  position: relative;
+  overflow: hidden;
+  border-radius: 4px !important;
+}
+
+.progressFill {
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: width 0.3s ease;
+}
+
+.progressFill.blue { background-color: var(--color-info); }
+.progressFill.red { background-color: var(--color-danger); }
+.progressFill.green { background-color: var(--color-success); }
+.progressFill.orange { background-color: var(--list-accent-color); }
+
+.progressValue {
+  font-family: var(--list-number-font-family) !important;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.progressValue.white { color: var(--color-text-inverse); }
+.progressValue.red { color: var(--color-danger); }
+
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  font-size: 10px;
+  font-family: var(--list-number-font-family) !important;
+  text-transform: none;
+  letter-spacing: 0.5px;
+  font-weight: 700;
+  border: 1px solid;
+  line-height: 1.4;
+  border-radius: 0 !important;
+}
+
+.badge.active {
+  background-color: rgba(22, 163, 74, 0.1);
+  color: var(--color-success);
+  border-color: rgba(22, 163, 74, 0.3);
+}
+
+.badge.inactive {
+  background-color: rgba(107, 114, 128, 0.1);
+  color: var(--color-text-muted);
+  border-color: rgba(107, 114, 128, 0.3);
+}
+
+.badge.saturated {
+  background-color: rgba(220, 38, 38, 0.1);
+  color: var(--color-danger);
+  border-color: rgba(220, 38, 38, 0.3);
+}
+
+.badge.warning {
+  background-color: rgba(245, 158, 11, 0.1);
+  color: var(--color-warning);
+  border-color: rgba(245, 158, 11, 0.3);
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+}
+
+.actionBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background-color: var(--color-bg-hover) !important;
+  color: var(--color-text-muted) !important;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  padding: 0;
+  border-radius: var(--btn-radius) !important;
+}
+
+.actionBtn:hover {
+  background-color: var(--color-border) !important;
+  color: var(--color-text) !important;
+}
+
+.actionBtn.danger:hover {
+  background-color: rgba(220, 38, 38, 0.15);
+  color: var(--color-danger);
+}
+
+.search {
+  display: flex;
+  align-items: center;
+  background-color: var(--color-surface) !important;
+  border: 1px solid var(--color-border-input) !important;
+  padding: 6px 12px;
+  gap: 8px;
+  border-radius: var(--input-radius) !important;
+}
+
+.search input {
+  background: transparent;
+  border: none;
+  color: var(--color-text) !important;
+  font-size: var(--list-body-font-size);
+  font-weight: 600;
+  outline: none;
+  width: 100%;
+}
+
+.search input::placeholder {
+  color: var(--color-text-muted);
+  font-weight: 400;
+}
+
+.search svg {
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+}
+
+.addBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background-color: var(--list-accent-color);
+  color: #ffffff !important;
+  font-size: var(--list-body-font-size);
+  font-weight: 700;
+  text-transform: none;
+  letter-spacing: 0.5px;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+  border-radius: var(--btn-radius) !important;
+  white-space: nowrap;
+}
+
+.addBtn:hover {
+  opacity: 0.85;
+}
+
+.toolbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background-color: var(--color-surface) !important;
+  border-bottom: 1px solid var(--color-border) !important;
+}
+
+.toolbarLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.toolbarRight {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.cardHeader {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: var(--color-text-muted);
+  padding: 4px 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .table {
+    min-width: 700px;
+  }
+
+  .toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .toolbarRight {
+    justify-content: flex-end;
+  }
+
+  .search {
+    width: 100%;
+  }
+}
+
+/* Lottie animated icons - visible on dark backgrounds */
+.lottieIcon svg {
+  filter: brightness(0) invert(0.82);
+}
+
+[data-theme="dark"] .lottieIcon svg,
+[data-theme="oled"] .lottieIcon svg {
+  filter: brightness(0) invert(0.85);
+}

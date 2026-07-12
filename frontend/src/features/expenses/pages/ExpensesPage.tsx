@@ -13,6 +13,7 @@ import { useExchangeRate } from '@contexts/ExchangeRateContext';
 import { ImportModal } from '@shared/ui/ImportModal';
 import { exportToExcel, type ColumnMapping } from '@shared/lib/excelHelper';
 import styles from './ExpensesPage.module.css';
+import tableStyles from '@shared/ui/TableList.module.css';
 
 const EXPENSE_COLUMNS: ColumnMapping[] = [
   { header: 'Descripción', key: 'description', type: 'string' },

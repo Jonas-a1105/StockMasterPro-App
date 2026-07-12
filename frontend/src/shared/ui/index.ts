@@ -13,3 +13,5 @@ export { ErrorBoundary } from './ErrorBoundary';
 export { KpiGrid } from './KpiGrid';
 export { Text } from './Text';
 export { Card } from './Card';
+// Styles
+export { tableStyles } from './TableList.module.css';

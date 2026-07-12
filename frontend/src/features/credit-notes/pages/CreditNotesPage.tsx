@@ -12,6 +12,7 @@ import { formatUsd } from '@shared/lib/format/currency';
 import { KpiGrid } from '@shared/ui/KpiGrid';
 import { Toolbar } from '@shared/ui/Toolbar';
 import styles from './CreditNotesPage.module.css';
+import tableStyles from '@shared/ui/TableList.module.css';
 
 const REFUND_METHODS = [
   { value: 'credit', label: 'Crédito' },
@@ -138,8 +139,8 @@ export function CreditNotesPage() {
         addBtn={{ label: 'Nueva Devolución', onClick: () => { setShowCreate(true); setForm({ saleId: '', customerId: '', reason: '', total: 0, refundMethod: 'cash', items: [] }); } }}
       />
 
-      <div className="lista-container">
-        <table className="lista-table">
+      <div className={tableStyles.container}>
+        <table className={tableStyles.table}>
           <thead>
             <tr>
               <th>Fecha</th>
@@ -155,18 +156,18 @@ export function CreditNotesPage() {
             {filteredNotes.map(n => (
               <tr key={n.id}>
                 <td>{new Date(n.createdAt).toLocaleDateString()}</td>
-                <td><span className="lista-name-text">{n.customer?.name || '—'}</span></td>
+                <td><span className={tableStyles.nameText}>{n.customer?.name || '—'}</span></td>
                 <td className={styles.textMuted}>{n.reason}</td>
-                <td className={styles.textRight}><span className="lista-number-value">{formatPrice(Number(n.total))}</span></td>
+                <td className={styles.textRight}><span className={tableStyles.numberValue}>{formatPrice(Number(n.total))}</span></td>
                 <td>{methodLabel(n.refundMethod)}</td>
                 <td className={styles.textCenter}>
-                  <span className={`lista-badge ${n.status === 'active' ? 'active' : 'inactive'}`}>
+                  <span className={`${tableStyles.badge} ${n.status === 'active' ? tableStyles.badgeActive : tableStyles.badgeInactive}`}>
                     {n.status === 'active' ? 'Activa' : 'Anulada'}
                   </span>
                 </td>
                 <td className={styles.textCenter}>
-                  <div className={`lista-actions ${styles.flexCenter}`}>
-                    <button className="lista-action-btn" onClick={() => setViewNote(n)} title="Ver detalle">
+                  <div className={`${tableStyles.actions} ${styles.flexCenter}`}>
+                    <button className={tableStyles.actionBtn} onClick={() => setViewNote(n)} title="Ver detalle">
                       <Eye size={14} />
                     </button>
                   </div>
@@ -319,9 +320,9 @@ export function CreditNotesPage() {
               </div>
             </div>
 
-            <div className="lista-container">
+            <div className={tableStyles.container}>
               <h4 className={styles.sectionTitle}>Productos</h4>
-              <table className="lista-table">
+              <table className={tableStyles.table}>
                 <thead>
                   <tr>
                     <th>Producto</th>
@@ -334,9 +335,9 @@ export function CreditNotesPage() {
                   {viewNote.items?.map((it: any) => (
                     <tr key={it.id}>
                       <td>{it.product?.name || it.productId}</td>
-                      <td className={styles.textRight}><span className="lista-number-value">{it.quantity}</span></td>
-                      <td className={styles.textRight}><span className="lista-number-value">{formatPrice(Number(it.price))}</span></td>
-                      <td className={styles.textRight}><span className="lista-number-value">{formatPrice(Number(it.subtotal))}</span></td>
+                      <td className={styles.textRight}><span className={tableStyles.numberValue}>{it.quantity}</span></td>
+                      <td className={styles.textRight}><span className={tableStyles.numberValue}>{formatPrice(Number(it.price))}</span></td>
+                      <td className={styles.textRight}><span className={tableStyles.numberValue}>{formatPrice(Number(it.subtotal))}</span></td>
                     </tr>
                   ))}
                 </tbody>

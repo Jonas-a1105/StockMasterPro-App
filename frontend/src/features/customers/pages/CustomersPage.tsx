@@ -18,6 +18,7 @@ import { useExchangeRate } from '@contexts/ExchangeRateContext';
 import { ImportModal } from '@shared/ui/ImportModal';
 import { exportToExcel, type ColumnMapping } from '@shared/lib/excelHelper';
 import styles from './CustomersPage.module.css';
+import tableStyles from '@shared/ui/TableList.module.css';
 
 const CUSTOMER_COLUMNS: ColumnMapping[] = [
   { header: 'Nombre', key: 'name', type: 'string' },
@@ -226,15 +227,15 @@ export function CustomersPage() {
         ]}
       />
 
-      <Toolbar
+<Toolbar
         search={{ value: search, onChange: setSearch, placeholder: 'Buscar clientes...' }}
         onExport={handleExportCustomers}
         onImport={() => setShowImport(true)}
         addBtn={{ label: 'Nuevo Cliente', onClick: openCreate }}
       />
 
-      <div className="lista-container">
-        <table className="lista-table">
+      <div className={tableStyles.container}>
+        <table className={tableStyles.table}>
           <thead>
             <tr>
               <th>Nombre</th>
@@ -249,20 +250,20 @@ export function CustomersPage() {
           <tbody>
             {filteredCustomers.map(c => (
               <tr key={c.id}>
-                <td><span className="lista-name-text">{c.name}</span></td>
+                <td><span className={tableStyles.nameText}>{c.name}</span></td>
                 <td className={styles.colorMuted}>{c.email || '—'}</td>
                 <td>{c.phone || '—'}</td>
-                <td className={styles.textRight}><span className="lista-number-value">{formatPrice(c.creditLimit)}</span></td>
+                <td className={styles.textRight}><span className={tableStyles.numberValue}>{formatPrice(c.creditLimit)}</span></td>
                 <td className={styles.textRight}>
-                  <span className={`lista-number-value ${styles.balanceColor}`} style={{ '--balance-color': c.balance > (c.creditLimit * 0.8) ? 'var(--color-danger)' : c.balance > 0 ? 'var(--color-warning)' : 'var(--color-success)' } as React.CSSProperties}>
+                  <span className={`${tableStyles.numberValue} ${styles.balanceColor}`} style={{ '--balance-color': c.balance > (c.creditLimit * 0.8) ? 'var(--color-danger)' : c.balance > 0 ? 'var(--color-warning)' : 'var(--color-success)' } as React.CSSProperties}>
                     {formatPrice(c.balance)}
                   </span>
                 </td>
                 <td>
                   {c.creditLimit > 0 ? (
-                    <div className="lista-progress-bar">
-                      <div className={`lista-progress-track ${styles.w80px}`}>
-                        <div className={`lista-progress-fill ${styles.barFillWidth} ${c.balance > (c.creditLimit * 0.8) ? 'red' : c.balance > 0 ? 'orange' : 'green'}`}
+                    <div className={tableStyles.progressBar}>
+                      <div className={`${tableStyles.progressTrack} ${styles.w80px}`}>
+                        <div className={`${tableStyles.progressFill} ${styles.barFillWidth} ${c.balance > (c.creditLimit * 0.8) ? 'red' : c.balance > 0 ? 'orange' : 'green'}`}
                           style={{ '--bar-fill-width': `${Math.min(100, (c.balance / c.creditLimit) * 100)}%` } as React.CSSProperties}
                         />
                       </div>
@@ -272,22 +273,22 @@ export function CustomersPage() {
                   )}
                 </td>
                 <td className={styles.textCenter}>
-                  <div className={`lista-actions ${styles.justifyCenter}`}>
+                  <div className={`${styles.actions} ${styles.justifyCenter}`}>
                     {c.phone && (
-                      <button className="lista-action-btn" onClick={() => openWhatsApp(c.phone!, c.name)} title="Enviar WhatsApp">
+                      <button className={tableStyles.actionBtn} onClick={() => openWhatsApp(c.phone!, c.name)} title="Enviar WhatsApp">
                         <MessageCircle size={14} />
                       </button>
                     )}
-                    <button className="lista-action-btn" onClick={() => openEdit(c)} title="Editar">
+                    <button className={tableStyles.actionBtn} onClick={() => openEdit(c)} title="Editar">
                       <Pencil size={14} />
                     </button>
                     {c.balance > 0 && (
-                      <button className="lista-action-btn" onClick={() => { setPayingCustomer(c); setPayAmount(0); setShowPayModal(true); }} title="Abonar">
+                      <button className={tableStyles.actionBtn} onClick={() => { setPayingCustomer(c); setPayAmount(0); setShowPayModal(true); }} title="Abonar">
                         <DollarSign size={14} />
                       </button>
                     )}
                     {(user?.role === 'admin') && (
-                      <button className="lista-action-btn danger" onClick={() => handleDelete(c.id)} title="Eliminar">
+                      <button className={`${tableStyles.actionBtn} danger`} onClick={() => handleDelete(c.id)} title="Eliminar">
                         <Trash2 size={14} />
                       </button>
                     )}
