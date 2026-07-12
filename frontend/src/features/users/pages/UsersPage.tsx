@@ -12,6 +12,7 @@ import { TabNav } from '@shared/ui/TabNav';
 import { KpiGrid } from '@shared/ui/KpiGrid';
 import { Toolbar } from '@shared/ui/Toolbar';
 import styles from './UsersPage.module.css';
+import tableStyles from '@shared/ui/TableList.module.css';
 
 export function UsersPage() {
   const { showToast } = useToast();
@@ -134,8 +135,8 @@ export function UsersPage() {
         addBtn={{ label: 'Nuevo Usuario', onClick: () => { setShowModal(true); setEditingUser(null); setForm({ name: '', email: '', password: '', role: 'cajero' }); } }}
       />
 
-      <div className="lista-container">
-        <table className="lista-table">
+      <div className={tableStyles.container}>
+        <table className={tableStyles.table}>
           <thead>
             <tr>
               <th>Nombre</th>
@@ -149,12 +150,12 @@ export function UsersPage() {
           <tbody>
             {filteredUsers.map(u => (
               <tr key={u.id}>
-                <td><span className="lista-name-text">{u.name}</span></td>
+                <td><span className={tableStyles.nameText}>{u.name}</span></td>
                 <td className={styles.textMuted}>{u.email}</td>
-                <td><span className={`lista-badge ${roleBadgeClass(u.role)}`}>{roleLabel(u.role)}</span></td>
+                <td><span className={`${tableStyles.badge} ${roleBadgeClass(u.role)}`}>{roleLabel(u.role)}</span></td>
                 <td className={styles.textCenter}>
                   <span 
-                    className={`lista-badge ${u.isActive ? 'active' : 'inactive'} ${styles.cursorPointer}`}
+                    className={`${tableStyles.badge} ${u.isActive ? tableStyles.badgeActive : tableStyles.badgeInactive} ${styles.cursorPointer}`}
                     onClick={() => handleToggleActive(u)}
                     title="Click para cambiar estado"
                   >
@@ -163,12 +164,12 @@ export function UsersPage() {
                 </td>
                 <td>{new Date(u.createdAt).toLocaleDateString()}</td>
                 <td className={styles.textCenter}>
-                  <div className={`lista-actions ${styles.justifyCenter}`}>
-                    <button className="lista-action-btn" onClick={() => openEdit(u)} title="Editar">
+                  <div className={`${tableStyles.actions} ${styles.justifyCenter}`}>
+                    <button className={tableStyles.actionBtn} onClick={() => openEdit(u)} title="Editar">
                       <Pencil size={14} />
                     </button>
                     {u.role !== 'admin' && (
-                      <button className="lista-action-btn danger" onClick={() => handleDelete(u.id)} title="Eliminar">
+                      <button className={`${tableStyles.actionBtn} danger`} onClick={() => handleDelete(u.id)} title="Eliminar">
                         <Trash2 size={14} />
                       </button>
                     )}

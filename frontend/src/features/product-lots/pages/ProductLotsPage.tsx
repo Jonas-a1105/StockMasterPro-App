@@ -12,6 +12,7 @@ import { KpiGrid } from '@shared/ui/KpiGrid';
 import { Toolbar } from '@shared/ui/Toolbar';
 import { Modal } from '@shared/ui/Modal';
 import styles from './ProductLotsPage.module.css';
+import tableStyles from '@shared/ui/TableList.module.css';
 
 const TAB_ITEMS = [
   { key: 'all', label: 'Todos', icon: <Package size={16} /> },
@@ -151,8 +152,8 @@ export function ProductLotsPage() {
         addBtn={{ label: 'Nuevo Lote', onClick: openCreate }}
       />
 
-      <div className="lista-container">
-        <table className="lista-table">
+      <div className={tableStyles.container}>
+        <table className={tableStyles.table}>
           <thead>
             <tr>
               <th>Producto</th>
@@ -170,15 +171,15 @@ export function ProductLotsPage() {
               const st = statusOf(lot);
               return (
                 <tr key={lot.id}>
-                  <td><span className="lista-name-text">{lot.product?.name || lot.productId}</span></td>
-                  <td><span className="lista-code">{lot.lotNumber}</span></td>
-                  <td className={styles.textRight}><span className="lista-number-value">{lot.quantity}</span></td>
+                  <td><span className={tableStyles.nameText}>{lot.product?.name || lot.productId}</span></td>
+                  <td><span className={tableStyles.code}>{lot.lotNumber}</span></td>
+                  <td className={styles.textRight}><span className={tableStyles.numberValue}>{lot.quantity}</span></td>
                   <td>{lot.expiryDate ? new Date(lot.expiryDate).toLocaleDateString() : '—'}</td>
-                  <td><span className={`lista-badge ${styles.badgeDynamic}`} style={{ '--st-bg': st.color + '20', '--st-color': st.color } as React.CSSProperties}>{st.label}</span></td>
+                  <td><span className={`${tableStyles.badge} ${styles.badgeDynamic}`} style={{ '--st-bg': st.color + '20', '--st-color': st.color } as React.CSSProperties}>{st.label}</span></td>
                   <td className={styles.textCenter}>
-                    <div className={`lista-actions ${styles.justifyCenter}`}>
-                      <button className="lista-action-btn" onClick={() => openEdit(lot)} title="Editar"><Eye size={14} /></button>
-                      <button className="lista-action-btn danger" onClick={() => handleDelete(lot.id)} title="Eliminar"><Trash2 size={14} /></button>
+                    <div className={`${tableStyles.actions} ${styles.justifyCenter}`}>
+                      <button className={tableStyles.actionBtn} onClick={() => openEdit(lot)} title="Editar"><Eye size={14} /></button>
+                      <button className={`${tableStyles.actionBtn} danger`} onClick={() => handleDelete(lot.id)} title="Eliminar"><Trash2 size={14} /></button>
                     </div>
                   </td>
                 </tr>

@@ -1,6 +1,7 @@
 import { Edit2, Trash2, MessageCircle } from 'lucide-react';
 import type { Supplier } from '@types';
 import styles from './SuppliersList.module.css';
+import tableStyles from '@shared/ui/TableList.module.css';
 
 export function SuppliersList({
   suppliers, userRole, onEdit, onDelete, onWhatsApp,
@@ -9,8 +10,8 @@ export function SuppliersList({
   onEdit: (s: Supplier) => void; onDelete: (id: string) => void; onWhatsApp: (phone: string, name: string) => void;
 }) {
   return (
-    <div className="lista-container">
-      <table className="lista-table">
+    <div className={tableStyles.container}>
+      <table className={tableStyles.table}>
         <thead>
           <tr>
             <th>Nombre</th>
@@ -23,20 +24,20 @@ export function SuppliersList({
         <tbody>
           {suppliers.map(supplier => (
             <tr key={supplier.id}>
-              <td><span className="lista-name-text">{supplier.name}</span></td>
+              <td><span className={tableStyles.nameText}>{supplier.name}</span></td>
               <td className={styles.textMuted}>{supplier.contact || '—'}</td>
               <td>{supplier.phone || '—'}</td>
               <td>{supplier.email || '—'}</td>
               {userRole !== 'cajero' && (
                 <td className={styles.textCenter}>
-                  <div className="lista-actions">
+                  <div className={tableStyles.actions}>
                     {supplier.phone && (
-                      <button className="lista-action-btn" onClick={() => onWhatsApp(supplier.phone!, supplier.name)} title="Enviar WhatsApp">
+                      <button className={tableStyles.actionBtn} onClick={() => onWhatsApp(supplier.phone!, supplier.name)} title="Enviar WhatsApp">
                         <MessageCircle size={14} />
                       </button>
                     )}
-                    <button className="lista-action-btn" onClick={() => onEdit(supplier)} title="Editar"><Edit2 size={14} /></button>
-                    <button className="lista-action-btn danger" onClick={() => onDelete(supplier.id)} title="Eliminar"><Trash2 size={14} /></button>
+                    <button className={tableStyles.actionBtn} onClick={() => onEdit(supplier)} title="Editar"><Edit2 size={14} /></button>
+                    <button className={`${tableStyles.actionBtn} danger`} onClick={() => onDelete(supplier.id)} title="Eliminar"><Trash2 size={14} /></button>
                   </div>
                 </td>
               )}
