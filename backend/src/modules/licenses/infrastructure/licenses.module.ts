@@ -5,6 +5,7 @@ import { AdminTenantController } from './http/admin-tenant.controller';
 import { LicensesService } from './licenses.service';
 import { PostgresLicenseRepo } from './persistence/postgres-license.repository';
 import { StripeService } from './stripe.service';
+import { LicenseCronService } from './license-cron.service';
 
 import { ConfigService } from '@nestjs/config';
 
@@ -24,6 +25,11 @@ import { ConfigService } from '@nestjs/config';
     }),
   ],
   controllers: [LicensesController, AdminTenantController],
-  providers: [LicensesService, PostgresLicenseRepo, StripeService],
+  providers: [
+    LicensesService,
+    PostgresLicenseRepo,
+    StripeService,
+    LicenseCronService,
+  ],
 })
 export class LicensesModule {}

@@ -49,10 +49,6 @@ export class TenantLicenseGuard implements CanActivate {
 
     const now = new Date();
     if (now > tenant.licenseExpiresAt) {
-      await this.prisma.tenant.update({
-        where: { id: tenantId },
-        data: { isBlocked: true },
-      });
       throw new HttpException(
         'Su periodo de gracia ha expirado. Regularice su pago.',
         HttpStatus.PAYMENT_REQUIRED,

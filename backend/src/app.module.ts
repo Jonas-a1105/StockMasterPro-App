@@ -5,6 +5,7 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { RLSInterceptor } from '@shared/infrastructure/http/interceptors/rls.interceptor';
 import { TransformInterceptor } from '@shared/infrastructure/http/interceptors/transform.interceptor';
+import { PlanLimitsInterceptor } from '@shared/infrastructure/http/interceptors/plan-limits.interceptor';
 import { PrismaModule } from '@shared/infrastructure/prisma/prisma.module';
 import { AuthPrismaModule } from '@shared/infrastructure/prisma/auth-prisma.module';
 import { AuthModule } from './modules/auth';
@@ -97,6 +98,7 @@ import { UploadModule } from './modules/uploads/infrastructure/upload.module';
     { provide: APP_GUARD, useClass: TenantLicenseGuard },
     { provide: APP_INTERCEPTOR, useClass: TransformInterceptor },
     { provide: APP_INTERCEPTOR, useClass: RLSInterceptor },
+    { provide: APP_INTERCEPTOR, useClass: PlanLimitsInterceptor },
   ],
 })
 export class AppModule {}

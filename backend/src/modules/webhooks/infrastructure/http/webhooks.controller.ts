@@ -13,6 +13,9 @@ import type { Request } from 'express';
 
 const stripe = new Stripe(
   process.env.STRIPE_SECRET_KEY || 'sk_test_placeholder',
+  {
+    apiVersion: '2024-06-20' as any, // Lock to stable version
+  },
 );
 
 @Public()
@@ -54,8 +57,16 @@ export class WebhooksController {
       );
     }
 
-    if (!event.type) {
-      throw new HttpException('Invalid webhook event', HttpStatus.BAD_REQUEST);
+    if (!event.id) {
+      throw new HttpException('Missing event ID', HttpStatus.BAD_REQUEST);
+    }
+
+    // Control de Idempotencia: Verificar si el evento ya fue procesado
+    const existingEvent = await this.prisma.stripeEvent.findUnique({
+      where: { id: event.id },
+    });
+    if (existingEvent) {
+      return { received: true, duplicated: true };
     }
 
     try {
@@ -102,6 +113,12 @@ export class WebhooksController {
           break;
         }
       }
+
+      // Registrar evento procesado para idempotencia
+      await this.prisma.stripeEvent.create({
+        data: { id: event.id },
+      });
+
       return { received: true };
     } catch (err) {
       console.error('Webhook error:', err);

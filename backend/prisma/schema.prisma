@@ -1254,3 +1254,9 @@ model License {
   @@map("licenses")
 }
 
+model StripeEvent {
+  id        String   @id @db.VarChar(255)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("stripe_events")
+}
