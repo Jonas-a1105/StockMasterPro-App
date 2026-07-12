@@ -56,57 +56,7 @@ const PRODUCT_COLUMNS: ColumnMapping[] = [
   { header: 'Imagen URL', key: 'imageUrl', type: 'string' },
 ];
 
-const TABLE_COLUMNS = [
-  { key: 'name', header: 'Producto', render: (product: Product) => (
-    <div className="flex items-center gap-3">
-      {product.imageUrl ? (
-        <img src={product.imageUrl} alt="" className="w-8 h-8 rounded-lg object-cover" />
-      ) : (
-        <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-surface-muted">
-          <Package size={14} className="text-text-muted" />
-        </div>
-      )}
-      <span className="font-medium">{product.name}</span>
-    </div>
-  )},
-  { key: 'brand', header: 'Marca', render: (p: Product) => (p as any).brand || '—' },
-  { key: 'category', header: 'Categoría', render: (p: Product) => p.categoryId || '—' },
-  { key: 'barcode', header: 'Código', render: (p: Product) => <span className="font-mono">{p.barcode || '—'}</span> },
-  { key: 'price', header: 'Precio ($)', align: 'right', render: (p: Product) => p.price.toFixed(2) },
-  { key: 'priceBs', header: 'Precio (Bs)', align: 'right', render: (p: Product, idx: number, products: Product[]) => formatBs(products[idx].price) },
-  { key: 'cost', header: 'Costo ($)', align: 'right', render: (p: Product) => formatUsd(p.cost) },
-  { key: 'costBs', header: 'Costo (Bs)', align: 'right', render: (p: Product, idx: number, products: Product[]) => formatBs(products[idx].cost) },
-  { key: 'profit', header: 'Ganancia ($)', align: 'right', render: (p: Product) => {
-    const profit = p.price - p.cost;
-    return <span className={profit >= 0 ? 'text-success' : 'text-danger'}>{formatUsd(profit)}</span>;
-  }},
-  { key: 'profitBs', header: 'Ganancia (Bs)', align: 'right', render: (p: Product, idx: number, products: Product[]) => {
-    const profit = products[idx].price - products[idx].cost;
-    return <span className={profit >= 0 ? 'text-success' : 'text-danger'}>{formatBs(profit)}</span>;
-  }},
-  { key: 'stock', header: 'Stock', align: 'right', render: (p: Product) => <span className="font-mono">{p.stock}</span> },
-  { key: 'minStock', header: 'Mín.', align: 'right', render: (p: Product) => <span className="font-mono">{p.minStock}</span> },
-  { key: 'status', header: 'Estado', align: 'center', render: (p: Product) => (
-    <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold ${
-      p.stock <= p.minStock ? 'bg-danger/10 text-danger' : 'bg-success/10 text-success'
-    }`}>
-      {p.stock <= p.minStock ? 'Stock Bajo' : 'OK'}
-    </span>
-  )},
-  { key: 'actions', header: 'Acción', align: 'center', render: (p: Product, _: number, __: Product[], onEdit: (p: Product) => void, onDelete: (p: Product) => void, onView: (p: Product) => void) => (
-    <div className="flex items-center justify-center gap-1.5">
-      <button className="flex items-center justify-center gap-1.5 px-2 py-1.5 text-sm font-medium text-text-muted hover:text-text transition-colors border border-border rounded-md" onClick={() => onView(p)} title="Ver">
-        <Eye size={14} />
-      </button>
-      <button className="flex items-center justify-center gap-1.5 px-2 py-1.5 text-sm font-medium text-text-muted hover:text-primary transition-colors border border-border rounded-md" onClick={() => onEdit(p)} title="Editar">
-        <Edit2 size={14} />
-      </button>
-      <button className="flex items-center justify-center gap-1.5 px-2 py-1.5 text-sm font-medium text-text-muted hover:text-danger transition-colors border border-danger/20 rounded-md hover:border-danger" onClick={() => onDelete(p)} title="Eliminar">
-        <Trash2 size={14} />
-      </button>
-    </div>
-  )},
-];
+
 
 export function ProductsTab() {
   const { showToast } = useToast();
@@ -299,11 +249,84 @@ export function ProductsTab() {
     setPage(1);
   };
 
-  const tableColumns = useMemo(() => TABLE_COLUMNS.map((col) => ({
-    ...col,
-    render: col.render ? (row: Product, idx: number, data: Product[]) => col.render!(row, idx, data, startEdit, handleDelete, handleViewDetails) : col.render,
-    onSort: col.key !== 'actions' ? () => handleSort(col.key) : undefined,
-  })), [handleSort]);
+  const tableColumns = useMemo(() => [
+    {
+      key: 'name',
+      header: 'Producto',
+      render: (product: Product) => (
+        <div className="flex items-center gap-3">
+          {product.imageUrl ? (
+            <img src={product.imageUrl} alt="" className="w-8 h-8 rounded-lg object-cover" />
+          ) : (
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-surface-muted">
+              <Package size={14} className="text-text-muted" />
+            </div>
+          )}
+          <span className="font-medium">{product.name}</span>
+        </div>
+      ),
+      onSort: () => handleSort('name'),
+    },
+    { key: 'brand', header: 'Marca', render: (p: Product) => (p as any).brand || '—', onSort: () => handleSort('brand') },
+    { key: 'category', header: 'Categoría', render: (p: Product) => getCategoryName(p.categoryId), onSort: () => handleSort('categoryId') },
+    { key: 'barcode', header: 'Código', render: (p: Product) => <span className="font-mono">{p.barcode || '—'}</span>, onSort: () => handleSort('barcode') },
+    { key: 'price', header: 'Precio ($)', align: 'right' as const, render: (p: Product) => p.price.toFixed(2), onSort: () => handleSort('price') },
+    { key: 'priceBs', header: 'Precio (Bs)', align: 'right' as const, render: (p: Product) => formatBs(p.price), onSort: () => handleSort('priceBs') },
+    { key: 'cost', header: 'Costo ($)', align: 'right' as const, render: (p: Product) => formatUsd(p.cost), onSort: () => handleSort('cost') },
+    { key: 'costBs', header: 'Costo (Bs)', align: 'right' as const, render: (p: Product) => formatBs(p.cost), onSort: () => handleSort('costBs') },
+    {
+      key: 'profit',
+      header: 'Ganancia ($)',
+      align: 'right' as const,
+      render: (p: Product) => {
+        const profit = p.price - p.cost;
+        return <span className={profit >= 0 ? 'text-success' : 'text-danger'}>{formatUsd(profit)}</span>;
+      },
+      onSort: () => handleSort('profit'),
+    },
+    {
+      key: 'profitBs',
+      header: 'Ganancia (Bs)',
+      align: 'right' as const,
+      render: (p: Product) => {
+        const profit = p.price - p.cost;
+        return <span className={profit >= 0 ? 'text-success' : 'text-danger'}>{formatBs(profit)}</span>;
+      },
+      onSort: () => handleSort('profitBs'),
+    },
+    { key: 'stock', header: 'Stock', align: 'right' as const, render: (p: Product) => <span className="font-mono">{p.stock}</span>, onSort: () => handleSort('stock') },
+    { key: 'minStock', header: 'Mín.', align: 'right' as const, render: (p: Product) => <span className="font-mono">{p.minStock}</span>, onSort: () => handleSort('minStock') },
+    {
+      key: 'status',
+      header: 'Estado',
+      align: 'center' as const,
+      render: (p: Product) => (
+        <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold ${
+          p.stock <= p.minStock ? 'bg-danger/10 text-danger' : 'bg-success/10 text-success'
+        }`}>
+          {p.stock <= p.minStock ? 'Stock Bajo' : 'OK'}
+        </span>
+      ),
+    },
+    {
+      key: 'actions',
+      header: 'Acción',
+      align: 'center' as const,
+      render: (p: Product) => (
+        <div className="flex items-center justify-center gap-1.5">
+          <button className="flex items-center justify-center gap-1.5 px-2 py-1.5 text-sm font-medium text-text-muted hover:text-text transition-colors border border-border rounded-md" onClick={() => handleViewDetails(p)} title="Ver">
+            <Eye size={14} />
+          </button>
+          <button className="flex items-center justify-center gap-1.5 px-2 py-1.5 text-sm font-medium text-text-muted hover:text-primary transition-colors border border-border rounded-md" onClick={() => startEdit(p)} title="Editar">
+            <Edit2 size={14} />
+          </button>
+          <button className="flex items-center justify-center gap-1.5 px-2 py-1.5 text-sm font-medium text-text-muted hover:text-danger transition-colors border border-danger/20 rounded-md hover:border-danger" onClick={() => handleDelete(p)} title="Eliminar">
+            <Trash2 size={14} />
+          </button>
+        </div>
+      ),
+    },
+  ], [formatBs, formatUsd, startEdit, handleDelete, handleViewDetails, handleSort, categories]);
 
   return (
     <>
