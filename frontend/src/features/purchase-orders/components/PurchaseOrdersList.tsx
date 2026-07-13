@@ -10,7 +10,6 @@ export function PurchaseOrdersList({
   orders,
   suppliers,
   loading,
-  skeletonEnabled,
   onApprove,
   onReject,
   onCancel,
@@ -20,7 +19,6 @@ export function PurchaseOrdersList({
   orders: PurchaseOrder[];
   suppliers: any[];
   loading: boolean;
-  skeletonEnabled: boolean;
   onApprove?: (id: string) => void;
   onReject?: (id: string) => void;
   onCancel?: (id: string) => void;

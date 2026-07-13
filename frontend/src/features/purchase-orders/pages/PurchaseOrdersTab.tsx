@@ -173,7 +173,6 @@ export function PurchaseOrdersTab() {
         orders={orders}
         suppliers={suppliers}
         loading={loadingOrders}
-        skeletonEnabled={config.skeletonEnabled}
         onApprove={handleApprove}
         onReject={handleReject}
         onCancel={handleCancel}

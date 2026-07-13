@@ -21,13 +21,13 @@
 .card {
   background-color: var(--color-surface);
   padding: 20px;
-  box-shadow: 0 1px 3px rgb(0, 0, 0, 0.05);
+  box-shadow: var(--shadow-sm);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   min-width: 0;
 }
 
 .card:hover {
-  box-shadow: 0 4px 12px rgb(0, 0, 0, 0.08);
+  box-shadow: var(--shadow-md);
 }
 
 .cardTitle {
@@ -127,7 +127,7 @@
 }
 
 .reportTable tbody tr:hover {
-  background: rgb(255, 255, 255, 0.02);
+  background: var(--color-bg-hover);
 }
 
 .reportTable td {
@@ -255,7 +255,7 @@
 }
 
 .reportTable tbody tr:hover {
-  background: rgb(255, 255, 255, 0.02);
+  background: var(--color-bg-hover);
 }
 
 .reportTable td {

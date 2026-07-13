@@ -89,7 +89,7 @@ export function ProductsTab() {
   const [viewProduct, setViewProduct] = useState<Product | null>(null);
   const [movements, setMovements] = useState<any[]>([]);
   const [loadingMovements, setLoadingMovements] = useState(false);
-  const [currentViewMode, setCurrentViewMode] = useState<ViewMode>(config.productViewMode);
+  const [currentViewMode, setCurrentViewMode] = useState<ViewMode>('table');
   const [sortField, setSortField] = useState<string>('');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
   const [page, setPage] = useState(1);
@@ -105,10 +105,6 @@ export function ProductsTab() {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
-
-  useEffect(() => {
-    setCurrentViewMode(config.productViewMode);
-  }, [config.productViewMode]);
 
   const handleExportProducts = () => {
     exportToExcel(products, PRODUCT_COLUMNS, 'inventario_productos', 'xlsx');
@@ -400,6 +396,7 @@ export function ProductsTab() {
           {filteredProducts.map((product) => (
             <ProductCard
               key={product.id}
+              variant="inventory"
               product={product}
               onView={handleViewDetails}
               onEdit={startEdit}

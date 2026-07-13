@@ -29,8 +29,8 @@
   border-radius: var(--border-radius-xl);
   font-size: var(--font-size-caption);
   font-weight: var(--font-weight-semibold);
-  background: var(--color-gray-200);
-  color: var(--color-gray-700);
+  background: var(--color-bg-hover);
+  color: var(--color-text-muted);
 }
 
 .sessionDate {
@@ -84,7 +84,7 @@
 .txnTable h4 {
   margin-bottom: 8px;
   font-size: var(--font-size-md);
-  color: var(--text-primary);
+  color: var(--color-text);
 }
 
 .txnTable table {
@@ -127,7 +127,7 @@
 }
 .txnSale {
   background: var(--color-primary-light);
-  color: var(--color-blue-800);
+  color: var(--color-primary-text);
 }
 
 .amountPositive {
@@ -194,7 +194,7 @@
   display: flex;
   gap: 16px;
   font-size: var(--font-size-sm);
-  color: var(--text-primary);
+  color: var(--color-text);
   flex-wrap: wrap;
 }
 
@@ -217,7 +217,7 @@
 .formFields label {
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
-  color: var(--text-primary);
+  color: var(--color-text);
 }
 
 .formFields input,
@@ -226,7 +226,7 @@
   border-radius: var(--border-radius-md);
   border: 1px solid var(--color-border);
   background: var(--color-surface);
-  color: var(--text-primary);
+  color: var(--color-text);
   font-size: var(--font-size-md);
 }
 
@@ -244,7 +244,7 @@
   border: 1px solid var(--color-border);
   border-radius: var(--border-radius-md);
   background: transparent;
-  color: var(--text-primary);
+  color: var(--color-text);
   font-size: var(--font-size-md);
   cursor: pointer;
 }

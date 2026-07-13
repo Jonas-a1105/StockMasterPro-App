@@ -248,19 +248,19 @@ export function SalesHistoryPage() {
             label: 'Ventas del día',
             value: dailySummary?.count ?? '—',
             icon: ShoppingCart,
-            color: '#3b82f6',
+            color: 'var(--color-primary)',
           },
           {
             label: 'Total del día',
             value: formatPrice(dailySummary?.total ?? 0),
             icon: DollarSign,
-            color: '#22c55e',
+            color: 'var(--color-success)',
           },
           {
             label: 'Total listado',
             value: formatPrice(totalRevenue),
             icon: DollarSign,
-            color: '#f59e0b',
+            color: 'var(--color-warning)',
           },
         ]}
       />

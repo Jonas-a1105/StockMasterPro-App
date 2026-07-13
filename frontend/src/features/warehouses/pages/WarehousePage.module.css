@@ -61,12 +61,12 @@
   font-weight: var(--font-weight-semibold);
 }
 .active {
-  background: var(--color-success-transparent);
+  background: var(--color-success-bg);
   color: var(--color-success);
 }
 .disabled {
-  background: var(--color-gray-500-transparent);
-  color: var(--color-gray-500);
+  background: var(--color-text-light);
+  color: var(--color-text-light);
 }
 .actions {
   display: flex;
@@ -102,7 +102,7 @@
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgb(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.4);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -168,16 +168,4 @@
 }
 .saveBtn:disabled {
   opacity: 0.6;
-}
-.textCenter {
-  text-align: center;
-}
-.textMuted {
-  color: var(--color-text-muted);
-}
-.listAccent {
-  color: var(--list-accent-color);
-}
-.justifyCenter {
-  justify-content: center;
 }

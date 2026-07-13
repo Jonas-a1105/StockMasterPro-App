@@ -534,14 +534,31 @@ function PersonalizationTab() {
               min={0}
               max={24}
               step={1}
-              value={config.cardRadius}
+              value={config.cardBorders ? 12 : 0}
               onChange={(e) => {
                 const r = parseFloat(e.target.value);
-                updateConfig({ cardRadius: r });
+                updateConfig({ cardBorders: r > 0 });
               }}
             />
-            <span className={styles.sliderValue}>{config.cardRadius}px</span>
+            <span className={styles.sliderValue}>{config.cardBorders ? '12' : '0'}px</span>
           </div>
+        </div>
+      </div>
+
+      {/* Tarjeta: Sombras */}
+      <div className={styles.bentoCard}>
+        <div className={styles.bentoCardHeader}>
+          <Sparkles size={22} />
+          <h2 className={styles.bentoCardTitle}>Sombras</h2>
+        </div>
+        <div className={styles.toggleRow}>
+          <span className={styles.pFieldLabel}>Sombras activadas</span>
+          <button
+            className={`${styles.pToggle} ${config.shadows ? styles.pToggleOn : ''}`}
+            onClick={() => updateConfig({ shadows: !config.shadows })}
+          >
+            <span className={styles.pToggleKnob} />
+          </button>
         </div>
       </div>
 

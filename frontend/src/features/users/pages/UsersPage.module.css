@@ -7,7 +7,7 @@
 .tableCard {
   background-color: var(--color-surface);
   border-radius: var(--card-radius);
-  box-shadow: 0 1px 3px rgb(0, 0, 0, 0.05);
+  box-shadow: var(--shadow-sm);
   overflow: hidden;
 }
 
@@ -85,7 +85,7 @@
 
 .activeStatus {
   color: var(--color-success);
-  border-color: var(--color-success-transparent);
+  border-color: var(--color-success);
 }
 
 .activeStatus:hover {
@@ -94,7 +94,7 @@
 
 .inactiveStatus {
   color: var(--color-danger);
-  border-color: var(--color-danger-transparent);
+  border-color: var(--color-danger);
 }
 
 .inactiveStatus:hover {
@@ -243,22 +243,4 @@
   color: var(--color-text-muted);
   padding: 30px !important;
   font-size: var(--font-size-sm);
-}
-
-.textCenter {
-  text-align: center;
-}
-.textMuted {
-  color: var(--color-text-muted);
-}
-.cursorPointer {
-  cursor: pointer;
-}
-.justifyCenter {
-  justify-content: center;
-}
-.emptyRow {
-  text-align: center;
-  padding: 40px;
-  color: var(--color-text-muted);
 }

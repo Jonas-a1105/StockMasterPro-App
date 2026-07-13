@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useTheme, palettes } from '@contexts/ThemeContext';
+import { useTheme } from '@contexts/ThemeContext';
 import {
   X,
   Save,
@@ -39,10 +39,6 @@ export function CustomizationPanel({ open, onClose }: PanelProps) {
     colores: true,
     bordes: true,
     tipografia: true,
-    lista: true,
-    visualizacion: true,
-    botones: true,
-    inputs: true,
     animaciones: true,
     paletas: true,
     ajustes: true,
@@ -89,34 +85,14 @@ export function CustomizationPanel({ open, onClose }: PanelProps) {
           {sections.colores && (
             <div className={styles.section}>
               <ColorRow
-                label="Principal"
+                label="Color principal"
                 value={config.primaryColor}
                 onChange={(v) => updateConfig({ primaryColor: v })}
               />
               <ColorRow
-                label="Secundario"
-                value={config.secondaryColor}
-                onChange={(v) => updateConfig({ secondaryColor: v })}
-              />
-              <ColorRow
-                label="Fondo general"
-                value={config.bgMain}
-                onChange={(v) => updateConfig({ bgMain: v })}
-              />
-              <ColorRow
-                label="Fondo tarjetas"
-                value={config.bgCard}
-                onChange={(v) => updateConfig({ bgCard: v })}
-              />
-              <ColorRow
-                label="Sidebar"
-                value={config.sidebarBg}
-                onChange={(v) => updateConfig({ sidebarBg: v })}
-              />
-              <ColorRow
-                label="Borde"
-                value={config.borderColor}
-                onChange={(v) => updateConfig({ borderColor: v })}
+                label="Familia tipográfica"
+                value={config.fontFamily || "'Segoe UI', sans-serif"}
+                onChange={(v) => updateConfig({ fontFamily: v })}
               />
             </div>
           )}
@@ -125,28 +101,15 @@ export function CustomizationPanel({ open, onClose }: PanelProps) {
           <SectionHeader icon={<Square size={14} />} title="Bordes" sectionKey="bordes" />
           {sections.bordes && (
             <div className={styles.section}>
-              <SliderRow
-                label="Radio global"
-                value={config.cardRadius}
-                min={0}
-                max={24}
-                step={1}
-                suffix="px"
-                onChange={(v) => updateConfig({ cardRadius: v })}
-              />
-              <SliderRow
-                label="Grosor borde"
-                value={config.borderWidth}
-                min={0}
-                max={4}
-                step={1}
-                suffix="px"
-                onChange={(v) => updateConfig({ borderWidth: v })}
+              <ToggleRow
+                label="Bordes en tarjetas"
+                value={config.cardBorders}
+                onChange={(v) => updateConfig({ cardBorders: v })}
               />
               <ToggleRow
-                label="Bordes activados"
-                value={config.cardBorderEnabled}
-                onChange={(v) => updateConfig({ cardBorderEnabled: v })}
+                label="Sombras en tarjetas"
+                value={config.shadows}
+                onChange={(v) => updateConfig({ shadows: v })}
               />
             </div>
           )}
@@ -155,7 +118,6 @@ export function CustomizationPanel({ open, onClose }: PanelProps) {
           <SectionHeader icon={<Type size={14} />} title="Tipografía" sectionKey="tipografia" />
           {sections.tipografia && (
             <div className={styles.section}>
-
               <SliderRow
                 label="Tamaño base"
                 value={config.fontSizeBase}
@@ -164,212 +126,6 @@ export function CustomizationPanel({ open, onClose }: PanelProps) {
                 step={1}
                 suffix="px"
                 onChange={(v) => updateConfig({ fontSizeBase: v })}
-              />
-              <SliderRow
-                label="Espaciado letras"
-                value={config.letterSpacing}
-                min={-1}
-                max={4}
-                step={0.5}
-                suffix="px"
-                onChange={(v) => updateConfig({ letterSpacing: v })}
-              />
-              <ToggleRow
-                label="Mayúsculas Automáticas"
-                value={config.uppercaseEnabled}
-                onChange={(v) => updateConfig({ uppercaseEnabled: v })}
-              />
-              <ToggleRow
-                label="Pesos de Fuente (Negritas)"
-                value={config.fontWeightEnabled}
-                onChange={(v) => updateConfig({ fontWeightEnabled: v })}
-              />
-            </div>
-          )}
-
-          {/* === LISTA === */}
-          <SectionHeader icon={<List size={14} />} title="Lista (Tablas)" sectionKey="lista" />
-          {sections.lista && (
-            <div className={styles.section}>
-              <SliderRow
-                label="Tamaño encabezados"
-                value={config.listHeaderFontSize}
-                min={8}
-                max={16}
-                step={1}
-                suffix="px"
-                onChange={(v) => updateConfig({ listHeaderFontSize: v })}
-              />
-              <SliderRow
-                label="Tamaño contenido"
-                value={config.listBodyFontSize}
-                min={10}
-                max={18}
-                step={1}
-                suffix="px"
-                onChange={(v) => updateConfig({ listBodyFontSize: v })}
-              />
-              <SliderRow
-                label="Padding celdas"
-                value={config.listCellPadding}
-                min={6}
-                max={24}
-                step={2}
-                suffix="px"
-                onChange={(v) => updateConfig({ listCellPadding: v })}
-              />
-
-              <div className={styles.field}>
-                <label className={styles.fieldLabel}>Peso encabezados</label>
-                <select
-                  className={styles.select}
-                  value={config.listHeaderFontWeight}
-                  onChange={(e) => updateConfig({ listHeaderFontWeight: e.target.value })}
-                >
-                  <option value="400">Normal</option>
-                  <option value="500">Medium</option>
-                  <option value="600">Semi Bold</option>
-                  <option value="700">Bold</option>
-                  <option value="800">Extra Bold</option>
-                </select>
-              </div>
-              <div className={styles.field}>
-                <label className={styles.fieldLabel}>Peso contenido</label>
-                <select
-                  className={styles.select}
-                  value={config.listBodyFontWeight}
-                  onChange={(e) => updateConfig({ listBodyFontWeight: e.target.value })}
-                >
-                  <option value="400">Normal</option>
-                  <option value="500">Medium</option>
-                  <option value="600">Semi Bold</option>
-                  <option value="700">Bold</option>
-                  <option value="800">Extra Bold</option>
-                </select>
-              </div>
-              <ToggleRow
-                label="Mayúsculas en encabezados"
-                value={config.listHeaderUppercase}
-                onChange={(v) => updateConfig({ listHeaderUppercase: v })}
-              />
-              <ToggleRow
-                label="Filas alternadas"
-                value={config.listStripeEnabled}
-                onChange={(v) => updateConfig({ listStripeEnabled: v })}
-              />
-              <ColorRow
-                label="Fondo encabezados"
-                value={config.listHeaderBg}
-                onChange={(v) => updateConfig({ listHeaderBg: v })}
-              />
-              <ColorRow
-                label="Color hover filas"
-                value={config.listRowHoverColor}
-                onChange={(v) => updateConfig({ listRowHoverColor: v })}
-              />
-              <ColorRow
-                label="Color borde lista"
-                value={config.listBorderColor}
-                onChange={(v) => updateConfig({ listBorderColor: v })}
-              />
-              <ColorRow
-                label="Color acento lista"
-                value={config.listAccentColor}
-                onChange={(v) => updateConfig({ listAccentColor: v })}
-              />
-            </div>
-          )}
-
-          {/* === VISUALIZACIÓN === */}
-          <SectionHeader
-            icon={<Eye size={14} />}
-            title="Visualización"
-            sectionKey="visualizacion"
-          />
-          {sections.visualizacion && (
-            <div className={styles.section}>
-              <div className={styles.field}>
-                <label className={styles.fieldLabel}>Vista de Inventario</label>
-                <select
-                  className={styles.select}
-                  value={config.productViewMode}
-                  onChange={(e) =>
-                    updateConfig({ productViewMode: e.target.value as 'table' | 'cards' })
-                  }
-                >
-                  <option value="table">Lista (Tabla)</option>
-                  <option value="cards">Tarjetas</option>
-                </select>
-              </div>
-              <ToggleRow
-                label="Skeleton Screen (Carga)"
-                value={config.skeletonEnabled}
-                onChange={(v) => updateConfig({ skeletonEnabled: v })}
-              />
-            </div>
-          )}
-
-          {/* === BOTONES === */}
-          <SectionHeader icon={<Sparkles size={14} />} title="Botones" sectionKey="botones" />
-          {sections.botones && (
-            <div className={styles.section}>
-              <SliderRow
-                label="Radio bordes"
-                value={config.btnBorderRadius}
-                min={0}
-                max={24}
-                step={1}
-                suffix="px"
-                onChange={(v) => updateConfig({ btnBorderRadius: v })}
-              />
-              <SliderRow
-                label="Grosor borde"
-                value={config.btnBorderWidth}
-                min={0}
-                max={4}
-                step={1}
-                suffix="px"
-                onChange={(v) => updateConfig({ btnBorderWidth: v })}
-              />
-              <div className={styles.field}>
-                <label className={styles.fieldLabel}>Peso de fuente</label>
-                <select
-                  className={styles.select}
-                  value={config.btnFontWeight}
-                  onChange={(e) => updateConfig({ btnFontWeight: e.target.value })}
-                >
-                  <option value="400">Normal</option>
-                  <option value="500">Medium</option>
-                  <option value="600">Semi Bold</option>
-                  <option value="700">Bold</option>
-                  <option value="800">Extra Bold</option>
-                  <option value="900">Black</option>
-                </select>
-              </div>
-            </div>
-          )}
-
-          {/* === INPUTS === */}
-          <SectionHeader icon={<Layers size={14} />} title="Campos de texto" sectionKey="inputs" />
-          {sections.inputs && (
-            <div className={styles.section}>
-              <SliderRow
-                label="Radio bordes"
-                value={config.inputBorderRadius}
-                min={0}
-                max={24}
-                step={1}
-                suffix="px"
-                onChange={(v) => updateConfig({ inputBorderRadius: v })}
-              />
-              <SliderRow
-                label="Grosor borde"
-                value={config.inputBorderWidth}
-                min={0}
-                max={4}
-                step={1}
-                suffix="px"
-                onChange={(v) => updateConfig({ inputBorderWidth: v })}
               />
             </div>
           )}
@@ -387,29 +143,25 @@ export function CustomizationPanel({ open, onClose }: PanelProps) {
                 value={config.animationEnabled}
                 onChange={(v) => updateConfig({ animationEnabled: v })}
               />
-              <SliderRow
-                label="Duración transición"
-                value={config.transitionDuration}
-                min={0}
-                max={1.5}
-                step={0.1}
-                suffix="s"
-                onChange={(v) => updateConfig({ transitionDuration: v })}
-              />
-              <SliderRow
-                label="Velocidad notificación"
-                value={config.notificationSpeed}
-                min={100}
-                max={1000}
-                step={50}
-                suffix="ms"
-                onChange={(v) => updateConfig({ notificationSpeed: v })}
-              />
-              <ToggleRow
-                label="Sombras globales"
-                value={config.shadowEnabled}
-                onChange={(v) => updateConfig({ shadowEnabled: v })}
-              />
+            </div>
+          )}
+
+          {/* === DENSIDAD === */}
+          <SectionHeader icon={<List size={14} />} title="Densidad" sectionKey="densidad" />
+          {sections.densidad && (
+            <div className={styles.section}>
+              <div className={styles.field}>
+                <label className={styles.fieldLabel}>Espaciado</label>
+                <select
+                  className={styles.select}
+                  value={config.density}
+                  onChange={(e) => updateConfig({ density: e.target.value as 'compact' | 'comfortable' | 'spacious' })}
+                >
+                  <option value="compact">Compacta</option>
+                  <option value="comfortable">Confortable</option>
+                  <option value="spacious">Espaciosa</option>
+                </select>
+              </div>
             </div>
           )}
 
@@ -421,29 +173,7 @@ export function CustomizationPanel({ open, onClose }: PanelProps) {
           />
           {sections.paletas && (
             <div className={styles.section}>
-              <div className={styles.paletteGrid}>
-                {palettes.map((p) => (
-                  <button
-                    key={p.name}
-                    className={styles.paletteCard}
-                    onClick={() =>
-                      applyPreset({
-                        ...config,
-                        primaryColor: p.primary,
-                        secondaryColor: p.secondary,
-                        sidebarBg: p.sidebar,
-                      })
-                    }
-                  >
-                    <div className={styles.paletteSwatches}>
-                      <span className={styles.swatch} style={{ '--swatch-color': p.primary }} />
-                      <span className={styles.swatch} style={{ '--swatch-color': p.secondary }} />
-                      <span className={styles.swatch} style={{ '--swatch-color': p.sidebar }} />
-                    </div>
-                    <span className={styles.paletteName}>{p.name}</span>
-                  </button>
-                ))}
-              </div>
+              <p className={styles.paletteNote}>Cambia el color principal desde la sección Colores</p>
             </div>
           )}
 
@@ -504,15 +234,6 @@ export function CustomizationPanel({ open, onClose }: PanelProps) {
               <OledIcon />
               Modo OLED
             </button>
-            <button
-              className={`${styles.oledToggle} ${config.shadowEnabled ? styles.oledToggleOn : ''}`}
-              onClick={() => updateConfig({ shadowEnabled: !config.shadowEnabled })}
-            >
-              <span
-                className={`${styles.w16} ${styles.h16} ${styles.bgRadial} ${styles.roundedCard}`}
-              />
-              Sombras globales
-            </button>
             <button className={styles.resetBtn} onClick={resetTheme}>
               <RotateCcw size={14} />
               Restaurar valores
@@ -526,16 +247,7 @@ export function CustomizationPanel({ open, onClose }: PanelProps) {
 
 function SunIcon() {
   return (
-    <svg
-      width="16"
-      height="16"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <circle cx="12" cy="12" r="5" />
       <line x1="12" y1="1" x2="12" y2="3" />
       <line x1="12" y1="21" x2="12" y2="23" />
@@ -551,16 +263,7 @@ function SunIcon() {
 
 function MoonIcon() {
   return (
-    <svg
-      width="16"
-      height="16"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
     </svg>
   );
@@ -568,16 +271,7 @@ function MoonIcon() {
 
 function OledIcon() {
   return (
-    <svg
-      width="16"
-      height="16"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <rect x="2" y="4" width="20" height="16" rx="2" ry="2" />
       <circle cx="12" cy="12" r="6" fill="currentColor" opacity="0.4" />
     </svg>

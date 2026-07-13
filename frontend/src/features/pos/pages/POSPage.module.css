@@ -548,22 +548,6 @@
   margin-top: 8px;
 }
 
-.w120 {
-  width: 120px;
-}
-.w140 {
-  width: 140px;
-}
-.w50 {
-  width: 50px;
-}
-.fontSize12 {
-  font-size: var(--font-size-caption);
-}
-.optionBg {
-  background: var(--option-bg);
-}
-
 .paymentMethods {
   display: grid;
   grid-template-columns: repeat(2, 1fr);

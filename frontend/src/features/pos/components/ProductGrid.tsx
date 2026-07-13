@@ -1,6 +1,5 @@
 import type { Product, CartItem } from '@types';
-import { ProductCard } from './ProductCard';
-import styles from '../pages/POSPage.module.css';
+import { ProductCard } from '@shared/ui/ProductCard';
 
 export function ProductGrid({
   products,
@@ -12,16 +11,20 @@ export function ProductGrid({
   cartItems: CartItem[];
 }) {
   return (
-    <div className={styles.productsGrid}>
-      {products.map((product) => (
-        <ProductCard
-          key={product.id}
-          product={product}
-          onAdd={onAdd}
-          cartItem={cartItems.find((item) => item.product.id === product.id)}
-        />
-      ))}
-      {products.length === 0 && <p className={styles.noResults}>No se encontraron productos</p>}
+    <div className="productsGrid">
+      {products.map((product) => {
+        const cartItem = cartItems.find((item) => item.product.id === product.id);
+        return (
+          <ProductCard
+            key={product.id}
+            variant="pos"
+            product={product}
+            onAdd={onAdd}
+            cartQuantity={cartItem?.quantity || 0}
+          />
+        );
+      })}
+      {products.length === 0 && <p className="text-center text-text-muted p-8">No se encontraron productos</p>}
     </div>
   );
 }

@@ -113,8 +113,8 @@
   border-radius: var(--border-radius-lg);
   padding: 20px;
   box-shadow:
-    0 1px 3px 0 rgb(0, 0, 0, 0.04),
-    0 1px 2px -1px rgb(0, 0, 0, 0.03);
+    0 1px 3px 0 rgba(0, 0, 0, 0.04),
+    0 1px 2px -1px rgba(0, 0, 0, 0.03);
 }
 
 .bentoCardHeader {
@@ -280,7 +280,7 @@ select.formControl {
   align-items: center;
   gap: 12px;
   z-index: 99;
-  box-shadow: 0 -4px 12px -4px rgb(0, 0, 0, 0.05);
+  box-shadow: 0 -4px 12px -4px rgba(0, 0, 0, 0.05);
 }
 
 .btnFlatSecondary {
@@ -313,7 +313,7 @@ select.formControl {
   display: flex;
   align-items: center;
   gap: 6px;
-  box-shadow: 0 1px 2px 0 rgb(0, 0, 0, 0.05);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   transition: background 0.15s;
 }
 
@@ -497,7 +497,7 @@ select.formControl {
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgb(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.4);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -510,7 +510,7 @@ select.formControl {
   padding: 28px;
   width: 90%;
   max-width: 460px;
-  box-shadow: 0 10px 40px rgb(0, 0, 0, 0.15);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
 }
 
 .modal h3 {
@@ -626,8 +626,8 @@ select.formControl {
   flex-direction: column;
   gap: 20px;
   box-shadow:
-    0 1px 3px 0 rgb(0, 0, 0, 0.04),
-    0 1px 2px -1px rgb(0, 0, 0, 0.03);
+    0 1px 3px 0 rgba(0, 0, 0, 0.04),
+    0 1px 2px -1px rgba(0, 0, 0, 0.03);
 }
 
 .backupCardTitle {
@@ -929,7 +929,7 @@ select.formControl {
   position: relative;
   border-radius: var(--border-radius-lg);
   padding: 1px;
-  background: linear-gradient(135deg, var(--color-primary), #f97316, #f59e0b);
+  background: linear-gradient(135deg, var(--color-primary), var(--orange-400), var(--amber-500));
 }
 
 .btnShimmerActive {
@@ -976,7 +976,7 @@ select.formControl {
 }
 
 .notifCard {
-  background-color: var(--color-surface);
+  background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--border-radius-lg);
   padding: 20px;
@@ -984,8 +984,8 @@ select.formControl {
   flex-direction: column;
   gap: 20px;
   box-shadow:
-    0 1px 3px 0 rgb(0, 0, 0, 0.04),
-    0 1px 2px -1px rgb(0, 0, 0, 0.03);
+    0 1px 3px 0 rgba(0, 0, 0, 0.04),
+    0 1px 2px -1px rgba(0, 0, 0, 0.03);
 }
 
 .notifCardHeader {
@@ -1043,7 +1043,7 @@ select.formControl {
 .notifTabActive {
   background-color: var(--color-surface);
   color: var(--color-text);
-  box-shadow: 0 1px 2px rgb(0, 0, 0, 0.05);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 .notifTabBadge {

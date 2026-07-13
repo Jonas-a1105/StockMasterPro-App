@@ -68,6 +68,21 @@
   --sidebar-text:        var(--gray-0);
   --sidebar-text-muted:  var(--gray-400);
   --sidebar-border:      var(--gray-700);
+
+  /* Feature-specific tokens (used by POS, Inventory, etc.) */
+  --color-whatsapp:      #25d366;
+  --color-whatsapp-dark: #128c7e;
+  --color-whatsapp-hover: #128c7e;
+  --color-whatsapp-bg:   color-mix(in srgb, #25d366 15%, transparent);
+  --color-yellow-600:    var(--amber-600);
+  --color-danger-light:  color-mix(in srgb, var(--color-danger) 15%, transparent);
+  --brand-orange-hover:  var(--color-primary-hover);
+  --pos-inner-bg:        var(--color-bg);
+  --pos-qty-bg:          var(--color-bg-hover);
+  --product-inner-bg:    var(--color-surface);
+  --product-thumb-bg:    var(--color-bg);
+  --option-bg:           var(--color-bg);
+  --bg-inner-block:      var(--color-surface);
 }
 
 /* ─── Dark Theme ─── */
@@ -124,6 +139,21 @@
   --sidebar-text:        #ffffff;
   --sidebar-text-muted:  #666666;
   --sidebar-border:      #1a1a1a;
+
+  /* Feature-specific tokens */
+  --color-whatsapp:      #25d366;
+  --color-whatsapp-dark: #128c7e;
+  --color-whatsapp-hover: #128c7e;
+  --color-whatsapp-bg:   color-mix(in srgb, #25d366 20%, transparent);
+  --color-yellow-600:    var(--amber-500);
+  --color-danger-light:  color-mix(in srgb, var(--color-danger) 20%, transparent);
+  --brand-orange-hover:  var(--color-primary-hover);
+  --pos-inner-bg:        var(--color-bg);
+  --pos-qty-bg:          var(--color-bg-hover);
+  --product-inner-bg:    var(--color-surface);
+  --product-thumb-bg:    var(--color-bg);
+  --option-bg:           var(--color-bg);
+  --bg-inner-block:      var(--color-surface);
 }
 
 /* ─── OLED Theme (true black) ─── */
@@ -177,6 +207,21 @@
   --sidebar-text:        #ffffff;
   --sidebar-text-muted:  #555555;
   --sidebar-border:      #1a1a1a;
+
+  /* Feature-specific tokens */
+  --color-whatsapp:      #25d366;
+  --color-whatsapp-dark: #128c7e;
+  --color-whatsapp-hover: #128c7e;
+  --color-whatsapp-bg:   color-mix(in srgb, #25d366 15%, transparent);
+  --color-yellow-600:    var(--amber-500);
+  --color-danger-light:  color-mix(in srgb, var(--color-danger) 20%, transparent);
+  --brand-orange-hover:  var(--color-primary-hover);
+  --pos-inner-bg:        var(--color-bg);
+  --pos-qty-bg:          var(--color-bg-hover);
+  --product-inner-bg:    var(--color-surface);
+  --product-thumb-bg:    var(--color-bg);
+  --option-bg:           var(--color-bg);
+  --bg-inner-block:      var(--color-surface);
 }
 
 /* ─── Component-level semantic tokens (consumed by components) ─── */
@@ -357,6 +402,19 @@
 
   /* Skeleton */
   --skeleton-enabled: 1;
+
+  /* Missing tokens referenced in feature CSS */
+  --color-whatsapp: var(--green-500);
+  --color-whatsapp-hover: var(--green-600);
+  --color-yellow-600: var(--amber-600);
+  --color-danger-light: color-mix(in srgb, var(--color-danger) 15%, transparent);
+  --brand-orange-hover: var(--color-primary-hover);
+  --pos-inner-bg: var(--color-bg);
+  --pos-qty-bg: var(--color-bg-hover);
+  --product-inner-bg: var(--color-surface);
+  --product-thumb-bg: var(--color-bg);
+--option-bg:           var(--color-bg);
+  --bg-inner-block:    var(--color-surface);
 }
 
 /* ─── Animation Control (from data-animation-disabled) ─── */

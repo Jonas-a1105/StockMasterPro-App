@@ -1,6 +1,5 @@
 import { Edit2, Trash2, MessageCircle } from 'lucide-react';
 import type { Supplier } from '@types';
-import styles from './SuppliersList.module.css';
 import tableStyles from '@shared/ui/TableList.module.css';
 
 export function SuppliersList({
@@ -25,7 +24,7 @@ export function SuppliersList({
             <th>Contacto</th>
             <th>Teléfono</th>
             <th>Email</th>
-            {userRole !== 'cajero' && <th className={styles.textCenter}>Acción</th>}
+            {userRole !== 'cajero' && <th className="textCenter">Acción</th>}
           </tr>
         </thead>
         <tbody>
@@ -34,11 +33,11 @@ export function SuppliersList({
               <td>
                 <span className={tableStyles.nameText}>{supplier.name}</span>
               </td>
-              <td className={styles.textMuted}>{supplier.contact || '—'}</td>
+              <td className="textMuted">{supplier.contact || '—'}</td>
               <td>{supplier.phone || '—'}</td>
               <td>{supplier.email || '—'}</td>
               {userRole !== 'cajero' && (
-                <td className={styles.textCenter}>
+                <td className="textCenter">
                   <div className={tableStyles.actions}>
                     {supplier.phone && (
                       <button
@@ -71,7 +70,7 @@ export function SuppliersList({
         </tbody>
       </table>
       {suppliers.length === 0 && (
-        <p className={styles.emptyState}>No hay proveedores registrados</p>
+        <p className="emptyState">No hay proveedores registrados</p>
       )}
     </div>
   );

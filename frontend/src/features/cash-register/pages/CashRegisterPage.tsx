@@ -160,31 +160,31 @@ export function CashRegisterPage() {
             label: 'Estado',
             value: currentSession ? 'Abierta' : 'Cerrada',
             icon: Wallet,
-            color: currentSession ? '#22c55e' : '#6b7280',
+            color: currentSession ? 'var(--color-success)' : 'var(--color-text-muted)',
           },
           {
             label: 'Fondo Inicial',
             value: formatPrice(currentSession ? Number(currentSession.openingBalance) : 0),
             icon: DollarSign,
-            color: '#3b82f6',
+            color: 'var(--color-primary)',
           },
           {
             label: 'Ingresos',
             value: formatPrice(txnIncome),
             icon: ArrowUpRight,
-            color: '#22c55e',
+            color: 'var(--color-success)',
           },
           {
             label: 'Egresos',
             value: formatPrice(txnExpense),
             icon: ArrowDownRight,
-            color: '#ef4444',
+            color: 'var(--color-danger)',
           },
           {
             label: 'Esperado en Caja',
             value: formatPrice(expectedClose),
             icon: Wallet,
-            color: '#f59e0b',
+            color: 'var(--color-warning)',
           },
         ]}
       />

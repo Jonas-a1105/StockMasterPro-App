@@ -108,7 +108,7 @@
   grid-template-columns: 2fr 80px 100px 100px 140px;
   gap: 12px;
   padding: 10px 12px;
-  background: var(--bg-muted);
+  background: var(--color-bg);
   border-radius: var(--btn-radius) var(--border-radius-md) 0 0;
   font-size: var(--font-size-caption);
   font-weight: var(--font-weight-semibold);
@@ -161,7 +161,7 @@
   display: flex;
   justify-content: flex-end;
   padding: 12px;
-  background: var(--bg-muted);
+  background: var(--color-bg);
   border-radius: 0 0 var(--border-radius-md) var(--border-radius-md);
   font-size: var(--font-size-md);
 }

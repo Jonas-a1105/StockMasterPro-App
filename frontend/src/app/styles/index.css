@@ -1,5 +1,6 @@
 @import './primitives.css';
 @import './semantic.css';
+@import './utilities.css';
 
 /* ─── Minimal Global Reset (single source) ─── */
 *,
