@@ -2,6 +2,7 @@ import { useState, useMemo, useRef, useEffect, type ReactNode, type HTMLAttribut
 import { ArrowUpDown, ChevronDown, Search, X, Download, Upload, Wrench } from 'lucide-react';
 import { Toolbar } from '../Toolbar';
 import styles from './DataTable.module.css';
+import { Table, TableHead, TableBody, TableRow, TableHeaderCell, TableCell } from '../';
 
 export interface Column<T> {
   key: string;
@@ -37,9 +38,6 @@ interface DataTableProps<T> {
   simple?: boolean;
 }
 
-function TableContainer({ children, className = '', ...props }: HTMLAttributes<HTMLDivElement>) {
-  return <div className={`${styles.tableOuter} ${className}`} {...props}>{children}</div>;
-}
 
 export function DataTable<T>({
   data,
@@ -243,34 +241,32 @@ export function DataTable<T>({
         </Toolbar>
       )}
 
-      <TableContainer>
-        <table className={`${styles.table} ${striped ? styles.striped : ''} ${hoverable ? styles.hoverable : ''}`}>
-          <thead>
-            <tr>
-              {columns.map((col) => (
-                <th key={col.key} style={{ width: col.width, textAlign: col.align || 'left' }} className={col.className}>
-                  {col.header}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {filteredData.map((row, rowIndex) => (
-              <tr
-                key={keyExtractor(row, rowIndex)}
-                onClick={() => onRowClick?.(row)}
-                style={{ cursor: onRowClick ? 'pointer' : 'default' }}
-              >
-                {columns.map((col) => (
-                  <td key={col.key} style={{ textAlign: col.align || 'left' }} className={col.className}>
-                    {col.render ? col.render(row, rowIndex) : (row as Record<string, unknown>)[col.key] as ReactNode}
-                  </td>
-                ))}
-              </tr>
+      <Table striped={striped} hoverable={hoverable}>
+        <TableHead>
+          <TableRow>
+            {columns.map((col) => (
+              <TableHeaderCell key={col.key} align={col.align} style={{ width: col.width }} className={col.className}>
+                {col.header}
+              </TableHeaderCell>
             ))}
-          </tbody>
-        </table>
-      </TableContainer>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {filteredData.map((row, rowIndex) => (
+            <TableRow
+              key={keyExtractor(row, rowIndex)}
+              onClick={() => onRowClick?.(row)}
+              style={{ cursor: onRowClick ? 'pointer' : 'default' }}
+            >
+              {columns.map((col) => (
+                <TableCell key={col.key} align={col.align} className={col.className}>
+                  {col.render ? col.render(row, rowIndex) : (row as Record<string, unknown>)[col.key] as ReactNode}
+                </TableCell>
+              ))}
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
     </div>
   );
 }
