@@ -180,18 +180,18 @@ export function ProductForm({
 
             <div className={styles.colSpan2}>
               <FormField label="Categoría">
-                <Flex gap="sm" align="start">
-                  <SearchableSelect
-                    value={form.categoryId}
-                    onChange={(val) => setForm((p) => ({ ...p, categoryId: val }))}
-                    options={categoryOptions}
-                    placeholder="Sin categoría"
-                    flex="1"
-                  />
+                <Flex gap="sm" align="center">
+                  <div className="flex1">
+                    <SearchableSelect
+                      value={form.categoryId}
+                      onChange={(val) => setForm((p) => ({ ...p, categoryId: val }))}
+                      options={categoryOptions}
+                      placeholder="Sin categoría"
+                    />
+                  </div>
                   <Button
                     type="button"
-                    variant="ghost"
-                    size="sm"
+                    variant="secondary"
                     onClick={onShowNewCategory}
                     aria-label="Crear categoría"
                   >
