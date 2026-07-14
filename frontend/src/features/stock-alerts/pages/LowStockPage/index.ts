@@ -1,0 +1,1 @@
+export { LowStockPage } from './LowStockPage';

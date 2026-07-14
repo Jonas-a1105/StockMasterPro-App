@@ -1,0 +1,1 @@
+export { DeadProductsPage } from './DeadProductsPage';

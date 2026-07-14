@@ -1,0 +1,1 @@
+export { SocialComments } from './SocialComments';

@@ -1,0 +1,1 @@
+export { AgendaDigitalPage } from './AgendaDigitalPage';

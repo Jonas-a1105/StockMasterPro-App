@@ -1,0 +1,1 @@
+export { CriticalStockList } from './CriticalStockList';

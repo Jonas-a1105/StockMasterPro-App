@@ -1,0 +1,1 @@
+export { SuppliersTab } from './SuppliersTab';

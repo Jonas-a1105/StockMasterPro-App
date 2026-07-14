@@ -1,0 +1,1 @@
+export { LicenseToolPage } from './LicenseToolPage';

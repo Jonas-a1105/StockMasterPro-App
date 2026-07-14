@@ -1,0 +1,1 @@
+export { SaleKpiBar } from './SaleKpiBar';
