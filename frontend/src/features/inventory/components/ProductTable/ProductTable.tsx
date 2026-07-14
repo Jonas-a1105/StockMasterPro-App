@@ -31,9 +31,14 @@ export function ProductTable({
   onSort,
 }: ProductTableProps) {
 
-  const SortHeader = ({ field, label }: { field: string; label: string }) => (
-    <button onClick={() => onSort(field)} className="flex itemsCenter gap1 hoverTextPrimary">
-      {label} <ArrowUpDown size={14} />
+  const SortHeader = ({ field, label, align }: { field: string; label: string; align?: 'left' | 'center' | 'right' }) => (
+    <button
+      onClick={() => onSort(field)}
+      className={`flex itemsCenter gap1 hoverTextPrimary wFull ${
+        align === 'right' ? 'justifyEnd' : align === 'center' ? 'justifyCenter' : 'justifyStart'
+      }`}
+    >
+      <span>{label}</span> <ArrowUpDown size={14} />
     </button>
   );
 
@@ -70,7 +75,7 @@ export function ProductTable({
         },
         {
           key: 'price',
-          header: <SortHeader field="price" label="Precio" />,
+          header: <SortHeader field="price" label="Precio" align="right" />,
           align: 'right',
           render: (row) => (
             <Stack gap="xs" className="itemsEnd">
@@ -81,7 +86,7 @@ export function ProductTable({
         },
         {
           key: 'cost',
-          header: <SortHeader field="cost" label="Costo" />,
+          header: <SortHeader field="cost" label="Costo" align="right" />,
           align: 'right',
           render: (row) => (
             <Stack gap="xs" className="itemsEnd">
@@ -108,7 +113,7 @@ export function ProductTable({
         },
         {
           key: 'stock',
-          header: <SortHeader field="stock" label="Stock / Mín" />,
+          header: <SortHeader field="stock" label="Stock / Mín" align="center" />,
           align: 'center',
           render: (row) => (
             <Stack gap="xs" className="itemsCenter">
