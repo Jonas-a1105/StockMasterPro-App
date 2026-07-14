@@ -6,8 +6,8 @@ import { SkeletonTablePage } from '@shared/ui/Skeleton';
 import { useTheme } from '@contexts/ThemeContext';
 import { Edit2, Trash2, Building2, ToggleLeft, ToggleRight, MapPin, Package } from 'lucide-react';
 import { TabNav } from '@shared/ui/TabNav';
-import { KpiGrid } from '@features/shared-ui/KpiGrid';
-import { Toolbar } from '@features/shared-ui/Toolbar';
+import { KpiGrid } from '@shared/ui';
+import { Toolbar } from '@shared/ui';
 import styles from './WarehousePage.module.css';
 import tableStyles from '@shared/ui/TableList/TableList.module.css';
 

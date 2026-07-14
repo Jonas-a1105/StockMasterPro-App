@@ -1,4 +1,4 @@
-import { KpiGrid } from '@features/shared-ui/KpiGrid';
+import { KpiGrid } from '@shared/ui';
 import { ShoppingCart, DollarSign, CreditCard, ShoppingBag, Package } from 'lucide-react';
 
 interface SaleKpiBarProps {

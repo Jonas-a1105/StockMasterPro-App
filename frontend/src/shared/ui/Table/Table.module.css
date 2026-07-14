@@ -1,0 +1,22 @@
+.tableOuter {
+  overflow-x: auto;
+  background-color: var(--color-surface);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--card-radius);
+  box-shadow: var(--shadow-card);
+}
+
+.table {
+  width: 100%;
+  text-align: left;
+  border-collapse: collapse;
+  font-size: var(--list-body-font-size);
+}
+
+.table.hoverable tbody tr:hover {
+  background-color: var(--list-row-hover);
+}
+
+.table.striped tbody tr:nth-child(even) {
+  background-color: var(--list-stripe);
+}

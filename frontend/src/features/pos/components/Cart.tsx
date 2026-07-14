@@ -2,7 +2,7 @@ import { ShoppingCart, PauseCircle, Wallet, Receipt } from 'lucide-react';
 import { CartItemRow } from './CartItem';
 import type { CartItem } from '@types';
 import type { PausedCart } from '../types';
-import styles from '../pages/POSPage.module.css';
+import styles from '../pages/POSPage/POSPage.module.css';
 
 export function Cart({
   items,

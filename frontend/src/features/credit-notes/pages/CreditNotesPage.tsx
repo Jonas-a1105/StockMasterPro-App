@@ -9,8 +9,8 @@ import { useTheme } from '@contexts/ThemeContext';
 import { Plus, Eye, Users, DollarSign, RefreshCw } from 'lucide-react';
 import { useExchangeRate } from '@contexts/ExchangeRateContext';
 import { formatUsd } from '@shared/lib/format/currency';
-import { KpiGrid } from '@features/shared-ui/KpiGrid';
-import { Toolbar } from '@features/shared-ui/Toolbar';
+import { KpiGrid } from '@shared/ui';
+import { Toolbar } from '@shared/ui';
 import styles from './CreditNotesPage.module.css';
 import tableStyles from '@shared/ui/TableList/TableList.module.css';
 

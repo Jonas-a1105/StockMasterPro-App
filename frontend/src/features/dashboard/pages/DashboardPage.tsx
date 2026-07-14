@@ -2,7 +2,7 @@ import { useDashboard } from '../hooks/useDashboard';
 import { useExchangeRate } from '@contexts/ExchangeRateContext';
 import { useTheme } from '@contexts/ThemeContext';
 import { SkeletonKPI, SkeletonChart } from '@shared/ui/Skeleton';
-import { KpiGrid } from '@features/shared-ui/KpiGrid';
+import { KpiGrid } from '@shared/ui';
 import { SalesTrendChart } from '../components/SalesTrendChart';
 import { TopSellersDonut } from '../components/TopSellersDonut';
 import { RecentActivity } from '../components/RecentActivity';

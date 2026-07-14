@@ -2,7 +2,7 @@ import { createPortal } from 'react-dom';
 import { Printer, Plus } from 'lucide-react';
 import { formatUsd } from '@shared/lib/format/currency';
 import type { LastSale } from '../hooks/useCheckout';
-import styles from '../pages/POSPage.module.css';
+import styles from '../pages/POSPage/POSPage.module.css';
 
 export function CheckoutModal({
   lastSale,

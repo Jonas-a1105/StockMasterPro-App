@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Button, Card, CardHeader, CardTitle, CardBody, CardFooter, Badge, Input, Select, Text, EmptyState, FormField, Toolbar } from '@shared/ui';
-import { DataTable } from '@features/shared-ui';
+import { DataTable } from '@shared/ui';
 import { InventoryProductCard } from '@features/inventory/components/InventoryProductCard';
 import { ThemeProvider } from '@contexts/ThemeContext';
 import styles from './UIDevCatalog.module.css';

@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { KpiGrid } from '@features/shared-ui/KpiGrid';
+import { KpiGrid } from '@shared/ui';
 import { DollarSign, ShoppingCart, TrendingUp, ArrowUp, ArrowDown } from 'lucide-react';
 
 interface KpiBarProps {

@@ -1,0 +1,9 @@
+/* src/features/admin/pages/AdminTenantsPage/AdminTenantsPage.module.css */
+.container {
+  width: 100%;
+}
+
+.tableWrap {
+  overflow-x: auto;
+  width: 100%;
+}

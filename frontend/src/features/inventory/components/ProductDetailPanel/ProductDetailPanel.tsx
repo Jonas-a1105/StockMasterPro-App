@@ -14,7 +14,7 @@ import {
 import { Package } from 'lucide-react';
 import { useExchangeRate } from '@contexts/ExchangeRateContext';
 import { Card, Input, Skeleton, SkeletonTable, Button, Text, Heading } from '@shared/ui';
-import { DataTable } from '@features/shared-ui';
+import { DataTable } from '@shared/ui';
 import type { Product, InventoryMovement } from '@types';
 import styles from './ProductDetailPanel.module.css';
 

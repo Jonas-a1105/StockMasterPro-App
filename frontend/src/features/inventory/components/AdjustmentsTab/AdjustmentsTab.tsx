@@ -4,7 +4,7 @@ import { useToast } from '@contexts/ToastContext';
 import { useAuth } from '@contexts/AuthContext';
 import { useExchangeRate } from '@contexts/ExchangeRateContext';
 import { Button, Modal, ButtonLoader, Badge, FormField, Input, Select, SearchableSelect, Textarea, Text, Heading } from '@shared/ui';
-import { DataTable } from '@features/shared-ui';
+import { DataTable } from '@shared/ui';
 import { getInventoryProducts, getInventoryAdjustments, adjustStock } from '../../api/inventory.api';
 import type { Product } from '@types';
 

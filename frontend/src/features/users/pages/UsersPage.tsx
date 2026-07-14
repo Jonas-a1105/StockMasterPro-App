@@ -9,8 +9,8 @@ import { SkeletonTablePage } from '@shared/ui/Skeleton';
 import { useTheme } from '@contexts/ThemeContext';
 import type { TenantUser } from '@types';
 import { TabNav } from '@shared/ui/TabNav';
-import { KpiGrid } from '@features/shared-ui/KpiGrid';
-import { Toolbar } from '@features/shared-ui/Toolbar';
+import { KpiGrid } from '@shared/ui';
+import { Toolbar } from '@shared/ui';
 import styles from './UsersPage.module.css';
 import tableStyles from '@shared/ui/TableList/TableList.module.css';
 

@@ -1,5 +1,5 @@
 import { Search } from 'lucide-react';
-import styles from '../pages/POSPage.module.css';
+import styles from '../pages/POSPage/POSPage.module.css';
 
 export function ProductSearch({
   searchInputRef,

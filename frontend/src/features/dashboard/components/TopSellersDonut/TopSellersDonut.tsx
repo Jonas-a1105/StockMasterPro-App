@@ -1,7 +1,7 @@
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 import { useExchangeRate } from '@contexts/ExchangeRateContext';
 import { Card } from '@shared/ui/Card';
-import { DataTable } from '@features/shared-ui/DataTable';
+import { DataTable } from '@shared/ui';
 import { Text } from '@shared/ui/Text';
 
 const COLORS = ['#a3a3a3', '#22c55e', '#eab308', '#f97316', '#3b82f6'];

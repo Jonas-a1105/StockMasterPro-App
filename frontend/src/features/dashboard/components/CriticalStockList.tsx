@@ -1,5 +1,5 @@
 import { Card } from '@shared/ui/Card';
-import { DataTable } from '@features/shared-ui/DataTable';
+import { DataTable } from '@shared/ui';
 import { Text } from '@shared/ui/Text';
 
 export function CriticalStockList({ products }: { products: any[] }) {

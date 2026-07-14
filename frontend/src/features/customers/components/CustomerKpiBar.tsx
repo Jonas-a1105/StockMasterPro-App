@@ -1,4 +1,4 @@
-import { KpiGrid } from '@features/shared-ui/KpiGrid';
+import { KpiGrid } from '@shared/ui';
 import { Users, CreditCard, AlertTriangle, DollarSign } from 'lucide-react';
 
 interface CustomerKpiBarProps {

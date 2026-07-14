@@ -1,6 +1,6 @@
 import { formatUsd } from '@shared/lib/format/currency';
 import { Eye, Printer, FileText, Trash2, CreditCard, DollarSign, XCircle } from 'lucide-react';
-import { DataTable } from '@features/shared-ui/DataTable';
+import { DataTable } from '@shared/ui';
 import { Button } from '@shared/ui/Button';
 import { Modal } from '@shared/ui/Modal';
 import { Stack } from '@shared/ui/Stack';

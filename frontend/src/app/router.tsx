@@ -17,7 +17,7 @@ import {
   SkeletonCards,
 } from '@shared/ui/Skeleton';
 import { startOfflineSync } from '@shared/lib/sync/sync';
-import { SplashScreen } from '@features/shared-ui';
+import { SplashScreen } from '@shared/ui';
 import { PremiumLockScreen } from '@features/billing/components/PremiumLockScreen';
 import { ErrorBoundary } from '@shared/ui/ErrorBoundary';
 import { NotFoundPage } from '@pages/NotFoundPage';
@@ -100,10 +100,10 @@ const AgendaDigitalPage = lazy(() =>
   import('@features/agenda/pages/AgendaDigitalPage').then((m) => ({ default: m.AgendaDigitalPage }))
 );
 const AdminTenantsPage = lazy(() =>
-  import('@features/admin/pages/AdminTenantsPage').then((m) => ({ default: m.AdminTenantsPage }))
+  import('@features/admin/pages/AdminTenantsPage/AdminTenantsPage').then((m) => ({ default: m.AdminTenantsPage }))
 );
 const SuperAdminDashboard = lazy(() =>
-  import('@features/admin/pages/SuperAdminDashboard').then((m) => ({
+  import('@features/admin/pages/SuperAdminDashboard/SuperAdminDashboard').then((m) => ({
     default: m.SuperAdminDashboard,
   }))
 );
@@ -135,7 +135,7 @@ const ProductLotsPage = lazy(() =>
   }))
 );
 const FiscalPage = lazy(() =>
-  import('@features/fiscal/pages/FiscalPage').then((m) => ({ default: m.FiscalPage }))
+  import('@features/fiscal/pages/FiscalPage/FiscalPage').then((m) => ({ default: m.FiscalPage }))
 );
 const DeadProductsPage = lazy(() =>
   import('@features/reports/pages/DeadProductsPage').then((m) => ({ default: m.DeadProductsPage }))

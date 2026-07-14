@@ -3,9 +3,9 @@ import { api } from '@shared/lib/http/client';
 import { useToast } from '@contexts/ToastContext';
 import { Modal } from '@shared/ui/Modal';
 
-import { KpiGrid } from '@features/shared-ui/KpiGrid';
+import { KpiGrid } from '@shared/ui';
 import { TabNav } from '@shared/ui/TabNav';
-import { Toolbar } from '@features/shared-ui/Toolbar';
+import { Toolbar } from '@shared/ui';
 import { SkeletonTablePage } from '@shared/ui/Skeleton';
 import { useTheme } from '@contexts/ThemeContext';
 import { DollarSign, Calendar } from 'lucide-react';

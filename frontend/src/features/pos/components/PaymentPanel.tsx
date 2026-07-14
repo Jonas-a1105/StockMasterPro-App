@@ -12,7 +12,7 @@ import { useExchangeRate } from '@contexts/ExchangeRateContext';
 import { formatUsd } from '@shared/lib/format/currency';
 import type { PaymentMethod } from '../types';
 import type { Customer } from '@types';
-import styles from '../pages/POSPage.module.css';
+import styles from '../pages/POSPage/POSPage.module.css';
 
 export function PaymentPanel({
   subtotal,

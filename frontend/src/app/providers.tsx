@@ -6,7 +6,7 @@ import { ToastProvider } from '@contexts/ToastContext';
 import { ExchangeRateProvider } from '@contexts/ExchangeRateContext';
 import { Toaster } from 'sileo';
 import 'sileo/styles.css';
-import { SplashScreen } from '@features/shared-ui';
+import { SplashScreen } from '@shared/ui';
 import { AppRouter } from './router';
 import { QueryProvider } from '@shared/lib/query/QueryProvider';
 

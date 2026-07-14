@@ -3,8 +3,8 @@ import { api } from '@shared/lib/http/client';
 import { useToast } from '@contexts/ToastContext';
 
 import { TabNav } from '@shared/ui/TabNav';
-import { KpiGrid } from '@features/shared-ui/KpiGrid';
-import { Toolbar } from '@features/shared-ui/Toolbar';
+import { KpiGrid } from '@shared/ui';
+import { Toolbar } from '@shared/ui';
 import { SkeletonTablePage } from '@shared/ui/Skeleton';
 import { useTheme } from '@contexts/ThemeContext';
 import { Search, AlertTriangle, Package, PackageX, Eye } from 'lucide-react';

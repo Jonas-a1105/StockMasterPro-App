@@ -6,8 +6,8 @@ import { Button } from '@shared/ui/Button';
 
 import { SaleKpiBar } from '../components/SaleKpiBar';
 import { SaleDetailModal } from '../components/SaleDetailModal';
-import { Toolbar } from '@features/shared-ui/Toolbar';
-import { DataTable } from '@features/shared-ui/DataTable';
+import { Toolbar } from '@shared/ui';
+import { DataTable } from '@shared/ui';
 import { SkeletonTablePage } from '@shared/ui/Skeleton';
 import { Stack } from '@shared/ui/Stack';
 import { useTheme } from '@contexts/ThemeContext';

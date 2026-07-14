@@ -18,8 +18,8 @@ import {
   ArrowRightLeft,
 } from 'lucide-react';
 import { TabNav } from '@shared/ui/TabNav';
-import { KpiGrid } from '@features/shared-ui/KpiGrid';
-import { Toolbar } from '@features/shared-ui/Toolbar';
+import { KpiGrid } from '@shared/ui';
+import { Toolbar } from '@shared/ui';
 import { Modal } from '@shared/ui/Modal';
 import { useExchangeRate } from '@contexts/ExchangeRateContext';
 import { formatUsd } from '@shared/lib/format/currency';

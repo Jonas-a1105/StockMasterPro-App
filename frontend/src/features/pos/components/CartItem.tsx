@@ -1,7 +1,7 @@
 import { Minus, Plus, Trash2 } from 'lucide-react';
 import { useExchangeRate } from '@contexts/ExchangeRateContext';
 import type { CartItem as CartItemType } from '@types';
-import styles from '../pages/POSPage.module.css';
+import styles from '../pages/POSPage/POSPage.module.css';
 
 export function CartItemRow({
   item,

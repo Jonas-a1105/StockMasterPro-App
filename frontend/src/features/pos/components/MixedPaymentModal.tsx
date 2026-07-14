@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { Modal } from '@shared/ui/Modal';
 import { useExchangeRate } from '@contexts/ExchangeRateContext';
 import type { PaymentMethod } from '../types';
-import styles from '../pages/POSPage.module.css';
+import styles from '../pages/POSPage/POSPage.module.css';
 import { Plus, DollarSign, CreditCard, Landmark, SmartphoneNfc, Users } from 'lucide-react';
 
 const METHOD_CONFIG = {

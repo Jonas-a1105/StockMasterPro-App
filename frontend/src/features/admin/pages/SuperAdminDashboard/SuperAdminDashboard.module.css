@@ -1,0 +1,59 @@
+/* src/features/admin/pages/SuperAdminDashboard/SuperAdminDashboard.module.css */
+.container {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.kpiGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.chartsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+}
+
+.fullWidth {
+  grid-column: 1 / -1;
+}
+
+.barContainer {
+  flex: 1;
+  height: 24px;
+  overflow: hidden;
+}
+
+.barFill {
+  height: 100%;
+  transition: width 0.3s ease;
+  width: var(--bar-width);
+  background: var(--bar-bg);
+}
+
+.tableResponsive {
+  overflow-x: auto;
+  width: 100%;
+}
+
+/* Clases de intención para bordes de tarjetas KPI */
+.borderLeftPrimary {
+  border-left: 4px solid var(--border-main);
+}
+
+.borderLeftSuccess {
+  border-left: 4px solid var(--border-main);
+}
+
+.borderLeftWarning {
+  border-left: 4px solid var(--border-main);
+}
+
+.borderLeftDanger {
+  border-left: 4px solid var(--border-main);
+}
+
+.borderLeftInfo {
+  border-left: 4px solid var(--border-main);
+}

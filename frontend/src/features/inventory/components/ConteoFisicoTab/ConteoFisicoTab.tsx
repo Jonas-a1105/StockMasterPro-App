@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import { api } from '@shared/lib/http/client';
 import { useToast } from '@contexts/ToastContext';
 import { Button, Modal, ButtonLoader, Badge, FormField, Input, Select, ImportModal, Textarea, Text, Heading } from '@shared/ui';
-import { DataTable } from '@features/shared-ui';
+import { DataTable } from '@shared/ui';
 import { exportToExcel, type ColumnMapping } from '@shared/lib/excelHelper';
 import {
   FileText,

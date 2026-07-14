@@ -19,8 +19,8 @@ import {
   AlertCircle,
 } from 'lucide-react';
 import { TabNav } from '@shared/ui/TabNav';
-import { KpiGrid } from '@features/shared-ui/KpiGrid';
-import { Toolbar } from '@features/shared-ui/Toolbar';
+import { KpiGrid } from '@shared/ui';
+import { Toolbar } from '@shared/ui';
 import { Modal } from '@shared/ui/Modal';
 import styles from './ProductLotsPage.module.css';
 import tableStyles from '@shared/ui/TableList/TableList.module.css';

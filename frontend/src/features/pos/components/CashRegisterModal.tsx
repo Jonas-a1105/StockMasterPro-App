@@ -1,7 +1,7 @@
 import { createPortal } from 'react-dom';
 import { Wallet } from 'lucide-react';
 import { useExchangeRate } from '@contexts/ExchangeRateContext';
-import styles from '../pages/POSPage.module.css';
+import styles from '../pages/POSPage/POSPage.module.css';
 
 export function CashRegisterModal({
   show,

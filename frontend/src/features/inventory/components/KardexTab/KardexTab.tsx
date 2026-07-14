@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Package } from 'lucide-react';
 import { Button, Input, Badge, SkeletonTable, Heading, Text } from '@shared/ui';
-import { DataTable } from '@features/shared-ui';
+import { DataTable } from '@shared/ui';
 import { getInventoryProducts, getInventoryMovements } from '../../api/inventory.api';
 import type { Product, InventoryMovement } from '@types';
 
