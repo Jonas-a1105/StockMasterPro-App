@@ -1,8 +1,9 @@
 // src/features/inventory/components/ProductFilters/ProductFilters.tsx
 import { List, Grid, Upload, Download, Plus } from 'lucide-react';
-import { Input, Select, Button } from '@shared/ui';
+import { Input, SelectDropdown, Button } from '@shared/ui';
 import type { ViewMode } from '../../types';
 import styles from './ProductFilters.module.css';
+
 
 interface ProductFiltersProps {
   search: string;
@@ -44,18 +45,13 @@ export function ProductFilters({
             onChange={(e) => onSearchChange(e.target.value)}
           />
         </div>
-        <Select
+        <SelectDropdown
           value={warehouseFilter}
-          onChange={(e) => onWarehouseFilterChange(e.target.value)}
-          className="w64"
-        >
-          <option value="">Todos los almacenes</option>
-          {warehouses.map((w) => (
-            <option key={w.id} value={w.id}>
-              {w.name}
-            </option>
-          ))}
-        </Select>
+          onChange={onWarehouseFilterChange}
+          placeholder="Todos los almacenes"
+          options={warehouses.map((w) => ({ value: w.id, label: w.name }))}
+          className={styles.warehouseSelect}
+        />
       </div>
 
       {/* Grupo Derecha: Toggle Vista, Import/Export y Botón Añadir */}

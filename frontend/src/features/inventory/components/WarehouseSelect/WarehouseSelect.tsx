@@ -1,4 +1,5 @@
-import { Select } from '@shared/ui';
+import { SelectDropdown } from '@shared/ui';
+import styles from './WarehouseSelect.module.css';
 
 interface WarehouseSelectProps {
   value: string;
@@ -8,14 +9,12 @@ interface WarehouseSelectProps {
 
 export function WarehouseSelect({ value, onChange, warehouses }: WarehouseSelectProps) {
   return (
-    <Select
+    <SelectDropdown
       value={value}
       onChange={onChange}
-      options={[
-        { value: '', label: 'Todos los almacenes' },
-        ...warehouses.filter((w) => w.isActive).map((w) => ({ value: w.id, label: w.name })),
-      ]}
-      className="min-w-[160px]"
+      placeholder="Todos los almacenes"
+      options={warehouses.filter((w) => w.isActive).map((w) => ({ value: w.id, label: w.name }))}
+      className={styles.warehouseSelect}
     />
   );
 }
