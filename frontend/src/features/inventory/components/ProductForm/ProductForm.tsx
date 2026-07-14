@@ -92,7 +92,7 @@ export function ProductForm({
 
   return (
     <>
-      <Modal open={open && !showNewCategory} onClose={onClose} title={editingId ? 'Editar Producto' : 'Nuevo Producto'} wide>
+      <Modal open={open} onClose={onClose} title={editingId ? 'Editar Producto' : 'Nuevo Producto'} wide>
         <form onSubmit={handleSubmit}>
           <div className={styles.formGrid}>
             <div className={styles.colSpan1}>
