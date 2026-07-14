@@ -7,7 +7,7 @@
   text-align: center;
   background: var(--color-bg-hover);
   border-radius: var(--card-radius);
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   min-height: 200px;
 }
 
@@ -75,7 +75,7 @@
 .secondaryBtn {
   background: transparent;
   color: var(--color-text);
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
 }
 
 .secondaryBtn:hover {

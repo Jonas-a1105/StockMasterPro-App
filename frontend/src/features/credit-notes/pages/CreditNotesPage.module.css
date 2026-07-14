@@ -7,7 +7,7 @@
 .tableCard {
   background-color: var(--color-surface);
   border-radius: var(--card-radius);
-  box-shadow: 0 1px 3px rgb(0, 0, 0, 0.05);
+  box-shadow: var(--shadow-sm) ;
   overflow: hidden;
 }
 
@@ -77,7 +77,7 @@
   width: 30px;
   height: 30px;
   border-color: var(--color-border);
-  border-style: solid;
+  border-style: var(--border-style) ;
   border-radius: var(--card-radius);
   background: none;
   cursor: pointer;
@@ -126,7 +126,7 @@
 .field textarea {
   padding: 10px 12px;
   border-color: var(--color-border);
-  border-style: solid;
+  border-style: var(--border-style) ;
   border-radius: var(--card-radius);
   font-size: var(--font-size-sm);
   outline: none;
@@ -172,7 +172,7 @@
   align-items: center;
   gap: 4px;
   padding: 6px 12px;
-  border: 1px solid var(--color-primary);
+  border: var(--border-width) var(--border-style) var(--color-primary) ;
   border-radius: var(--card-radius);
   background: none;
   font-size: var(--font-size-caption);
@@ -197,7 +197,7 @@
   flex: 1;
   padding: 8px 10px;
   border-color: var(--color-border);
-  border-style: solid;
+  border-style: var(--border-style) ;
   border-radius: var(--card-radius);
   font-size: var(--font-size-sm);
   outline: none;
@@ -210,7 +210,7 @@
   width: 70px;
   padding: 8px 10px;
   border-color: var(--color-border);
-  border-style: solid;
+  border-style: var(--border-style) ;
   border-radius: var(--card-radius);
   font-size: var(--font-size-sm);
   outline: none;
@@ -223,7 +223,7 @@
   width: 100px;
   padding: 8px 10px;
   border-color: var(--color-border);
-  border-style: solid;
+  border-style: var(--border-style) ;
   border-radius: var(--card-radius);
   font-size: var(--font-size-sm);
   outline: none;
@@ -244,7 +244,7 @@
   width: 28px;
   height: 28px;
   border-color: var(--color-border);
-  border-style: solid;
+  border-style: var(--border-style) ;
   border-radius: var(--card-radius);
   background: none;
   cursor: pointer;
@@ -283,7 +283,7 @@
 .cancelBtn {
   padding: 10px 20px;
   border-color: var(--color-border);
-  border-style: solid;
+  border-style: var(--border-style) ;
   border-radius: var(--card-radius);
   background: none;
   font-size: var(--font-size-sm);

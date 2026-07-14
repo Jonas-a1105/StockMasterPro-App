@@ -39,7 +39,7 @@ import { api } from '@shared/lib/http/client';
 import { SkeletonReports } from '@shared/ui/Skeleton';
 import { TabNav } from '@shared/ui/TabNav';
 import { useTheme } from '@contexts/ThemeContext';
-import { formatUsd } from '@shared/lib/format/currency';
+export { formatUsd as formatUSD } from '@shared/lib/format/currency';
 import { exportToExcel } from '@shared/lib/excelHelper';
 import { exportToPdf } from '@shared/lib/print/pdfHelper';
 import { useToast } from '@contexts/ToastContext';

@@ -1,7 +1,7 @@
 .tableContainer {
   overflow-x: auto;
   border-radius: var(--border-radius-lg);
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   background: var(--color-surface);
 }
 
@@ -114,7 +114,7 @@
 .formFields textarea {
   padding: 8px 12px;
   border-radius: var(--border-radius-md);
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   background: var(--color-surface);
   color: var(--text-primary);
   font-size: var(--font-size-md);
@@ -135,7 +135,7 @@
 
 .cancelBtn {
   padding: 8px 20px;
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   border-radius: var(--border-radius-md);
   background: transparent;
   color: var(--text-primary);

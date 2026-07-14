@@ -13,16 +13,16 @@
   text-align: center;
   padding: 48px 32px;
   background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   border-radius: var(--border-radius-xl);
-  box-shadow: 0 4px 24px rgb(0, 0, 0, 0.08);
+  box-shadow: var(--shadow-lg) ;
 }
 
 .iconWrapper {
   display: inline-flex;
   width: 100px;
   height: 100px;
-  border-radius: 50%;
+  border-radius: var(--radius-full) ;
   background: rgb(239, 68, 68, 0.1);
   align-items: center;
   justify-content: center;
@@ -101,7 +101,7 @@
   align-items: center;
   gap: 8px;
   padding: 14px 28px;
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   border-radius: var(--border-radius-lg);
   background: var(--color-surface);
   color: var(--color-text);

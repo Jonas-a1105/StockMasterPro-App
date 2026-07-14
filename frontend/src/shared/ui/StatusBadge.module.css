@@ -29,88 +29,88 @@
 .badgeOk {
   background-color: var(--color-success-bg);
   color: var(--color-success);
-  border: 1px solid var(--color-success-bg);
+  border: var(--border-width) var(--border-style) var(--color-success-bg) ;
 }
 
 .badgeLow {
   background-color: var(--color-warning-bg);
   color: var(--color-warning);
-  border: 1px solid var(--color-warning-bg);
+  border: var(--border-width) var(--border-style) var(--color-warning-bg) ;
 }
 
 .badgeOut {
   background-color: var(--color-danger-bg);
   color: var(--color-danger);
-  border: 1px solid var(--color-danger-bg);
+  border: var(--border-width) var(--border-style) var(--color-danger-bg) ;
 }
 
 /* Generic semantic statuses */
 .badgePending {
   background-color: var(--color-warning-bg);
   color: var(--color-warning);
-  border: 1px solid var(--color-warning-bg);
+  border: var(--border-width) var(--border-style) var(--color-warning-bg) ;
 }
 
 .badgeDanger {
   background-color: var(--color-danger-bg);
   color: var(--color-danger);
-  border: 1px solid var(--color-danger-bg);
+  border: var(--border-width) var(--border-style) var(--color-danger-bg) ;
 }
 
 .badgeWarning {
   background-color: var(--color-warning-bg);
   color: var(--color-warning);
-  border: 1px solid var(--color-warning-bg);
+  border: var(--border-width) var(--border-style) var(--color-warning-bg) ;
 }
 
 .badgeSuccess {
   background-color: var(--color-success-bg);
   color: var(--color-success);
-  border: 1px solid var(--color-success-bg);
+  border: var(--border-width) var(--border-style) var(--color-success-bg) ;
 }
 
 .badgeInfo {
   background-color: var(--color-info-bg);
   color: var(--color-info);
-  border: 1px solid var(--color-info-bg);
+  border: var(--border-width) var(--border-style) var(--color-info-bg) ;
 }
 
 /* Order/Purchase statuses */
 .badgeCompleted {
   background-color: var(--color-success-bg);
   color: var(--color-success);
-  border: 1px solid var(--color-success-bg);
+  border: var(--border-width) var(--border-style) var(--color-success-bg) ;
 }
 
 .badgeApproved {
   background-color: var(--color-primary-light);
   color: var(--color-blue);
-  border: 1px solid var(--color-primary-light);
+  border: var(--border-width) var(--border-style) var(--color-primary-light) ;
 }
 
 .badgeRejected {
   background-color: var(--color-danger-bg);
   color: var(--color-danger);
-  border: 1px solid var(--color-danger-bg);
+  border: var(--border-width) var(--border-style) var(--color-danger-bg) ;
 }
 
 .badgeCancelled {
   background-color: var(--color-danger-bg);
   color: var(--color-danger);
-  border: 1px solid var(--color-danger-bg);
+  border: var(--border-width) var(--border-style) var(--color-danger-bg) ;
 }
 
 .badgePartiallyReceived {
   background-color: var(--color-primary-light);
   color: var(--color-blue);
-  border: 1px solid var(--color-primary-light);
+  border: var(--border-width) var(--border-style) var(--color-primary-light) ;
 }
 
 /* Dot indicators */
 .dot {
   width: 8px;
   height: 8px;
-  border-radius: 50%;
+  border-radius: var(--radius-full) ;
   flex-shrink: 0;
 }
 

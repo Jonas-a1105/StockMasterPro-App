@@ -9,7 +9,7 @@
 .dateInput {
   padding: 7px 12px;
   border-radius: var(--border-radius-md);
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   background: var(--color-surface);
   color: var(--color-text);
   font-size: var(--font-size-sm);
@@ -32,13 +32,13 @@
 .clearBtn {
   background: transparent;
   color: var(--color-text-muted);
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
 }
 
 .tableContainer {
   overflow-x: auto;
   border-radius: var(--border-radius-lg);
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   background: var(--color-surface);
 }
 

@@ -41,14 +41,24 @@
   --cyan-500: #06b6d4;
   --yellow-500: #eab308;
 
+  /* ─── Additional Missing Colors ─── */
+  --color-cyan: var(--cyan-500);
+  --color-yellow-500: var(--yellow-500);
+
   /* ─── Spacing Scale ─── */
+  --space-0-5: 2px;
   --space-1: 4px;
+  --space-1-5: 6px;
   --space-2: 8px;
+  --space-2-5: 10px;
   --space-3: 12px;
+  --space-3-5: 14px;
   --space-4: 16px;
   --space-5: 20px;
   --space-6: 24px;
+  --space-7: 28px;
   --space-8: 32px;
+  --space-9: 36px;
   --space-10: 40px;
   --space-12: 48px;
 
@@ -72,22 +82,25 @@
   /* ─── Typography Scale (Segoe UI stack & Minor Third ratio ~1.20) ─── */
   --font-family: 'Segoe UI', sans-serif;
   --font-family-mono: 'Segoe UI', sans-serif;
-  --font-size-2xs: 11px;
-  --font-size-xs: 12px;
-  --font-size-sm: 13px;
-  --font-size-md: 15px;
-  --font-size-lg: 17px;
-  --font-size-xl: 20px;
-  --font-size-2xl: 24px;
-  --font-size-3xl: 30px;
-  --font-size-4xl: 36px;
-  --font-size-5xl: 44px;
-  --font-size-hero: 64px;
-  --font-weight-light: 600;
-  --font-weight-normal: 600;
-  --font-weight-medium: 600;
+  --font-size-2xs: calc(var(--font-size-base) * 0.73);
+  --font-size-xs: calc(var(--font-size-base) * 0.8);
+  --font-size-sm: calc(var(--font-size-base) * 0.87);
+  --font-size-md: var(--font-size-base);
+  --font-size-lg: calc(var(--font-size-base) * 1.13);
+  --font-size-xl: calc(var(--font-size-base) * 1.33);
+  --font-size-2xl: calc(var(--font-size-base) * 1.6);
+  --font-size-3xl: calc(var(--font-size-base) * 2.0);
+  --font-size-4xl: calc(var(--font-size-base) * 2.4);
+  --font-size-5xl: calc(var(--font-size-base) * 2.93);
+  --font-size-hero: calc(var(--font-size-base) * 4.27);
+  --font-size-caption: var(--font-size-xs);
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
   --font-weight-semibold: 600;
-  --font-weight-bold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+  --font-weight-black: 900;
   --line-height-tight: 1.2;
   --line-height-snug: 1.35;
   --line-height-normal: 1.5;
@@ -120,16 +133,50 @@
 
   /* ─── Borders ─── */
   --border-width: 1px;
+  --border-width-fixed: 1px;
   --border-width-focus: 2px;
+  --border-style: solid;
 
   /* ─── Focus Ring ─── */
   --focus-ring-width: 3px;
   --focus-ring-color: var(--orange-500);
   --focus-ring-opacity: 0.15;
 
+  /* ─── Spinner / Lottie ─── */
+  --spinner-size: 18px;
+  --lottie-size: 48px;
+
   /* ─── Animation Durations ─── */
   --duration-instant: 0ms;
   --duration-fast: 100ms;
   --duration-base: 150ms;
   --duration-slow: 250ms;
+
+  /* ─── Neutral Scale (New naming) ─── */
+  --color-neutral-50:  var(--gray-50);
+  --color-neutral-100: var(--gray-100);
+  --color-neutral-200: var(--gray-200);
+  --color-neutral-700: var(--gray-700);
+  --color-neutral-800: var(--gray-800);
+  --color-neutral-850: #172033;
+  --color-neutral-900: var(--gray-900);
+
+  /* ─── Dark Scale ─── */
+  --color-dark-100: #f0f0f0;
+  --color-dark-300: #a0a0a0;
+  --color-dark-600: #3a3a3a;
+  --color-dark-700: #2a2a2a;
+  --color-dark-800: #1a1a1a;
+  --color-dark-850: #121212;
+  --color-dark-900: #101010;
+
+  /* ─── OLED ─── */
+  --color-oled-black: #000000;
+
+  /* ─── Brand Colors ─── */
+  --color-brand-orange-red: var(--orange-500);
+  --color-brand-orange:    var(--orange-400);
+  --color-brand-green:     var(--green-500);
+  --color-brand-teal:      var(--teal-500);
+  --color-brand-amber:     var(--amber-500);
 }

@@ -1,5 +1,5 @@
 .container {
-  padding: 24px;
+  padding: var(--space-6);
   max-width: 800px;
   margin: 0 auto;
 }
@@ -7,8 +7,8 @@
 .header {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 20px;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
 }
 
 .backBtn {
@@ -17,7 +17,7 @@
   justify-content: center;
   width: 36px;
   height: 36px;
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   border-radius: var(--btn-radius);
   background: var(--color-surface);
   color: var(--color-text);
@@ -32,7 +32,7 @@
 }
 
 .markAllBtn {
-  padding: 8px 16px;
+  padding: var(--space-2) var(--space-4);
   border: none;
   border-radius: var(--btn-radius);
   background: var(--color-primary);
@@ -44,19 +44,19 @@
 
 .kpiRow {
   display: flex;
-  gap: 16px;
-  margin-bottom: 20px;
+  gap: var(--space-4);
+  margin-bottom: var(--space-5);
 }
 
 .kpiCard {
   flex: 1;
-  padding: 16px;
+  padding: var(--space-4);
   border-radius: var(--card-radius);
   background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: var(--space-1);
 }
 
 .kpiValue {
@@ -80,13 +80,13 @@
 .filterBar {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 20px;
+  gap: var(--space-2);
+  margin-bottom: var(--space-5);
 }
 
 .filterBtn {
-  padding: 6px 14px;
-  border: 1px solid var(--color-border);
+  padding: var(--space-1-5) var(--space-3-5);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   border-radius: var(--border-radius-xl);
   background: var(--color-surface);
   color: var(--color-text);
@@ -104,17 +104,23 @@
 .list {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--space-2);
+}
+
+.listLoading {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2-5);
 }
 
 .item {
   display: flex;
   align-items: flex-start;
-  gap: 12px;
-  padding: 14px 16px;
+  gap: var(--space-3);
+  padding: var(--space-3-5) var(--space-4);
   border-radius: var(--border-radius-lg);
   background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   cursor: pointer;
   transition: background 0.2s;
 }
@@ -174,16 +180,16 @@
 .itemMeta {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--space-1-5);
   font-size: var(--font-size-xs);
   color: var(--color-text-muted);
-  margin-top: 4px;
+  margin-top: var(--space-1);
 }
 
 .dot {
   width: 6px;
   height: 6px;
-  border-radius: 50%;
+  border-radius: var(--radius-full) ;
   background: var(--color-primary);
 }
 
@@ -209,7 +215,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
-  padding: 60px 20px;
+  gap: var(--space-3);
+  padding: 60px var(--space-5);
   color: var(--color-text-muted);
 }

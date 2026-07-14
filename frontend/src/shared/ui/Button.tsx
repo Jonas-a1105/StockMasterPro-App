@@ -35,7 +35,7 @@ export function Button({
       ) : icon ? (
         <span className={styles.iconWrap}>{icon}</span>
       ) : null}
-      {children && <span>{children}</span>}
+      {children}
     </button>
   );
 }

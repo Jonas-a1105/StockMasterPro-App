@@ -11,7 +11,7 @@
 
 .posCard:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--shadow-lg) ;
 }
 
 .posLocked {
@@ -43,11 +43,11 @@
 
 .posCartBadge {
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: var(--space-2);
+  right: var(--space-2);
   width: 22px;
   height: 22px;
-  border-radius: 50%;
+  border-radius: var(--radius-full) ;
   background-color: var(--color-primary);
   color: white;
   font-size: var(--font-size-xs);
@@ -55,19 +55,19 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 6px rgba(240, 90, 40, 0.4);
+  box-shadow: 0 2px 6px color-mix(in srgb, var(--color-primary) 40%, transparent) ;
   z-index: 10;
 }
 
 .posBadge {
   position: absolute;
-  top: 8px;
-  left: 8px;
-  padding: 3px 8px;
+  top: var(--space-2);
+  left: var(--space-2);
+  padding: var(--space-1) var(--space-2);
   border-radius: var(--border-radius-sm);
   display: flex;
   align-items: center;
-  gap: 3px;
+  gap: var(--space-1);
   font-size: var(--font-size-2xs);
   font-weight: bold;
   backdrop-filter: blur(8px);
@@ -103,10 +103,10 @@
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-bold);
   color: var(--color-text);
-  margin-top: 4px;
+  margin-top: var(--space-1);
   display: flex;
   align-items: center;
-  gap: 3px;
+  gap: var(--space-1);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -117,7 +117,7 @@
   padding: 0 !important;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--space-2);
 }
 
 .posPriceBsRow {
@@ -140,7 +140,7 @@
 
 .posActionsRow {
   display: flex;
-  gap: 6px;
+  gap: var(--space-1);
 }
 
 .posAddBtn {
@@ -155,7 +155,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
+  gap: var(--space-1);
   height: 28px;
   transition: opacity 0.15s ease;
 }
@@ -182,7 +182,7 @@
 
 .inventoryCard:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--shadow-lg) ;
 }
 
 .inventoryImageContainer {
@@ -206,9 +206,9 @@
 
 .badgeOutOfStock {
   position: absolute;
-  top: 8px;
-  right: 8px;
-  padding: 3px 8px;
+  top: var(--space-2);
+  right: var(--space-2);
+  padding: var(--space-1) var(--space-2);
   border-radius: var(--border-radius-sm);
   background-color: rgba(220, 38, 38, 0.9);
   color: white;
@@ -219,15 +219,15 @@
 
 .badgeLowStock {
   position: absolute;
-  top: 8px;
-  right: 8px;
-  padding: 3px 8px;
+  top: var(--space-2);
+  right: var(--space-2);
+  padding: var(--space-1) var(--space-2);
   border-radius: var(--border-radius-sm);
   background-color: rgba(220, 38, 38, 0.15);
   color: var(--color-danger);
   font-size: var(--font-size-2xs);
   font-weight: bold;
-  border: 2px solid var(--color-danger);
+  border: var(--border-width-focus) var(--border-style) var(--color-danger) ;
 }
 
 .inventoryContent {
@@ -253,7 +253,7 @@
 }
 
 .inventoryStatusBadge {
-  padding: 2px 8px;
+  padding: 2px var(--space-2);
   border-radius: var(--radius-full);
   font-size: var(--font-size-2xs);
   font-weight: var(--font-weight-semibold);
@@ -274,10 +274,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  padding: 8px;
+  gap: var(--space-1);
+  padding: var(--space-2);
   background: none;
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   border-radius: var(--btn-radius);
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);

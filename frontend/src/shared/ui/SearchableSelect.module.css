@@ -11,13 +11,14 @@
 }
 
 .inputField {
+  --border-width: var(--border-width-fixed);
   width: 100%;
   height: 38px;
   padding: 0 36px 0 12px;
   font-size: var(--font-size-sm);
   color: var(--color-text);
   background-color: var(--color-surface);
-  border: 1px solid var(--color-border-input);
+  border: var(--border-width) var(--border-style) var(--color-border-input) ;
   border-radius: var(--input-radius) !important;
   outline: none;
   transition: all 0.15s ease-in-out;
@@ -58,7 +59,7 @@
 .chevronBtn:hover {
   color: var(--color-text);
   transform: none !important;
-  box-shadow: none !important;
+  box-shadow: none;
 }
 
 .chevronIcon {
@@ -75,9 +76,9 @@
   left: 0;
   right: 0;
   background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   border-radius: var(--card-radius);
-  box-shadow: 0 10px 25px rgb(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-lg) ;
   z-index: 250;
   overflow: hidden;
   animation: slideDown 0.15s ease-out;
@@ -121,7 +122,7 @@
 .optionItem:hover {
   background-color: var(--color-bg-hover);
   transform: none !important;
-  box-shadow: none !important;
+  box-shadow: none;
 }
 
 .optionActive {

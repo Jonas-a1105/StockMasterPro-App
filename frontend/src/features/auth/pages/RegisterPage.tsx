@@ -1,8 +1,14 @@
 import React, { useState } from 'react';
 import { useAuth } from '@contexts/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
-import { ButtonLoader } from '@shared/ui/ButtonLoader';
 import { Eye, EyeOff, Check, X } from 'lucide-react';
+import { Button } from '@shared/ui/Button';
+import { Input } from '@shared/ui/Input';
+import { FormField } from '@shared/ui/FormField';
+import { Card, CardTitle } from '@shared/ui/Card';
+import { Text } from '@shared/ui/Text';
+import { Heading } from '@shared/ui/Heading';
+import { AppLogo } from '@shared/ui/AppLogo';
 import styles from './AuthPage.module.css';
 
 export function RegisterPage() {
@@ -20,7 +26,6 @@ export function RegisterPage() {
     e.preventDefault();
     setError('');
 
-    // Validar contraseña
     const isPassValid = password.length >= 8 && /[A-Z]/.test(password) && /[0-9]/.test(password);
     if (!isPassValid) {
       setError('La contraseña debe cumplir con todos los requisitos de criptografía.');
@@ -38,7 +43,6 @@ export function RegisterPage() {
     }
   };
 
-  // Validación de requisitos en tiempo real
   const checks = {
     length: password.length >= 8,
     upper: /[A-Z]/.test(password),
@@ -48,148 +52,71 @@ export function RegisterPage() {
   const passedCount = password.length === 0 ? 0 : Object.values(checks).filter(Boolean).length;
 
   let strengthLabel = 'Sin_Datos';
-  let strengthColor = '#666666';
-  let strengthWidth = '0%';
   let strengthBarColor = '#141414';
 
   if (password.length > 0) {
     if (passedCount === 1) {
       strengthLabel = 'Clave_Insegura';
-      strengthColor = '#f87171';
-      strengthWidth = '33%';
       strengthBarColor = '#dc2626';
     } else if (passedCount === 2) {
       strengthLabel = 'Riesgo_Moderado';
-      strengthColor = '#fb923c';
-      strengthWidth = '66%';
       strengthBarColor = '#f97316';
     } else if (passedCount === 3) {
       strengthLabel = 'Criptografía_Fuerte';
-      strengthColor = '#9ee63c';
-      strengthWidth = '100%';
       strengthBarColor = '#9ee63c';
     }
   }
 
   return (
     <div className={styles.authContainer}>
-      {/* CONTENEDOR DE ENCABEZADO CENTRAL */}
       <div className={`${styles.authHeader} ${styles.flexInline} ${styles.mb8}`}>
-        <svg
-          viewBox="0 0 240 240"
-          fill="none"
-          width="84"
-          height="84"
-          className={styles.overflowVisible}
-        >
-          <path
-            d="M 65 90 C 40 90, 40 115, 60 120 C 80 125, 80 150, 55 150 L 85 85 L 105 125 L 125 85 L 125 150 H 185 V 115 H 135 V 150"
-            fill="none"
-            stroke="#ffffff"
-            strokeWidth="5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <path
-            d="M 145 110 L 140 97 L 151 102 L 160 88 L 169 102 L 180 97 L 175 110 Z"
-            fill="none"
-            stroke="#9ee63c"
-            strokeWidth="3"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <text
-            x="144"
-            y="141"
-            fill="#9ee63c"
-            fontSize="16"
-            fontWeight="900"
-            fontFamily="system-ui, -apple-system, sans-serif"
-            letterSpacing="0.05em"
-          >
-            PRO
-          </text>
-        </svg>
+        <AppLogo size={84} className={styles.logoRegister} />
       </div>
-      <h1 className={styles.headerTitle}>¡Bienvenido!</h1>
+      <Heading variant="h1" className={styles.headerTitle}>¡Bienvenido!</Heading>
 
-      <div className={`${styles.authCard} ${styles.borderColor222}`}>
-        <div className={styles.sectionHeader}>
-          <div className={styles.indicatorRow}>
-            <div className={styles.indicatorDotRegister} />
-            <span className={styles.indicatorText}>PROVISION // REGISTER_NODE</span>
-          </div>
-          <h2 className={styles.title}>Alta de Nodo Operativo</h2>
-        </div>
+      <Card className={`${styles.authCard} ${styles.borderColor222}`} padding="lg">
+        <CardTitle className={styles.title}>Alta de Nodo Operativo</CardTitle>
 
         {error && <div className={styles.error}>{error}</div>}
 
         <form onSubmit={handleSubmit} className={styles.flexColumnGap16}>
-          {/* Nombre de la Empresa */}
-          <div className={styles.field}>
-            <label
-              className={`${styles.fontSize10} ${styles.fontMono} ${styles.colorMuted} ${styles.textTransformNone} ${styles.letterSpacing05}`}
-            >
-              Nombre de la Empresa
-            </label>
-            <input
+          <FormField label="Nombre de la Empresa">
+            <Input
               type="text"
               value={tenantName}
               onChange={(e) => setTenantName(e.target.value)}
               required
-              className={styles.input}
               placeholder="Mi Tienda"
             />
-          </div>
+          </FormField>
 
-          {/* Nombre del Operador */}
-          <div className={styles.field}>
-            <label
-              className={`${styles.fontSize10} ${styles.fontMono} ${styles.colorMuted} ${styles.textTransformNone} ${styles.letterSpacing05}`}
-            >
-              Nombre del Operador
-            </label>
-            <input
+          <FormField label="Nombre del Operador">
+            <Input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
-              className={styles.input}
               placeholder="Ej. Jonás Mendoza"
             />
-          </div>
+          </FormField>
 
-          {/* Correo Institucional */}
-          <div className={styles.field}>
-            <label
-              className={`${styles.fontSize10} ${styles.fontMono} ${styles.colorMuted} ${styles.textTransformNone} ${styles.letterSpacing05}`}
-            >
-              Correo Institucional
-            </label>
-            <input
+          <FormField label="Correo Institucional">
+            <Input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className={styles.input}
               placeholder="operador@empresa.com"
             />
-          </div>
+          </FormField>
 
-          {/* Establecer Contraseña Maestra */}
-          <div className={styles.field}>
-            <label
-              className={`${styles.fontSize10} ${styles.fontMono} ${styles.colorMuted} ${styles.textTransformNone} ${styles.letterSpacing05}`}
-            >
-              Establecer Contraseña Maestra
-            </label>
+          <FormField label="Establecer Contraseña Maestra">
             <div className={styles.inputWrap}>
-              <input
+              <Input
                 type={showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className={styles.input}
                 placeholder="••••••••"
               />
               <button
@@ -201,9 +128,8 @@ export function RegisterPage() {
                 {showPassword ? <EyeOff size={14} /> : <Eye size={14} />}
               </button>
             </div>
-          </div>
+          </FormField>
 
-          {/* Fuerza de Clave */}
           <div className={`${styles.field} ${styles.mb8}`}>
             <div className={styles.strengthHeader}>
               <span>Seguridad de Clave</span>
@@ -214,80 +140,58 @@ export function RegisterPage() {
             <div className={styles.strengthBarContainer}>
               <div
                 className={styles.strengthBarFill}
-                style={{ '--strength-width': strengthWidth, '--strength-color': strengthBarColor }}
+                style={{ '--strength-width': passedCount === 0 ? '0%' : passedCount === 1 ? '33%' : passedCount === 2 ? '66%' : '100%', '--strength-color': strengthBarColor }}
               />
             </div>
           </div>
 
-          {/* Lista de Requisitos */}
           <div className={styles.requirementsList}>
-            <div
-              className={`${styles.requirementRow} ${checks.length ? styles.requirementRowActive : ''}`}
-            >
+            <div className={`${styles.requirementRow} ${checks.length ? styles.requirementRowActive : ''}`}>
               <div className={styles.reqIcon}>
-                {checks.length ? (
-                  <Check size={12} className={styles.colorSuccess} />
-                ) : (
-                  <X size={12} className={styles.colorDanger} />
-                )}
+                {checks.length ? <Check size={12} className={styles.colorSuccess} /> : <X size={12} className={styles.colorDanger} />}
               </div>
               <span>Mínimo 8 caracteres obligatorios</span>
             </div>
 
-            <div
-              className={`${styles.requirementRow} ${checks.upper ? styles.requirementRowActive : ''}`}
-            >
+            <div className={`${styles.requirementRow} ${checks.upper ? styles.requirementRowActive : ''}`}>
               <div className={styles.reqIcon}>
-                {checks.upper ? (
-                  <Check size={12} className={styles.colorSuccess} />
-                ) : (
-                  <X size={12} className={styles.colorDanger} />
-                )}
+                {checks.upper ? <Check size={12} className={styles.colorSuccess} /> : <X size={12} className={styles.colorDanger} />}
               </div>
               <span>Incluir al menos una letra mayúscula</span>
             </div>
 
-            <div
-              className={`${styles.requirementRow} ${checks.number ? styles.requirementRowActive : ''}`}
-            >
+            <div className={`${styles.requirementRow} ${checks.number ? styles.requirementRowActive : ''}`}>
               <div className={styles.reqIcon}>
-                {checks.number ? (
-                  <Check size={12} className={styles.colorSuccess} />
-                ) : (
-                  <X size={12} className={styles.colorDanger} />
-                )}
+                {checks.number ? <Check size={12} className={styles.colorSuccess} /> : <X size={12} className={styles.colorDanger} />}
               </div>
               <span>Incluir al menos un dígito numérico</span>
             </div>
           </div>
 
-          {/* Botón de Envío Verde */}
-          <button
+          <Button
             type="submit"
-            disabled={loading}
-            className={`${styles.submitBtn} ${styles.submitBtnRegister} ${styles.btnShimmer}`}
+            variant="primary"
+            size="lg"
+            loading={loading}
+            className={`${styles.submitBtn} ${styles.submitBtnRegister}`}
           >
-            {loading ? <ButtonLoader /> : 'Dar de Alta Operador ➔'}
-          </button>
+            Dar de Alta Operador
+          </Button>
         </form>
-      </div>
+      </Card>
 
-      {/* ENLACES INFERIORES */}
       <div className={styles.footerLinks}>
-        <p className={`${styles.m0} ${styles.fontSize11} ${styles.colorMuted}`}>
+        <Text variant="caption" color="muted">
           ¿Ya tienes una cuenta?{' '}
-          <Link
-            to="/login"
-            className={`${styles.footerLinkAccent} ${styles.footerLinkAccentLogin}`}
-          >
+          <Link to="/login" className={`${styles.footerLinkAccent} ${styles.footerLinkAccentLogin}`}>
             Inicia Sesión
           </Link>
-        </p>
-        <p className={`${styles.mt12} ${styles.fontSize11}`}>
+        </Text>
+        <Text variant="caption" className={styles.mt12}>
           <Link to="/" className={`${styles.colorMuted} ${styles.textDecorationNone}`}>
             ➔ Volver al Inicio (Landing)
           </Link>
-        </p>
+        </Text>
       </div>
     </div>
   );

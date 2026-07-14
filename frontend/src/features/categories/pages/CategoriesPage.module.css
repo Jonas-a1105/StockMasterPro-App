@@ -43,7 +43,7 @@
   gap: 8px;
   padding: 8px 14px;
   background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   border-radius: var(--border-radius-lg);
   margin-bottom: 16px;
 }
@@ -76,7 +76,7 @@
 
 .tableWrapper {
   background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   border-radius: var(--card-radius);
   overflow: hidden;
 }
@@ -159,7 +159,7 @@
   border-radius: var(--card-radius);
   width: 420px;
   max-width: 90vw;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--shadow-xl) ;
 }
 
 .modalHeader {
@@ -203,7 +203,7 @@
 .input {
   width: 100%;
   padding: 10px 14px;
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   border-radius: var(--btn-radius);
   font-size: var(--font-size-md);
   outline: none;
@@ -225,7 +225,7 @@
 
 .cancelBtn {
   padding: 8px 18px;
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   border-radius: var(--btn-radius);
   background: transparent;
   color: var(--color-text);

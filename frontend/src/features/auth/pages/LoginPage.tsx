@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
 import { useAuth } from '@contexts/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
-import { ButtonLoader } from '@shared/ui/ButtonLoader';
+import { Button } from '@shared/ui/Button';
+import { Input } from '@shared/ui/Input';
+import { FormField } from '@shared/ui/FormField';
+import { Card, CardTitle } from '@shared/ui/Card';
+import { Text } from '@shared/ui/Text';
+import { Heading } from '@shared/ui/Heading';
+import { AppLogo } from '@shared/ui/AppLogo';
 import { Eye, EyeOff, User } from 'lucide-react';
 import styles from './AuthPage.module.css';
 
@@ -36,106 +42,50 @@ export function LoginPage() {
 
   return (
     <div className={styles.authContainer}>
-      {/* CONTENEDOR DE ENCABEZADO CENTRAL */}
       <div className={styles.authHeader}>
-        <div className={styles.logoBox}>
-          <svg
-            viewBox="0 0 240 240"
-            fill="none"
-            width="84"
-            height="84"
-            className={styles.overflowVisible}
-          >
-            <path
-              d="M 65 90 C 40 90, 40 115, 60 120 C 80 125, 80 150, 55 150 L 85 85 L 105 125 L 125 85 L 125 150 H 185 V 115 H 135 V 150"
-              fill="none"
-              stroke="#ffffff"
-              strokeWidth="5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <path
-              d="M 145 110 L 140 97 L 151 102 L 160 88 L 169 102 L 180 97 L 175 110 Z"
-              fill="none"
-              stroke="var(--color-primary, #f05a28)"
-              strokeWidth="3"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <text
-              x="144"
-              y="141"
-              fill="var(--color-primary, #f05a28)"
-              fontSize="16"
-              fontWeight="900"
-              fontFamily="system-ui, -apple-system, sans-serif"
-              letterSpacing="0.05em"
-            >
-              PRO
-            </text>
-          </svg>
-        </div>
-        <h1 className={styles.headerTitle}>¡Bienvenido!</h1>
+        <AppLogo size={84} className={styles.logo} />
+        <Heading variant="h1" className={styles.headerTitle}>¡Bienvenido!</Heading>
       </div>
 
-      {/* TARJETA PRINCIPAL */}
-      <div className={styles.authCard}>
-        <div className={styles.sectionHeader}>
-          <div className={styles.indicatorRow}>
-            <div className={styles.indicatorDot} />
-            <span className={styles.indicatorText}>GATEWAY // SECURE_ACCESS</span>
-          </div>
-          <h2 className={styles.title}>Acceso al Sistema Central</h2>
-        </div>
+      <Card className={styles.authCard} padding="lg">
+        <CardTitle className={styles.title}>Acceso al Sistema Central</CardTitle>
 
         {error && <div className={styles.error}>{error}</div>}
 
         <form onSubmit={handleSubmit} className={styles.flexColumnGap16}>
-          {/* Identificador */}
-          <div className={styles.field}>
-            <div className={styles.fieldHeader}>
-              <label>Identificador de Usuario</label>
-              <User size={14} className={styles.colorIcon} />
-            </div>
-            <input
+          <FormField label="Identificador de Usuario">
+            <Input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className={styles.input}
               placeholder="usuario@empresa.com"
+              leftIcon={<User size={14} />}
             />
-          </div>
+          </FormField>
 
-          {/* Clave Criptográfica */}
-          <div className={styles.field}>
-            <div className={styles.fieldHeader}>
-              <label>Clave Criptográfica</label>
-              <Link to="/forgot-password" className={styles.forgotLink}>
-                ¿olvidó su clave?
-              </Link>
-            </div>
+          <FormField label="Clave Criptográfica">
             <div className={styles.inputWrap}>
-              <input
+              <Input
                 type={showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className={styles.input}
                 placeholder="••••••••"
+                rightIcon={
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className={styles.eyeBtn}
+                    tabIndex={-1}
+                  >
+                    {showPassword ? <EyeOff size={14} /> : <Eye size={14} />}
+                  </button>
+                }
               />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className={styles.eyeBtn}
-                tabIndex={-1}
-              >
-                {showPassword ? <EyeOff size={14} /> : <Eye size={14} />}
-              </button>
             </div>
-          </div>
+          </FormField>
 
-          {/* Checkbox */}
           <label className={styles.checkboxLabel}>
             <input
               type="checkbox"
@@ -161,33 +111,30 @@ export function LoginPage() {
             </span>
           </label>
 
-          {/* Botón de Envío */}
-          <button
+          <Button
             type="submit"
-            disabled={loading}
-            className={`${styles.submitBtn} ${styles.btnShimmer}`}
+            variant="primary"
+            size="lg"
+            loading={loading}
+            className={styles.submitBtn}
           >
-            {loading ? <ButtonLoader /> : 'Autenticar Estación ➔'}
-          </button>
+            Autenticar Estación
+          </Button>
         </form>
-      </div>
+      </Card>
 
-      {/* ENLACES INFERIORES */}
       <div className={styles.footerLinks}>
-        <p className={`${styles.m0} ${styles.fontSize11} ${styles.colorMuted}`}>
+        <Text variant="caption" color="muted">
           ¿No tienes una cuenta?{' '}
-          <Link
-            to="/register"
-            className={`${styles.footerLinkAccent} ${styles.footerLinkAccentRegister}`}
-          >
+          <Link to="/register" className={`${styles.footerLinkAccent} ${styles.footerLinkAccentRegister}`}>
             Regístrate
           </Link>
-        </p>
-        <p className={`${styles.mt12} ${styles.fontSize11}`}>
+        </Text>
+        <Text variant="caption" className={styles.mt12}>
           <Link to="/" className={`${styles.textDecorationNone} ${styles.colorMuted}`}>
             ➔ Volver al Inicio (Landing)
           </Link>
-        </p>
+        </Text>
       </div>
     </div>
   );

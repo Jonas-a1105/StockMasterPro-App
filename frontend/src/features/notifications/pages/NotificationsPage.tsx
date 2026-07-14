@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Bell, TriangleAlert, CheckCircle, MessageSquare, BellRing, ArrowLeft } from 'lucide-react';
 import { getNotifications, markAsRead, markAllAsRead } from '@shared/lib/http/notifications.api';
 import { useToast } from '@contexts/ToastContext';
+import { Skeleton } from '@shared/ui/Skeleton';
 import styles from './NotificationsPage.module.css';
 
 interface Notification {
@@ -126,8 +127,12 @@ export function NotificationsPage() {
 
       <div className={styles.list}>
         {loading ? (
-          <div className={styles.empty}>
-            <span>Cargando...</span>
+          <div className={styles.listLoading}>
+            <Skeleton height={70} width="100%" borderRadius={8} />
+            <Skeleton height={70} width="100%" borderRadius={8} />
+            <Skeleton height={70} width="100%" borderRadius={8} />
+            <Skeleton height={70} width="100%" borderRadius={8} />
+            <Skeleton height={70} width="100%" borderRadius={8} />
           </div>
         ) : filtered.length === 0 ? (
           <div className={styles.empty}>

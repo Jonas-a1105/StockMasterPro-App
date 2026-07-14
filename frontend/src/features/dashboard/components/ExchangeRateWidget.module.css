@@ -11,7 +11,7 @@
 .panel {
   width: 380px;
   background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   border-radius: var(--card-radius);
   box-shadow: var(--shadow-lg) !important;
   display: flex;
@@ -108,7 +108,7 @@
 .variationBadge {
   background-color: var(--color-success-bg);
   color: var(--color-success);
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   padding: 3px 10px;
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-bold);
@@ -156,7 +156,7 @@
   height: 112px;
   background-color: var(--color-bg);
   padding: 8px;
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   border-radius: var(--card-radius);
 }
 
@@ -206,7 +206,7 @@
 /* Calculator panel */
 .calcDisplay {
   background-color: var(--color-bg);
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   border-radius: var(--card-radius);
   padding: 28px 16px 12px;
   position: relative;
@@ -223,7 +223,7 @@
   font-weight: var(--font-weight-semibold);
   background-color: var(--color-bg-hover);
   padding: 2px 8px;
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   border-radius: var(--border-radius-sm);
 }
 
@@ -285,7 +285,7 @@
 
 .key {
   background-color: var(--color-bg-hover) !important;
-  border: 1px solid var(--color-border) !important;
+  border: var(--border-width) var(--border-style) var(--color-border)  !important;
   color: var(--color-text) !important;
   padding: 12px 0;
   cursor: pointer;
@@ -346,7 +346,7 @@
 .calcSubmitBtn {
   width: 100%;
   background-color: var(--color-primary) !important;
-  border: 1px solid var(--color-primary) !important;
+  border: var(--border-width) var(--border-style) var(--color-primary)  !important;
   color: white !important;
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);
@@ -386,7 +386,7 @@
   width: 26px;
   height: 22px;
   background-color: var(--color-bg-hover) !important;
-  border: 1px solid var(--color-border) !important;
+  border: var(--border-width) var(--border-style) var(--color-border)  !important;
   color: var(--color-text-muted) !important;
   cursor: pointer;
   display: flex;

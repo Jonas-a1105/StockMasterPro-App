@@ -7,7 +7,7 @@
   align-items: center;
   justify-content: center;
   padding: 20px;
-  animation: fadeIn 0.15s ease;
+  animation: fadeIn var(--transition-base);
 }
 
 @keyframes fadeIn {
@@ -22,13 +22,13 @@
 .modal {
   background-color: var(--color-surface);
   border-radius: var(--card-radius);
-  box-shadow: 0 8px 30px rgb(0, 0, 0, 0.15);
+  box-shadow: var(--shadow-xl) ;
   width: 100%;
   max-width: 600px;
   max-height: 85vh;
   overflow-y: auto;
   padding: 24px;
-  animation: slideUp 0.2s ease;
+  animation: slideUp var(--transition-base);
 }
 
 .modalWide {
@@ -37,6 +37,14 @@
 
 .modalXWide {
   max-width: 1280px;
+}
+
+.modalNarrow {
+  max-width: 400px;
+}
+
+.modalNoPadding {
+  padding: 0;
 }
 
 @keyframes slideUp {
@@ -58,8 +66,8 @@
 }
 
 .title {
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-bold);
+  font-size: var(--modal-title-size);
+  font-weight: var(--modal-title-weight);
   color: var(--color-text);
   margin: 0;
 }
@@ -67,7 +75,7 @@
 .closeBtn {
   width: 32px;
   height: 32px;
-  border-radius: 50%;
+  border-radius: var(--radius-full) ;
   border: none;
   background: none;
   cursor: pointer;
@@ -75,7 +83,7 @@
   align-items: center;
   justify-content: center;
   color: var(--color-text-muted);
-  transition: all 0.2s ease;
+  transition: var(--transition-base);
   flex-shrink: 0;
 }
 

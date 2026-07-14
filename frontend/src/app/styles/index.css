@@ -145,3 +145,27 @@ textarea {
     scroll-behavior: auto;
   }
 }
+
+/* ─── Global Input & Search Bar Border Unification ─── */
+html body input,
+html body textarea,
+html body select,
+html body [class*='inputField' i],
+html body [class*='search' i] {
+  --border-width: var(--border-width-fixed);
+  --color-border: var(--color-border-input);
+  border: var(--border-width) var(--border-style) var(--color-border-input);
+  background-color: var(--color-bg-input);
+  color: var(--color-text);
+  transition: border-color var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
+}
+
+html body input:focus,
+html body textarea:focus,
+html body select:focus,
+html body [class*='inputField' i]:focus,
+html body [class*='search' i]:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 15%, transparent);
+}

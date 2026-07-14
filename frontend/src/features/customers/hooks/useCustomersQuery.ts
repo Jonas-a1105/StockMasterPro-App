@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { queryKeys } from '../queryKeys';
+import { queryKeys } from '@shared/lib/query';
 import { api } from '@shared/lib/http/client';
 
 export function useCustomersQuery(params?: Record<string, unknown>) {

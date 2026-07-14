@@ -6,6 +6,7 @@ import { DashboardLayout } from '@features/dashboard/components/DashboardLayout'
 import { LicenseBlock } from '@shared/ui/LicenseBlock';
 import { PremiumActivationAnimation } from '@shared/ui/PremiumActivationAnimation';
 import { LoadingDots } from '@shared/ui/LoadingDots';
+import styles from './router.module.css';
 import {
   SkeletonTablePage,
   SkeletonReports,
@@ -148,17 +149,7 @@ const ResetPasswordPage = lazy(() =>
 
 function FullScreenLoader({ text }: { text: string }) {
   return (
-    <div
-      style={{
-        position: 'fixed',
-        inset: 0,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: 'var(--color-bg)',
-        zIndex: 99999,
-      }}
-    >
+    <div className={styles.fullScreenLoader}>
       <LoadingDots text={text} />
     </div>
   );

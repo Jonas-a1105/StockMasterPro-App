@@ -12,140 +12,172 @@
 :root,
 [data-theme='light'] {
   /* Backgrounds */
-  --color-bg:            var(--gray-50);   /* #f8fafc */
-  --color-bg-elevated:   var(--gray-0);
-  --color-bg-hover:      var(--gray-100);
-  --color-bg-active:     var(--gray-200);
-  --color-bg-input:      var(--gray-0);
+  --color-bg:            #ededed;   /* Template bg-main */
+  --color-bg-elevated:   #ffffff;   /* Template bg-card */
+  --color-bg-hover:      #e4e4e4;   /* Sutilmente más oscuro para contraste */
+  --color-bg-active:     #dadada;
+  --color-bg-input:      #ffffff;
 
   /* Surfaces */
-  --color-surface:       var(--gray-0);    /* #ffffff */
-  --color-surface-hover: var(--gray-50);
-  --color-surface-border: var(--gray-200);
+  --color-surface:       #ffffff;    /* Template bg-card */
+  --color-surface-hover: #f9f9f9;
+  --color-surface-border: #eeeeee;
 
   /* Text */
-  --color-text:          var(--gray-900);  /* #0f172a */
-  --color-text-muted:    var(--gray-500);  /* #64748b */
-  --color-text-light:    var(--gray-400);  /* #94a3b8 */
-  --color-text-inverse:  var(--gray-0);
+  --color-text:          #333333;  /* Template text-dark */
+  --color-text-muted:    #888888;  /* Template text-muted */
+  --color-text-light:    #aaaaaa;
+  --color-text-inverse:  #ffffff;
 
   /* Brand */
-  --color-primary:       var(--orange-500);
-  --color-primary-hover: var(--orange-600);
+  --color-primary:       #f05a28;  /* Template color-orange-red */
+  --color-primary-hover: #d9481b;
   --color-primary-light: color-mix(in srgb, var(--color-primary) 8%, transparent);
-  --color-primary-text:  var(--orange-600);
+  --color-primary-text:  #f05a28;
   --color-on-primary:    #ffffff;
 
-  /* Feedback Text (legible 600/700 values) */
-  --color-success:       var(--green-600);
-  --color-danger:        var(--red-600);
-  --color-warning:       var(--amber-700);
-  --color-info:          var(--blue-600);
+  /* Feedback Text */
+  --color-success:       #5cb85c;  /* Template color-green */
+  --color-danger:        #f05a28;  /* Template color-orange-red */
+  --color-warning:       #eb8c00;  /* Template color-orange */
+  --color-info:          #1abc9c;  /* Template color-teal */
 
-  /* Feedback Backgrounds (tintes claros) */
-  --color-success-bg:    #ecfdf5;
-  --color-danger-bg:     #fef2f2;
-  --color-warning-bg:    #fffbeb;
-  --color-info-bg:       #eff6ff;
+  /* Feedback Backgrounds */
+  --color-success-bg:    color-mix(in srgb, var(--color-success) 10%, transparent);
+  --color-danger-bg:     color-mix(in srgb, var(--color-danger) 10%, transparent);
+  --color-warning-bg:    color-mix(in srgb, var(--color-warning) 10%, transparent);
+  --color-info-bg:       color-mix(in srgb, var(--color-info) 10%, transparent);
 
-  /* Dashboard direct values (success/danger/info aliases) */
-  --color-green:         var(--green-600);
-  --color-red:           var(--red-600);
-  --color-blue:          var(--blue-600);
+  /* Dashboard direct values */
+  --color-green:         #5cb85c;
+  --color-red:           #f05a28;
+  --color-blue:          #1abc9c;
 
   /* Borders */
-  --color-border:        var(--gray-200);  /* #e2e8f0 */
+  --color-border:        #eeeeee;  /* Template border-color */
   --color-border-focus:  var(--color-primary);
-  --color-border-input:  var(--gray-300);
+  --color-border-input:  #dddddd;
 
   /* Shadows */
-  --shadow-card:         var(--shadow-sm);
-  --shadow-card-hover:   var(--shadow-md);
+  --shadow-card:         0 1px 3px rgba(0,0,0,0.05);  /* Template shadow-sm */
+  --shadow-card-hover:   0 4px 12px rgba(0,0,0,0.08); /* Template shadow-md */
   --shadow-modal:        var(--shadow-lg);
 
   /* Layout-specific */
-  --sidebar-bg:          var(--gray-800);
-  --sidebar-text:        var(--gray-0);
-  --sidebar-text-muted:  var(--gray-400);
-  --sidebar-border:      var(--gray-700);
+  --sidebar-bg:          #3d3535;  /* Template bg-sidebar */
+  --sidebar-text:        #ffffff;  /* Template text-light */
+  --sidebar-text-muted:  #a69f9f;  /* Template text-sidebar */
+  --sidebar-border:      #4d4343;  /* Template bg-sidebar-hover */
 
   /* Feature-specific tokens (used by POS, Inventory, etc.) */
   --color-whatsapp:      #25d366;
   --color-whatsapp-dark: #128c7e;
   --color-whatsapp-hover: #128c7e;
   --color-whatsapp-bg:   color-mix(in srgb, #25d366 15%, transparent);
-  --color-yellow-600:    var(--amber-600);
+  --color-yellow-600:    #f1a938;  /* Template color-button */
   --color-danger-light:  color-mix(in srgb, var(--color-danger) 15%, transparent);
   --brand-orange-hover:  var(--color-primary-hover);
-  --pos-inner-bg:        var(--color-bg);
+  --pos-inner-bg:        #ffffff;
   --pos-qty-bg:          var(--color-bg-hover);
-  --product-inner-bg:    var(--color-surface);
-  --product-thumb-bg:    var(--color-bg);
-  --option-bg:           var(--color-bg);
+  --product-inner-bg:    #ffffff;
+  --product-thumb-bg:    #ffffff;
+  --option-bg:           #ffffff;
   --bg-inner-block:      var(--color-surface);
+
+  /* Gray Scale Aliases */
+  --color-gray-50:  var(--gray-50);
+  --color-gray-100: var(--gray-100);
+  --color-gray-200: var(--gray-200);
+  --color-gray-300: var(--gray-300);
+  --color-gray-400: var(--gray-400);
+  --color-gray-500: var(--gray-500);
+  --color-gray-600: var(--gray-600);
+  --color-gray-700: var(--gray-700);
+  --color-gray-800: var(--gray-800);
+  --color-gray-900: var(--gray-900);
+
+  /* ─── New Palette System (Light) ─── */
+  --bg-app:            #ededed;
+  --bg-surface:        #ffffff;
+  --bg-sidebar:        #3d3535;
+  --bg-sidebar-hover:  #4d4343;
+  --text-main:         #333333;
+  --text-muted:        #888888;
+  --text-inverse:      #ffffff;
+  --text-sidebar:      #a69f9f;
+  --border-color-main: #eeeeee;
+  --border-sidebar:    rgba(255, 255, 255, 0.05);
+  --accent-primary:    #f05a28;
+  --accent-secondary:  #eb8c00;
+  --status-success:    #5cb85c;
+  --status-info:       #1abc9c;
+  --btn-primary-bg:    #f1a938;
+  --btn-primary-text:  #ffffff;
+  --shadow-sm:         0 1px 3px rgba(0, 0, 0, 0.05);
+  --shadow-md:         0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 /* ─── Dark Theme ─── */
 [data-theme='dark'] {
-  --color-bg:            #101010;
-  --color-bg-elevated:   #181818;
-  --color-bg-hover:      #222222;
-  --color-bg-active:     #2a2a2a;
-  --color-bg-input:      #181818;
+  --color-bg:            #121212;  /* Template bg-main */
+  --color-bg-elevated:   #1e1e1e;  /* Template bg-card */
+  --color-bg-hover:      #292929;
+  --color-bg-active:     #333333;
+  --color-bg-input:      #1e1e1e;
 
-  --color-surface:       #181818;
-  --color-surface-hover: #1f1f1f;
-  --color-surface-border: #2f2f2f;
+  --color-surface:       #1e1e1e;  /* Template bg-card */
+  --color-surface-hover: #252525;
+  --color-surface-border: #2d2d2d;
 
-  --color-text:          #f0f0f0;   /* -> 15.8:1 sobre surface ✅ */
-  --color-text-muted:    #a0a0a0;   /* AJUSTADO: 5.3:1 ✅ (antes #8a8a8a = 4.0:1 ⚠) */
-  --color-text-light:    #6b6b6b;   /* deco/disabled */
-  --color-text-inverse:  #0f0f0f;
+  --color-text:          #f5f5f5;  /* Template text-dark */
+  --color-text-muted:    #aaaaaa;  /* Template text-muted */
+  --color-text-light:    #777777;
+  --color-text-inverse:  #121212;
 
-  --color-primary:       var(--orange-500);
-  --color-primary-hover: var(--orange-400);  /* en dark, hover MÁS CLARO */
+  --color-primary:       #f16c3f;  /* Coral/orange para modo oscuro */
+  --color-primary-hover: #f05a28;
   --color-primary-light: color-mix(in srgb, var(--color-primary) 15%, transparent);
-  --color-primary-text:  var(--orange-400);
+  --color-primary-text:  #f16c3f;
   --color-on-primary:    #ffffff;
 
-  /* En dark usa los 500 (los tintes claros no funcionan sobre oscuro) */
-  --color-success:       var(--green-500);
-  --color-danger:        var(--red-500);
-  --color-warning:       var(--amber-500);
-  --color-info:          var(--blue-500);
+  /* Feedback */
+  --color-success:       #5cb85c;
+  --color-danger:        #f05a28;
+  --color-warning:       #eb8c00;
+  --color-info:          #1abc9c;
 
-  --color-success-bg:    #0a1a0a;
-  --color-danger-bg:     #2a0f0f;
-  --color-warning-bg:    #2a1f0a;
-  --color-info-bg:       #0c1a2e;
+  --color-success-bg:    #0f220f;
+  --color-danger-bg:     #2b110b;
+  --color-warning-bg:    #271a07;
+  --color-info-bg:       #07221e;
 
-  /* Dashboard direct values (success/danger/info aliases) */
-  --color-green:         var(--green-500);
-  --color-red:           var(--red-500);
-  --color-blue:          var(--blue-500);
+  /* Dashboard direct values */
+  --color-green:         #5cb85c;
+  --color-red:           #f05a28;
+  --color-blue:          #1abc9c;
 
   /* Borders */
-  --color-border:        #2f2f2f;
+  --color-border:        #2d2d2d;  /* Template border-color */
   --color-border-focus:  var(--color-primary);
-  --color-border-input:  #3a3a3a;
+  --color-border-input:  #353535;
 
   /* Shadows */
-  --shadow-card:         0 2px 8px rgba(0, 0, 0, 0.3);
-  --shadow-card-hover:   0 4px 16px rgba(0, 0, 0, 0.4);
+  --shadow-card:         0 1px 3px rgba(0, 0, 0, 0.2);  /* Template shadow-sm */
+  --shadow-card-hover:   0 4px 16px rgba(0, 0, 0, 0.4); /* Template shadow-md */
   --shadow-modal:        0 8px 32px rgba(0, 0, 0, 0.5);
 
   /* Layout-specific */
-  --sidebar-bg:          #0a0a0a;
-  --sidebar-text:        #ffffff;
-  --sidebar-text-muted:  #666666;
-  --sidebar-border:      #1a1a1a;
+  --sidebar-bg:          #1a1616;  /* Template bg-sidebar */
+  --sidebar-text:        #f5f5f5;
+  --sidebar-text-muted:  #887a7a;
+  --sidebar-border:      #292323;  /* Template bg-sidebar-hover */
 
   /* Feature-specific tokens */
   --color-whatsapp:      #25d366;
   --color-whatsapp-dark: #128c7e;
   --color-whatsapp-hover: #128c7e;
   --color-whatsapp-bg:   color-mix(in srgb, #25d366 20%, transparent);
-  --color-yellow-600:    var(--amber-500);
+  --color-yellow-600:    #f1a938;
   --color-danger-light:  color-mix(in srgb, var(--color-danger) 20%, transparent);
   --brand-orange-hover:  var(--color-primary-hover);
   --pos-inner-bg:        var(--color-bg);
@@ -154,6 +186,32 @@
   --product-thumb-bg:    var(--color-bg);
   --option-bg:           var(--color-bg);
   --bg-inner-block:      var(--color-surface);
+
+  /* Gray Scale Aliases */
+  --color-gray-50:  var(--gray-900);
+  --color-gray-100: var(--gray-800);
+  --color-gray-200: var(--gray-700);
+  --color-gray-300: var(--gray-600);
+  --color-gray-400: var(--gray-500);
+  --color-gray-500: var(--gray-400);
+  --color-gray-600: var(--gray-300);
+  --color-gray-700: var(--gray-200);
+  --color-gray-800: var(--gray-100);
+  --color-gray-900: var(--gray-50);
+
+  /* ─── New Palette System (Dark) ─── */
+  --bg-app:            #121212;
+  --bg-surface:        #1e1e1e;
+  --bg-sidebar:        #1a1616;
+  --bg-sidebar-hover:  #292323;
+  --text-main:         #f5f5f5;
+  --text-muted:        #aaaaaa;
+  --text-inverse:      #121212;
+  --text-sidebar:      #887a7a;
+  --border-color-main: #2d2d2d;
+  --border-sidebar:    rgba(255, 255, 255, 0.02);
+  --shadow-sm:         0 1px 3px rgba(0, 0, 0, 0.2);
+  --shadow-md:         0 4px 16px rgba(0, 0, 0, 0.4);
 }
 
 /* ─── OLED Theme (true black) ─── */
@@ -222,6 +280,32 @@
   --product-thumb-bg:    var(--color-bg);
   --option-bg:           var(--color-bg);
   --bg-inner-block:      var(--color-surface);
+
+  /* Gray Scale Aliases (OLED optimized) */
+  --color-gray-50:  var(--black);
+  --color-gray-100: #0a0a0a;
+  --color-gray-200: #111111;
+  --color-gray-300: #1a1a1a;
+  --color-gray-400: #242424;
+  --color-gray-500: #555555;
+  --color-gray-600: #8f8f8f;
+  --color-gray-700: #a0a0a0;
+  --color-gray-800: #f0f0f0;
+  --color-gray-900: #ffffff;
+
+  /* ─── New Palette System (OLED) ─── */
+  --bg-app:            var(--color-oled-black);
+  --bg-surface:        var(--color-oled-black);
+  --bg-sidebar:        var(--color-oled-black);
+  --bg-sidebar-hover:  var(--color-dark-900);
+  --text-main:         var(--color-neutral-50);
+  --text-muted:        var(--color-dark-300);
+  --text-inverse:      var(--color-oled-black);
+  --text-sidebar:      var(--color-dark-100);
+  --border-color-main: var(--color-dark-600);
+  --border-sidebar:    var(--color-dark-600);
+  --shadow-sm:         none;
+  --shadow-md:         none;
 }
 
 /* ─── Component-level semantic tokens (consumed by components) ─── */
@@ -263,9 +347,8 @@
   --text-caption-weight: var(--font-weight-light);
   --text-caption-color:  var(--color-text-muted);
 
-  /* ─── Label / Etiquetas de formulario ─── */
-  --text-label-size:   var(--font-size-sm);  /* 13 */
-  --text-label-weight: var(--font-weight-semibold);
+  --text-label-size:   13px;
+  --text-label-weight: 600;
 
   /* ─── Overline / Micro-label MAYÚSCULA (KPI labels, secciones) ─── */
   --text-overline-size:     var(--font-size-2xs); /* 11 */
@@ -365,11 +448,11 @@
   --transition-smooth: var(--transition-base);
 
   /* Additional Color Aliases (for backward compat) */
-  --color-orange: var(--orange-500);
-  --color-teal: var(--teal-500);
-  --color-purple: var(--purple-500);
+  --color-orange: #eb8c00;
+  --color-teal: #1abc9c;
+  --color-purple: #eb8c00;  /* Mapped to orange to match the template's second KPI */
   --color-black: var(--black);
-  --color-orange-red: var(--color-primary);
+  --color-orange-red: #f05a28;
 
   /* Additional Size Aliases */
   --font-size-5xl: var(--font-size-4xl);
@@ -379,6 +462,10 @@
   --card-title-size: var(--font-size-md);
   --card-title-weight: var(--font-weight-semibold);
   --card-title-color: var(--color-text);
+
+  /* Modal Title */
+  --modal-title-size: var(--font-size-md);
+  --modal-title-weight: var(--font-weight-semibold);
 
   /* Header */
   --header-bg: var(--color-surface);
@@ -390,20 +477,61 @@
   --focus-ring-opacity: 0.15;
   --focus-ring: 0 0 0 3px color-mix(in srgb, var(--color-primary) 40%, transparent);
 
-  /* Categorical Chart Palette */
-  --chart-1: var(--orange-500);
-  --chart-2: var(--blue-500);
-  --chart-3: var(--green-500);
-  --chart-4: var(--purple-500);
-  --chart-5: var(--amber-500);
-  --chart-6: var(--teal-500);
-  --chart-7: var(--pink-500);
-  --chart-8: var(--cyan-500);
+  --chart-1: #f05a28;  /* orange-red */
+  --chart-2: #1abc9c;  /* teal */
+  --chart-3: #5cb85c;  /* green */
+  --chart-4: #eb8c00;  /* orange */
+  --chart-5: #f1a938;  /* yellow/button */
+  --chart-6: #1abc9c;
+  --chart-7: #f05a28;
+  --chart-8: #eb8c00;
 
   /* Skeleton */
   --skeleton-enabled: 1;
 
-  /* Missing tokens referenced in feature CSS */
+  /* ─── Layout Aliases (consumed by DashboardLayout, Navbar, POS) ─── */
+  --sidebar-w: var(--sidebar-width);
+  --sidebar-icon: var(--color-text-muted);
+  --sidebar-icon-hover: var(--color-primary);
+  --sidebar-section: var(--color-text-muted);
+  --header-border-width: var(--border-width);
+  --layout-padding-top: 20px;
+  --layout-padding-x: 24px;
+  --layout-padding-bottom: 80px;
+  --layout-padding-x-mobile: 16px;
+  --layout-padding-bottom-mobile: 80px;
+
+  /* ─── Input Aliases ─── */
+  --bg-input: var(--color-bg-input);
+  --input-border: var(--color-border-input);
+
+  /* ─── Brand / Misc ─── */
+  --brand-bg: var(--color-surface);
+  --text-primary: var(--color-primary-text);
+  --color-register-green: var(--green-600);
+  --accent-charcoal: #364153;
+  --avatar-color: var(--color-primary);
+  --cover-bg: var(--color-bg-elevated);
+  --dot-color: var(--color-primary);
+  --circle-color: var(--color-primary);
+  --event-bg: var(--color-surface);
+  --event-color: var(--color-text);
+  --profit-color: var(--green-500);
+  --margin-color: var(--blue-500);
+  --total-profit-color: var(--purple-500);
+  --progress-color: var(--color-primary);
+  --tooltip-color: var(--color-text);
+  --balance-color: var(--green-500);
+  --strength-color: var(--green-500);
+  --strength-width: 100%;
+  --st-bg: var(--color-success-bg);
+  --st-color: var(--color-success);
+  --bar-bg: var(--color-bg-hover);
+  --swatch-color: var(--color-primary);
+  --modal-title-size: var(--font-size-lg);
+  --transition-duration: var(--transition-base);
+
+  /* Legacy tokens referenced in feature CSS */
   --color-whatsapp: var(--green-500);
   --color-whatsapp-hover: var(--green-600);
   --color-yellow-600: var(--amber-600);
@@ -413,8 +541,8 @@
   --pos-qty-bg: var(--color-bg-hover);
   --product-inner-bg: var(--color-surface);
   --product-thumb-bg: var(--color-bg);
---option-bg:           var(--color-bg);
-  --bg-inner-block:    var(--color-surface);
+  --option-bg: var(--color-bg);
+  --bg-inner-block: var(--color-surface);
 }
 
 /* ─── Animation Control (from data-animation-disabled) ─── */

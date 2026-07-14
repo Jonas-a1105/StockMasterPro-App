@@ -1,6 +1,8 @@
 /* === Skeleton Loading Animations === */
 
 .skeleton {
+  --skeleton-base: var(--color-gray-200, #e2e8f0);
+  --skeleton-shine: var(--color-gray-100, #f1f5f9);
   width: var(--sk-w);
   height: var(--sk-h);
   border-radius: var(--sk-rad);

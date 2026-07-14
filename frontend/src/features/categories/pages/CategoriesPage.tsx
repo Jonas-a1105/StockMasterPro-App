@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { api } from '@shared/lib/http/client';
 import { useToast } from '@contexts/ToastContext';
 import { Tag, Plus, Pencil, Trash2, Search, X, Package } from 'lucide-react';
+import { Skeleton } from '@shared/ui/Skeleton';
 import styles from './CategoriesPage.module.css';
 
 export function CategoriesPage() {
@@ -210,11 +211,24 @@ export function CategoriesPage() {
           </thead>
           <tbody>
             {loading ? (
-              <tr>
-                <td colSpan={4} className={styles.emptyCell}>
-                  Cargando...
-                </td>
-              </tr>
+              Array.from({ length: 5 }).map((_, idx) => (
+                <tr key={`loader-${idx}`}>
+                  <td>
+                    <div className={styles.cellName}>
+                      <Skeleton height={14} width="120px" />
+                    </div>
+                  </td>
+                  <td className={styles.textCenter}>
+                    <Skeleton height={14} width="40px" />
+                  </td>
+                  <td>
+                    <Skeleton height={14} width="100px" />
+                  </td>
+                  <td className={styles.textCenter}>
+                    <Skeleton height={14} width="60px" />
+                  </td>
+                </tr>
+              ))
             ) : filtered.length === 0 ? (
               <tr>
                 <td colSpan={4} className={styles.emptyCell}>

@@ -1,6 +1,5 @@
 import { useState, useRef } from 'react';
 import {
-  X,
   Upload,
   Download,
   FileSpreadsheet,
@@ -9,6 +8,7 @@ import {
   Loader2,
 } from 'lucide-react';
 import { type ColumnMapping, downloadTemplate, parseExcelFile } from '@shared/lib/excelHelper';
+import { Modal } from './Modal';
 import styles from './ImportModal.module.css';
 
 interface ImportModalProps {
@@ -95,187 +95,172 @@ export function ImportModal({
   };
 
   return (
-    <div className={styles.overlay}>
-      <div className={styles.modal}>
-        {/* Header */}
-        <div className={styles.header}>
-          <h3 className={styles.title}>Importar {title}</h3>
-          <button className={styles.closeBtn} onClick={handleClose}>
-            <X size={18} />
-          </button>
-        </div>
+    <Modal open={open} onClose={handleClose} title={`Importar ${title}`} noPadding>
+      <div className={styles.body}>
+        {step === 'upload' && (
+          <div className={styles.uploadStep}>
+            <p className={styles.description}>
+              Carga un archivo de Excel (.xlsx) o de valores separados por comas (.csv) para
+              realizar una importación masiva de {title.toLowerCase()}.
+            </p>
 
-        {/* Body */}
-        <div className={styles.body}>
-          {step === 'upload' && (
-            <div className={styles.uploadStep}>
-              <p className={styles.description}>
-                Carga un archivo de Excel (.xlsx) o de valores separados por comas (.csv) para
-                realizar una importación masiva de {title.toLowerCase()}.
-              </p>
-
-              {/* Template Download */}
-              <div className={styles.templateSection}>
-                <span>
-                  Descarga la plantilla de ejemplo para estructurar correctamente tus datos:
-                </span>
-                <div className={styles.templateButtons}>
-                  <button
-                    className={styles.textBtn}
-                    onClick={() => downloadTemplate(columns, templateFilename, 'xlsx')}
-                  >
-                    <Download size={14} /> Plantilla Excel (.xlsx)
-                  </button>
-                  <button
-                    className={styles.textBtn}
-                    onClick={() => downloadTemplate(columns, templateFilename, 'csv')}
-                  >
-                    <Download size={14} /> Plantilla CSV (.csv)
-                  </button>
-                </div>
+            <div className={styles.templateSection}>
+              <span>
+                Descarga la plantilla de ejemplo para estructurar correctamente tus datos:
+              </span>
+              <div className={styles.templateButtons}>
+                <button
+                  className={styles.textBtn}
+                  onClick={() => downloadTemplate(columns, templateFilename, 'xlsx')}
+                >
+                  <Download size={14} /> Plantilla Excel (.xlsx)
+                </button>
+                <button
+                  className={styles.textBtn}
+                  onClick={() => downloadTemplate(columns, templateFilename, 'csv')}
+                >
+                  <Download size={14} /> Plantilla CSV (.csv)
+                </button>
               </div>
-
-              {/* Drag & Drop Area */}
-              <div className={styles.dropzone} onClick={triggerFileSelect}>
-                <Upload size={32} className={styles.uploadIcon} />
-                <span className={styles.dropTitle}>Selecciona o arrastra tu archivo aquí</span>
-                <span className={styles.dropSub}>Formatos soportados: .xlsx, .csv</span>
-                <input
-                  type="file"
-                  ref={fileInputRef}
-                  onChange={handleFileChange}
-                  accept=".xlsx,.xls,.csv"
-                  className={styles.hiddenInput}
-                />
-              </div>
-
-              {errors.length > 0 && (
-                <div className={styles.errorAlert}>
-                  <AlertCircle size={16} />
-                  <div>
-                    {errors.map((err, i) => (
-                      <div key={i}>{err}</div>
-                    ))}
-                  </div>
-                </div>
-              )}
             </div>
-          )}
 
-          {step === 'preview' && (
-            <div className={styles.previewStep}>
-              <div className={styles.previewHeader}>
-                <FileSpreadsheet className={styles.excelIcon} size={24} />
+            <div className={styles.dropzone} onClick={triggerFileSelect}>
+              <Upload size={32} className={styles.uploadIcon} />
+              <span className={styles.dropTitle}>Selecciona o arrastra tu archivo aquí</span>
+              <span className={styles.dropSub}>Formatos soportados: .xlsx, .csv</span>
+              <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleFileChange}
+                accept=".xlsx,.xls,.csv"
+                className={styles.hiddenInput}
+              />
+            </div>
+
+            {errors.length > 0 && (
+              <div className={styles.errorAlert}>
+                <AlertCircle size={16} />
                 <div>
-                  <div className={styles.filename}>{file?.name}</div>
-                  <div className={styles.filesize}>
-                    {parsedData.length} filas listas para importar.
-                  </div>
+                  {errors.map((err, i) => (
+                    <div key={i}>{err}</div>
+                  ))}
                 </div>
               </div>
+            )}
+          </div>
+        )}
 
-              {/* Table Preview */}
-              <div className={styles.tablePreviewContainer}>
-                <table className={styles.previewTable}>
-                  <thead>
-                    <tr>
+        {step === 'preview' && (
+          <div className={styles.previewStep}>
+            <div className={styles.previewHeader}>
+              <FileSpreadsheet className={styles.excelIcon} size={24} />
+              <div>
+                <div className={styles.filename}>{file?.name}</div>
+                <div className={styles.filesize}>
+                  {parsedData.length} filas listas para importar.
+                </div>
+              </div>
+            </div>
+
+            <div className={styles.tablePreviewContainer}>
+              <table className={styles.previewTable}>
+                <thead>
+                  <tr>
+                    {columns.map((col) => (
+                      <th key={col.key}>{col.header}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {parsedData.slice(0, 3).map((row, rIndex) => (
+                    <tr key={rIndex}>
                       {columns.map((col) => (
-                        <th key={col.key}>{col.header}</th>
+                        <td key={col.key}>
+                          {row[col.key] !== undefined && row[col.key] !== null
+                            ? String(row[col.key])
+                            : '—'}
+                        </td>
                       ))}
                     </tr>
-                  </thead>
-                  <tbody>
-                    {parsedData.slice(0, 3).map((row, rIndex) => (
-                      <tr key={rIndex}>
-                        {columns.map((col) => (
-                          <td key={col.key}>
-                            {row[col.key] !== undefined && row[col.key] !== null
-                              ? String(row[col.key])
-                              : '—'}
-                          </td>
-                        ))}
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-                {parsedData.length > 3 && (
-                  <div className={styles.moreRows}>... y {parsedData.length - 3} filas más.</div>
-                )}
-              </div>
-
-              {/* Footer Buttons */}
-              <div className={styles.footerActions}>
-                <button className={styles.cancelBtn} onClick={resetState}>
-                  Elegir otro archivo
-                </button>
-                <button className={styles.confirmBtn} onClick={handleStartImport}>
-                  Iniciar Importación
-                </button>
-              </div>
-            </div>
-          )}
-
-          {step === 'importing' && (
-            <div className={styles.progressStep}>
-              <Loader2 size={32} className={styles.spinner} />
-              <div className={styles.progressTitle}>Procesando importación...</div>
-              <div className={styles.progressText}>
-                Importando fila {progress.current} de {progress.total}
-              </div>
-              <div className={styles.progressBarBg}>
-                <div
-                  className={styles.progressBarFill}
-                  style={
-                    {
-                      '--import-progress': `${(progress.current / progress.total) * 100}%`,
-                    } as React.CSSProperties
-                  }
-                />
-              </div>
-            </div>
-          )}
-
-          {step === 'summary' && summaryResult && (
-            <div className={styles.summaryStep}>
-              <CheckCircle2 size={40} className={styles.successIcon} />
-              <div className={styles.summaryTitle}>Importación Completada</div>
-
-              <div className={styles.summaryGrid}>
-                <div className={styles.summaryCard}>
-                  <div className={styles.summaryLabel}>Creados/Actualizados</div>
-                  <div className={styles.summaryValSuccess}>{summaryResult.successCount}</div>
-                </div>
-                <div className={styles.summaryCard}>
-                  <div className={styles.summaryLabel}>Errores</div>
-                  <div className={styles.summaryValDanger}>{summaryResult.errorCount}</div>
-                </div>
-              </div>
-
-              {summaryResult.details.length > 0 && (
-                <div className={styles.detailsSection}>
-                  <div className={styles.detailsTitle}>Detalles de procesamiento:</div>
-                  <div className={styles.detailsList}>
-                    {summaryResult.details.map((detail, index) => (
-                      <div
-                        key={index}
-                        className={
-                          detail.includes('Error') ? styles.detailError : styles.detailInfo
-                        }
-                      >
-                        {detail}
-                      </div>
-                    ))}
-                  </div>
-                </div>
+                  ))}
+                </tbody>
+              </table>
+              {parsedData.length > 3 && (
+                <div className={styles.moreRows}>... y {parsedData.length - 3} filas más.</div>
               )}
+            </div>
 
-              <button className={styles.finishBtn} onClick={handleClose}>
-                Finalizar
+            <div className={styles.footerActions}>
+              <button className={styles.cancelBtn} onClick={resetState}>
+                Elegir otro archivo
+              </button>
+              <button className={styles.confirmBtn} onClick={handleStartImport}>
+                Iniciar Importación
               </button>
             </div>
-          )}
-        </div>
+          </div>
+        )}
+
+        {step === 'importing' && (
+          <div className={styles.progressStep}>
+            <Loader2 size={32} className={styles.spinner} />
+            <div className={styles.progressTitle}>Procesando importación...</div>
+            <div className={styles.progressText}>
+              Importando fila {progress.current} de {progress.total}
+            </div>
+            <div className={styles.progressBarBg}>
+              <div
+                className={styles.progressBarFill}
+                style={
+                  {
+                    '--import-progress': `${(progress.current / progress.total) * 100}%`,
+                  } as React.CSSProperties
+                }
+              />
+            </div>
+          </div>
+        )}
+
+        {step === 'summary' && summaryResult && (
+          <div className={styles.summaryStep}>
+            <CheckCircle2 size={40} className={styles.successIcon} />
+            <div className={styles.summaryTitle}>Importación Completada</div>
+
+            <div className={styles.summaryGrid}>
+              <div className={styles.summaryCard}>
+                <div className={styles.summaryLabel}>Creados/Actualizados</div>
+                <div className={styles.summaryValSuccess}>{summaryResult.successCount}</div>
+              </div>
+              <div className={styles.summaryCard}>
+                <div className={styles.summaryLabel}>Errores</div>
+                <div className={styles.summaryValDanger}>{summaryResult.errorCount}</div>
+              </div>
+            </div>
+
+            {summaryResult.details.length > 0 && (
+              <div className={styles.detailsSection}>
+                <div className={styles.detailsTitle}>Detalles de procesamiento:</div>
+                <div className={styles.detailsList}>
+                  {summaryResult.details.map((detail, index) => (
+                    <div
+                      key={index}
+                      className={
+                        detail.includes('Error') ? styles.detailError : styles.detailInfo
+                      }
+                    >
+                      {detail}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <button className={styles.finishBtn} onClick={handleClose}>
+              Finalizar
+            </button>
+          </div>
+        )}
       </div>
-    </div>
+    </Modal>
   );
 }

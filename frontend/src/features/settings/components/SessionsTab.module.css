@@ -20,7 +20,7 @@
 
 .logoutAllBtn {
   padding: 6px 14px;
-  border: 1px solid var(--color-danger);
+  border: var(--border-width) var(--border-style) var(--color-danger) ;
   border-radius: var(--btn-radius);
   background: transparent;
   color: var(--color-danger);
@@ -44,7 +44,7 @@
   gap: 12px;
   padding: 12px 16px;
   border-radius: var(--btn-radius);
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   background: var(--color-surface);
 }
 

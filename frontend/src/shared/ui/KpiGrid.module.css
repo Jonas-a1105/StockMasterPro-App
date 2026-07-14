@@ -9,9 +9,11 @@
 }
 
 .card {
-  flex: 1 1 220px;
-  max-width: 280px;
-  width: 100%;
+  position: relative;
+  flex: 0 0 210px;
+  width: 210px;
+  height: 84px;
+  box-sizing: border-box;
   background-color: var(--color-surface);
   border-radius: var(--card-radius);
   padding: 16px;
@@ -25,6 +27,17 @@
     box-shadow 0.2s ease;
 }
 
+.card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 18px;
+  bottom: 18px;
+  width: 4px;
+  background-color: var(--kpi-color, var(--color-primary));
+  border-radius: 0 4px 4px 0;
+}
+
 .card:hover {
   transform: translateY(-2px);
   box-shadow: var(--card-shadow-hover);
@@ -33,13 +46,17 @@
 .iconWrapper {
   width: 42px;
   height: 42px;
-  border-radius: var(--card-radius);
+  border-radius: var(--btn-radius, var(--radius-md));
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: color-mix(in srgb, var(--kpi-color, var(--color-primary)) 12%, transparent);
-  color: var(--kpi-color, var(--color-primary));
+  background-color: var(--kpi-color, var(--color-primary));
+  color: #ffffff;
   flex-shrink: 0;
+}
+
+.iconWrapper * {
+  filter: brightness(0) invert(1);
 }
 
 .content {
@@ -51,21 +68,30 @@
 
 .kpiValue {
   font-family: var(--font-family);
-  font-size: var(--kpi-value-size);
-  font-weight: var(--font-weight-semibold);
+  font-size: 18px;
+  font-weight: 700;
   font-variant-numeric: tabular-nums;
   line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .kpiSubValue {
   display: block;
-  font-size: var(--kpi-label-size);
-  font-weight: var(--font-weight-medium);
+  font-size: 11px;
+  font-weight: 500;
   color: var(--color-text-muted);
-  margin-top: 2px;
+  margin-top: 1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .kpiLabel {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-muted);
   text-transform: none;
 }
 
@@ -78,7 +104,7 @@
 
   .card {
     max-width: none;
-    min-height: 68px;
+    height: 84px;
     padding: 12px;
     gap: 10px;
   }

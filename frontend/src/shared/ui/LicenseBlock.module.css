@@ -14,9 +14,9 @@
 
 .modal {
   background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   border-radius: var(--card-radius);
-  padding: 36px;
+  padding: var(--space-8);
   max-width: 420px;
   width: 90%;
   text-align: center;
@@ -31,13 +31,13 @@
 
 .icon {
   color: var(--color-danger);
-  margin-bottom: 20px;
+  margin-bottom: var(--space-5);
 }
 
 .modal h2 {
   font-size: var(--font-size-3xl);
   color: var(--color-text);
-  margin-bottom: 10px;
+  margin-bottom: var(--space-2);
   font-family: var(--font-family);
   font-weight: var(--font-weight-bold);
 }
@@ -45,7 +45,7 @@
 .modal p {
   font-size: var(--font-size-sm);
   color: var(--color-text-muted);
-  margin-bottom: 24px;
+  margin-bottom: var(--space-6);
   line-height: 1.5;
 }
 
@@ -54,7 +54,7 @@
   align-items: center;
   position: relative;
   justify-content: center;
-  margin-bottom: 12px;
+  margin-bottom: var(--space-3);
 }
 
 .headerRow h3 {
@@ -75,8 +75,8 @@
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 4px;
-  padding: 6px;
+  gap: var(--space-1);
+  padding: var(--space-1);
   border-radius: var(--btn-radius);
   transition: all 0.2s ease;
 }
@@ -90,15 +90,15 @@
   font-size: var(--font-size-sm);
   color: var(--color-text-muted);
   margin-top: 0;
-  margin-bottom: 24px;
+  margin-bottom: var(--space-6);
   text-align: center;
 }
 
 .plansGrid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 20px;
-  margin-bottom: 10px;
+  gap: var(--space-5);
+  margin-bottom: var(--space-2);
 }
 
 @media (max-width: 500px) {
@@ -111,9 +111,9 @@
 }
 
 .planCard {
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   border-radius: var(--card-radius);
-  padding: 20px;
+  padding: var(--space-5);
   text-align: left;
   display: flex;
   flex-direction: column;
@@ -123,7 +123,7 @@
 }
 
 .recommended {
-  border: 2px solid var(--color-primary);
+  border: var(--border-width-focus) var(--border-style) var(--color-primary) ;
 }
 
 .badge {
@@ -132,7 +132,7 @@
   right: 15px;
   background-color: var(--color-primary);
   color: var(--color-on-primary);
-  padding: 2px 8px;
+  padding: 2px var(--space-2);
   border-radius: var(--border-radius-sm);
   font-size: var(--font-size-2xs);
   font-weight: var(--font-weight-bold);
@@ -149,7 +149,7 @@
   font-size: var(--font-size-4xl);
   font-weight: var(--font-weight-extrabold);
   color: var(--color-primary);
-  margin-bottom: 15px;
+  margin-bottom: var(--space-4);
 }
 
 .price span {
@@ -159,12 +159,12 @@
 }
 
 .features {
-  padding-left: 18px;
+  padding-left: var(--space-4);
   margin: 0 0 20px;
   font-size: var(--font-size-xs);
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: var(--space-1);
   color: var(--color-text);
   line-height: 1.3;
 }
@@ -172,7 +172,7 @@
 .btnPay,
 .btnPayPrimary {
   width: 100%;
-  padding: 10px;
+  padding: var(--space-2);
   font-size: var(--font-size-caption);
   font-weight: var(--font-weight-bold);
   border-radius: var(--btn-radius);
@@ -199,17 +199,17 @@
 
 .btnPayPrimary:hover {
   filter: brightness(1.08);
-  box-shadow: 0 4px 10px rgb(240, 90, 40, 0.2);
+  box-shadow: 0 4px 10px color-mix(in srgb, var(--color-primary) 20%, transparent) ;
 }
 
 .form {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--space-3);
 }
 
 .input {
-  padding: 12px;
+  padding: var(--space-3);
   border: 1.5px solid var(--color-border);
   border-radius: var(--input-radius);
   font-size: var(--font-size-md);
@@ -222,11 +222,11 @@
 
 .input:focus {
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgb(240, 90, 40, 0.1);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 10%, transparent) ;
 }
 
 .btn {
-  padding: 12px;
+  padding: var(--space-3);
   background-color: var(--color-primary);
   color: white;
   border: none;
@@ -238,7 +238,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: var(--space-2);
 }
 
 .btn:hover {
@@ -257,7 +257,7 @@
   color: var(--color-text-muted);
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);
-  margin: 10px 0;
+  margin: var(--space-2) 0;
 }
 
 .divider::before,
@@ -268,15 +268,15 @@
 }
 
 .divider:not(:empty)::before {
-  margin-right: 10px;
+  margin-right: var(--space-2);
 }
 
 .divider:not(:empty)::after {
-  margin-left: 10px;
+  margin-left: var(--space-2);
 }
 
 .btnStripe {
-  padding: 12px;
+  padding: var(--space-3);
   background-color: transparent;
   border: 1.5px solid var(--color-primary);
   color: var(--color-primary);
@@ -288,7 +288,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: var(--space-2);
 }
 
 .btnStripe:hover {
@@ -298,7 +298,7 @@
 .error {
   background-color: var(--color-danger-bg);
   color: var(--color-danger);
-  padding: 8px;
+  padding: var(--space-2);
   border-radius: var(--card-radius);
   font-size: var(--font-size-caption);
 }

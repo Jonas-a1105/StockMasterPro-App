@@ -10,7 +10,7 @@
   flex-direction: column;
   min-width: 0;
   background-color: var(--color-bg);
-  padding: 60px 0 80px;
+  padding: var(--header-height) 0 var(--layout-padding-bottom);
   padding-left: var(--sidebar-w);
   overflow-y: auto;
   transition: padding-left 0.25s ease-out;

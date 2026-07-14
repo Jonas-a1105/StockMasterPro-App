@@ -11,7 +11,7 @@
   width: 68px;
   min-width: 68px;
   height: 100%;
-  padding: 24px 0;
+  padding: var(--space-6) 0;
   position: fixed;
   left: 0;
   top: 0;
@@ -46,15 +46,15 @@
     'Segoe UI',
     Roboto;
   font-size: 22px;
-  padding: 0 12px;
-  margin-bottom: 24px;
+  padding: 0 var(--space-3);
+  margin-bottom: var(--space-6);
   color: var(--color-text);
   cursor: pointer;
   white-space: nowrap;
   overflow: hidden;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-2);
 }
 
 .logo span {
@@ -70,22 +70,22 @@
 .nav {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: var(--space-0-5);
   flex: 1;
 }
 
 .navItem {
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 12px 14px;
-  margin: 0 8px;
+  gap: var(--space-3-5);
+  padding: var(--space-3) var(--space-3-5);
+  margin: 0 var(--space-2);
   border: none;
   background: transparent;
   color: var(--color-text);
   font-size: 15px;
   font-weight: 400;
-  border-radius: 8px;
+  border-radius: var(--radius-md) ;
   cursor: pointer;
   transition: background 0.15s;
   position: relative;
@@ -120,10 +120,10 @@
 .sidebarBack {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 10px 14px;
-  margin: 0 8px 8px;
-  border-radius: 8px;
+  gap: var(--space-3);
+  padding: var(--space-2-5) var(--space-3-5);
+  margin: 0 var(--space-2) 8px;
+  border-radius: var(--radius-md) ;
   color: var(--color-text);
   text-decoration: none;
   font-size: 14px;
@@ -145,7 +145,7 @@
   justify-content: center;
   width: 36px;
   height: 36px;
-  margin: 0 8px 8px;
+  margin: 0 var(--space-2) 8px;
   border-radius: var(--btn-radius);
   color: var(--color-text-muted);
   background: none;
@@ -177,7 +177,7 @@
   background: none;
   border: none;
   cursor: pointer;
-  padding: 4px;
+  padding: var(--space-1);
   border-radius: var(--input-radius);
   transition: background 0.2s;
   -webkit-tap-highlight-color: transparent;
@@ -189,9 +189,9 @@
 .sidebarUser {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 12px 14px;
-  margin: 0 8px;
+  gap: var(--space-2-5);
+  padding: var(--space-3) var(--space-3-5);
+  margin: 0 var(--space-2);
   white-space: nowrap;
   overflow: hidden;
   border-top: 1px solid transparent;
@@ -200,7 +200,7 @@
 .sidebarUserAvatar {
   width: 28px;
   height: 28px;
-  border-radius: 50%;
+  border-radius: var(--radius-full) ;
   background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366);
   color: white;
   display: flex;
@@ -237,8 +237,8 @@
   color: white;
   font-size: 10px;
   font-weight: 700;
-  padding: 1px 5px;
-  border-radius: 10px;
+  padding: var(--space-0-5) var(--space-1);
+  border-radius: var(--radius-lg) ;
   min-width: 18px;
   text-align: center;
   line-height: 16px;
@@ -249,7 +249,7 @@
 .main {
   flex: 1;
   margin-left: 68px;
-  padding: 32px 0;
+  padding: var(--space-8) 0;
   display: flex;
   justify-content: center;
   background: var(--color-bg);
@@ -336,8 +336,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
-  padding: 24px 0;
+  gap: var(--space-0-5);
+  padding: var(--space-6) 0;
   color: var(--color-text-muted);
   animation: scrollIndicatorFade 6s ease forwards;
   pointer-events: none;
@@ -346,12 +346,12 @@
 .scrollIndicator .scrollMouse {
   width: 24px;
   height: 36px;
-  border: 2px solid var(--color-text-muted);
-  border-radius: 12px;
+  border: var(--border-width-focus) var(--border-style) var(--color-text-muted) ;
+  border-radius: var(--radius-lg) ;
   display: flex;
   justify-content: center;
   padding-top: 6px;
-  margin-bottom: 4px;
+  margin-bottom: var(--space-1);
 }
 
 .scrollIndicator .scrollMouse::after {
@@ -359,7 +359,7 @@
   width: 3px;
   height: 8px;
   background: var(--color-text-muted);
-  border-radius: 2px;
+  border-radius: var(--radius-sm) ;
   animation: scrollBounce 1.5s ease infinite;
 }
 
@@ -379,7 +379,7 @@
 .feedLayout {
   display: grid;
   grid-template-columns: 614px 290px;
-  gap: 32px;
+  gap: var(--space-8);
   max-width: 936px;
   width: 100%;
   max-height: 100%;
@@ -424,13 +424,13 @@
 /* Stories */
 .storiesWrapper {
   position: relative;
-  margin-bottom: 24px;
+  margin-bottom: var(--space-6);
 }
 
 .stories {
-  padding: 16px 16px;
+  padding: var(--space-4) 16px;
   display: flex;
-  gap: 16px;
+  gap: var(--space-4);
   overflow-x: auto;
   scrollbar-width: none;
   scroll-behavior: smooth;
@@ -445,16 +445,16 @@
   transform: translateY(-50%);
   width: 28px;
   height: 28px;
-  border-radius: 50%;
+  border-radius: var(--radius-full) ;
   background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   color: var(--color-text);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   z-index: 2;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-md) ;
   opacity: 0.9;
   transition:
     opacity 0.2s,
@@ -477,7 +477,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: var(--space-1-5);
   font-size: 11px;
   color: var(--color-text);
   cursor: pointer;
@@ -487,9 +487,9 @@
 .storyRing {
   width: 64px;
   height: 64px;
-  border-radius: 50%;
+  border-radius: var(--radius-full) ;
   background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366);
-  padding: 2px;
+  padding: var(--space-0-5);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -502,7 +502,7 @@
 .storyAvatar {
   width: 100%;
   height: 100%;
-  border-radius: 50%;
+  border-radius: var(--radius-full) ;
   background: var(--color-primary);
   color: white;
   display: flex;
@@ -510,7 +510,7 @@
   justify-content: center;
   font-weight: 700;
   font-size: 18px;
-  border: 2px solid var(--color-bg);
+  border: var(--border-width-focus) var(--border-style) var(--color-bg) ;
 }
 
 /* Post Card */
@@ -518,7 +518,7 @@
   background: var(--color-surface);
   border: var(--border-width) solid var(--color-border);
   border-radius: var(--border-radius-md);
-  margin-bottom: 24px;
+  margin-bottom: var(--space-6);
   box-shadow: var(--shadow-card);
 }
 
@@ -536,13 +536,13 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 16px;
+  padding: var(--space-3) 16px;
 }
 
 .postUser {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--space-2-5);
   font-size: 14px;
   font-weight: 600;
 }
@@ -567,7 +567,7 @@
 .avatarXs {
   width: 32px;
   height: 32px;
-  border-radius: 50%;
+  border-radius: var(--radius-full) ;
   background: var(--color-primary);
   color: white;
   display: flex;
@@ -623,7 +623,7 @@
   color: white !important;
   width: 30px;
   height: 30px;
-  border-radius: 50%;
+  border-radius: var(--radius-full) ;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -633,7 +633,7 @@
   transition:
     opacity 0.2s,
     background 0.2s;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--shadow-md) ;
 }
 
 .carouselContainer:hover .carouselBtn {
@@ -658,7 +658,7 @@
 }
 
 .postTextOnly {
-  padding: 40px 20px;
+  padding: var(--space-10) var(--space-5);
   text-align: center;
   color: var(--color-text);
   font-size: 16px;
@@ -670,7 +670,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 16px;
+  padding: var(--space-2) var(--space-4);
   position: relative;
 }
 
@@ -680,13 +680,13 @@
   top: 50%;
   transform: translate(-50%, -50%);
   display: flex;
-  gap: 4px;
+  gap: var(--space-1);
 }
 
 .dot {
   width: 5px;
   height: 5px;
-  border-radius: 50%;
+  border-radius: var(--radius-full) ;
   background-color: var(--color-border);
   transition: background 0.2s;
 }
@@ -698,7 +698,7 @@
 
 .actionsLeft {
   display: flex;
-  gap: 16px;
+  gap: var(--space-4);
   position: relative;
 }
 
@@ -707,7 +707,7 @@
   border: none;
   color: var(--color-text);
   cursor: pointer;
-  padding: 4px;
+  padding: var(--space-1);
   display: flex;
   align-items: center;
 }
@@ -724,12 +724,12 @@
   top: -40px;
   left: 0;
   display: flex;
-  gap: 4px;
+  gap: var(--space-1);
   background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: 24px;
-  padding: 6px 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
+  border-radius: var(--radius-2xl) ;
+  padding: var(--space-1-5) 12px;
+  box-shadow: var(--shadow-lg) ;
   z-index: 10;
   animation: slideUp 0.2s ease;
 }
@@ -750,7 +750,7 @@
   border: none;
   font-size: 28px;
   cursor: pointer;
-  padding: 2px;
+  padding: var(--space-0-5);
   transition: transform 0.15s;
   line-height: 1;
 }
@@ -760,16 +760,16 @@
 }
 
 .postBody {
-  padding: 0 16px 16px;
+  padding: 0 var(--space-4) 16px;
   font-size: 14px;
   line-height: 1.5;
 }
 .postLikes {
   font-weight: 600;
-  margin-bottom: 4px;
+  margin-bottom: var(--space-1);
 }
 .postCaption {
-  margin-bottom: 4px;
+  margin-bottom: var(--space-1);
 }
 .postCaption strong {
   margin-right: 6px;
@@ -788,7 +788,7 @@
 
 .postCommentsSection {
   border-top: 1px solid var(--color-bg-hover);
-  padding: 12px 16px;
+  padding: var(--space-3) 16px;
 }
 
 /* RIGHT SIDEBAR */
@@ -809,7 +809,7 @@
   align-items: center;
   font-size: 13px;
   color: var(--color-text-muted);
-  margin-bottom: 12px;
+  margin-bottom: var(--space-3);
 }
 
 .suggestionsHeader button {
@@ -824,14 +824,14 @@
 .suggestionItem {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 6px 0;
+  gap: var(--space-2-5);
+  padding: var(--space-1-5) 0;
 }
 
 .avatarSm {
   width: 40px;
   height: 40px;
-  border-radius: 50%;
+  border-radius: var(--radius-full) ;
   background: var(--color-primary);
   color: white;
   display: flex;
@@ -887,11 +887,11 @@
 }
 
 .dmInboxHeader {
-  padding: 16px 20px;
+  padding: var(--space-4) 20px;
   border-bottom: 1px solid var(--color-border);
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--space-3);
 }
 
 .dmInboxHeader strong {
@@ -901,23 +901,23 @@
 .dmSearch {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-2);
   background: var(--color-bg-hover);
-  border-radius: 8px;
-  padding: 6px 12px;
+  border-radius: var(--radius-md) ;
+  padding: var(--space-1-5) 12px;
 }
 
 .dmSearch input {
-  border: none !important;
+  border: none;
   background: transparent !important;
   flex: 1;
   font-size: 13px;
-  padding: 2px 0 !important;
+  padding: var(--space-0-5) 0 !important;
 }
 
 .dmSearch input:focus {
-  box-shadow: none !important;
-  border: none !important;
+  box-shadow: none;
+  border: none;
 }
 
 .dmSearchResults {
@@ -929,8 +929,8 @@
 .dmSearchItem {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 10px 20px;
+  gap: var(--space-2-5);
+  padding: var(--space-2-5) var(--space-5);
   width: 100%;
   background: transparent;
   border: none;
@@ -950,8 +950,8 @@
 .dmChatItem {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px 20px;
+  gap: var(--space-3);
+  padding: var(--space-3) 20px;
   width: 100%;
   background: transparent;
   border: none;
@@ -970,7 +970,7 @@
 .dmChatAvatar {
   width: 44px;
   height: 44px;
-  border-radius: 50%;
+  border-radius: var(--radius-full) ;
   background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366);
   color: white;
   display: flex;
@@ -999,7 +999,7 @@
 }
 
 .dmEmpty {
-  padding: 40px;
+  padding: var(--space-10);
   text-align: center;
   color: var(--color-text-muted);
   font-size: 14px;
@@ -1013,11 +1013,11 @@
 }
 
 .dmWindowHeader {
-  padding: 14px 20px;
+  padding: var(--space-3-5) var(--space-5);
   border-bottom: 1px solid var(--color-border);
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--space-3);
 }
 
 .backBtn {
@@ -1026,29 +1026,29 @@
   border: none;
   cursor: pointer;
   color: var(--color-text);
-  padding: 4px;
+  padding: var(--space-1);
 }
 
 .dmWindowUser {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--space-2-5);
   font-weight: 600;
 }
 
 .dmMessages {
   flex: 1;
-  padding: 20px;
+  padding: var(--space-5);
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--space-2);
 }
 
 .msgBubble {
   max-width: 60%;
-  padding: 12px 16px;
-  border-radius: 20px;
+  padding: var(--space-3) 16px;
+  border-radius: var(--radius-xl) ;
   font-size: 14px;
   line-height: 1.4;
 }
@@ -1070,21 +1070,21 @@
   opacity: 0.7;
   display: block;
   text-align: right;
-  margin-top: 2px;
+  margin-top: var(--space-0-5);
 }
 
 .dmInput {
   display: flex;
-  gap: 8px;
-  padding: 12px 16px;
+  gap: var(--space-2);
+  padding: var(--space-3) 16px;
   border-top: 1px solid var(--color-border);
 }
 
 .dmInput input {
   flex: 1;
   border-radius: var(--input-radius) !important;
-  border: 1px solid var(--color-border-input) !important;
-  padding: 10px 16px !important;
+  border: var(--border-width) var(--border-style) var(--color-border-input)  !important;
+  padding: var(--space-2-5) var(--space-4) !important;
   font-size: 14px !important;
   background: transparent !important;
 }
@@ -1095,7 +1095,7 @@
   border: none;
   width: 40px;
   height: 40px;
-  border-radius: 50%;
+  border-radius: var(--radius-full) ;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1117,7 +1117,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 16px;
+  gap: var(--space-4);
   color: var(--color-text-muted);
 }
 
@@ -1143,9 +1143,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
+  margin-bottom: var(--space-4);
   flex-wrap: wrap;
-  gap: 12px;
+  gap: var(--space-3);
 }
 
 .notifHeader h2 {
@@ -1157,17 +1157,17 @@
 .notifActions {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-2);
 }
 
 .notifFilterBtn {
   background: none;
   border: none;
   font-size: 13px;
-  padding: 4px 12px;
+  padding: var(--space-1) var(--space-3);
   cursor: pointer;
   color: var(--color-text-muted);
-  border-radius: 4px;
+  border-radius: var(--radius-sm) ;
 }
 
 .notifFilterBtn.active {
@@ -1180,7 +1180,7 @@
   border: none;
   cursor: pointer;
   color: var(--color-primary);
-  padding: 4px;
+  padding: var(--space-1);
 }
 
 .notifList {
@@ -1191,14 +1191,14 @@
 .notifItem {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
+  gap: var(--space-3);
+  padding: var(--space-3) 16px;
   cursor: pointer;
   border-radius: var(--input-radius);
   transition:
     background 0.15s,
     border-color 0.2s;
-  border: 1px solid transparent;
+  border: var(--border-width) var(--border-style) transparent ;
 }
 .notifItem:focus-within,
 .notifItem:hover {
@@ -1214,7 +1214,7 @@
 .notifIcon {
   width: 44px;
   height: 44px;
-  border-radius: 50%;
+  border-radius: var(--radius-full) ;
   overflow: hidden;
   flex-shrink: 0;
   display: flex;
@@ -1236,7 +1236,7 @@
   align-items: center;
   justify-content: center;
   color: var(--color-text-muted);
-  border-radius: 50%;
+  border-radius: var(--radius-full) ;
 }
 
 .notifBody {
@@ -1259,7 +1259,7 @@
 .notifDot {
   width: 8px;
   height: 8px;
-  border-radius: 50%;
+  border-radius: var(--radius-full) ;
   background: var(--color-primary);
   flex-shrink: 0;
 }
@@ -1268,8 +1268,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
-  padding: 60px 20px;
+  gap: var(--space-3);
+  padding: 60px var(--space-5);
   color: var(--color-text-muted);
 }
 
@@ -1291,18 +1291,18 @@
   align-items: center;
   border-bottom: 1px solid var(--color-border);
   padding-bottom: 0;
-  margin-bottom: 24px;
+  margin-bottom: var(--space-6);
 }
 
 .catalogTabs {
   display: flex;
-  gap: 16px;
+  gap: var(--space-4);
 }
 
 .catalogTab {
   background: none;
   border: none;
-  padding: 10px 14px;
+  padding: var(--space-2-5) var(--space-3-5);
   font-size: 13.5px;
   font-weight: 500;
   color: var(--color-text-muted);
@@ -1343,7 +1343,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: var(--space-1-5);
   transition: opacity 0.15s;
 }
 
@@ -1358,8 +1358,8 @@
 .catalogCreateForm {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding: 16px;
+  gap: var(--space-3);
+  padding: var(--space-4);
   background: var(--color-surface);
   border: var(--border-width) solid var(--color-border);
   border-radius: var(--border-radius-md);
@@ -1375,7 +1375,7 @@
 .catalogGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+  gap: var(--space-6);
 }
 
 .catalogCard {
@@ -1399,7 +1399,7 @@
 
 .catalogCard:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--shadow-lg) ;
 }
 
 .catalogCover {
@@ -1416,8 +1416,8 @@
   position: absolute;
   top: 8px;
   right: 8px;
-  padding: 3px 8px;
-  border-radius: 6px;
+  padding: var(--space-0-5) var(--space-2);
+  border-radius: var(--radius-md) ;
   font-size: 10px;
   font-weight: 600;
   backdrop-filter: blur(8px);
@@ -1433,13 +1433,13 @@
 }
 
 .catalogInfo {
-  padding: 12px 14px;
+  padding: var(--space-3) var(--space-3-5);
 }
 
 .catalogInfo h3 {
   font-size: 14px;
   font-weight: 600;
-  margin: 0 0 2px;
+  margin: 0 0 var(--space-0-5);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -1452,15 +1452,15 @@
 
 .catalogActions {
   display: flex;
-  gap: 4px;
-  padding: 4px 10px 10px;
+  gap: var(--space-1);
+  padding: var(--space-1) 10px 10px;
 }
 
 .actionSm {
   width: 28px;
   height: 28px;
-  border-radius: 50%;
-  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full) ;
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   background: transparent;
   cursor: pointer;
   display: flex;
@@ -1493,7 +1493,7 @@
 
 .modalContent {
   background: var(--color-surface);
-  border-radius: 12px;
+  border-radius: var(--radius-lg) ;
   position: relative;
   max-width: 700px;
   width: 90%;
@@ -1531,10 +1531,10 @@
 }
 
 .catalogDetailRight {
-  padding: 24px;
+  padding: var(--space-6);
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--space-3);
 }
 
 .catalogDetailRight h2 {
@@ -1549,23 +1549,23 @@
 .catalogDetailItems {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--space-2);
   flex: 1;
 }
 
 .catalogDetailItem {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 8px;
+  gap: var(--space-2-5);
+  padding: var(--space-2);
   background: var(--color-bg-hover);
-  border-radius: 8px;
+  border-radius: var(--radius-md) ;
 }
 
 .catalogDetailItem img {
   width: 40px;
   height: 40px;
-  border-radius: 6px;
+  border-radius: var(--radius-md) ;
   object-fit: cover;
 }
 
@@ -1581,7 +1581,7 @@
 .catalogAddItem {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--space-2);
   padding-top: 12px;
   border-top: 1px solid var(--color-border);
 }
@@ -1601,9 +1601,9 @@
 
 .profileHeader {
   display: flex;
-  gap: 40px;
+  gap: var(--space-10);
   margin-bottom: 32px;
-  padding: 0 20px;
+  padding: 0 var(--space-5);
 }
 
 .profileAvatarSection {
@@ -1616,7 +1616,7 @@
 .profileAvatar {
   width: 120px;
   height: 120px;
-  border-radius: 50%;
+  border-radius: var(--radius-full) ;
   background: linear-gradient(45deg, #f09433, #e6683c, #dc2743);
   color: white;
   display: flex;
@@ -1640,8 +1640,8 @@
 .profileNameRow {
   display: flex;
   align-items: center;
-  gap: 16px;
-  margin-bottom: 16px;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
   flex-wrap: wrap;
 }
 
@@ -1654,8 +1654,8 @@
 .profileEditBtn {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
+  gap: var(--space-1-5);
+  padding: var(--space-1-5) 12px;
   background: transparent;
   border: var(--border-width) solid var(--color-border);
   border-radius: var(--btn-radius);
@@ -1666,7 +1666,7 @@
 }
 
 .profileFollowBtn {
-  padding: 6px 20px;
+  padding: var(--space-1-5) 20px;
   border-radius: var(--btn-radius);
   font-size: var(--font-size-md);
   font-weight: var(--btn-font-weight);
@@ -1679,7 +1679,7 @@
 
 .profileFollowBtn.following {
   background: transparent;
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   color: var(--color-text);
 }
 
@@ -1689,13 +1689,13 @@
 
 .profileStats {
   display: flex;
-  gap: 40px;
-  margin-bottom: 16px;
+  gap: var(--space-10);
+  margin-bottom: var(--space-4);
 }
 
 .stat {
   display: flex;
-  gap: 4px;
+  gap: var(--space-1);
   font-size: 16px;
 }
 .stat strong {
@@ -1709,12 +1709,12 @@
 .profileBio {
   font-size: 14px;
   line-height: 1.5;
-  margin-bottom: 4px;
+  margin-bottom: var(--space-1);
 }
 
 .profileLinks {
   display: flex;
-  gap: 16px;
+  gap: var(--space-4);
   font-size: 13px;
   color: var(--color-text-muted);
 }
@@ -1722,18 +1722,18 @@
 .profileLinks span {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: var(--space-1);
 }
 
 /* Edit Profile Form */
 .profileEditForm {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding: 20px;
+  gap: var(--space-3);
+  padding: var(--space-5);
   background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
+  border: var(--border-width) var(--border-style) var(--color-border) ;
+  border-radius: var(--radius-md) ;
   margin: 0 20px 20px;
 }
 
@@ -1741,7 +1741,7 @@
 .profileEditForm textarea {
   width: 100%;
   padding: var(--input-padding);
-  border: 1px solid var(--color-border-input);
+  border: var(--border-width) var(--border-style) var(--color-border-input) ;
   border-radius: var(--input-radius);
   background: var(--color-bg-input);
   color: var(--color-text);
@@ -1751,19 +1751,19 @@
 .profileEditForm input:focus,
 .profileEditForm textarea:focus {
   border-color: var(--color-border-focus);
-  border-width: 2px;
+  border-width: var(--border-width-focus) ;
   outline: none;
 }
 
 .profileEditActions {
   display: flex;
-  gap: 8px;
+  gap: var(--space-2);
   justify-content: flex-end;
 }
 
 .profileEditActions button {
-  padding: 8px 16px;
-  border-radius: 8px;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md) ;
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
@@ -1771,7 +1771,7 @@
 
 .profileEditActions button:first-child {
   background: transparent;
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   color: var(--color-text-muted);
 }
 
@@ -1792,8 +1792,8 @@
 .profileTab {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 14px 40px;
+  gap: var(--space-1-5);
+  padding: var(--space-3-5) var(--space-10);
   background: none;
   border: none;
   border-top: 1px solid transparent;
@@ -1814,7 +1814,7 @@
 .profileGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 4px;
+  gap: var(--space-1);
   padding: 0;
 }
 
@@ -1838,7 +1838,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 16px;
+  padding: var(--space-4);
   font-size: 12px;
   color: var(--color-text-muted);
   text-align: center;
@@ -1854,7 +1854,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 20px;
+  gap: var(--space-5);
   opacity: 0;
   transition: opacity 0.2s;
   color: white;
@@ -1886,7 +1886,7 @@
 }
 
 .createHeader {
-  padding: 14px;
+  padding: var(--space-3-5);
   text-align: center;
   font-weight: 600;
   border-bottom: 1px solid var(--color-border);
@@ -1898,7 +1898,7 @@
 .createHeaderLeft {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-2);
 }
 
 .createCloseBtn {
@@ -1921,7 +1921,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: var(--space-1-5);
   transition: opacity 0.15s;
 }
 
@@ -1939,12 +1939,12 @@
 }
 
 .createDropzone {
-  padding: 60px 20px;
+  padding: 60px var(--space-5);
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
+  gap: var(--space-4);
   cursor: pointer;
   border-bottom: 1px solid var(--color-border);
 }
@@ -1959,7 +1959,7 @@
 
 .createPreviewGrid {
   display: flex;
-  gap: 8px;
+  gap: var(--space-2);
   flex-wrap: wrap;
   justify-content: center;
 }
@@ -1968,7 +1968,7 @@
   position: relative;
   width: 100px;
   height: 100px;
-  border-radius: 8px;
+  border-radius: var(--radius-md) ;
   overflow: hidden;
 }
 
@@ -1985,7 +1985,7 @@
   background: rgba(0, 0, 0, 0.5);
   color: white;
   border: none;
-  border-radius: 50%;
+  border-radius: var(--radius-full) ;
   width: 22px;
   height: 22px;
   cursor: pointer;
@@ -2029,7 +2029,7 @@
 .igMain {
   flex: 1;
   margin-left: 68px;
-  padding: 32px 0;
+  padding: var(--space-8) 0;
   display: flex;
   justify-content: center;
   background: var(--color-bg);
@@ -2093,7 +2093,7 @@
   width: 68px;
   min-width: 68px;
   height: 100%;
-  padding: 24px 0;
+  padding: var(--space-6) 0;
   position: fixed;
   left: 0;
   top: 0;
@@ -2128,15 +2128,15 @@
     'Segoe UI',
     Roboto;
   font-size: 22px;
-  padding: 0 12px;
-  margin-bottom: 24px;
+  padding: 0 var(--space-3);
+  margin-bottom: var(--space-6);
   color: var(--color-text);
   cursor: pointer;
   white-space: nowrap;
   overflow: hidden;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-2);
 }
 
 .igLogo span {
@@ -2152,22 +2152,22 @@
 .igNav {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: var(--space-0-5);
   flex: 1;
 }
 
 .igNavItem {
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 12px 14px;
-  margin: 0 8px;
+  gap: var(--space-3-5);
+  padding: var(--space-3) var(--space-3-5);
+  margin: 0 var(--space-2);
   border: none;
   background: transparent;
   color: var(--color-text);
   font-size: 15px;
   font-weight: 400;
-  border-radius: 8px;
+  border-radius: var(--radius-md) ;
   cursor: pointer;
   transition: background 0.15s;
   position: relative;
@@ -2202,10 +2202,10 @@
 .igSidebarBack {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 10px 14px;
-  margin: 0 8px 8px;
-  border-radius: 8px;
+  gap: var(--space-3);
+  padding: var(--space-2-5) var(--space-3-5);
+  margin: 0 var(--space-2) 8px;
+  border-radius: var(--radius-md) ;
   color: var(--color-text);
   text-decoration: none;
   font-size: 14px;
@@ -2227,7 +2227,7 @@
   justify-content: center;
   width: 36px;
   height: 36px;
-  margin: 0 8px 8px;
+  margin: 0 var(--space-2) 8px;
   border-radius: var(--btn-radius);
   color: var(--color-text-muted);
   background: none;
@@ -2259,7 +2259,7 @@
   background: none;
   border: none;
   cursor: pointer;
-  padding: 4px;
+  padding: var(--space-1);
   border-radius: var(--input-radius);
   transition: background 0.2s;
   -webkit-tap-highlight-color: transparent;
@@ -2271,9 +2271,9 @@
 .igSidebarUser {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 12px 14px;
-  margin: 0 8px;
+  gap: var(--space-2-5);
+  padding: var(--space-3) var(--space-3-5);
+  margin: 0 var(--space-2);
   white-space: nowrap;
   overflow: hidden;
   border-top: 1px solid transparent;
@@ -2282,7 +2282,7 @@
 .igSidebarUserAvatar {
   width: 28px;
   height: 28px;
-  border-radius: 50%;
+  border-radius: var(--radius-full) ;
   background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366);
   color: white;
   display: flex;
@@ -2319,8 +2319,8 @@
   color: white;
   font-size: 10px;
   font-weight: 700;
-  padding: 1px 5px;
-  border-radius: 10px;
+  padding: var(--space-0-5) var(--space-1);
+  border-radius: var(--radius-lg) ;
   min-width: 18px;
   text-align: center;
   line-height: 16px;
@@ -2331,7 +2331,7 @@
 .igMain {
   flex: 1;
   margin-left: 68px;
-  padding: 32px 0;
+  padding: var(--space-8) 0;
   display: flex;
   justify-content: center;
   background: var(--color-bg);
@@ -2395,7 +2395,7 @@
   width: 68px;
   min-width: 68px;
   height: 100%;
-  padding: 24px 0;
+  padding: var(--space-6) 0;
   position: fixed;
   left: 0;
   top: 0;
@@ -2430,15 +2430,15 @@
     'Segoe UI',
     Roboto;
   font-size: 22px;
-  padding: 0 12px;
-  margin-bottom: 24px;
+  padding: 0 var(--space-3);
+  margin-bottom: var(--space-6);
   color: var(--color-text);
   cursor: pointer;
   white-space: nowrap;
   overflow: hidden;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-2);
 }
 
 .igLogo span {
@@ -2454,22 +2454,22 @@
 .igNav {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: var(--space-0-5);
   flex: 1;
 }
 
 .igNavItem {
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 12px 14px;
-  margin: 0 8px;
+  gap: var(--space-3-5);
+  padding: var(--space-3) var(--space-3-5);
+  margin: 0 var(--space-2);
   border: none;
   background: transparent;
   color: var(--color-text);
   font-size: 15px;
   font-weight: 400;
-  border-radius: 8px;
+  border-radius: var(--radius-md) ;
   cursor: pointer;
   transition: background 0.15s;
   position: relative;
@@ -2504,10 +2504,10 @@
 .igSidebarBack {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 10px 14px;
-  margin: 0 8px 8px;
-  border-radius: 8px;
+  gap: var(--space-3);
+  padding: var(--space-2-5) var(--space-3-5);
+  margin: 0 var(--space-2) 8px;
+  border-radius: var(--radius-md) ;
   color: var(--color-text);
   text-decoration: none;
   font-size: 14px;
@@ -2529,7 +2529,7 @@
   justify-content: center;
   width: 36px;
   height: 36px;
-  margin: 0 8px 8px;
+  margin: 0 var(--space-2) 8px;
   border-radius: var(--btn-radius);
   color: var(--color-text-muted);
   background: none;
@@ -2561,7 +2561,7 @@
   background: none;
   border: none;
   cursor: pointer;
-  padding: 4px;
+  padding: var(--space-1);
   border-radius: var(--input-radius);
   transition: background 0.2s;
   -webkit-tap-highlight-color: transparent;
@@ -2573,9 +2573,9 @@
 .igSidebarUser {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 12px 14px;
-  margin: 0 8px;
+  gap: var(--space-2-5);
+  padding: var(--space-3) var(--space-3-5);
+  margin: 0 var(--space-2);
   white-space: nowrap;
   overflow: hidden;
   border-top: 1px solid transparent;
@@ -2584,7 +2584,7 @@
 .igSidebarUserAvatar {
   width: 28px;
   height: 28px;
-  border-radius: 50%;
+  border-radius: var(--radius-full) ;
   background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366);
   color: white;
   display: flex;
@@ -2621,8 +2621,8 @@
   color: white;
   font-size: 10px;
   font-weight: 700;
-  padding: 1px 5px;
-  border-radius: 10px;
+  padding: var(--space-0-5) var(--space-1);
+  border-radius: var(--radius-lg) ;
   min-width: 18px;
   text-align: center;
   line-height: 16px;
@@ -2633,7 +2633,7 @@
 .igMain {
   flex: 1;
   margin-left: 68px;
-  padding: 32px 0;
+  padding: var(--space-8) 0;
   display: flex;
   justify-content: center;
   background: var(--color-bg);
@@ -2697,7 +2697,7 @@
   width: 68px;
   min-width: 68px;
   height: 100%;
-  padding: 24px 0;
+  padding: var(--space-6) 0;
   position: fixed;
   left: 0;
   top: 0;
@@ -2732,15 +2732,15 @@
     'Segoe UI',
     Roboto;
   font-size: 22px;
-  padding: 0 12px;
-  margin-bottom: 24px;
+  padding: 0 var(--space-3);
+  margin-bottom: var(--space-6);
   color: var(--color-text);
   cursor: pointer;
   white-space: nowrap;
   overflow: hidden;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-2);
 }
 
 .igLogo span {
@@ -2756,22 +2756,22 @@
 .igNav {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: var(--space-0-5);
   flex: 1;
 }
 
 .igNavItem {
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 12px 14px;
-  margin: 0 8px;
+  gap: var(--space-3-5);
+  padding: var(--space-3) var(--space-3-5);
+  margin: 0 var(--space-2);
   border: none;
   background: transparent;
   color: var(--color-text);
   font-size: 15px;
   font-weight: 400;
-  border-radius: 8px;
+  border-radius: var(--radius-md) ;
   cursor: pointer;
   transition: background 0.15s;
   position: relative;
@@ -2806,10 +2806,10 @@
 .igSidebarBack {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 10px 14px;
-  margin: 0 8px 8px;
-  border-radius: 8px;
+  gap: var(--space-3);
+  padding: var(--space-2-5) var(--space-3-5);
+  margin: 0 var(--space-2) 8px;
+  border-radius: var(--radius-md) ;
   color: var(--color-text);
   text-decoration: none;
   font-size: 14px;
@@ -2831,7 +2831,7 @@
   justify-content: center;
   width: 36px;
   height: 36px;
-  margin: 0 8px 8px;
+  margin: 0 var(--space-2) 8px;
   border-radius: var(--btn-radius);
   color: var(--color-text-muted);
   background: none;
@@ -2863,7 +2863,7 @@
   background: none;
   border: none;
   cursor: pointer;
-  padding: 4px;
+  padding: var(--space-1);
   border-radius: var(--input-radius);
   transition: background 0.2s;
   -webkit-tap-highlight-color: transparent;
@@ -2875,9 +2875,9 @@
 .igSidebarUser {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 12px 14px;
-  margin: 0 8px;
+  gap: var(--space-2-5);
+  padding: var(--space-3) var(--space-3-5);
+  margin: 0 var(--space-2);
   white-space: nowrap;
   overflow: hidden;
   border-top: 1px solid transparent;
@@ -2886,7 +2886,7 @@
 .igSidebarUserAvatar {
   width: 28px;
   height: 28px;
-  border-radius: 50%;
+  border-radius: var(--radius-full) ;
   background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366);
   color: white;
   display: flex;
@@ -2923,8 +2923,8 @@
   color: white;
   font-size: 10px;
   font-weight: 700;
-  padding: 1px 5px;
-  border-radius: 10px;
+  padding: var(--space-0-5) var(--space-1);
+  border-radius: var(--radius-lg) ;
   min-width: 18px;
   text-align: center;
   line-height: 16px;
@@ -2935,7 +2935,7 @@
 .igMain {
   flex: 1;
   margin-left: 68px;
-  padding: 32px 0;
+  padding: var(--space-8) 0;
   display: flex;
   justify-content: center;
   background: var(--color-bg);

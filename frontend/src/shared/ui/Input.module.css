@@ -5,15 +5,16 @@
 }
 
 .label {
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-semibold);
+  font-size: var(--text-label-size);
+  font-weight: var(--text-label-weight);
   color: var(--color-text);
 }
 
 .input {
+  --border-width: var(--border-width-fixed);
   height: 40px;
   padding: 0 12px;
-  border: 1px solid var(--color-border-input);
+  border: var(--border-width) var(--border-style) var(--color-border-input) ;
   border-radius: var(--input-radius);
   background: var(--color-bg-input);
   color: var(--color-text);

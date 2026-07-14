@@ -5,13 +5,15 @@ import styles from './Modal.module.css';
 interface ModalProps {
   open: boolean;
   onClose: () => void;
-  title: string;
+  title?: string;
   children: ReactNode;
   wide?: boolean;
   xwide?: boolean;
+  narrow?: boolean;
+  noPadding?: boolean;
 }
 
-export function Modal({ open, onClose, title, children, wide, xwide }: ModalProps) {
+export function Modal({ open, onClose, title, children, wide, xwide, narrow, noPadding }: ModalProps) {
   useEffect(() => {
     if (!open) return;
     const handler = (e: KeyboardEvent) => {
@@ -26,15 +28,17 @@ export function Modal({ open, onClose, title, children, wide, xwide }: ModalProp
   return (
     <div className={styles.overlay} onClick={onClose}>
       <div
-        className={`${styles.modal} ${wide ? styles.modalWide : ''} ${xwide ? styles.modalXWide : ''}`}
+        className={`${styles.modal} ${wide ? styles.modalWide : ''} ${xwide ? styles.modalXWide : ''} ${narrow ? styles.modalNarrow : ''} ${noPadding ? styles.modalNoPadding : ''}`}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className={styles.header}>
-          <h2 className={styles.title}>{title}</h2>
-          <button className={styles.closeBtn} onClick={onClose} aria-label="Cerrar">
-            <X size={20} />
-          </button>
-        </div>
+        {title && (
+          <div className={styles.header}>
+            <h2 className={styles.title}>{title}</h2>
+            <button className={styles.closeBtn} onClick={onClose} aria-label="Cerrar">
+              <X size={20} />
+            </button>
+          </div>
+        )}
         {children}
       </div>
     </div>

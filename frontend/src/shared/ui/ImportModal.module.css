@@ -1,77 +1,5 @@
-.overlay {
-  position: fixed;
-  inset: 0;
-  background-color: rgb(0, 0, 0, 0.4);
-  backdrop-filter: blur(2px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  padding: 16px;
-}
-
-.modal {
-  background-color: var(--color-surface);
-  border: var(--card-border-width) solid var(--color-border);
-  border-radius: var(--card-radius);
-  width: 100%;
-  max-width: 540px;
-  max-height: 90vh;
-  box-shadow: var(--shadow-lg);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  animation: modalEnter 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-@keyframes modalEnter {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 14px 18px;
-  border-bottom: var(--card-border-width) solid var(--color-border);
-  background-color: var(--color-bg);
-}
-
-.title {
-  font-size: var(--font-size-md);
-  font-weight: var(--font-weight-bold);
-  color: var(--color-text);
-  margin: 0;
-  text-transform: none;
-}
-
-.closeBtn {
-  background: none;
-  border: none;
-  color: var(--color-text-muted);
-  cursor: pointer;
-  padding: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: var(--btn-radius);
-  transition: all 0.2s ease;
-}
-
-.closeBtn:hover {
-  background-color: var(--color-border);
-  color: var(--color-text);
-}
-
 .body {
-  padding: 20px;
+  padding: var(--space-5);
   overflow-y: auto;
 }
 
@@ -79,7 +7,7 @@
 .uploadStep {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--space-4);
 }
 
 .description {
@@ -93,17 +21,17 @@
   background-color: var(--color-bg);
   border: var(--card-border-width) solid var(--color-border);
   border-radius: var(--card-radius);
-  padding: 12px;
+  padding: var(--space-3);
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--space-2);
   font-size: var(--font-size-xs);
   color: var(--color-text);
 }
 
 .templateButtons {
   display: flex;
-  gap: 12px;
+  gap: var(--space-3);
 }
 
 .textBtn {
@@ -115,8 +43,8 @@
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 4px;
-  padding: 4px 8px;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-2);
   border-radius: var(--btn-radius);
   transition: background-color 0.2s ease;
 }
@@ -128,7 +56,7 @@
 .dropzone {
   border: 2px dashed var(--color-border);
   border-radius: var(--card-radius);
-  padding: 30px 20px;
+  padding: var(--space-8) var(--space-5);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -144,14 +72,14 @@
 
 .uploadIcon {
   color: var(--color-text-muted);
-  margin-bottom: 12px;
+  margin-bottom: var(--space-3);
 }
 
 .dropTitle {
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
   color: var(--color-text);
-  margin-bottom: 4px;
+  margin-bottom: var(--space-1);
 }
 
 .dropSub {
@@ -161,11 +89,11 @@
 
 .errorAlert {
   background-color: rgb(220, 38, 38, 0.06);
-  border: 1px solid rgb(220, 38, 38, 0.2);
+  border: var(--border-width) var(--border-style) rgb(220, 38, 38, 0.2) ;
   border-radius: var(--card-radius);
-  padding: 12px;
+  padding: var(--space-3);
   display: flex;
-  gap: 10px;
+  gap: var(--space-2);
   align-items: flex-start;
   color: var(--color-danger);
   font-size: var(--font-size-xs);
@@ -176,16 +104,16 @@
 .previewStep {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--space-4);
 }
 
 .previewHeader {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--space-3);
   background-color: rgb(240, 90, 40, 0.04);
-  border: 1px solid rgb(240, 90, 40, 0.1);
-  padding: 12px;
+  border: var(--border-width) var(--border-style) rgb(240, 90, 40, 0.1) ;
+  padding: var(--space-3);
   border-radius: var(--card-radius);
 }
 
@@ -220,14 +148,14 @@
 
 .previewTable th {
   background-color: var(--color-bg);
-  padding: 8px 12px;
+  padding: var(--space-2) var(--space-3);
   font-weight: var(--font-weight-semibold);
   color: var(--color-text);
   border-bottom: var(--card-border-width) solid var(--color-border);
 }
 
 .previewTable td {
-  padding: 8px 12px;
+  padding: var(--space-2) var(--space-3);
   border-bottom: var(--card-border-width) solid var(--color-border);
   color: var(--color-text);
 }
@@ -237,7 +165,7 @@
 }
 
 .moreRows {
-  padding: 8px 12px;
+  padding: var(--space-2) var(--space-3);
   font-size: var(--font-size-2xs);
   color: var(--color-text-muted);
   font-style: italic;
@@ -249,15 +177,15 @@
 .footerActions {
   display: flex;
   justify-content: flex-end;
-  gap: 12px;
-  margin-top: 8px;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
 }
 
 .cancelBtn {
   background-color: var(--color-bg);
   color: var(--color-text);
   border: none;
-  padding: 8px 14px;
+  padding: var(--space-2) var(--space-4);
   border-radius: var(--btn-radius);
   font-weight: var(--font-weight-semibold);
   font-size: var(--font-size-caption);
@@ -273,7 +201,7 @@
   background-color: var(--color-primary);
   color: var(--color-on-primary);
   border: none;
-  padding: 8px 16px;
+  padding: var(--space-2) var(--space-4);
   border-radius: var(--btn-radius);
   font-weight: var(--font-weight-semibold);
   font-size: var(--font-size-caption);
@@ -291,8 +219,8 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 30px 20px;
-  gap: 16px;
+  padding: var(--space-8) var(--space-5);
+  gap: var(--space-4);
 }
 
 .spinner {
@@ -342,8 +270,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 10px 0;
-  gap: 16px;
+  padding: var(--space-2) 0;
+  gap: var(--space-4);
 }
 
 .successIcon {
@@ -359,7 +287,7 @@
 .summaryGrid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  gap: var(--space-4);
   width: 100%;
   max-width: 360px;
 }
@@ -367,7 +295,7 @@
 .summaryCard {
   border: var(--card-border-width) solid var(--color-border);
   border-radius: var(--card-radius);
-  padding: 12px;
+  padding: var(--space-3);
   text-align: center;
   background-color: var(--color-bg);
 }
@@ -377,7 +305,7 @@
   font-weight: var(--font-weight-semibold);
   color: var(--color-text-muted);
   text-transform: none;
-  margin-bottom: 4px;
+  margin-bottom: var(--space-1);
 }
 
 .summaryValSuccess {
@@ -403,7 +331,7 @@
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);
   background-color: var(--color-bg);
-  padding: 8px 12px;
+  padding: var(--space-2) var(--space-3);
   border-bottom: var(--card-border-width) solid var(--color-border);
   color: var(--color-text);
 }
@@ -412,10 +340,10 @@
   max-height: 120px;
   overflow-y: auto;
   font-size: var(--font-size-2xs);
-  padding: 8px 12px;
+  padding: var(--space-2) var(--space-3);
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: var(--space-1);
 }
 
 .detailError {
@@ -430,12 +358,12 @@
   background-color: var(--color-primary);
   color: var(--color-on-primary);
   border: none;
-  padding: 10px 24px;
+  padding: var(--space-2) var(--space-6);
   border-radius: var(--btn-radius);
   font-weight: var(--font-weight-semibold);
   font-size: var(--font-size-caption);
   cursor: pointer;
-  margin-top: 8px;
+  margin-top: var(--space-2);
   transition: filter 0.2s ease;
   width: 100%;
   max-width: 160px;

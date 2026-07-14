@@ -62,34 +62,26 @@ export function PurchaseOrdersList({
         </thead>
         <tbody>
           {loading ? (
-            skeletonEnabled ? (
-              Array.from({ length: 5 }).map((_, idx) => (
-                <tr key={`loader-${idx}`}>
-                  <td>
-                    <Skeleton height={14} width="60px" />
-                  </td>
-                  <td>
-                    <Skeleton height={14} width="120px" />
-                  </td>
-                  <td>
-                    <Skeleton height={14} width="80px" />
-                  </td>
-                  <td className={styles.flexCenter}>
-                    <Skeleton height={14} width="60px" />
-                  </td>
-                  <td>
-                    <Skeleton height={14} width="100px" />
-                  </td>
-                  <td></td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan={6} className={`${styles.emptyRow} ${styles.p16}`}>
-                  <LoadingDots text="Cargando órdenes..." />
+            Array.from({ length: 5 }).map((_, idx) => (
+              <tr key={`loader-${idx}`}>
+                <td>
+                  <Skeleton height={14} width="60px" />
                 </td>
+                <td>
+                  <Skeleton height={14} width="120px" />
+                </td>
+                <td>
+                  <Skeleton height={14} width="80px" />
+                </td>
+                <td className={styles.flexCenter}>
+                  <Skeleton height={14} width="60px" />
+                </td>
+                <td>
+                  <Skeleton height={14} width="100px" />
+                </td>
+                <td></td>
               </tr>
-            )
+            ))
           ) : (
             orders.map((order) => (
               <tr key={order.id}>

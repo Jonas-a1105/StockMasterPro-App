@@ -15,7 +15,7 @@
   max-height: 90vh;
   overflow-y: auto;
   background-color: var(--color-surface) !important;
-  border: 1px solid var(--color-border) !important;
+  border: var(--border-width) var(--border-style) var(--color-border)  !important;
   border-radius: var(--card-radius);
   padding: 20px 24px;
   display: flex;
@@ -40,7 +40,7 @@
   gap: 12px;
   background-color: var(--color-bg) !important;
   padding: 16px 20px;
-  border: 1px solid var(--color-border) !important;
+  border: var(--border-width) var(--border-style) var(--color-border)  !important;
   border-radius: var(--card-radius) !important;
 }
 
@@ -61,7 +61,7 @@
 .headerBadge {
   font-size: var(--font-size-2xs);
   background-color: var(--color-bg-hover);
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   padding: 3px 8px;
   color: var(--color-primary);
   font-weight: var(--font-weight-bold);
@@ -85,7 +85,7 @@
 .rateInputGroup {
   background-color: var(--color-bg);
   padding: 6px 10px;
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -102,7 +102,7 @@
 .rateInput {
   width: 80px;
   background-color: var(--color-surface) !important;
-  border: 1px solid var(--input-border) !important;
+  border: var(--border-width) var(--border-style) var(--input-border)  !important;
   color: var(--color-text);
   font-weight: var(--font-weight-bold);
   padding: 4px 8px;
@@ -123,7 +123,7 @@
 
 .headerClose {
   background: none;
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   color: var(--color-text-muted);
   width: 32px;
   height: 32px;
@@ -133,7 +133,7 @@
   cursor: pointer;
   transition: color 0.15s;
   flex-shrink: 0;
-  border-radius: 50%;
+  border-radius: var(--radius-full) ;
 }
 
 .headerClose:hover {
@@ -149,7 +149,7 @@
 
 .kpiCard {
   background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   border-radius: var(--card-radius);
   box-shadow: var(--shadow-sm);
   padding: 14px 16px;
@@ -224,7 +224,7 @@
 
 .chartPanel {
   background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   border-radius: var(--card-radius);
   padding: 16px 20px;
   display: flex;
@@ -255,12 +255,12 @@
   height: 260px;
   background-color: var(--color-bg);
   padding: 8px;
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
 }
 
 .converterPanel {
   background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   border-radius: var(--card-radius);
   padding: 16px 20px;
   display: flex;
@@ -280,7 +280,7 @@
 
 .converterBox {
   background-color: var(--color-bg);
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   padding: 12px 16px;
   display: flex;
   flex-direction: column;
@@ -304,7 +304,7 @@
 .converterInput {
   width: 100%;
   background-color: var(--bg-input);
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   padding: 8px 10px;
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-bold);
@@ -339,7 +339,7 @@
 
 .arbitrageBox {
   background-color: var(--color-bg);
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   padding: 12px 14px;
   display: flex;
   flex-direction: column;
@@ -374,7 +374,7 @@
 
 .projectionPanel {
   background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   border-radius: var(--card-radius);
   padding: 16px 20px;
   display: flex;
@@ -436,7 +436,7 @@
   height: 8px;
   background-color: var(--color-bg);
   position: relative;
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
 }
 
 .projectionBarRed {
@@ -492,7 +492,7 @@
 /* Index Panel */
 .indexPanel {
   background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   border-radius: var(--card-radius);
   padding: 16px 20px;
   display: flex;

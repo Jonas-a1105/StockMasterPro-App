@@ -1,6 +1,13 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '@shared/lib/http/client';
+import { Button } from '@shared/ui/Button';
+import { Input } from '@shared/ui/Input';
+import { FormField } from '@shared/ui/FormField';
+import { Card, CardBody, CardTitle } from '@shared/ui/Card';
+import { Heading } from '@shared/ui/Heading';
+import { Text } from '@shared/ui/Text';
+import { AppLogo } from '@shared/ui/AppLogo';
 import styles from './AuthPage.module.css';
 
 export function ForgotPasswordPage() {
@@ -26,63 +33,49 @@ export function ForgotPasswordPage() {
   return (
     <div className={styles.authContainer}>
       <div className={styles.authHeader}>
-        <div className={styles.logo}>SM</div>
-        <h1 className={styles.headerTitle}>StockMaster Pro</h1>
+        <AppLogo size={84} className={styles.logo} />
+        <Heading variant="h1" className={styles.headerTitle}>StockMaster Pro</Heading>
       </div>
-      <div className={styles.authCard}>
-        <div className={styles.sectionHeader}>
-          <div className={styles.indicatorRow}>
-            <div className={styles.indicatorDot} />
-            <span className={styles.indicatorText}>PASSWORD_RECOVERY</span>
-          </div>
-          {sent ? (
-            <h2 className={styles.title}>Correo enviado</h2>
-          ) : (
-            <h2 className={styles.title}>Recuperar contraseña</h2>
-          )}
-        </div>
+      <Card className={styles.authCard} padding="lg">
+        <CardTitle className={styles.title}>
+          {sent ? 'Correo enviado' : 'Recuperar contraseña'}
+        </CardTitle>
 
         {sent ? (
           <>
-            <p
-              className={`${styles.colorTextMuted} ${styles.fontSize14} ${styles.mt8} ${styles.mb8}`}
-            >
+            <Text variant="body" color="muted" className={styles.mb8}>
               Si el correo <strong>{email}</strong> está registrado, recibirás un enlace para
               restablecer tu contraseña.
-            </p>
-            <Link
-              to="/login"
-              className={`${styles.footerLinkAccent} ${styles.textCenter} ${styles.mt12}`}
-            >
+            </Text>
+            <Link to="/login" className={`${styles.footerLinkAccent} ${styles.textCenter} ${styles.mt12}`}>
               Volver al inicio de sesión
             </Link>
           </>
         ) : (
           <form onSubmit={handleSubmit}>
-            <p
-              className={`${styles.colorTextMuted} ${styles.fontSize14} ${styles.mt8} ${styles.mb8}`}
-            >
+            <Text variant="body" color="muted" className={styles.mb8}>
               Ingresa tu correo y te enviaremos un enlace para restablecer tu contraseña.
-            </p>
+            </Text>
             {error && <div className={styles.error}>{error}</div>}
-            <div className={styles.field}>
-              <label>Correo electrónico</label>
-              <input
+            <FormField label="Correo electrónico">
+              <Input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className={styles.input}
                 placeholder="tu@correo.com"
                 required
               />
-            </div>
-            <button
+            </FormField>
+            <Button
               type="submit"
-              className={`${styles.submitBtn} ${styles.btnShimmer}`}
-              disabled={loading || !email}
+              variant="primary"
+              size="lg"
+              loading={loading}
+              disabled={!email}
+              className={styles.submitBtn}
             >
               {loading ? 'Enviando...' : 'Enviar enlace'}
-            </button>
+            </Button>
             <Link
               to="/login"
               className={`${styles.footerLinkAccent} ${styles.textCenter} ${styles.mt12}`}
@@ -91,7 +84,7 @@ export function ForgotPasswordPage() {
             </Link>
           </form>
         )}
-      </div>
+      </Card>
     </div>
   );
 }

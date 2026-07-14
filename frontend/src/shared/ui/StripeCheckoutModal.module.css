@@ -10,7 +10,7 @@
   justify-content: space-between;
   align-items: center;
   background-color: var(--color-bg-hover);
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   padding: 10px 12px;
   border-radius: var(--card-radius);
 }
@@ -50,7 +50,7 @@
 .input {
   width: 100%;
   padding: 7px 10px;
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   border-radius: var(--input-radius);
   font-size: var(--font-size-caption);
   outline: none;
@@ -65,7 +65,7 @@
 
 .cardElementWrap {
   padding: 8px 10px;
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   border-radius: var(--input-radius);
   background-color: var(--color-bg-input);
   box-sizing: border-box;
@@ -76,7 +76,7 @@
   align-items: center;
   gap: 8px;
   background-color: var(--color-danger-bg);
-  border: 1px solid var(--color-danger);
+  border: var(--border-width) var(--border-style) var(--color-danger) ;
   color: var(--color-danger);
   padding: 8px 10px;
   border-radius: var(--card-radius);
@@ -93,7 +93,7 @@
 .btnCancel {
   padding: 7px 14px;
   background-color: transparent;
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   color: var(--color-text-muted);
   font-size: var(--font-size-caption);
   font-weight: var(--font-weight-semibold);
@@ -168,7 +168,7 @@
   background-color: rgb(22, 163, 74, 0.1);
   color: var(--color-success);
   padding: 12px;
-  border-radius: 50%;
+  border-radius: var(--radius-full) ;
   display: flex;
   align-items: center;
   justify-content: center;

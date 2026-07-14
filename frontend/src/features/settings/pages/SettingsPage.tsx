@@ -534,13 +534,13 @@ function PersonalizationTab() {
               min={0}
               max={24}
               step={1}
-              value={config.cardBorders ? 12 : 0}
+              value={config.cardRadius !== undefined ? config.cardRadius : 12}
               onChange={(e) => {
-                const r = parseFloat(e.target.value);
-                updateConfig({ cardBorders: r > 0 });
+                const r = parseInt(e.target.value, 10);
+                updateConfig({ cardRadius: r });
               }}
             />
-            <span className={styles.sliderValue}>{config.cardBorders ? '12' : '0'}px</span>
+            <span className={styles.sliderValue}>{config.cardRadius !== undefined ? config.cardRadius : 12}px</span>
           </div>
         </div>
       </div>

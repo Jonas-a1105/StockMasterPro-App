@@ -26,7 +26,7 @@
   transition: transform var(--transition-duration) cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   flex-direction: column;
-  box-shadow: -2px 0 20px rgb(0, 0, 0, 0.15);
+  box-shadow: var(--shadow-xl) ;
 }
 
 .panelOpen {
@@ -54,7 +54,7 @@
 .closeBtn {
   width: 32px;
   height: 32px;
-  border-radius: 50%;
+  border-radius: var(--radius-full) ;
   border: none;
   background: none;
   cursor: pointer;
@@ -142,7 +142,7 @@
   height: 32px;
   padding: 0;
   border-color: var(--color-border);
-  border-style: solid;
+  border-style: var(--border-style) ;
   border-radius: var(--input-radius);
   cursor: pointer;
   background: none;
@@ -152,7 +152,7 @@
   width: 80px;
   padding: 4px 8px;
   border-color: var(--color-border);
-  border-style: solid;
+  border-style: var(--border-style) ;
   border-radius: var(--input-radius);
   font-size: var(--font-size-xs);
   font-family: var(--font-family-mono);
@@ -216,10 +216,10 @@
   left: 2px;
   width: 18px;
   height: 18px;
-  border-radius: 50%;
+  border-radius: var(--radius-full) ;
   background-color: white;
   transition: transform 0.2s ease;
-  box-shadow: 0 1px 3px rgb(0, 0, 0, 0.2);
+  box-shadow: var(--shadow-sm) ;
 }
 
 .toggleOn .toggleKnob {
@@ -230,7 +230,7 @@
   width: 100%;
   padding: 6px 10px;
   border-color: var(--color-border);
-  border-style: solid;
+  border-style: var(--border-style) ;
   border-radius: var(--input-radius);
   background-color: var(--bg-input);
   color: var(--color-text);
@@ -242,7 +242,7 @@
   flex: 1;
   padding: 6px 10px;
   border-color: var(--color-border);
-  border-style: solid;
+  border-style: var(--border-style) ;
   border-radius: var(--input-radius);
   background-color: var(--bg-input);
   color: var(--color-text);
@@ -301,7 +301,7 @@
   flex: 1;
   padding: 6px 10px;
   border-color: var(--color-border);
-  border-style: solid;
+  border-style: var(--border-style) ;
   border-radius: var(--input-radius);
   background-color: var(--bg-input);
   color: var(--color-text);
@@ -322,7 +322,7 @@
   align-items: center;
   justify-content: center;
   border-color: var(--color-border);
-  border-style: solid;
+  border-style: var(--border-style) ;
   border-radius: var(--input-radius);
   background: none;
   color: var(--color-text-muted);
@@ -390,7 +390,7 @@
   gap: 8px;
   padding: 8px;
   border-color: var(--color-border);
-  border-style: solid;
+  border-style: var(--border-style) ;
   border-radius: var(--btn-radius);
   background: none;
   color: var(--color-text);
@@ -411,7 +411,7 @@
   gap: 8px;
   padding: 8px;
   border-color: var(--color-border);
-  border-style: solid;
+  border-style: var(--border-style) ;
   border-radius: var(--btn-radius);
   background: none;
   color: var(--color-text);
@@ -442,7 +442,7 @@
   gap: 6px;
   padding: 8px;
   border-color: var(--color-border);
-  border-style: solid;
+  border-style: var(--border-style) ;
   border-radius: var(--btn-radius);
   background: none;
   color: var(--color-danger);

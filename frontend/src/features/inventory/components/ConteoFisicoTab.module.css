@@ -43,7 +43,7 @@
   padding: 8px 12px;
   background: var(--color-surface);
   color: var(--color-text);
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   border-radius: var(--btn-radius);
   font-weight: var(--font-weight-medium);
   font-size: var(--font-size-sm);
@@ -65,7 +65,7 @@
 .searchInput {
   flex: 1;
   padding: 8px 12px;
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   border-radius: var(--input-radius);
   font-size: var(--font-size-sm);
   background: var(--color-surface);
@@ -79,7 +79,7 @@
 
 .select {
   padding: 8px 12px;
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   border-radius: var(--input-radius);
   font-size: var(--font-size-sm);
   background: var(--color-surface);
@@ -95,7 +95,7 @@
 .tableContainer {
   background: var(--color-surface);
   border-radius: var(--card-radius);
-  box-shadow: 0 1px 3px rgb(0, 0, 0, 0.05);
+  box-shadow: var(--shadow-sm) ;
   overflow-x: auto;
 }
 
@@ -116,8 +116,8 @@
 .iconBtn {
   width: 32px;
   height: 32px;
-  border-radius: 50%;
-  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full) ;
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   background: none;
   cursor: pointer;
   display: flex;
@@ -343,13 +343,13 @@
   text-align: center;
   padding: 4px 8px;
   border-radius: var(--border-radius-sm);
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
 }
 .inputFull {
   width: 100%;
   padding: 4px 8px;
   border-radius: var(--border-radius-sm);
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
 }
 
 /* Dynamic color utility */

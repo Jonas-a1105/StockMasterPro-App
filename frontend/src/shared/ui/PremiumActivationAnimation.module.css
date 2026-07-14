@@ -131,7 +131,7 @@
   position: absolute;
   width: 200px;
   height: 200px;
-  border: 1px solid var(--color-gray-800);
+  border: var(--border-width) var(--border-style) var(--color-gray-800) ;
   transform: scale(0) rotate(0deg);
   animation:
     ringLockIn 0.8s cubic-bezier(0.25, 1.5, 0.35, 1) 0.4s forwards,
@@ -328,7 +328,7 @@
 .kBadge {
   display: inline-block;
   background-color: var(--color-gray-900);
-  border: 1px solid var(--color-gray-800);
+  border: var(--border-width) var(--border-style) var(--color-gray-800) ;
   color: var(--color-cyan);
   font-family: var(--font-family-mono);
   font-size: 0.65rem;
@@ -375,7 +375,7 @@
 
 .btnPremiumLaunch {
   background-color: transparent;
-  border: 2px solid var(--color-on-primary);
+  border: var(--border-width-focus) var(--border-style) var(--color-on-primary) ;
   color: var(--color-on-primary);
   padding: 14px 44px;
   font-size: 0.8rem;
@@ -392,7 +392,7 @@
 .btnPremiumLaunch:hover {
   background-color: var(--color-on-primary);
   color: var(--color-black);
-  box-shadow: 0 0 20px rgb(255, 255, 255, 0.2);
+  box-shadow: 0 0 20px var(--color-transparent-white, rgba(255, 255, 255, 0.2)) ;
 }
 
 .systemRebootTrigger {
@@ -400,7 +400,7 @@
   bottom: 20px;
   right: 20px;
   background: none;
-  border: 1px solid var(--color-gray-900);
+  border: var(--border-width) var(--border-style) var(--color-gray-900) ;
   color: var(--color-gray-800);
   padding: 6px 12px;
   font-family: var(--font-family-mono);
@@ -512,12 +512,12 @@
   0% {
     transform: scale(0.1);
     opacity: 1;
-    border-width: 15px;
+    border-width: var(--border-width-activation, 15px) ;
   }
   100% {
     transform: scale(3.5);
     opacity: 0;
-    border-width: 1px;
+    border-width: var(--border-width) ;
   }
 }
 

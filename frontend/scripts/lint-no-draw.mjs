@@ -8,7 +8,11 @@
 import { readFileSync, readdirSync, statSync } from 'fs';
 import { join, relative, resolve } from 'path';
 
-const FEATURES_DIR = resolve(process.cwd(), 'src/features');
+const TARGET_DIRS = [
+  resolve(process.cwd(), 'src/features'),
+  resolve(process.cwd(), 'src/shared'),
+  resolve(process.cwd(), 'src/pages')
+];
 
 // Propiedades CSS a revisar
 const PROPERTIES_TO_CHECK = [
@@ -88,10 +92,13 @@ function checkFile(filePath) {
 }
 
 function main() {
-  console.log('🔍 Ejecutando lint "no dibujar en páginas"...');
-  console.log(`📁 Directorio: ${FEATURES_DIR}\n`);
+  console.log('🔍 Ejecutando lint "no dibujar en páginas" (Ámbito Completo)...');
+  console.log(`📁 Directorios: ${TARGET_DIRS.join(', ')}\n`);
 
-  const cssFiles = findCssFiles(FEATURES_DIR);
+  const cssFiles = [];
+  for (const targetDir of TARGET_DIRS) {
+    cssFiles.push(...findCssFiles(targetDir));
+  }
   console.log(`📄 Archivos .module.css encontrados: ${cssFiles.length}\n`);
 
   let totalErrors = 0;

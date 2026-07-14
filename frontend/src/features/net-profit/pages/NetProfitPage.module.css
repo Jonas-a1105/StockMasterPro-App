@@ -7,7 +7,7 @@
 .chartCard {
   background: var(--color-surface);
   padding: 20px 24px;
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
 }
 
 .chartHeader {
@@ -63,14 +63,14 @@
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);
   padding: 4px 6px;
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   outline: none;
 }
 
 .dateInput {
   padding: 6px 10px;
   font-size: var(--font-size-xs);
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   background: var(--bg-input);
   color: var(--color-text);
   outline: none;
@@ -85,7 +85,7 @@
   font-weight: var(--font-weight-semibold);
   text-transform: none;
   letter-spacing: 0.5px;
-  border: 1px solid var(--color-primary);
+  border: var(--border-width) var(--border-style) var(--color-primary) ;
   background: var(--color-primary);
   color: var(--color-on-primary);
   cursor: pointer;
@@ -101,7 +101,7 @@
   text-transform: none;
   letter-spacing: 0.5px;
   padding: 6px 14px;
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   background: var(--color-bg);
   color: var(--color-text-muted);
   cursor: pointer;
@@ -210,7 +210,7 @@
   justify-content: center;
   width: 28px;
   height: 28px;
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   border-radius: var(--border-radius-md);
   background: var(--color-surface);
   color: var(--color-text-muted);

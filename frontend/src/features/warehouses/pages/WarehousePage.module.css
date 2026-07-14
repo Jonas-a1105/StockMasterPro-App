@@ -79,7 +79,7 @@
   align-items: center;
   justify-content: center;
   border-color: var(--color-border);
-  border-style: solid;
+  border-style: var(--border-style) ;
   border-radius: var(--btn-radius);
   background: var(--color-surface);
   cursor: pointer;
@@ -135,7 +135,7 @@
   width: 100%;
   padding: 10px 12px;
   border-color: var(--color-border);
-  border-style: solid;
+  border-style: var(--border-style) ;
   border-radius: var(--input-radius);
   background: var(--bg-input);
   color: var(--color-text);
@@ -150,7 +150,7 @@
 .cancelBtn {
   padding: 10px 20px;
   border-color: var(--color-border);
-  border-style: solid;
+  border-style: var(--border-style) ;
   border-radius: var(--btn-radius);
   background: transparent;
   color: var(--color-text-muted);

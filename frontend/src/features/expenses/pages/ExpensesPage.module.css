@@ -1,14 +1,14 @@
 .container {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: var(--space-5);
 }
 
 .addBtn {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 10px 20px;
+  gap: var(--space-1-5);
+  padding: var(--space-2-5) var(--space-5);
   background-color: var(--color-primary);
   color: white;
   border: none;
@@ -26,8 +26,8 @@
 .exportBtn {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 10px 14px;
+  gap: var(--space-1-5);
+  padding: var(--space-2-5) var(--space-3-5);
   background-color: var(--color-surface);
   color: var(--color-text);
   border: var(--card-border-width) solid var(--color-border);
@@ -47,11 +47,11 @@
 .importBtn {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 10px 14px;
+  gap: var(--space-1-5);
+  padding: var(--space-2-5) var(--space-3-5);
   background-color: var(--color-surface);
   color: var(--color-primary);
-  border: 1px solid color-mix(in srgb, var(--color-primary) 25%, transparent);
+  border: var(--border-width) var(--border-style) color-mix(in srgb, var(--color-primary) 25%, transparent) ;
   border-radius: var(--btn-radius);
   font-weight: var(--font-weight-semibold);
   font-size: var(--font-size-sm);
@@ -79,7 +79,7 @@
 
 .table th {
   text-align: left;
-  padding: 12px 16px;
+  padding: var(--space-3) var(--space-4);
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-bold);
   color: var(--color-text-muted);
@@ -90,7 +90,7 @@
 }
 
 .table td {
-  padding: 12px 16px;
+  padding: var(--space-3) var(--space-4);
   font-size: var(--font-size-sm);
   color: var(--color-text);
   border-bottom: var(--card-border-width) solid var(--color-border);
@@ -111,7 +111,7 @@
 
 .categoryBadge {
   display: inline-block;
-  padding: 4px 10px;
+  padding: var(--space-1) var(--space-2-5);
   border-radius: var(--border-radius-sm);
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-bold);
@@ -121,7 +121,7 @@
 
 .actions {
   display: flex;
-  gap: 6px;
+  gap: var(--space-1-5);
 }
 
 .deleteBtn {
@@ -131,7 +131,7 @@
   width: 30px;
   height: 30px;
   border-color: var(--color-border);
-  border-style: solid;
+  border-style: var(--border-style) ;
   border-radius: var(--card-radius);
   background: none;
   cursor: pointer;
@@ -159,20 +159,20 @@
 }
 
 .dateInput {
-  padding: 7px 12px;
+  padding: var(--space-1-5) var(--space-3);
   font-size: var(--font-size-caption);
   border-color: var(--color-border);
-  border-style: solid;
+  border-style: var(--border-style) ;
   border-radius: var(--card-radius);
   background: var(--color-bg);
   color: var(--color-text);
 }
 
 .clearFiltersBtn {
-  padding: 7px 12px;
+  padding: var(--space-1-5) var(--space-3);
   font-size: var(--font-size-caption);
   border-color: var(--color-border);
-  border-style: solid;
+  border-style: var(--border-style) ;
   border-radius: var(--card-radius);
   background: var(--color-bg);
   color: var(--color-danger);
@@ -183,25 +183,25 @@
 .empty {
   text-align: center;
   color: var(--color-text-muted);
-  padding: 30px !important;
+  padding: var(--space-8) !important;
   font-size: var(--font-size-sm);
 }
 
 .modalContent {
-  padding: 24px;
+  padding: var(--space-6);
   min-width: 420px;
 }
 
 .form {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: var(--space-3-5);
 }
 
 .field {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: var(--space-1);
   flex: 1;
 }
 
@@ -214,9 +214,9 @@
 .field input,
 .field select,
 .field textarea {
-  padding: 10px 12px;
+  padding: var(--space-2-5) var(--space-3);
   border-color: var(--color-border);
-  border-style: solid;
+  border-style: var(--border-style) ;
   border-radius: var(--card-radius);
   font-size: var(--font-size-sm);
   outline: none;
@@ -234,20 +234,20 @@
 
 .fieldRow {
   display: flex;
-  gap: 12px;
+  gap: var(--space-3);
 }
 
 .modalActions {
   display: flex;
-  gap: 8px;
+  gap: var(--space-2);
   justify-content: flex-end;
-  margin-top: 8px;
+  margin-top: var(--space-2);
 }
 
 .cancelBtn {
-  padding: 10px 20px;
+  padding: var(--space-2-5) var(--space-5);
   border-color: var(--color-border);
-  border-style: solid;
+  border-style: var(--border-style) ;
   border-radius: var(--card-radius);
   background: none;
   font-size: var(--font-size-sm);
@@ -262,7 +262,7 @@
 }
 
 .saveBtn {
-  padding: 10px 20px;
+  padding: var(--space-2-5) var(--space-5);
   background-color: var(--color-primary);
   color: white;
   border: none;
@@ -296,7 +296,7 @@
   color: var(--color-text-muted);
 }
 .p40 {
-  padding: 40px;
+  padding: var(--space-10);
 }
 .fontSize12 {
   font-size: var(--font-size-caption);
@@ -306,7 +306,7 @@
 }
 .flexRowWrapCenter {
   display: flex;
-  gap: 8px;
+  gap: var(--space-2);
   flex-wrap: wrap;
   align-items: center;
 }

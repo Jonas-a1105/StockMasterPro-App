@@ -74,7 +74,7 @@
 .statusBtn {
   padding: 4px 10px;
   border-color: var(--color-border);
-  border-style: solid;
+  border-style: var(--border-style) ;
   border-radius: var(--btn-radius);
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);
@@ -113,7 +113,7 @@
   width: 30px;
   height: 30px;
   border-color: var(--color-border);
-  border-style: solid;
+  border-style: var(--border-style) ;
   border-radius: var(--card-radius);
   background: none;
   cursor: pointer;
@@ -166,7 +166,7 @@
 .field select {
   padding: 10px 12px;
   border-color: var(--color-border);
-  border-style: solid;
+  border-style: var(--border-style) ;
   border-radius: var(--card-radius);
   font-size: var(--font-size-sm);
   outline: none;
@@ -195,7 +195,7 @@
 .cancelBtn {
   padding: 10px 20px;
   border-color: var(--color-border);
-  border-style: solid;
+  border-style: var(--border-style) ;
   border-radius: var(--card-radius);
   background: none;
   font-size: var(--font-size-sm);

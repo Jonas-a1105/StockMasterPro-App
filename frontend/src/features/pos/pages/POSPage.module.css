@@ -1,7 +1,7 @@
 .posContainer {
   display: grid;
   grid-template-columns: 1fr 380px;
-  gap: 20px;
+  gap: var(--space-5);
   height: calc(100vh - 140px);
   width: 100%;
   box-sizing: border-box;
@@ -11,18 +11,18 @@
 .productsPanel {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: var(--space-4);
   overflow: hidden;
 }
 
 .searchBar {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--space-2-5);
   background-color: var(--color-surface);
   border-radius: var(--card-radius);
-  padding: 10px 15px;
-  box-shadow: 0 1px 3px rgb(0, 0, 0, 0.05);
+  padding: var(--space-2-5) var(--space-4);
+  box-shadow: var(--shadow-sm) ;
   color: var(--color-text-muted);
 }
 
@@ -38,7 +38,7 @@
 .productsGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 10px;
+  gap: var(--space-2-5);
   overflow-y: auto;
   flex: 1;
   align-content: start;
@@ -51,7 +51,7 @@
   padding: 16px !important;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: var(--space-2-5);
   border: none;
   transition:
     transform 0.2s ease,
@@ -60,7 +60,7 @@
 
 .productCard:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgb(0, 0, 0, 0.08);
+  box-shadow: var(--shadow-lg) ;
 }
 
 .prodOutOfStock {
@@ -98,11 +98,11 @@
   position: absolute;
   top: 8px;
   left: 8px;
-  padding: 2px 6px;
+  padding: var(--space-0-5) var(--space-1-5);
   border-radius: var(--border-radius-sm);
   display: flex;
   align-items: center;
-  gap: 3px;
+  gap: var(--space-0-5);
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-bold);
 }
@@ -149,10 +149,10 @@
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-bold);
   color: var(--color-text);
-  margin-top: 4px;
+  margin-top: var(--space-1);
   display: flex;
   align-items: center;
-  gap: 3px;
+  gap: var(--space-0-5);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -171,7 +171,7 @@
   padding: 0 !important;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--space-2);
 }
 
 [data-theme='dark'] .prodBottomCapsule,
@@ -200,7 +200,7 @@
 /* ── Actions row ── */
 .prodActionsRow {
   display: flex;
-  gap: 6px;
+  gap: var(--space-1-5);
 }
 
 .prodQtySelector {
@@ -270,7 +270,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
+  gap: var(--space-1);
   height: 28px;
   transition: opacity 0.15s ease;
 }
@@ -287,7 +287,7 @@
 .warehouseSelector {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-2);
   padding: 8px 4px;
   font-size: var(--font-size-sm);
   color: var(--color-text-muted);
@@ -301,7 +301,7 @@
 .warehouseSelector select {
   padding: 6px 10px;
   border-color: var(--color-border);
-  border-style: solid;
+  border-style: var(--border-style) ;
   border-radius: var(--card-radius);
   font-size: var(--font-size-sm);
   background: var(--color-surface);
@@ -334,7 +334,7 @@
 
 .cartTabs {
   display: flex;
-  gap: 4px;
+  gap: var(--space-1);
   padding: 8px 10px 0;
   border-bottom: var(--card-border-width) solid var(--color-border);
   flex-wrap: wrap;
@@ -343,7 +343,7 @@
 .cartTab {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: var(--space-1);
   padding: 6px 10px;
   font-size: var(--font-size-caption);
   font-weight: var(--font-weight-semibold);
@@ -370,18 +370,18 @@
   color: inherit;
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: var(--space-1);
 }
 
 .cartTabClose {
   border: none;
   background: none;
   cursor: pointer;
-  padding: 2px;
+  padding: var(--space-0-5);
   color: var(--color-text-muted);
   display: flex;
   align-items: center;
-  border-radius: 50%;
+  border-radius: var(--radius-full) ;
   transition: all 0.15s ease;
 }
 
@@ -393,7 +393,7 @@
 .cartHeader {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-2);
   padding: 15px;
   border-bottom: var(--card-border-width) solid var(--color-border);
   font-weight: var(--font-weight-semibold);
@@ -421,7 +421,7 @@
 
 .toolbarRow {
   display: flex;
-  gap: 6px;
+  gap: var(--space-1-5);
   padding: 8px 15px;
   border-bottom: var(--card-border-width) solid var(--color-border);
   flex-wrap: wrap;
@@ -430,7 +430,7 @@
 .toolbarBtn {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: var(--space-1);
   padding: 5px 10px;
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);
@@ -451,11 +451,11 @@
 .cartItems {
   flex: 1;
   overflow-y: auto;
-  padding: 10px;
+  padding: var(--space-2-5);
 }
 
 .cartItem {
-  padding: 10px;
+  padding: var(--space-2-5);
   border-bottom: var(--card-border-width) solid var(--color-border);
 }
 
@@ -479,13 +479,13 @@
 .cartItemActions {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--space-1-5);
 }
 
 .cartItemActions button {
   width: 28px;
   height: 28px;
-  border-radius: 50%;
+  border-radius: var(--radius-full) ;
   border: var(--card-border-width) solid var(--color-border);
   background: none;
   cursor: pointer;
@@ -515,7 +515,7 @@
   text-align: right;
   font-weight: var(--font-weight-bold);
   font-size: var(--font-size-md);
-  margin-top: 4px;
+  margin-top: var(--space-1);
   color: var(--color-text);
 }
 
@@ -545,18 +545,18 @@
   color: var(--color-text);
   border-top: var(--card-border-width) solid var(--color-border);
   padding-top: 8px;
-  margin-top: 8px;
+  margin-top: var(--space-2);
 }
 
 .paymentMethods {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 8px;
+  gap: var(--space-2);
   padding: 0 15px 15px;
 }
 
 .paymentBtn {
-  padding: 8px;
+  padding: var(--space-2);
   border: var(--card-border-width) solid var(--color-border);
   border-radius: var(--card-radius);
   background: none;
@@ -566,7 +566,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
+  gap: var(--space-1);
   color: var(--color-text-muted);
   transition: all 0.2s ease;
 }
@@ -581,7 +581,7 @@
   padding: 0 15px 15px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: var(--space-1);
 }
 
 .customerLabel {
@@ -591,9 +591,9 @@
 }
 
 .customerSelect {
-  padding: 8px 12px;
+  padding: var(--space-2) var(--space-3);
   border-color: var(--color-border);
-  border-style: solid;
+  border-style: var(--border-style) ;
   border-radius: var(--card-radius);
   background-color: var(--color-surface);
   color: var(--color-text);
@@ -635,7 +635,7 @@
 
   .productsGrid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 8px;
+    gap: var(--space-2);
     overflow-y: visible;
   }
 
@@ -647,7 +647,7 @@
     border-radius: 0;
     transform: translateY(100%);
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 -8px 32px rgb(0, 0, 0, 0.15);
+    box-shadow: var(--shadow-xl) ;
   }
 
   .cartPanelOpen {
@@ -711,11 +711,11 @@
     height: 100% !important;
     padding: 0 !important;
     box-sizing: border-box !important;
-    border-radius: 50% !important;
+    border-radius: var(--radius-full) !important;
     background-color: var(--color-primary) !important;
     color: var(--color-on-primary);
-    border: none !important;
-    box-shadow: 0 4px 16px rgb(240, 90, 40, 0.4) !important;
+    border: none;
+    box-shadow: 0 4px 16px color-mix(in srgb, var(--color-primary) 40%, transparent) !important;
     cursor: pointer !important;
     transition: transform 0.15s ease !important;
   }
@@ -726,7 +726,7 @@
 
   /* ── Payment/Mixed Payment Modal ── */
   .paymentSummary {
-    margin-bottom: 16px;
+    margin-bottom: var(--space-4);
     color: var(--color-text-muted);
     font-size: var(--font-size-md);
   }
@@ -748,11 +748,11 @@
   }
 
   .paymentError {
-    padding: 12px;
+    padding: var(--space-3);
     background: rgb(239, 68, 68, 0.1);
-    border: 1px solid var(--color-danger);
+    border: var(--border-width) var(--border-style) var(--color-danger) ;
     border-radius: var(--btn-radius);
-    margin-bottom: 16px;
+    margin-bottom: var(--space-4);
     color: var(--color-danger);
     font-size: var(--font-size-sm);
   }
@@ -761,7 +761,7 @@
     width: 100% !important;
     padding: 6px 10px !important;
     border-radius: var(--border-radius-md) !important;
-    border: 1px solid var(--color-border) !important;
+    border: var(--border-width) var(--border-style) var(--color-border)  !important;
     background: var(--color-bg-hover) !important;
     font-size: var(--font-size-md) !important;
     box-sizing: border-box !important;
@@ -779,7 +779,7 @@
     width: 100px;
     padding: 6px 10px;
     border-radius: var(--border-radius-md);
-    border: 1px solid var(--color-border);
+    border: var(--border-width) var(--border-style) var(--color-border) ;
     background: var(--color-bg-hover);
     font-size: var(--font-size-md);
     color: var(--color-text);
@@ -787,7 +787,7 @@
 
   .removeBtn {
     background: none !important;
-    border: none !important;
+    border: none;
     color: var(--color-danger) !important;
     cursor: pointer !important;
     font-size: var(--font-size-xl) !important;
@@ -798,10 +798,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
-    margin-bottom: 16px;
+    gap: var(--space-1-5);
+    margin-bottom: var(--space-4);
     width: 100%;
-    padding: 10px;
+    padding: var(--space-2-5);
     background: none;
     border: 1px dashed var(--color-border);
     border-radius: var(--card-radius);
@@ -820,9 +820,9 @@
   .spinnerInline {
     width: 16px;
     height: 16px;
-    border: 2px solid var(--color-border);
+    border: var(--border-width-focus) var(--border-style) var(--color-border) ;
     border-top-color: var(--color-primary);
-    border-radius: 50%;
+    border-radius: var(--radius-full) ;
     animation: inlineSpin 0.8s linear infinite;
     display: inline-block;
   }
@@ -835,13 +835,13 @@
 
   .formActions {
     display: flex;
-    gap: 8px;
+    gap: var(--space-2);
     justify-content: flex-end;
   }
 
   .cancelBtn {
-    padding: 10px 20px;
-    border: 1px solid var(--color-border);
+    padding: var(--space-2-5) var(--space-5);
+    border: var(--border-width) var(--border-style) var(--color-border) ;
     border-radius: var(--btn-radius);
     background: transparent;
     color: var(--color-text-muted);
@@ -856,7 +856,7 @@
   }
 
   .saveBtn {
-    padding: 10px 20px;
+    padding: var(--space-2-5) var(--space-5);
     background: var(--color-primary);
     color: white;
     border: none;
@@ -891,7 +891,7 @@
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    box-shadow: 0 2px 6px rgb(0, 0, 0, 0.2) !important;
+    box-shadow: var(--shadow-md) !important;
     z-index: 10 !important;
   }
 }
@@ -942,7 +942,7 @@
 .modalTitle {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-2);
   padding: 18px 20px;
   font-size: var(--modal-title-size);
   font-weight: var(--font-weight-bold);
@@ -951,7 +951,7 @@
 }
 
 .modalBody {
-  padding: 20px;
+  padding: var(--space-5);
   display: flex;
   flex-direction: column;
   gap: 14px;
@@ -960,7 +960,7 @@
 .modalField {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: var(--space-1);
 }
 
 .modalLabel {
@@ -972,9 +972,9 @@
 }
 
 .modalInput {
-  padding: 10px 12px;
+  padding: var(--space-2-5) var(--space-3);
   border-color: var(--color-border);
-  border-style: solid;
+  border-style: var(--border-style) ;
   border-width: var(--input-border-width);
   border-radius: var(--input-radius);
   font-size: var(--font-size-md);
@@ -1000,7 +1000,7 @@
 .modalRowDiff {
   padding-top: 10px;
   border-top: var(--card-border-width) solid var(--color-border);
-  margin-top: 4px;
+  margin-top: var(--space-1);
 }
 
 .modalValue {
@@ -1019,14 +1019,14 @@
 
 .modalActions {
   display: flex;
-  gap: 8px;
+  gap: var(--space-2);
   padding: 0 20px 18px;
   justify-content: flex-end;
 }
 
 .modalBtnPrimary,
 .modalBtnSecondary {
-  padding: 10px 20px;
+  padding: var(--space-2-5) var(--space-5);
   border-radius: var(--btn-radius);
   border-width: var(--btn-border-width);
   font-size: var(--font-size-sm);
@@ -1065,7 +1065,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
+  padding: var(--space-5);
   max-height: 80vh;
   overflow-y: auto;
 }
@@ -1073,13 +1073,13 @@
 .successIconWrapper {
   display: flex;
   justify-content: center;
-  margin-bottom: 16px;
+  margin-bottom: var(--space-4);
 }
 
 .checkmark {
   width: 72px;
   height: 72px;
-  border-radius: 50%;
+  border-radius: var(--radius-full) ;
   display: block;
   stroke-width: 2;
   stroke: var(--color-success);
@@ -1125,7 +1125,7 @@
 
 @keyframes fill {
   100% {
-    box-shadow: inset 0 0 0 36px rgb(22, 163, 74, 0.1);
+    box-shadow: inset 0 0 0 36px color-mix(in srgb, var(--color-success) 10%, transparent) ;
   }
 }
 
@@ -1133,7 +1133,7 @@
   font-size: var(--font-size-2xl);
   font-weight: var(--font-weight-bold);
   color: var(--color-text);
-  margin-bottom: 8px;
+  margin-bottom: var(--space-2);
   text-align: center;
 }
 
@@ -1173,7 +1173,7 @@
   font-weight: var(--font-weight-bold) !important;
   letter-spacing: 1px !important;
   color: var(--color-text) !important;
-  margin-bottom: 4px !important;
+  margin-bottom: var(--space-1) !important;
   text-align: center !important;
 }
 
@@ -1218,7 +1218,7 @@
 .ticketTotals {
   display: flex !important;
   flex-direction: column !important;
-  gap: 4px !important;
+  gap: var(--space-1) !important;
 }
 
 .ticketTotalRow {
@@ -1233,7 +1233,7 @@
   color: var(--color-text) !important;
   border-top: 1px dashed var(--color-border) !important;
   padding-top: 4px !important;
-  margin-top: 4px !important;
+  margin-top: var(--space-1) !important;
 }
 
 .ticketFooter {
@@ -1245,14 +1245,14 @@
 
 .actionsRow {
   display: flex;
-  gap: 12px;
+  gap: var(--space-3);
   width: 100%;
   max-width: 340px;
 }
 
 .actionBtn {
   flex: 1;
-  padding: 12px;
+  padding: var(--space-3);
   border-radius: var(--btn-radius);
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-semibold);
@@ -1260,14 +1260,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: var(--space-2);
   transition: all 0.2s;
 }
 
 .printBtn {
   background-color: var(--color-surface);
   color: var(--color-text);
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   border-radius: var(--btn-radius);
 }
 
@@ -1280,14 +1280,14 @@
   color: white;
   border: none;
   border-radius: var(--btn-radius);
-  padding: 12px;
+  padding: var(--space-3);
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-semibold);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: var(--space-2);
   transition: all 0.2s;
 }
 
@@ -1299,7 +1299,7 @@
   padding: 0 15px 15px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: var(--space-1);
 }
 
 .customerLabel {
@@ -1309,9 +1309,9 @@
 }
 
 .customerSelect {
-  padding: 8px 12px;
+  padding: var(--space-2) var(--space-3);
   border-color: var(--color-border);
-  border-style: solid;
+  border-style: var(--border-style) ;
   border-radius: var(--card-radius);
   background-color: var(--color-surface);
   color: var(--color-text);
@@ -1327,12 +1327,12 @@
 /* ── Search Input inside Search Bar ── */
 .searchInput {
   flex: 1;
-  border: none !important;
+  border: none;
   outline: none !important;
   font-size: var(--font-size-md);
   background: transparent !important;
   color: var(--color-text);
-  box-shadow: none !important;
+  box-shadow: none;
   padding: 0 !important;
 }
 
@@ -1356,11 +1356,11 @@
   font-weight: var(--font-weight-bold) !important;
   width: 22px !important;
   height: 22px !important;
-  border-radius: 50% !important;
+  border-radius: var(--radius-full) !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  box-shadow: 0 2px 6px rgb(240, 90, 40, 0.4) !important;
+  box-shadow: 0 2px 6px color-mix(in srgb, var(--color-primary) 40%, transparent) !important;
   z-index: 10 !important;
 }
 
@@ -1376,8 +1376,8 @@
 .creditExceededAlert {
   display: flex;
   align-items: center;
-  gap: 6px;
-  margin-top: 8px;
+  gap: var(--space-1-5);
+  margin-top: var(--space-2);
   padding: 8px 10px;
   background-color: rgb(220, 38, 38, 0.1);
   border-left: 3px solid #dc2626;
@@ -1392,7 +1392,7 @@
 .mixedPaymentsWarning {
   font-size: var(--font-size-xs);
   color: var(--color-gray-500);
-  margin-top: 4px;
+  margin-top: var(--space-1);
 }
 
 .paymentRow {
@@ -1409,8 +1409,8 @@
 .creditExceededAlert {
   display: flex;
   align-items: center;
-  gap: 6px;
-  margin-top: 8px;
+  gap: var(--space-1-5);
+  margin-top: var(--space-2);
   padding: 8px 10px;
   background-color: rgb(220, 38, 38, 0.1);
   border-left: 3px solid #dc2626;

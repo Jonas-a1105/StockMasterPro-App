@@ -27,7 +27,7 @@
 .tableCard {
   background-color: var(--color-surface);
   border-radius: var(--card-radius);
-  box-shadow: 0 1px 3px rgb(0, 0, 0, 0.05);
+  box-shadow: var(--shadow-sm) ;
   overflow: hidden;
 }
 
@@ -106,7 +106,7 @@
   width: 30px;
   height: 30px;
   border-color: var(--color-border);
-  border-style: solid;
+  border-style: var(--border-style) ;
   border-radius: var(--card-radius);
   background: none;
   cursor: pointer;
@@ -161,7 +161,7 @@
 .field textarea {
   padding: 10px 12px;
   border-color: var(--color-border);
-  border-style: solid;
+  border-style: var(--border-style) ;
   border-radius: var(--card-radius);
   font-size: var(--font-size-sm);
   outline: none;
@@ -187,7 +187,7 @@
 .cancelBtn {
   padding: 10px 20px;
   border-color: var(--color-border);
-  border-style: solid;
+  border-style: var(--border-style) ;
   border-radius: var(--card-radius);
   background: none;
   font-size: var(--font-size-sm);

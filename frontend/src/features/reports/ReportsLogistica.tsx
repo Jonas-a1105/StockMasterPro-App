@@ -31,7 +31,7 @@ import {
   demoHeatmap,
   demoTaxLiability,
 } from './pages/ReportsPage';
-import styles from '../ReportsPage.module.css';
+import styles from './pages/ReportsPage.module.css';
 
 interface Props {
   sales: any[];

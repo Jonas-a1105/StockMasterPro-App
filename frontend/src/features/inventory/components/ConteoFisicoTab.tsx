@@ -12,6 +12,7 @@ import { Input } from '@shared/ui/Input';
 import { Select } from '@shared/ui/Select';
 import { exportToExcel, type ColumnMapping } from '@shared/lib/excelHelper';
 import { ImportModal } from '@shared/ui/ImportModal';
+import styles from './ConteoFisicoTab.module.css';
 import {
   FileText,
   Plus,
@@ -555,7 +556,7 @@ function CountDetailModal({ open, onClose, count, onUpdateItem, savingItem }: an
                     disabled={count.status !== 'in_progress'}
                   />
                 </td>
-                <td className="text-center p-3 font-semibold" style={{ color: item.difference !== 0 ? 'var(--color-danger)' : 'var(--color-success)' }}>
+                <td className={`text-center p-3 font-semibold ${styles.colorVar}`} style={{ '--color-var': item.difference !== 0 ? 'var(--color-danger)' : 'var(--color-success)' } as React.CSSProperties}>
                   {item.difference >= 0 ? '+' : ''}{item.difference}
                 </td>
                 <td className="p-3">

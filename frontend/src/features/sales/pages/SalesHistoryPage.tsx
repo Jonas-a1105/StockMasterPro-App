@@ -7,9 +7,8 @@ import { KpiGrid } from '@shared/ui/KpiGrid';
 import { Toolbar } from '@shared/ui/Toolbar';
 import { DataTable } from '@shared/ui/DataTable';
 import { Table } from '@shared/ui/Table';
-import { Badge } from '@shared/ui/Badge';
+import { ConfirmModal } from '@shared/ui/ConfirmModal';
 import { Button } from '@shared/ui/Button';
-import { SkeletonTablePage } from '@shared/ui/Skeleton';
 import { useTheme } from '@contexts/ThemeContext';
 import { DollarSign, ShoppingCart, Eye, Printer, RotateCcw, XCircle, FileText } from 'lucide-react';
 import { useExchangeRate } from '@contexts/ExchangeRateContext';
@@ -105,20 +104,26 @@ export function SalesHistoryPage() {
     }
   };
 
+  const [showVoidConfirm, setShowVoidConfirm] = useState(false);
+  const [saleToVoid, setSaleToVoid] = useState<any>(null);
+
   const handleVoid = async (sale: any) => {
-    if (
-      !window.confirm(
-        `¿Anular venta #${String(sale.folio || sale.id).slice(0, 8)} por $${Number(sale.total).toFixed(2)}?`
-      )
-    )
-      return;
+    setSaleToVoid(sale);
+    setShowVoidConfirm(true);
+  };
+
+  const confirmVoid = async () => {
+    if (!saleToVoid) return;
     try {
-      await api.voidSale(sale.id);
+      await api.voidSale(saleToVoid.id);
       showToast('Venta anulada correctamente', 'success');
       setShowDetail(false);
       loadSales();
     } catch (err: any) {
       showToast(err.message || 'Error al anular venta', 'error');
+    } finally {
+      setShowVoidConfirm(false);
+      setSaleToVoid(null);
     }
   };
 
@@ -243,7 +248,7 @@ export function SalesHistoryPage() {
       </Toolbar>
 
       <KpiGrid
-        kpis={[
+        items={[
           {
             label: 'Ventas del día',
             value: dailySummary?.count ?? '—',
@@ -269,9 +274,6 @@ export function SalesHistoryPage() {
         data={filteredSales}
         columns={saleColumns}
         keyExtractor={(s) => s.id}
-        searchable
-        searchPlaceholder="Buscar por folio, cliente, producto..."
-        searchKeys={['folio', 'customer?.name']}
         sortable
         emptyMessage="No hay ventas registradas"
         loading={loading}
@@ -337,6 +339,18 @@ export function SalesHistoryPage() {
           </div>
         )}
       </Modal>
+      <ConfirmModal
+        open={showVoidConfirm}
+        onClose={() => { setShowVoidConfirm(false); setSaleToVoid(null); }}
+        title="Anular Venta"
+        type="danger"
+        confirmText="Anular"
+        onConfirm={confirmVoid}
+      >
+        {saleToVoid && (
+          <p>¿Anular venta <strong>#{String(saleToVoid.folio || saleToVoid.id).slice(0, 8)}</strong> por <strong>{formatPrice(Number(saleToVoid.total))}</strong>?</p>
+        )}
+      </ConfirmModal>
     </>
   );
 }

@@ -1,12 +1,12 @@
 .container {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: var(--space-5);
 }
 
 .tabs {
   display: flex;
-  gap: 4px;
+  gap: var(--space-1);
   border-bottom: 1px solid var(--color-border);
   margin-bottom: 24px;
   overflow: auto hidden; /* Firefox scroll fix */
@@ -20,7 +20,7 @@
 .tab {
   background: none;
   border: none;
-  padding: 10px 14px;
+  padding: var(--space-2-5) var(--space-3-5);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
   color: var(--color-text-muted);
@@ -29,7 +29,7 @@
   position: relative;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-2);
   transition: color 0.15s ease;
   border-radius: 0;
 }
@@ -78,16 +78,16 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 15px;
+  gap: var(--space-4);
 }
 
 .searchBar {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--space-2-5);
   background-color: var(--color-surface);
   border-radius: var(--card-radius);
-  padding: 10px 15px;
+  padding: var(--space-2-5) var(--space-4);
   box-shadow: var(--shadow-sm);
   flex: 1;
   max-width: 400px;
@@ -106,8 +106,8 @@
 .addBtn {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 10px 16px;
+  gap: var(--space-1-5);
+  padding: var(--space-2-5) var(--space-4);
   background-color: var(--color-primary);
   color: white;
   border: none;
@@ -129,8 +129,8 @@
 .exportBtn {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 10px 14px;
+  gap: var(--space-1-5);
+  padding: var(--space-2-5) var(--space-3-5);
   background-color: var(--color-surface);
   color: var(--color-text);
   border: var(--card-border-width) solid var(--color-border);
@@ -150,11 +150,11 @@
 .importBtn {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 10px 14px;
+  gap: var(--space-1-5);
+  padding: var(--space-2-5) var(--space-3-5);
   background-color: var(--color-surface);
   color: var(--color-primary);
-  border: 1px solid color-mix(in srgb, var(--color-primary) 25%, transparent);
+  border: var(--border-width) var(--border-style) color-mix(in srgb, var(--color-primary) 25%, transparent) ;
   border-radius: var(--btn-radius);
   font-weight: var(--font-weight-semibold);
   font-size: var(--font-size-sm);
@@ -171,7 +171,7 @@
 .form {
   background-color: var(--color-surface);
   border-radius: var(--card-radius);
-  padding: 20px;
+  padding: var(--space-5);
   box-shadow: var(--shadow-sm);
 }
 
@@ -190,13 +190,13 @@
 .formGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
+  gap: var(--space-3);
 }
 
 .field {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: var(--space-1);
 }
 
 .field label {
@@ -209,9 +209,9 @@
 .field input,
 .field textarea,
 .field select {
-  padding: 8px 10px;
+  padding: var(--space-2) 10px;
   border-color: var(--color-border);
-  border-style: solid;
+  border-style: var(--border-style) ;
   border-radius: var(--card-radius);
   font-size: var(--font-size-sm);
   background-color: var(--color-surface);
@@ -233,7 +233,7 @@
   grid-column: 1 / -1;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: var(--space-1);
 }
 
 .fieldFull label {
@@ -245,9 +245,9 @@
 
 .fieldFull textarea,
 .fieldFull input {
-  padding: 8px 10px;
+  padding: var(--space-2) 10px;
   border-color: var(--color-border);
-  border-style: solid;
+  border-style: var(--border-style) ;
   border-radius: var(--card-radius);
   font-size: var(--font-size-sm);
   background-color: var(--color-surface);
@@ -258,12 +258,12 @@
 .formActions {
   display: flex;
   justify-content: flex-end;
-  gap: 10px;
+  gap: var(--space-2-5);
   margin-top: 15px;
 }
 
 .saveBtn {
-  padding: 8px 20px;
+  padding: var(--space-2) 20px;
   background-color: var(--color-primary);
   color: white;
   border: none;
@@ -278,25 +278,25 @@
 }
 
 .cancelBtn {
-  padding: 8px 20px;
+  padding: var(--space-2) 20px;
   background-color: var(--color-bg);
   color: var(--color-text);
   border-color: var(--color-border);
-  border-style: solid;
+  border-style: var(--border-style) ;
   border-radius: var(--card-radius);
   cursor: pointer;
 }
 
 .filtersRow {
   display: flex;
-  gap: 10px;
+  gap: var(--space-2-5);
   align-items: center;
 }
 
 .filterSelect {
-  padding: 8px 12px;
+  padding: var(--space-2) var(--space-3);
   border-color: var(--color-border);
-  border-style: solid;
+  border-style: var(--border-style) ;
   border-radius: var(--card-radius);
   font-size: var(--font-size-sm);
   background: var(--color-surface);
@@ -324,7 +324,7 @@
 
 .table th {
   text-align: left;
-  padding: 12px 15px;
+  padding: var(--space-3) 15px;
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-bold);
   color: var(--color-text-muted);
@@ -334,7 +334,7 @@
 }
 
 .table td {
-  padding: 12px 15px;
+  padding: var(--space-3) 15px;
   border-bottom: var(--card-border-width) solid var(--color-border);
   color: var(--color-text);
 }
@@ -349,7 +349,7 @@
 
 .badge {
   font-size: var(--font-size-xs);
-  padding: 2px 8px;
+  padding: var(--space-0-5) var(--space-2);
   border-radius: var(--border-radius-sm);
   font-weight: var(--font-weight-semibold);
   white-space: nowrap;
@@ -373,9 +373,9 @@
 .editBtn {
   width: 32px;
   height: 32px;
-  border-radius: 50%;
+  border-radius: var(--radius-full) ;
   border-color: var(--color-border);
-  border-style: solid;
+  border-style: var(--border-style) ;
   background: none;
   cursor: pointer;
   display: flex;
@@ -393,9 +393,9 @@
 .deleteBtn {
   width: 32px;
   height: 32px;
-  border-radius: 50%;
+  border-radius: var(--radius-full) ;
   border-color: var(--color-border);
-  border-style: solid;
+  border-style: var(--border-style) ;
   background: none;
   cursor: pointer;
   display: flex;
@@ -413,7 +413,7 @@
 
 .actionGroup {
   display: flex;
-  gap: 6px;
+  gap: var(--space-1-5);
 }
 
 .whatsappBtn {
@@ -435,16 +435,16 @@
 
 .poItemRow {
   display: flex;
-  gap: 10px;
+  gap: var(--space-2-5);
   align-items: flex-end;
   margin-bottom: 10px;
-  padding: 10px;
+  padding: var(--space-2-5);
   background-color: var(--color-bg);
   border-radius: var(--card-radius);
 }
 
 .poSubtotal {
-  padding: 8px 10px;
+  padding: var(--space-2) 10px;
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
   color: var(--color-text);
@@ -453,9 +453,9 @@
 .removeItemBtn {
   width: 32px;
   height: 32px;
-  border-radius: 50%;
+  border-radius: var(--radius-full) ;
   border-color: var(--color-border);
-  border-style: solid;
+  border-style: var(--border-style) ;
   background: none;
   cursor: pointer;
   display: flex;
@@ -474,7 +474,7 @@
 
 .poTotal {
   text-align: right;
-  padding: 10px 0;
+  padding: var(--space-2-5) 0;
   font-size: var(--font-size-md-plus);
   color: var(--color-text);
 }
@@ -526,8 +526,8 @@
 .kardexInfo {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 12px 16px;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
   background-color: var(--color-surface);
   border-radius: var(--card-radius);
   box-shadow: var(--shadow-sm);
@@ -537,7 +537,7 @@
 
 .movementBadge {
   font-size: var(--font-size-xs);
-  padding: 2px 8px;
+  padding: var(--space-0-5) var(--space-2);
   border-radius: var(--border-radius-sm);
   font-weight: var(--font-weight-semibold);
   white-space: nowrap;
@@ -575,14 +575,14 @@
 
 .empty {
   text-align: center;
-  padding: 40px;
+  padding: var(--space-10);
   color: var(--color-text-muted);
 }
 
 .productCell {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--space-2-5);
 }
 
 .productThumb {
@@ -596,7 +596,7 @@
 
 .categoryRow {
   display: flex;
-  gap: 6px;
+  gap: var(--space-1-5);
   align-items: flex-end;
 }
 
@@ -608,7 +608,7 @@
   width: 36px;
   height: 36px;
   border-radius: var(--card-radius);
-  border: 1px solid var(--color-primary);
+  border: var(--border-width) var(--border-style) var(--color-primary) ;
   background: none;
   cursor: pointer;
   display: flex;
@@ -626,7 +626,7 @@
 
 .imageUploadArea {
   display: flex;
-  gap: 8px;
+  gap: var(--space-2);
   align-items: center;
 }
 
@@ -635,7 +635,7 @@
 }
 
 .imageUploadLabel {
-  padding: 8px 12px;
+  padding: var(--space-2) var(--space-3);
   background: var(--color-bg);
   border: var(--card-border-width) solid var(--color-border);
   border-radius: var(--card-radius);
@@ -661,16 +661,16 @@
 
 .newCategoryInline {
   display: flex;
-  gap: 6px;
+  gap: var(--space-1-5);
   align-items: center;
   margin-top: 6px;
 }
 
 .newCategoryInline input {
   flex: 1;
-  padding: 6px 10px;
+  padding: var(--space-1-5) var(--space-2-5);
   border-color: var(--color-border);
-  border-style: solid;
+  border-style: var(--border-style) ;
   border-radius: var(--card-radius);
   font-size: var(--font-size-caption);
   background: var(--color-surface);
@@ -683,7 +683,7 @@
 }
 
 .smallBtn {
-  padding: 6px 10px;
+  padding: var(--space-1-5) var(--space-2-5);
   border: none;
   border-radius: var(--card-radius);
   font-size: var(--font-size-xs);
@@ -720,8 +720,8 @@
 .kpiContainer {
   display: flex;
   flex-wrap: wrap;
-  gap: 16px;
-  margin-bottom: 20px;
+  gap: var(--space-4);
+  margin-bottom: var(--space-5);
 }
 
 .kpiCard {
@@ -730,11 +730,11 @@
   width: 100%;
   background-color: var(--color-surface);
   border-radius: var(--card-radius);
-  padding: 16px;
+  padding: var(--space-4);
   box-shadow: var(--shadow-sm);
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: var(--space-3-5);
   border: var(--card-border-width) solid var(--color-border);
   transition:
     transform 0.2s ease,
@@ -760,7 +760,7 @@
 .kpiContent {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: var(--space-0-5);
 }
 
 .kpiValue {
@@ -792,7 +792,7 @@
 .productsGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-  gap: 12px;
+  gap: var(--space-3);
   margin-top: 16px;
   max-height: calc(100vh - 290px);
   overflow-y: auto;
@@ -803,10 +803,10 @@
 .productCard {
   background-color: var(--color-surface);
   border-radius: var(--card-radius);
-  padding: 16px !important;
+  padding: var(--space-4) !important;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--space-2);
   border: none;
   transition:
     transform 0.2s ease,
@@ -822,7 +822,7 @@
 .headerContainer {
   background-color: var(--product-inner-bg);
   border-radius: var(--card-radius);
-  padding: 6px 10px;
+  padding: var(--space-1-5) var(--space-2-5);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -837,7 +837,7 @@
 .productInfoBlock {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-2);
   overflow: hidden;
 }
 
@@ -875,7 +875,7 @@
   color: var(--color-text);
   display: flex;
   align-items: center;
-  gap: 2px;
+  gap: var(--space-0-5);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -898,8 +898,8 @@
 
 /* ── Percentage badge ── */
 .percentageBadge {
-  border: 2px solid var(--color-success);
-  border-radius: 50%;
+  border: var(--border-width-focus) var(--border-style) var(--color-success) ;
+  border-radius: var(--radius-full) ;
   width: 28px;
   height: 28px;
   display: flex;
@@ -958,7 +958,7 @@
   padding: 0 !important;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--space-2);
 }
 
 [data-theme='dark'] .bottomCapsule,
@@ -969,7 +969,7 @@
 .statsGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 4px;
+  gap: var(--space-1);
   border-bottom: 1px dashed var(--color-border);
   padding-bottom: 6px;
 }
@@ -1024,7 +1024,7 @@
 .statusPill {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: var(--space-1);
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);
 }
@@ -1032,7 +1032,7 @@
 .statusDot {
   width: 5px;
   height: 5px;
-  border-radius: 50%;
+  border-radius: var(--radius-full) ;
   flex-shrink: 0;
 }
 
@@ -1059,7 +1059,7 @@
 
 .actionIcons {
   display: flex;
-  gap: 10px;
+  gap: var(--space-2-5);
 }
 
 .iconBtn {
@@ -1083,7 +1083,7 @@
 
 .emptyGrid {
   grid-column: 1 / -1;
-  padding: 40px;
+  padding: var(--space-10);
   text-align: center;
   border: 1px dashed var(--color-border);
   border-radius: var(--card-radius);
@@ -1108,8 +1108,8 @@
 .inputPrefix input,
 .inputSuffix input {
   flex: 1;
-  border: none !important;
-  border-radius: 0 !important;
+  border: none;
+  border-radius: 0;
   padding: 10px 12px;
   font-size: var(--font-size-sm);
   outline: none;
@@ -1146,9 +1146,9 @@
 .toolbarContainer {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--space-3);
   background-color: var(--color-surface);
-  padding: 14px;
+  padding: var(--space-3-5);
   border-radius: var(--card-radius);
   border: var(--card-border-width) solid var(--color-border);
   box-shadow: var(--shadow-sm);
@@ -1158,7 +1158,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: var(--space-3);
   flex-wrap: wrap;
 }
 
@@ -1186,8 +1186,8 @@
   display: flex;
   align-items: center;
   flex: 1;
-  padding: 0 12px;
-  gap: 8px;
+  padding: 0 var(--space-3);
+  gap: var(--space-2);
   color: var(--color-text-muted);
 }
 
@@ -1209,12 +1209,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 4px;
+  padding: var(--space-1);
   border: none;
   background: none;
   color: var(--color-text-muted);
   cursor: pointer;
-  border-radius: 50%;
+  border-radius: var(--radius-full) ;
   transition: all 0.15s ease;
   flex-shrink: 0;
 }
@@ -1227,7 +1227,7 @@
 .searchFilterDivider {
   width: 1px;
   align-self: stretch;
-  margin: 8px 0;
+  margin: var(--space-2) 0;
   background-color: var(--color-border);
 }
 
@@ -1255,7 +1255,7 @@
   display: flex;
   align-items: center;
   background-color: var(--color-bg);
-  border: 1px solid var(--color-border) !important;
+  border: var(--border-width) var(--border-style) var(--color-border)  !important;
   border-radius: var(--card-radius);
   padding: 2px;
   gap: 0;
@@ -1293,10 +1293,10 @@
 .sortDropdownBtn {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 7px 12px;
+  gap: var(--space-1-5);
+  padding: var(--space-1-5) var(--space-3);
   background-color: var(--color-bg);
-  border: 1px solid var(--color-border) !important;
+  border: var(--border-width) var(--border-style) var(--color-border)  !important;
   border-radius: var(--card-radius);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
@@ -1326,16 +1326,16 @@
   min-width: 200px;
   background-color: var(--color-surface);
   border-color: var(--color-border);
-  border-style: solid;
+  border-style: var(--border-style) ;
   border-radius: var(--card-radius);
   box-shadow: var(--shadow-lg);
   z-index: 30;
-  padding: 4px 0;
+  padding: var(--space-1) 0;
   animation: slideDownFade 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .sortMenuHeader {
-  padding: 6px 12px;
+  padding: var(--space-1-5) var(--space-3);
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-bold);
   color: var(--color-text-muted);
@@ -1347,9 +1347,9 @@
 .sortMenuItem {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-2);
   width: 100%;
-  padding: 8px 12px;
+  padding: var(--space-2) var(--space-3);
   border: none;
   background: none;
   font-size: var(--font-size-sm);
@@ -1373,7 +1373,7 @@
 .sortMenuDivider {
   height: 1px;
   background-color: var(--color-border);
-  margin: 4px 0;
+  margin: var(--space-1) 0;
 }
 
 /* Menú de Herramientas Consolidado */
@@ -1384,10 +1384,10 @@
 .toolsDropdownBtn {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--space-1-5);
   padding: 7px 14px;
   background-color: var(--color-bg);
-  border: 1px solid var(--color-border) !important;
+  border: var(--border-width) var(--border-style) var(--color-border)  !important;
   border-radius: var(--card-radius);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
@@ -1409,20 +1409,20 @@
   min-width: 210px;
   background-color: var(--color-surface);
   border-color: var(--color-border);
-  border-style: solid;
+  border-style: var(--border-style) ;
   border-radius: var(--card-radius);
   box-shadow: var(--shadow-lg);
   z-index: 30;
-  padding: 4px 0;
+  padding: var(--space-1) 0;
   animation: slideDownFade 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .toolsMenuItem {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--space-2-5);
   width: 100%;
-  padding: 8px 12px;
+  padding: var(--space-2) var(--space-3);
   border: none;
   background: none;
   font-size: var(--font-size-sm);
@@ -1443,7 +1443,7 @@
 }
 
 .toolsMenuHeader {
-  padding: 6px 12px;
+  padding: var(--space-1-5) var(--space-3);
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-bold);
   color: var(--color-text-muted);
@@ -1455,7 +1455,7 @@
 .toolsMenuDivider {
   height: 1px;
   background-color: var(--color-border);
-  margin: 4px 0;
+  margin: var(--space-1) 0;
 }
 
 .disabledMenuItem {
@@ -1491,15 +1491,15 @@
   .kpiCarouselWrapper .kpiContainer {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+    gap: var(--space-2-5);
     overflow-x: visible;
   }
 
   .kpiCard {
     max-width: none;
     min-height: 68px;
-    padding: 12px;
-    gap: 10px;
+    padding: var(--space-3);
+    gap: var(--space-2-5);
   }
 
   .kpiIconWrapper {
@@ -1583,19 +1583,19 @@
   .toolbarActions {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: var(--space-2);
     justify-content: space-between;
   }
 
   .productsGrid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 8px;
+    gap: var(--space-2);
     max-height: calc(100vh - 330px);
   }
 
   .productCard {
-    padding: 10px !important;
-    gap: 8px;
+    padding: var(--space-2-5) !important;
+    gap: var(--space-2);
   }
 
   .prodImageContainer {
@@ -1614,7 +1614,7 @@
 .toolbarActions {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-2);
 }
 
 /* Mejora sutil para la tabla en hover */
@@ -1677,11 +1677,11 @@
   position: absolute;
   top: 8px;
   left: 8px;
-  padding: 3px 8px;
+  padding: var(--space-0-5) var(--space-2);
   border-radius: var(--border-radius-sm);
   display: flex;
   align-items: center;
-  gap: 3px;
+  gap: var(--space-0-5);
   font-size: var(--font-size-2xs);
   font-weight: var(--font-weight-bold);
   backdrop-filter: blur(8px);
@@ -1722,10 +1722,10 @@
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-bold);
   color: var(--color-text);
-  margin-top: 4px;
+  margin-top: var(--space-1);
   display: flex;
   align-items: center;
-  gap: 3px;
+  gap: var(--space-0-5);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1742,8 +1742,8 @@
 .stockProgressWrapper {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  margin-top: 4px;
+  gap: var(--space-1-5);
+  margin-top: var(--space-1);
 }
 
 .stockProgressTextRow {
@@ -1787,7 +1787,7 @@
   padding: 0 !important;
   border-top: 1px dashed var(--color-border);
   padding-top: 8px !important;
-  margin-top: 4px;
+  margin-top: var(--space-1);
 }
 
 .prodPriceBsAndActionsRow {
@@ -1800,7 +1800,7 @@
 .prodPriceBsGroup {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-2);
 }
 
 .prodPriceBsLabel {
@@ -1818,7 +1818,7 @@
 .prodActionsRow {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--space-3);
 }
 
 .iconBtn {
@@ -1911,12 +1911,12 @@
 .flexCenter {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-2);
 }
 .flexRow {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-2);
 }
 .flexWrap {
   flex-wrap: wrap;
@@ -1933,7 +1933,7 @@
 
 /* Margin/Padding */
 .mb20 {
-  margin-bottom: 20px;
+  margin-bottom: var(--space-5);
 }
 .mt20 {
   margin-top: 20px;
@@ -1942,10 +1942,10 @@
   margin-left: auto;
 }
 .gap8 {
-  gap: 8px;
+  gap: var(--space-2);
 }
 .gap16 {
-  gap: 16px;
+  gap: var(--space-4);
 }
 
 /* Width/Height */
@@ -1989,7 +1989,7 @@
 /* Table utilities */
 .emptyRow {
   text-align: center;
-  padding: 40px;
+  padding: var(--space-10);
   color: var(--color-text-muted);
 }
 .mono {
@@ -2007,14 +2007,14 @@
 
 /* Form controls */
 .formSelect {
-  padding: 6px 12px;
+  padding: var(--space-1-5) var(--space-3);
   border-radius: var(--border-radius-md);
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
 }
 .formInput {
-  padding: 6px 12px;
+  padding: var(--space-1-5) var(--space-3);
   border-radius: var(--border-radius-md);
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
 }
 .formLabel {
   font-size: var(--font-size-sm);
@@ -2023,7 +2023,7 @@
 /* Empty state */
 .emptyState {
   text-align: center;
-  padding: 40px;
+  padding: var(--space-10);
   color: var(--color-text-muted);
 }
 
@@ -2033,8 +2033,8 @@
 }
 .headerFlex {
   display: flex;
-  gap: 16px;
-  margin: 20px 0;
+  gap: var(--space-4);
+  margin: var(--space-5) 0;
   align-items: center;
 }
 
@@ -2060,32 +2060,32 @@
 .categoryFormContainer {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding: 8px 0;
+  gap: var(--space-3);
+  padding: var(--space-2) 0;
 }
 .categoryFormInput {
-  padding: 8px 12px;
+  padding: var(--space-2) var(--space-3);
   border-radius: var(--border-radius-md);
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   background: var(--color-surface);
   color: var(--text-primary);
   font-size: var(--font-size-md);
 }
 .categoryFormActions {
   display: flex;
-  gap: 8px;
+  gap: var(--space-2);
   justify-content: flex-end;
 }
 .categoryFormCancelBtn {
-  padding: 6px 16px;
+  padding: var(--space-1-5) var(--space-4);
   border-radius: var(--border-radius-md);
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   background: transparent;
   color: var(--text-primary);
   cursor: pointer;
 }
 .categoryFormCreateBtn {
-  padding: 6px 16px;
+  padding: var(--space-1-5) var(--space-4);
   border-radius: var(--border-radius-md);
   border: none;
   background: var(--color-primary);

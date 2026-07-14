@@ -6,7 +6,7 @@
 }
 
 .page * {
-  border-radius: 0 !important;
+  border-radius: 0;
   transition-duration: 0.1s !important;
 }
 
@@ -45,7 +45,7 @@
 /* ─── Theme Toggle ─── */
 .themeToggle {
   background: none;
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   cursor: pointer;
   padding: 6px;
   display: flex;
@@ -141,7 +141,7 @@
   letter-spacing: 3px;
   padding: 4px 14px;
   color: var(--color-primary);
-  border: 1px solid var(--color-primary);
+  border: var(--border-width) var(--border-style) var(--color-primary) ;
   opacity: 0.3;
 }
 
@@ -191,7 +191,7 @@
   text-decoration: none;
   font-size: var(--font-size-caption);
   padding: 14px 28px;
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   color: var(--color-text-muted);
 }
 
@@ -240,7 +240,7 @@
 
 .featureCard {
   padding: 28px 20px;
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   background: var(--color-surface);
   display: flex;
   flex-direction: column;
@@ -454,7 +454,7 @@
   padding: 12px;
   background: var(--color-surface);
   color: var(--color-text);
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   margin-top: auto;
   text-transform: none;
   transition: all 0.15s;
@@ -509,7 +509,7 @@
   align-items: center;
   gap: 12px;
   padding: 36px 48px;
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   background: var(--color-surface);
   text-decoration: none;
   color: var(--color-text);

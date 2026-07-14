@@ -6,7 +6,7 @@
   padding: 14px;
   border-radius: var(--card-radius);
   border: var(--card-border-width) solid var(--color-border);
-  box-shadow: 0 1px 3px rgb(0, 0, 0, 0.05);
+  box-shadow: var(--shadow-sm) ;
 }
 
 .row {
@@ -35,7 +35,7 @@
 
 .searchSection:focus-within {
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 2px rgb(240, 90, 40, 0.12);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-primary) 12%, transparent) ;
 }
 
 .searchSection input {
@@ -74,7 +74,7 @@
   background: none;
   color: var(--color-text-muted);
   cursor: pointer;
-  border-radius: 50%;
+  border-radius: var(--radius-full) ;
   transition: all 0.15s ease;
   flex-shrink: 0;
 }
@@ -101,7 +101,7 @@
   gap: 6px;
   padding: 7px 14px;
   background-color: var(--color-bg);
-  border: 1px solid var(--color-border) !important;
+  border: var(--border-width) var(--border-style) var(--color-border)  !important;
   border-radius: var(--btn-radius);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
@@ -131,9 +131,9 @@
   min-width: 210px;
   background-color: var(--color-surface);
   border-color: var(--color-border);
-  border-style: solid;
+  border-style: var(--border-style) ;
   border-radius: var(--card-radius);
-  box-shadow: 0 8px 24px rgb(0, 0, 0, 0.12);
+  box-shadow: var(--shadow-lg) ;
   z-index: 30;
   padding: 4px 0;
   animation: slideDownFade 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;

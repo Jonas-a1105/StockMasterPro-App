@@ -1,6 +1,12 @@
 import { useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { api } from '@shared/lib/http/client';
+import { Button } from '@shared/ui/Button';
+import { Input } from '@shared/ui/Input';
+import { FormField } from '@shared/ui/FormField';
+import { Card, CardTitle } from '@shared/ui/Card';
+import { Text } from '@shared/ui/Text';
+import { Heading } from '@shared/ui/Heading';
 import styles from './AuthPage.module.css';
 
 export function ResetPasswordPage() {
@@ -38,20 +44,17 @@ export function ResetPasswordPage() {
     return (
       <div className={styles.authContainer}>
         <div className={styles.authHeader}>
-          <div className={styles.logo}>SM</div>
-          <h1 className={styles.headerTitle}>StockMaster Pro</h1>
+          <Heading variant="h1" className={styles.headerTitle}>StockMaster Pro</Heading>
         </div>
-        <div className={styles.authCard}>
-          <h2 className={styles.title}>Enlace inválido</h2>
-          <p
-            className={`${styles.colorTextMuted} ${styles.fontSize14} ${styles.mt8} ${styles.mb8}`}
-          >
+        <Card className={styles.authCard} padding="lg">
+          <CardTitle className={styles.title}>Enlace inválido</CardTitle>
+          <Text variant="body" color="muted" className={styles.mb8}>
             El enlace de restablecimiento no es válido o ha expirado.
-          </p>
+          </Text>
           <Link to="/forgot-password" className={styles.footerLinkAccent}>
             Solicitar nuevo enlace
           </Link>
-        </div>
+        </Card>
       </div>
     );
   }
@@ -60,20 +63,17 @@ export function ResetPasswordPage() {
     return (
       <div className={styles.authContainer}>
         <div className={styles.authHeader}>
-          <div className={styles.logo}>SM</div>
-          <h1 className={styles.headerTitle}>StockMaster Pro</h1>
+          <Heading variant="h1" className={styles.headerTitle}>StockMaster Pro</Heading>
         </div>
-        <div className={styles.authCard}>
-          <h2 className={styles.title}>Contraseña actualizada</h2>
-          <p
-            className={`${styles.colorTextMuted} ${styles.fontSize14} ${styles.mt8} ${styles.mb8}`}
-          >
+        <Card className={styles.authCard} padding="lg">
+          <CardTitle className={styles.title}>Contraseña actualizada</CardTitle>
+          <Text variant="body" color="muted" className={styles.mb8}>
             Tu contraseña se ha restablecido correctamente.
-          </p>
+          </Text>
           <Link to="/login" className={styles.footerLinkAccent}>
             Iniciar sesión
           </Link>
-        </div>
+        </Card>
       </div>
     );
   }
@@ -81,50 +81,42 @@ export function ResetPasswordPage() {
   return (
     <div className={styles.authContainer}>
       <div className={styles.authHeader}>
-        <div className={styles.logo}>SM</div>
-        <h1 className={styles.headerTitle}>StockMaster Pro</h1>
+        <Heading variant="h1" className={styles.headerTitle}>StockMaster Pro</Heading>
       </div>
-      <div className={styles.authCard}>
-        <div className={styles.sectionHeader}>
-          <div className={styles.indicatorRow}>
-            <div className={styles.indicatorDot} />
-            <span className={styles.indicatorText}>RESET_PASSWORD</span>
-          </div>
-          <h2 className={styles.title}>Restablecer contraseña</h2>
-        </div>
+      <Card className={styles.authCard} padding="lg">
+        <CardTitle className={styles.title}>Restablecer contraseña</CardTitle>
 
         <form onSubmit={handleSubmit}>
           {error && <div className={styles.error}>{error}</div>}
-          <div className={styles.field}>
-            <label>Nueva contraseña</label>
-            <input
+          <FormField label="Nueva contraseña">
+            <Input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className={styles.input}
               placeholder="Mínimo 6 caracteres"
               required
               minLength={6}
             />
-          </div>
-          <div className={styles.field}>
-            <label>Confirmar contraseña</label>
-            <input
+          </FormField>
+          <FormField label="Confirmar contraseña">
+            <Input
               type="password"
               value={confirm}
               onChange={(e) => setConfirm(e.target.value)}
-              className={styles.input}
               placeholder="Repite la contraseña"
               required
             />
-          </div>
-          <button
+          </FormField>
+          <Button
             type="submit"
-            className={`${styles.submitBtn} ${styles.btnShimmer}`}
-            disabled={loading || !password || !confirm}
+            variant="primary"
+            size="lg"
+            loading={loading}
+            disabled={!password || !confirm}
+            className={styles.submitBtn}
           >
             {loading ? 'Guardando...' : 'Restablecer contraseña'}
-          </button>
+          </Button>
           <Link
             to="/login"
             className={`${styles.footerLinkAccent} ${styles.textCenter} ${styles.block} ${styles.mt16}`}
@@ -132,7 +124,7 @@ export function ResetPasswordPage() {
             Volver al inicio de sesión
           </Link>
         </form>
-      </div>
+      </Card>
     </div>
   );
 }

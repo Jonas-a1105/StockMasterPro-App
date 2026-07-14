@@ -21,10 +21,10 @@ import {
   CHART_PROPS,
   COLORS,
   renderTooltip,
-  formatUSD,
+  formatUsd as formatUSD,
   demoFinancialCore,
 } from './pages/ReportsPage';
-import styles from '../ReportsPage.module.css';
+import styles from './pages/ReportsPage.module.css';
 import tableStyles from '@shared/ui/TableList.module.css';
 
 interface Props {

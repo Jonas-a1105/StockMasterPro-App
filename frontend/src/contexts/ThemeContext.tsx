@@ -10,6 +10,7 @@ interface ThemeConfig {
   cardBorders: boolean;
   shadows: boolean;
   animationEnabled: boolean;
+  cardRadius?: number;
 }
 
 interface SavedPreset {
@@ -32,13 +33,14 @@ interface ThemeContextType {
 const defaultConfig: ThemeConfig = {
   darkMode: false,
   oledMode: false,
-  primaryColor: '#ea580c',
+  primaryColor: '#f05a28',
   density: 'comfortable',
   fontSizeBase: 15,
   fontFamily: "'Segoe UI', sans-serif",
   cardBorders: true,
   shadows: true,
   animationEnabled: true,
+  cardRadius: 12,
 };
 
 const DENSITY_MAP = {
@@ -71,14 +73,40 @@ function applyConfigToDOM(config: ThemeConfig) {
   const shadowsActive = config.shadows;
   root.style.setProperty('--card-shadow', shadowsActive ? 'var(--shadow-sm)' : 'none');
   root.style.setProperty('--card-shadow-hover', shadowsActive ? 'var(--shadow-md)' : 'none');
+  root.style.setProperty('--shadow-card', shadowsActive ? 'var(--shadow-sm)' : 'none');
+  root.style.setProperty('--shadow-card-hover', shadowsActive ? 'var(--shadow-md)' : 'none');
+
+  if (config.animationEnabled) {
+    root.removeAttribute('data-animation-disabled');
+  } else {
+    root.setAttribute('data-animation-disabled', 'true');
+  }
 
   const duration = config.animationEnabled ? '150ms cubic-bezier(0.4, 0, 0.2, 1)' : '0ms';
   root.style.setProperty('--transition-base', duration);
 
-  root.style.setProperty('--font-weight-normal', '600');
-  root.style.setProperty('--font-weight-medium', '600');
-  root.style.setProperty('--font-weight-semibold', '600');
-  root.style.setProperty('--font-weight-bold', '600');
+  // Dynamic cardRadius and global border-radius scale logic
+  const currentRadius = config.cardRadius !== undefined ? config.cardRadius : 12;
+  root.style.setProperty('--card-radius', `${currentRadius}px`);
+  root.style.setProperty('--btn-radius', `${Math.round(currentRadius * 0.75)}px`);
+  root.style.setProperty('--input-radius', `${Math.round(currentRadius * 0.75)}px`);
+  root.style.setProperty('--modal-radius', `${Math.round(currentRadius * 1.2)}px`);
+  root.style.setProperty('--badge-radius', currentRadius === 0 ? '0px' : '9999px');
+  root.style.setProperty('--kpi-border-radius', `${Math.round(currentRadius * 0.75)}px`);
+
+  // Update primitive radius variables dynamically so all elements adapt
+  const scale = [
+    { name: 'sm', val: 0.33 },
+    { name: 'md', val: 0.66 },
+    { name: 'lg', val: 1.0 },
+    { name: 'xl', val: 1.33 },
+    { name: '2xl', val: 2.0 }
+  ];
+  scale.forEach(s => {
+    const calculated = currentRadius === 0 ? 0 : Math.round(currentRadius * s.val);
+    root.style.setProperty(`--radius-${s.name}`, `${calculated}px`);
+    root.style.setProperty(`--border-radius-${s.name}`, `${calculated}px`);
+  });
 }
 
 const ThemeContext = createContext<ThemeContextType | null>(null);
@@ -86,7 +114,18 @@ const ThemeContext = createContext<ThemeContextType | null>(null);
 const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const [config, setConfig] = useState<ThemeConfig>(() => {
     const saved = localStorage.getItem('stockmaster-theme-v5');
-    return saved ? { ...defaultConfig, ...JSON.parse(saved) } : defaultConfig;
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (parsed.fontFamily && (parsed.fontFamily.startsWith('#') || parsed.fontFamily.length < 3)) {
+          parsed.fontFamily = defaultConfig.fontFamily;
+        }
+        return { ...defaultConfig, ...parsed };
+      } catch (e) {
+        return defaultConfig;
+      }
+    }
+    return defaultConfig;
   });
 
   const [savedPresets, setSavedPresets] = useState<SavedPreset[]>(() => {

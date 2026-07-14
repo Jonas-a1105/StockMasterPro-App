@@ -26,7 +26,7 @@
   gap: 10px;
   padding: 10px 14px;
   background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   border-radius: var(--border-radius-lg);
   margin-bottom: 20px;
 }
@@ -47,7 +47,7 @@
 
 .salesTable {
   background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   border-radius: var(--card-radius);
   overflow: hidden;
 }
@@ -55,7 +55,7 @@
 /* Return form */
 .returnForm {
   background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   border-radius: var(--card-radius);
   padding: 24px;
 }
@@ -66,7 +66,7 @@
   gap: 6px;
   margin-bottom: 20px;
   padding: 8px 14px;
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   border-radius: var(--btn-radius);
   background: transparent;
   color: var(--color-text);
@@ -136,7 +136,7 @@
 .qtyControls button {
   width: 28px;
   height: 28px;
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   border-radius: var(--border-radius-md);
   background: var(--color-surface);
   color: var(--color-text);
@@ -193,7 +193,7 @@
 .formGroup select {
   width: 100%;
   padding: 10px 12px;
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   border-radius: var(--btn-radius);
   background: var(--color-bg);
   color: var(--color-text);
@@ -221,7 +221,7 @@
   align-items: center;
   gap: 6px;
   padding: 10px 18px;
-  border: 1px solid var(--color-border);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
   border-radius: var(--btn-radius);
   background: transparent;
   color: var(--color-text);
