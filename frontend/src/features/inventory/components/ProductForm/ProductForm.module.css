@@ -1,0 +1,40 @@
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+  width: 100%;
+}
+
+.colSpan1 {
+  grid-column: span 1;
+}
+
+.colSpan2 {
+  grid-column: span 2;
+}
+
+.colSpan3 {
+  grid-column: span 3;
+}
+
+@media (max-width: 768px) {
+  .formGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .colSpan3 {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 520px) {
+  .formGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .colSpan1,
+  .colSpan2,
+  .colSpan3 {
+    grid-column: span 1;
+  }
+}

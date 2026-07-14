@@ -6,6 +6,7 @@ import { formatUsd } from '@shared/lib/format/currency';
 import { api } from '@shared/lib/http/client';
 import { useToast } from '@contexts/ToastContext';
 import type { ProductFormData } from '../../types';
+import styles from './ProductForm.module.css';
 
 interface ProductFormProps {
   open: boolean;
@@ -91,142 +92,162 @@ export function ProductForm({
 
   return (
     <>
-      <Modal open={open && !showNewCategory} onClose={onClose} title={editingId ? 'Editar Producto' : 'Nuevo Producto'}>
+      <Modal open={open && !showNewCategory} onClose={onClose} title={editingId ? 'Editar Producto' : 'Nuevo Producto'} wide>
         <form onSubmit={handleSubmit}>
-          <Grid columns={{ base: 1, md: 2, lg: 3 }} gap="md">
-            <FormField label="Nombre *" required>
-              <Input
-                value={form.name}
-                onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))}
-                placeholder="Nombre del producto"
-                required
-              />
-            </FormField>
-
-            <FormField label="Código de Barras">
-              <Input
-                value={form.barcode}
-                onChange={(e) => setForm((p) => ({ ...p, barcode: e.target.value }))}
-                placeholder="Código de barras"
-              />
-            </FormField>
-
-            <FormField label="Marca">
-              <Input
-                value={form.brand}
-                onChange={(e) => setForm((p) => ({ ...p, brand: e.target.value }))}
-                placeholder="Ej: Samsung, Nike..."
-              />
-            </FormField>
-
-            <FormField label="Precio de Venta ($) *" required>
-              <Input
-                type="number"
-                step="0.01"
-                value={form.price || ''}
-                onChange={(e) => setForm((p) => ({ ...p, price: Number(e.target.value) }))}
-                placeholder="0.00"
-                required
-              />
-            </FormField>
-
-            <FormField label="Costo ($)">
-              <Input
-                type="number"
-                step="0.01"
-                value={form.cost || ''}
-                onChange={(e) => setForm((p) => ({ ...p, cost: Number(e.target.value) }))}
-                placeholder="0.00"
-              />
-              {form.cost > 0 && form.price > 0 && form.price < form.cost && (
-                <Text variant="caption" color="warning" className="mt-1">
-                  ⚠️ Precio por debajo del costo (margen negativo: -{formatUsd(form.cost - form.price)})
-                </Text>
-              )}
-            </FormField>
-
-            <FormField label="Stock">
-              <Input
-                type="number"
-                value={form.stock || ''}
-                onChange={(e) => setForm((p) => ({ ...p, stock: Number(e.target.value) }))}
-                placeholder="0"
-              />
-            </FormField>
-
-            <FormField label="Stock Mínimo">
-              <Input
-                type="number"
-                value={form.minStock || ''}
-                onChange={(e) => setForm((p) => ({ ...p, minStock: Number(e.target.value) }))}
-                placeholder="0"
-              />
-            </FormField>
-
-            <FormField label="Categoría" columnSpan={{ md: 2 }}>
-              <Flex gap="sm" align="start">
-                <SearchableSelect
-                  value={form.categoryId}
-                  onChange={(val) => setForm((p) => ({ ...p, categoryId: val }))}
-                  options={categoryOptions}
-                  placeholder="Sin categoría"
-                  flex="1"
+          <div className={styles.formGrid}>
+            <div className={styles.colSpan1}>
+              <FormField label="Nombre *" required>
+                <Input
+                  value={form.name}
+                  onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))}
+                  placeholder="Nombre del producto"
+                  required
                 />
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  onClick={onShowNewCategory}
-                  aria-label="Crear categoría"
-                >
-                  <Plus size={18} />
-                </Button>
-              </Flex>
-            </FormField>
+              </FormField>
+            </div>
 
-            <FormField label="Imagen del Producto" columnSpan={3}>
-              <input
-                type="file"
-                accept="image/jpeg,image/png,image/webp,image/gif"
-                onChange={handleImageUpload}
-                disabled={uploading}
-                className="hidden"
-                ref={fileInputRef}
-              />
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => fileInputRef.current?.click()}
-                disabled={uploading}
-                leftIcon={<Upload size={14} />}
-              >
-                {uploading ? 'Subiendo...' : form.imageUrl ? 'Cambiar imagen' : 'Subir imagen'}
-              </Button>
-              {form.imageUrl && (
-                <Flex gap="sm" align="center" className="mt-2">
-                  <ImageContainer src={form.imageUrl} alt="Preview" aspectRatio="1" width={64} height={64} />
+            <div className={styles.colSpan1}>
+              <FormField label="Código de Barras">
+                <Input
+                  value={form.barcode}
+                  onChange={(e) => setForm((p) => ({ ...p, barcode: e.target.value }))}
+                  placeholder="Código de barras"
+                />
+              </FormField>
+            </div>
+
+            <div className={styles.colSpan1}>
+              <FormField label="Marca">
+                <Input
+                  value={form.brand}
+                  onChange={(e) => setForm((p) => ({ ...p, brand: e.target.value }))}
+                  placeholder="Ej: Samsung, Nike..."
+                />
+              </FormField>
+            </div>
+
+            <div className={styles.colSpan1}>
+              <FormField label="Precio de Venta ($) *" required>
+                <Input
+                  type="number"
+                  step="0.01"
+                  value={form.price || ''}
+                  onChange={(e) => setForm((p) => ({ ...p, price: Number(e.target.value) }))}
+                  placeholder="0.00"
+                  required
+                />
+              </FormField>
+            </div>
+
+            <div className={styles.colSpan1}>
+              <FormField label="Costo ($)">
+                <Input
+                  type="number"
+                  step="0.01"
+                  value={form.cost || ''}
+                  onChange={(e) => setForm((p) => ({ ...p, cost: Number(e.target.value) }))}
+                  placeholder="0.00"
+                />
+                {form.cost > 0 && form.price > 0 && form.price < form.cost && (
+                  <Text variant="caption" color="warning" className="mt-1">
+                    ⚠️ Precio por debajo del costo (margen negativo: -{formatUsd(form.cost - form.price)})
+                  </Text>
+                )}
+              </FormField>
+            </div>
+
+            <div className={styles.colSpan1}>
+              <FormField label="Stock">
+                <Input
+                  type="number"
+                  value={form.stock || ''}
+                  onChange={(e) => setForm((p) => ({ ...p, stock: Number(e.target.value) }))}
+                  placeholder="0"
+                />
+              </FormField>
+            </div>
+
+            <div className={styles.colSpan1}>
+              <FormField label="Stock Mínimo">
+                <Input
+                  type="number"
+                  value={form.minStock || ''}
+                  onChange={(e) => setForm((p) => ({ ...p, minStock: Number(e.target.value) }))}
+                  placeholder="0"
+                />
+              </FormField>
+            </div>
+
+            <div className={styles.colSpan2}>
+              <FormField label="Categoría">
+                <Flex gap="sm" align="start">
+                  <SearchableSelect
+                    value={form.categoryId}
+                    onChange={(val) => setForm((p) => ({ ...p, categoryId: val }))}
+                    options={categoryOptions}
+                    placeholder="Sin categoría"
+                    flex="1"
+                  />
                   <Button
                     type="button"
                     variant="ghost"
                     size="sm"
-                    onClick={() => setForm((p) => ({ ...p, imageUrl: '' }))}
-                    aria-label="Eliminar imagen"
+                    onClick={onShowNewCategory}
+                    aria-label="Crear categoría"
                   >
-                    <X size={18} />
+                    <Plus size={18} />
                   </Button>
                 </Flex>
-              )}
-            </FormField>
+              </FormField>
+            </div>
 
-            <FormField label="Descripción" columnSpan={3}>
-              <Textarea
-                value={form.description}
-                onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))}
-                rows={2}
-                placeholder="Descripción del producto"
-              />
-            </FormField>
-          </Grid>
+            <div className={styles.colSpan3}>
+              <FormField label="Imagen del Producto">
+                <input
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp,image/gif"
+                  onChange={handleImageUpload}
+                  disabled={uploading}
+                  className="hidden"
+                  ref={fileInputRef}
+                />
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={uploading}
+                  leftIcon={<Upload size={14} />}
+                >
+                  {uploading ? 'Subiendo...' : form.imageUrl ? 'Cambiar imagen' : 'Subir imagen'}
+                </Button>
+                {form.imageUrl && (
+                  <Flex gap="sm" align="center" className="mt-2">
+                    <ImageContainer src={form.imageUrl} alt="Preview" aspectRatio="1" width={64} height={64} />
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setForm((p) => ({ ...p, imageUrl: '' }))}
+                      aria-label="Eliminar imagen"
+                    >
+                      <X size={18} />
+                    </Button>
+                  </Flex>
+                )}
+              </FormField>
+            </div>
+
+            <div className={styles.colSpan3}>
+              <FormField label="Descripción">
+                <Textarea
+                  value={form.description}
+                  onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))}
+                  rows={2}
+                  placeholder="Descripción del producto"
+                />
+              </FormField>
+            </div>
+          </div>
 
           <Flex justify="end" gap="sm" className="mt-6 pt-4 border-t">
             <Button type="button" variant="secondary" onClick={onClose}>
