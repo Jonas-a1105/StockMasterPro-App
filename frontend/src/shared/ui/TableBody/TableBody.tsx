@@ -7,7 +7,7 @@ interface TableBodyProps extends HTMLAttributes<HTMLTableSectionElement> {
 export const TableBody = forwardRef<HTMLTableSectionElement, TableBodyProps>(
   ({ children, className = '', ...props }, ref) => {
     return (
-      <tbody ref={ref} className={className} {...props}>
+      <tbody ref={ref} className={`tableBody ${className}`} {...props}>
         {children}
       </tbody>
     );

@@ -7,7 +7,7 @@ interface TableHeadProps extends HTMLAttributes<HTMLTableSectionElement> {
 export const TableHead = forwardRef<HTMLTableSectionElement, TableHeadProps>(
   ({ children, className = '', ...props }, ref) => {
     return (
-      <thead ref={ref} className={className} {...props}>
+      <thead ref={ref} className={`tableHead ${className}`} {...props}>
         {children}
       </thead>
     );

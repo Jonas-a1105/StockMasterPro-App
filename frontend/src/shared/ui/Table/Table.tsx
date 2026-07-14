@@ -1,4 +1,5 @@
 import { forwardRef, type TableHTMLAttributes, type ReactNode } from 'react';
+import { TableContext } from './TableContext';
 import styles from './Table.module.css';
 
 interface TableProps extends TableHTMLAttributes<HTMLTableElement> {
@@ -9,19 +10,14 @@ interface TableProps extends TableHTMLAttributes<HTMLTableElement> {
 
 export const Table = forwardRef<HTMLTableElement, TableProps>(
   ({ children, striped = false, hoverable = true, className = '', ...props }, ref) => {
-    const tableClasses = [
-      styles.table,
-      striped ? styles.striped : '',
-      hoverable ? styles.hoverable : '',
-      className
-    ].filter(Boolean).join(' ');
-
     return (
-      <div className={styles.tableOuter}>
-        <table ref={ref} className={tableClasses} {...props}>
-          {children}
-        </table>
-      </div>
+      <TableContext.Provider value={{ striped, hoverable }}>
+        <div className={`${styles.tableOuter} bgSurface border roundedLg shadowCard overflowXAuto`}>
+          <table ref={ref} className={`table ${className}`} {...props}>
+            {children}
+          </table>
+        </div>
+      </TableContext.Provider>
     );
   }
 );

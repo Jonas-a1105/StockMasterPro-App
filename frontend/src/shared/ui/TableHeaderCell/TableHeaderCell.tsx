@@ -13,7 +13,7 @@ export const TableHeaderCell = forwardRef<HTMLTableCellElement, TableHeaderCellP
     };
 
     return (
-      <th ref={ref} className={className} style={combinedStyle} {...props}>
+      <th ref={ref} className={`tableCell ${className}`} style={combinedStyle} {...props}>
         {children}
       </th>
     );

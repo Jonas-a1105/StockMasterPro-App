@@ -13,7 +13,7 @@ export const TableCell = forwardRef<HTMLTableCellElement, TableCellProps>(
     };
 
     return (
-      <td ref={ref} className={className} style={combinedStyle} {...props}>
+      <td ref={ref} className={`tableCell ${className}`} style={combinedStyle} {...props}>
         {children}
       </td>
     );
