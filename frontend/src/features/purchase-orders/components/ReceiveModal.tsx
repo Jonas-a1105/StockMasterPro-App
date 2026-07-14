@@ -3,7 +3,7 @@ import { Modal } from '@shared/ui/Modal';
 import { ButtonLoader } from '@shared/ui/ButtonLoader';
 import { useExchangeRate } from '@contexts/ExchangeRateContext';
 import type { PurchaseOrder, Product } from '@types';
-import styles from '@features/inventory/pages/InventoryPage.module.css';
+import styles from './ReceiveModal/ReceiveModal.module.css';
 
 export function ReceiveModal({
   open,

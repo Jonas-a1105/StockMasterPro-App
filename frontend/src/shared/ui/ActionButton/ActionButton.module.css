@@ -1,0 +1,96 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  border: var(--border-width) var(--border-style) transparent;
+  border-radius: var(--btn-radius);
+  font-family: inherit;
+  font-weight: var(--btn-font-weight);
+  font-size: var(--btn-font-size);
+  height: var(--btn-height);
+  padding: var(--btn-padding);
+  transition: all var(--transition-base);
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  background: var(--btn-bg);
+  color: var(--btn-color);
+  border-color: var(--btn-border);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn:hover:not(:disabled) {
+  background: var(--btn-hover-bg);
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+/* Variants - controlled via CSS variables set by component */
+.variantPrimary {
+  --btn-bg: var(--color-primary);
+  --btn-color: var(--color-on-primary);
+  --btn-border: var(--color-primary);
+  --btn-hover-bg: var(--color-primary-hover);
+}
+
+.variantSecondary {
+  --btn-bg: var(--color-surface);
+  --btn-color: var(--color-text);
+  --btn-border: var(--color-border);
+  --btn-hover-bg: var(--color-bg-hover);
+}
+
+.variantDanger {
+  --btn-bg: var(--color-danger);
+  --btn-color: var(--color-on-primary);
+  --btn-border: var(--color-danger);
+  --btn-hover-bg: var(--red-600);
+}
+
+.variantGhost {
+  --btn-bg: transparent;
+  --btn-color: var(--color-text);
+  --btn-border: transparent;
+  --btn-hover-bg: var(--color-bg-hover);
+}
+
+/* Sizes - controlled via CSS variables */
+.sizeSm {
+  --btn-height: calc(var(--input-height) * 0.8);
+  --btn-padding: 0 var(--space-3);
+  --btn-font-size: var(--font-size-sm);
+  --btn-radius: calc(var(--radius-md) * 0.8);
+}
+
+.sizeMd {
+  --btn-height: var(--input-height);
+  --btn-padding: 0 var(--space-4);
+  --btn-font-size: var(--font-size-sm);
+  --btn-radius: var(--radius-md);
+}
+
+.sizeLg {
+  --btn-height: calc(var(--input-height) * 1.2);
+  --btn-padding: 0 var(--space-6);
+  --btn-font-size: var(--font-size-md);
+  --btn-radius: calc(var(--radius-md) * 1.2);
+}
+
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.label {
+  display: inline-flex;
+  align-items: center;
+}

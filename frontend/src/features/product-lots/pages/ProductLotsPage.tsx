@@ -19,11 +19,11 @@ import {
   AlertCircle,
 } from 'lucide-react';
 import { TabNav } from '@shared/ui/TabNav';
-import { KpiGrid } from '@shared/ui/KpiGrid';
-import { Toolbar } from '@shared/ui/Toolbar';
+import { KpiGrid } from '@features/shared-ui/KpiGrid';
+import { Toolbar } from '@features/shared-ui/Toolbar';
 import { Modal } from '@shared/ui/Modal';
 import styles from './ProductLotsPage.module.css';
-import tableStyles from '@shared/ui/TableList.module.css';
+import tableStyles from '@shared/ui/TableList/TableList.module.css';
 
 const TAB_ITEMS = [
   { key: 'all', label: 'Todos', icon: <Package size={16} /> },

@@ -1,0 +1,29 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.filters {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.actionGroup {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+}

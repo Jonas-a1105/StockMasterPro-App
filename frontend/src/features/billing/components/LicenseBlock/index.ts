@@ -1,0 +1,1 @@
+export { LicenseBlock } from './LicenseBlock';

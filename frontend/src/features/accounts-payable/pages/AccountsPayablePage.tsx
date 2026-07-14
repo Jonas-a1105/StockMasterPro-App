@@ -3,15 +3,15 @@ import { api } from '@shared/lib/http/client';
 import { useToast } from '@contexts/ToastContext';
 import { Modal } from '@shared/ui/Modal';
 
-import { KpiGrid } from '@shared/ui/KpiGrid';
+import { KpiGrid } from '@features/shared-ui/KpiGrid';
 import { TabNav } from '@shared/ui/TabNav';
-import { Toolbar } from '@shared/ui/Toolbar';
+import { Toolbar } from '@features/shared-ui/Toolbar';
 import { SkeletonTablePage } from '@shared/ui/Skeleton';
 import { useTheme } from '@contexts/ThemeContext';
 import { DollarSign, Calendar } from 'lucide-react';
 import { useExchangeRate } from '@contexts/ExchangeRateContext';
 import styles from './AccountsPayablePage.module.css';
-import tableStyles from '@shared/ui/TableList.module.css';
+import tableStyles from '@shared/ui/TableList/TableList.module.css';
 
 interface Payable {
   id: string;

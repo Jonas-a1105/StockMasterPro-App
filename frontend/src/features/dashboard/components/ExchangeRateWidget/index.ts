@@ -1,0 +1,1 @@
+export { ExchangeRateWidget } from './ExchangeRateWidget';

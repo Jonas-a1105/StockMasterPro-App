@@ -3,13 +3,13 @@ import { api } from '@shared/lib/http/client';
 import { useToast } from '@contexts/ToastContext';
 
 import { TabNav } from '@shared/ui/TabNav';
-import { KpiGrid } from '@shared/ui/KpiGrid';
-import { Toolbar } from '@shared/ui/Toolbar';
+import { KpiGrid } from '@features/shared-ui/KpiGrid';
+import { Toolbar } from '@features/shared-ui/Toolbar';
 import { SkeletonTablePage } from '@shared/ui/Skeleton';
 import { useTheme } from '@contexts/ThemeContext';
 import { Search, AlertTriangle, Package, PackageX, Eye } from 'lucide-react';
 import styles from './LowStockPage.module.css';
-import tableStyles from '@shared/ui/TableList.module.css';
+import tableStyles from '@shared/ui/TableList/TableList.module.css';
 
 function statusInfo(stock: number, minStock: number) {
   if (stock === 0) return { label: 'Crítico', className: 'critical' };

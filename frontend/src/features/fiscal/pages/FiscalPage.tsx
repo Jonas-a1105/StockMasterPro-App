@@ -3,8 +3,8 @@ import { TabNav } from '@shared/ui/TabNav';
 import { SkeletonTablePage } from '@shared/ui/Skeleton';
 import { useTheme } from '@contexts/ThemeContext';
 import { getWithholdings, getFiscalBooks } from '../api/fiscal.api';
-import styles from '@features/inventory/pages/InventoryPage.module.css';
-import tableStyles from '@shared/ui/TableList.module.css';
+import styles from './FiscalPage.module.css';
+import tableStyles from '@shared/ui/TableList/TableList.module.css';
 
 export function FiscalPage() {
   const { config } = useTheme();

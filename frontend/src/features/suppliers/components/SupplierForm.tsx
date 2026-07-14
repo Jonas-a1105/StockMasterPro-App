@@ -1,8 +1,6 @@
 import { useState } from 'react';
-import { Modal } from '@shared/ui/Modal';
-import { ButtonLoader } from '@shared/ui/ButtonLoader';
-import { PremiumLockButton } from '@shared/ui/PremiumLockButton';
-import styles from '@features/inventory/pages/InventoryPage.module.css';
+import { Modal, Button, FormField, Input, ButtonLoader } from '@shared/ui';
+import { PremiumLockButton } from '@features/billing/components/PremiumLockButton';
 
 export interface SupplierFormData {
   name: string;
@@ -43,76 +41,69 @@ export function SupplierForm({
   return (
     <Modal open={open} onClose={onClose} title={editingId ? 'Editar Proveedor' : 'Nuevo Proveedor'}>
       <form onSubmit={handleSubmit}>
-        <div className={styles.formGrid}>
-          <div className={styles.field}>
-            <label>Nombre *</label>
-            <input
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <FormField label="Nombre" required>
+            <Input
               type="text"
               value={form.name}
               onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))}
               required
               placeholder="Nombre del proveedor"
             />
-          </div>
-          <div className={styles.field}>
-            <label>Contacto</label>
-            <input
+          </FormField>
+          <FormField label="Contacto">
+            <Input
               type="text"
               value={form.contact}
               onChange={(e) => setForm((p) => ({ ...p, contact: e.target.value }))}
               placeholder="Persona de contacto"
             />
-          </div>
-          <div className={styles.field}>
-            <label>Teléfono / WhatsApp</label>
-            <input
+          </FormField>
+          <FormField label="Teléfono / WhatsApp">
+            <Input
               type="text"
               value={form.phone}
               onChange={(e) => setForm((p) => ({ ...p, phone: e.target.value }))}
               placeholder="+58 4XX XXX XXXX"
             />
-          </div>
-          <div className={styles.field}>
-            <label>Email</label>
-            <input
+          </FormField>
+          <FormField label="Email">
+            <Input
               type="email"
               value={form.email}
               onChange={(e) => setForm((p) => ({ ...p, email: e.target.value }))}
               placeholder="correo@gmail.com"
             />
-          </div>
-          <div className={styles.field}>
-            <label>RIF</label>
-            <input
+          </FormField>
+          <FormField label="RIF">
+            <Input
               type="text"
               value={form.taxId}
               onChange={(e) => setForm((p) => ({ ...p, taxId: e.target.value }))}
               placeholder="J-12345678-9"
             />
-          </div>
-          <div className={styles.field}>
-            <label>Dirección</label>
-            <input
+          </FormField>
+          <FormField label="Dirección">
+            <Input
               type="text"
               value={form.address}
               onChange={(e) => setForm((p) => ({ ...p, address: e.target.value }))}
               placeholder="Dirección del proveedor"
             />
-          </div>
-          <div className={styles.fieldFull}>
-            <label>Dirección Fiscal</label>
-            <input
+          </FormField>
+          <FormField label="Dirección Fiscal" className="md:col-span-2">
+            <Input
               type="text"
               value={form.fiscalAddress}
               onChange={(e) => setForm((p) => ({ ...p, fiscalAddress: e.target.value }))}
               placeholder="Dirección fiscal"
             />
-          </div>
+          </FormField>
         </div>
-        <div className={styles.formActions}>
-          <button type="button" className={styles.cancelBtn} onClick={onClose}>
+        <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-border">
+          <Button type="button" variant="outline" onClick={onClose}>
             Cancelar
-          </button>
+          </Button>
           {isLimitExceeded ? (
             <PremiumLockButton
               requiredPlan={nextRequiredPlan as any}
@@ -122,9 +113,9 @@ export function SupplierForm({
               sublabel="Mantén pulsado para ampliar"
             />
           ) : (
-            <button type="submit" className={styles.saveBtn} disabled={loading}>
+            <Button type="submit" disabled={loading}>
               {loading ? <ButtonLoader /> : 'Guardar'}
-            </button>
+            </Button>
           )}
         </div>
       </form>

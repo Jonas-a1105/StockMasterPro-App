@@ -1,0 +1,1 @@
+export { ConteoFisicoTab } from './ConteoFisicoTab';

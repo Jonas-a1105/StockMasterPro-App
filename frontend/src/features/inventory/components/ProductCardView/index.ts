@@ -1,0 +1,1 @@
+export { ProductCardView } from './ProductCardView';

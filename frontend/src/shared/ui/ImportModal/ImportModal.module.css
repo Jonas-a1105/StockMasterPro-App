@@ -1,0 +1,374 @@
+.body {
+  padding: var(--space-5);
+  overflow-y: auto;
+}
+
+/* Upload Step */
+.uploadStep {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.description {
+  font-size: var(--font-size-caption);
+  color: var(--color-text-muted);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.templateSection {
+  background-color: var(--color-bg);
+  border: var(--card-border-width) solid var(--color-border);
+  border-radius: var(--card-radius);
+  padding: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-size: var(--font-size-xs);
+  color: var(--color-text);
+}
+
+.templateButtons {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.textBtn {
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--btn-radius);
+  transition: background-color 0.2s ease;
+}
+
+.textBtn:hover {
+  background-color: rgb(240, 90, 40, 0.08);
+}
+
+.dropzone {
+  border: 2px dashed var(--color-border);
+  border-radius: var(--card-radius);
+  padding: var(--space-8) var(--space-5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.dropzone:hover {
+  border-color: var(--color-primary);
+  background-color: rgb(240, 90, 40, 0.02);
+}
+
+.uploadIcon {
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-3);
+}
+
+.dropTitle {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+  margin-bottom: var(--space-1);
+}
+
+.dropSub {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+}
+
+.errorAlert {
+  background-color: rgb(220, 38, 38, 0.06);
+  border: var(--border-width) var(--border-style) rgb(220, 38, 38, 0.2) ;
+  border-radius: var(--card-radius);
+  padding: var(--space-3);
+  display: flex;
+  gap: var(--space-2);
+  align-items: flex-start;
+  color: var(--color-danger);
+  font-size: var(--font-size-xs);
+  line-height: 1.4;
+}
+
+/* Preview Step */
+.previewStep {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.previewHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  background-color: rgb(240, 90, 40, 0.04);
+  border: var(--border-width) var(--border-style) rgb(240, 90, 40, 0.1) ;
+  padding: var(--space-3);
+  border-radius: var(--card-radius);
+}
+
+.excelIcon {
+  color: var(--color-primary);
+}
+
+.filename {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+}
+
+.filesize {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  margin-top: 2px;
+}
+
+.tablePreviewContainer {
+  border: var(--card-border-width) solid var(--color-border);
+  border-radius: var(--card-radius);
+  overflow: hidden;
+}
+
+.previewTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-size-xs);
+  text-align: left;
+}
+
+.previewTable th {
+  background-color: var(--color-bg);
+  padding: var(--space-2) var(--space-3);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+  border-bottom: var(--card-border-width) solid var(--color-border);
+}
+
+.previewTable td {
+  padding: var(--space-2) var(--space-3);
+  border-bottom: var(--card-border-width) solid var(--color-border);
+  color: var(--color-text);
+}
+
+.previewTable tr:last-child td {
+  border-bottom: none;
+}
+
+.moreRows {
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--font-size-2xs);
+  color: var(--color-text-muted);
+  font-style: italic;
+  text-align: center;
+  background-color: var(--color-bg);
+  border-top: var(--card-border-width) solid var(--color-border);
+}
+
+.footerActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+.cancelBtn {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  border: none;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--btn-radius);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-caption);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.cancelBtn:hover {
+  background-color: var(--color-border);
+}
+
+.confirmBtn {
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  border: none;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--btn-radius);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-caption);
+  cursor: pointer;
+  transition: filter 0.2s ease;
+}
+
+.confirmBtn:hover {
+  filter: brightness(1.08);
+}
+
+/* Progress Step */
+.progressStep {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-8) var(--space-5);
+  gap: var(--space-4);
+}
+
+.spinner {
+  color: var(--color-primary);
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.progressTitle {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
+}
+
+.progressText {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+}
+
+.progressBarBg {
+  width: 100%;
+  max-width: 320px;
+  height: 8px;
+  background-color: var(--color-border);
+  border-radius: var(--card-radius);
+  overflow: hidden;
+}
+
+.progressBarFill {
+  height: 100%;
+  width: var(--import-progress);
+  background-color: var(--color-primary);
+  transition: width 0.2s ease;
+}
+
+.hiddenInput {
+  display: none;
+}
+
+/* Summary Step */
+.summaryStep {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-2) 0;
+  gap: var(--space-4);
+}
+
+.successIcon {
+  color: var(--color-success);
+}
+
+.summaryTitle {
+  font-size: var(--font-size-md-plus);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
+}
+
+.summaryGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+  width: 100%;
+  max-width: 360px;
+}
+
+.summaryCard {
+  border: var(--card-border-width) solid var(--color-border);
+  border-radius: var(--card-radius);
+  padding: var(--space-3);
+  text-align: center;
+  background-color: var(--color-bg);
+}
+
+.summaryLabel {
+  font-size: var(--font-size-2xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-muted);
+  text-transform: none;
+  margin-bottom: var(--space-1);
+}
+
+.summaryValSuccess {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-success);
+}
+
+.summaryValDanger {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-danger);
+}
+
+.detailsSection {
+  width: 100%;
+  border: var(--card-border-width) solid var(--color-border);
+  border-radius: var(--card-radius);
+  overflow: hidden;
+}
+
+.detailsTitle {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  background-color: var(--color-bg);
+  padding: var(--space-2) var(--space-3);
+  border-bottom: var(--card-border-width) solid var(--color-border);
+  color: var(--color-text);
+}
+
+.detailsList {
+  max-height: 120px;
+  overflow-y: auto;
+  font-size: var(--font-size-2xs);
+  padding: var(--space-2) var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.detailError {
+  color: var(--color-danger);
+}
+
+.detailInfo {
+  color: var(--color-text);
+}
+
+.finishBtn {
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  border: none;
+  padding: var(--space-2) var(--space-6);
+  border-radius: var(--btn-radius);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-caption);
+  cursor: pointer;
+  margin-top: var(--space-2);
+  transition: filter 0.2s ease;
+  width: 100%;
+  max-width: 160px;
+}
+
+.finishBtn:hover {
+  filter: brightness(1.08);
+}

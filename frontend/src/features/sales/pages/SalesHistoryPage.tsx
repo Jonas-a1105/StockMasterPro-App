@@ -1,19 +1,20 @@
 import { useState, useEffect, useMemo } from 'react';
 import { api } from '@shared/lib/http/client';
 import { useToast } from '@contexts/ToastContext';
-import { Modal } from '@shared/ui/Modal';
-
-import { KpiGrid } from '@shared/ui/KpiGrid';
-import { Toolbar } from '@shared/ui/Toolbar';
-import { DataTable } from '@shared/ui/DataTable';
-import { Table } from '@shared/ui/Table';
 import { ConfirmModal } from '@shared/ui/ConfirmModal';
 import { Button } from '@shared/ui/Button';
+
+import { SaleKpiBar } from '../components/SaleKpiBar';
+import { SaleDetailModal } from '../components/SaleDetailModal';
+import { Toolbar } from '@features/shared-ui/Toolbar';
+import { DataTable } from '@features/shared-ui/DataTable';
+import { SkeletonTablePage } from '@shared/ui/Skeleton';
+import { Stack } from '@shared/ui/Stack';
 import { useTheme } from '@contexts/ThemeContext';
-import { DollarSign, ShoppingCart, Eye, Printer, RotateCcw, XCircle, FileText } from 'lucide-react';
 import { useExchangeRate } from '@contexts/ExchangeRateContext';
 import { printTicket } from '@shared/lib/print/ticket';
 import { generateFiscalInvoicePdf } from '@shared/lib/print/invoicePdf';
+import { ShoppingCart, DollarSign, Eye, Printer, RotateCcw, XCircle, FileText, Calendar, Search, Filter, X } from 'lucide-react';
 
 export function SalesHistoryPage() {
   const { showToast } = useToast();
@@ -27,6 +28,8 @@ export function SalesHistoryPage() {
   const [selectedSale, setSelectedSale] = useState<any>(null);
   const [showDetail, setShowDetail] = useState(false);
   const [dailySummary, setDailySummary] = useState<any>(null);
+  const [showVoidConfirm, setShowVoidConfirm] = useState(false);
+  const [saleToVoid, setSaleToVoid] = useState<any>(null);
 
   const loadSales = async () => {
     setLoading(true);
@@ -104,10 +107,7 @@ export function SalesHistoryPage() {
     }
   };
 
-  const [showVoidConfirm, setShowVoidConfirm] = useState(false);
-  const [saleToVoid, setSaleToVoid] = useState<any>(null);
-
-  const handleVoid = async (sale: any) => {
+  const handleVoid = (sale: any) => {
     setSaleToVoid(sale);
     setShowVoidConfirm(true);
   };
@@ -126,8 +126,6 @@ export function SalesHistoryPage() {
       setSaleToVoid(null);
     }
   };
-
-
 
   const paymentBadgeVariant = (method: string) => {
     const m = method?.toLowerCase();
@@ -165,9 +163,9 @@ export function SalesHistoryPage() {
         key: 'paymentMethod',
         header: 'Método',
         render: (sale: any) => (
-          <Badge variant={paymentBadgeVariant(sale.paymentMethod)}>
+          <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold ${paymentBadgeVariant(sale.paymentMethod)}`}>
             {sale.paymentMethod}
-          </Badge>
+          </span>
         ),
       },
       {
@@ -182,13 +180,25 @@ export function SalesHistoryPage() {
         align: 'center' as const,
         render: (sale: any) => (
           <div className="flex items-center justify-center gap-1.5">
-            <button onClick={() => openDetail(sale)} title="Ver detalle" className="p-1.5 rounded-lg hover:bg-bg-hover transition-colors">
+            <button
+              onClick={() => openDetail(sale)}
+              title="Ver detalle"
+              className="p-1.5 rounded-lg hover:bg-bg-hover transition-colors"
+            >
               <Eye size={15} />
             </button>
-            <button onClick={() => printSaleTicket(sale)} title="Reimprimir" className="p-1.5 rounded-lg hover:bg-bg-hover transition-colors">
+            <button
+              onClick={() => printSaleTicket(sale)}
+              title="Reimprimir"
+              className="p-1.5 rounded-lg hover:bg-bg-hover transition-colors"
+            >
               <Printer size={15} />
             </button>
-            <button onClick={() => handleInvoicePdf(sale)} title="Factura PDF" className="p-1.5 rounded-lg hover:bg-bg-hover transition-colors">
+            <button
+              onClick={() => handleInvoicePdf(sale)}
+              title="Factura PDF"
+              className="p-1.5 rounded-lg hover:bg-bg-hover transition-colors"
+            >
               <FileText size={15} />
             </button>
           </div>
@@ -222,130 +232,64 @@ export function SalesHistoryPage() {
 
   return (
     <>
-      <Toolbar
-        search={{ value: search, onChange: setSearch, placeholder: 'Buscar por folio, cliente, producto...' }}
-      >
-        <div className="flex flex-wrap gap-2">
-          <input
-            type="date"
-            value={startDate}
-            onChange={(e) => setStartDate(e.target.value)}
-            className="px-3 py-2 border border-border rounded-lg bg-surface text-text text-sm focus:outline-none focus:border-primary"
-          />
-          <input
-            type="date"
-            value={endDate}
-            onChange={(e) => setEndDate(e.target.value)}
-            className="px-3 py-2 border border-border rounded-lg bg-surface text-text text-sm focus:outline-none focus:border-primary"
-          />
-          <Button variant="secondary" onClick={loadSales}>Filtrar</Button>
-          {(startDate || endDate || search) && (
-            <Button variant="secondary" onClick={() => { setSearch(''); setStartDate(''); setEndDate(''); setTimeout(loadSales, 0); }}>
-              Limpiar
-            </Button>
-          )}
-        </div>
-      </Toolbar>
+      <SaleKpiBar dailySummary={dailySummary} filteredSales={filteredSales} formatPrice={formatPrice} />
 
-      <KpiGrid
-        items={[
-          {
-            label: 'Ventas del día',
-            value: dailySummary?.count ?? '—',
-            icon: ShoppingCart,
-            color: 'var(--color-primary)',
-          },
-          {
-            label: 'Total del día',
-            value: formatPrice(dailySummary?.total ?? 0),
-            icon: DollarSign,
-            color: 'var(--color-success)',
-          },
-          {
-            label: 'Total listado',
-            value: formatPrice(totalRevenue),
-            icon: DollarSign,
-            color: 'var(--color-warning)',
-          },
-        ]}
-      />
-
-      <DataTable
-        data={filteredSales}
-        columns={saleColumns}
-        keyExtractor={(s) => s.id}
-        sortable
-        emptyMessage="No hay ventas registradas"
-        loading={loading}
-      />
-
-      <Modal
-        open={showDetail}
-        onClose={() => {
-          setShowDetail(false);
-          setSelectedSale(null);
-        }}
-        title="Detalle de Venta"
-        wide
-      >
-        {selectedSale && (
-          <div className="space-y-4">
-            <div className="flex justify-between items-start text-md leading-relaxed">
-              <div>
-                <strong>Fecha:</strong> {new Date(selectedSale.createdAt).toLocaleString()}
-                <br />
-                <strong>Cliente:</strong> {selectedSale.customer?.name || '—'}
-                <br />
-                <strong>Método de pago:</strong> {selectedSale.paymentMethod}
-              </div>
-              <div className="text-right">
-                <span className="block text-caption text-text-muted">Total</span>
-                <strong className="text-3xl">{formatPrice(Number(selectedSale.total))}</strong>
-              </div>
-            </div>
-
-            {selectedSale.discount ? (
-              <p><strong>Descuento:</strong> {formatPrice(Number(selectedSale.discount))}</p>
-            ) : null}
-            {selectedSale.taxRate ? (
-              <p><strong>IVA:</strong> {Number(selectedSale.taxRate) * 100}%</p>
-            ) : null}
-
-            <Table
-              data={selectedSale.items || []}
-              columns={[
-                { key: 'product', header: 'Producto', render: (i: any) => i.product?.name || i.name || 'Producto' },
-                { key: 'quantity', header: 'Cant', align: 'center' as const },
-                { key: 'price', header: 'Precio', align: 'right' as const, render: (i: any) => formatPrice(Number(i.price)) },
-                { key: 'subtotal', header: 'Subtotal', align: 'right' as const, render: (i: any) => formatPrice(Number(i.subtotal || i.total || i.price * i.quantity)) },
-              ]}
-              keyExtractor={(_, idx) => String(idx)}
-              emptyMessage="Sin items"
-            />
-
-            <div className="flex gap-3 justify-end pt-4 border-t border-border">
-              <Button variant="secondary" onClick={() => printSaleTicket(selectedSale)}>
-                <Printer size={15} /> Reimprimir Ticket
-              </Button>
-              <Button variant="secondary" onClick={() => handleInvoicePdf(selectedSale)}>
-                <FileText size={15} /> Factura PDF
-              </Button>
-              {selectedSale.status !== 'cancelled' && (
-                <Button variant="danger" onClick={() => handleVoid(selectedSale)}>
-                  <XCircle size={15} /> Anular Venta
+      <Stack gap="lg" className="wFull">
+        <Toolbar
+          search={{ value: search, onChange: setSearch, placeholder: 'Buscar por folio, cliente, producto...' }}
+          searchExtra={
+            <div className="flex flex-wrap gap-2">
+              <input
+                type="date"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+                className="px-3 py-2 border border-border rounded-lg bg-surface text-text text-sm focus:outline-none focus:border-primary"
+              />
+              <input
+                type="date"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+                className="px-3 py-2 border border-border rounded-lg bg-surface text-text text-sm focus:outline-none focus:border-primary"
+              />
+              <Button variant="secondary" onClick={loadSales}>Filtrar</Button>
+              {(startDate || endDate || search) && (
+                <Button variant="secondary" onClick={() => { setSearch(''); setStartDate(''); setEndDate(''); setTimeout(loadSales, 0); }}>
+                  <X size={15} /> Limpiar
                 </Button>
               )}
             </div>
-          </div>
-        )}
-      </Modal>
+          }
+        />
+
+        <SaleKpiBar dailySummary={dailySummary} filteredSales={filteredSales} formatPrice={formatPrice} />
+
+        <DataTable
+          data={filteredSales}
+          columns={saleColumns}
+          keyExtractor={(s) => s.id}
+          sortable
+          emptyMessage="No hay ventas registradas"
+          loading={loading}
+        />
+      </Stack>
+
+      <SaleDetailModal
+        open={showDetail}
+        onClose={() => { setShowDetail(false); setSelectedSale(null); }}
+        sale={selectedSale}
+        onPrint={printSaleTicket}
+        onInvoicePdf={handleInvoicePdf}
+        onVoid={handleVoid}
+        formatPrice={formatPrice}
+      />
+
       <ConfirmModal
         open={showVoidConfirm}
         onClose={() => { setShowVoidConfirm(false); setSaleToVoid(null); }}
+        onConfirm={confirmVoid}
         title="Anular Venta"
         type="danger"
         confirmText="Anular"
-        onConfirm={confirmVoid}
       >
         {saleToVoid && (
           <p>¿Anular venta <strong>#{String(saleToVoid.folio || saleToVoid.id).slice(0, 8)}</strong> por <strong>{formatPrice(Number(saleToVoid.total))}</strong>?</p>

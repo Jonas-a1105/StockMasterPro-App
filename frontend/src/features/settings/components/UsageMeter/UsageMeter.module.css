@@ -1,0 +1,107 @@
+.card {
+  background: var(--color-surface);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.title {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  text-transform: none;
+  letter-spacing: 0.5px;
+  color: var(--color-text);
+}
+
+.badge {
+  font-size: var(--font-size-2xs);
+  font-family: var(--font-family-mono);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 1px;
+  background: var(--color-primary);
+  color: var(--color-black);
+  padding: 2px 8px;
+}
+
+.bars {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.barsLoading {
+  margin-top: 16px;
+}
+
+.barRowLoading {
+  margin-bottom: 12px;
+}
+
+.barRowLoadingHeader {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.barRow {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.barLabel {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+}
+
+.barCount {
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+}
+
+.barTrack {
+  height: 6px;
+  background: var(--color-border);
+  overflow: hidden;
+}
+
+.barFill {
+  height: 100%;
+  width: var(--bar-fill-pct);
+  background: var(--color-primary);
+  transition: width 0.5s ease;
+}
+
+.barFill.warning {
+  background: var(--color-yellow-500);
+}
+
+.barFill.danger {
+  background: var(--color-danger);
+}
+
+.skeleton {
+  height: 200px;
+  background: var(--color-border);
+  margin-bottom: 20px;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}

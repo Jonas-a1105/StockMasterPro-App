@@ -3,17 +3,17 @@ import { api } from '@shared/lib/http/client';
 import { useToast } from '@contexts/ToastContext';
 
 import { Modal } from '@shared/ui/Modal';
-import { KpiGrid } from '@shared/ui/KpiGrid';
+import { KpiGrid } from '@features/shared-ui/KpiGrid';
 import { TabNav } from '@shared/ui/TabNav';
-import { Toolbar } from '@shared/ui/Toolbar';
+import { Toolbar } from '@features/shared-ui/Toolbar';
 import { SkeletonTablePage } from '@shared/ui/Skeleton';
 import { useTheme } from '@contexts/ThemeContext';
 import { Trash2, TrendingDown, Receipt, Tag } from 'lucide-react';
 import { useExchangeRate } from '@contexts/ExchangeRateContext';
-import { ImportModal } from '@shared/ui/ImportModal';
+import { ImportModal } from '@features/shared-ui/ImportModal';
 import { exportToExcel, type ColumnMapping } from '@shared/lib/excelHelper';
 import styles from './ExpensesPage.module.css';
-import tableStyles from '@shared/ui/TableList.module.css';
+import tableStyles from '@shared/ui/TableList/TableList.module.css';
 
 const EXPENSE_COLUMNS: ColumnMapping[] = [
   { header: 'Descripción', key: 'description', type: 'string' },

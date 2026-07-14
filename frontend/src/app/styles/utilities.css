@@ -820,7 +820,7 @@
   --badge-radius: var(--radius-full);
   --kpi-border-width: 4px;
   --kpi-border-radius: var(--radius-sm);
-  --list-header-bg: var(--color-bg);
+  --list-header-bg: var(--color-surface);
   --list-header-text: var(--color-text-muted);
   --list-header-font-size: var(--font-size-xs);
   --list-header-font-weight: var(--font-weight-semibold);

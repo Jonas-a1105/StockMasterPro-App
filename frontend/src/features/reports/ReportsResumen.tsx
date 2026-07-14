@@ -25,7 +25,7 @@ import {
   demoFinancialCore,
 } from './pages/ReportsPage';
 import styles from './pages/ReportsPage.module.css';
-import tableStyles from '@shared/ui/TableList.module.css';
+import tableStyles from '@shared/ui/TableList/TableList.module.css';
 
 interface Props {
   sales: any[];

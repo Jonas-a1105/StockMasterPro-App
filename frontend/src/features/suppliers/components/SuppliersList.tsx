@@ -1,6 +1,6 @@
 import { Edit2, Trash2, MessageCircle } from 'lucide-react';
 import type { Supplier } from '@types';
-import tableStyles from '@shared/ui/TableList.module.css';
+import tableStyles from '@shared/ui/TableList/TableList.module.css';
 
 export function SuppliersList({
   suppliers,

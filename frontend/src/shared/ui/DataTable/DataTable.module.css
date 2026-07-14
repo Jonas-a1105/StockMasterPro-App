@@ -1,0 +1,214 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.tableOuter {
+  overflow-x: auto;
+  background-color: var(--color-surface);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--card-radius);
+  box-shadow: var(--shadow-card);
+}
+
+.table {
+  width: 100%;
+  text-align: left;
+  border-collapse: collapse;
+  font-size: var(--list-body-font-size);
+}
+
+.table thead {
+  background-color: var(--list-header-bg);
+  color: var(--list-header-text);
+  border-bottom: 1px solid var(--list-border-color);
+}
+
+.table thead tr th {
+  padding: var(--list-cell-padding);
+  font-size: var(--list-header-font-size);
+  font-weight: var(--list-header-font-weight);
+  font-family: var(--list-font-family);
+  text-transform: var(--list-header-uppercase);
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--list-border-color);
+}
+
+.table thead tr th:first-child {
+  border-top-left-radius: var(--card-radius);
+}
+
+.table thead tr th:last-child {
+  border-top-right-radius: var(--card-radius);
+}
+
+.table tbody {
+  border-top: none;
+}
+
+.table tbody tr {
+  transition: background-color 0.15s ease;
+  border-bottom: 1px solid var(--list-border-color);
+}
+
+.table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.table tbody tr:last-child td:first-child {
+  border-bottom-left-radius: var(--card-radius);
+}
+
+.table tbody tr:last-child td:last-child {
+  border-bottom-right-radius: var(--card-radius);
+}
+
+.hoverable tbody tr:hover {
+  background-color: var(--list-row-hover);
+}
+
+.striped tbody tr:nth-child(even) {
+  background-color: var(--list-stripe);
+}
+
+.table tbody tr td {
+  padding: var(--list-cell-padding);
+  font-size: var(--list-body-font-size);
+  font-family: var(--list-font-family);
+  color: var(--color-text);
+  vertical-align: middle;
+}
+
+.emptyState {
+  padding: var(--space-8);
+  text-align: center;
+  color: var(--color-text-muted);
+}
+
+.divider {
+  width: 1px;
+  height: 36px;
+  background-color: var(--color-border);
+}
+
+.filterSelects {
+  display: flex;
+  gap: 8px;
+}
+
+.filterSelect {
+  padding: 8px 12px;
+  border: var(--border-width) var(--border-style) var(--color-border) ;
+  border-radius: var(--card-radius);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+  min-width: 160px;
+}
+
+.filterSelect:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+.sortDropdown {
+  position: relative;
+}
+
+.sortDropdownBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  background-color: var(--color-bg);
+  border: var(--border-width) var(--border-style) var(--color-border)  !important;
+  border-radius: var(--card-radius);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.sortDropdownBtn:hover {
+  border-color: var(--color-primary) !important;
+  color: var(--color-primary);
+}
+
+.sortChevron {
+  transition: transform 0.2s ease;
+}
+
+.sortChevronOpen {
+  transform: rotate(180deg);
+}
+
+.sortDropdownMenu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 6px);
+  min-width: 200px;
+  background-color: var(--color-surface);
+  border: var(--border-width) var(--border-style) var(--color-border) ;
+  border-radius: var(--card-radius);
+  box-shadow: var(--shadow-lg) ;
+  z-index: 30;
+  padding: 4px 0;
+  animation: slideDownFade 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideDownFade {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.sortMenuHeader {
+  padding: 6px 12px;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-muted);
+  text-transform: none;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.sortMenuItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 12px;
+  border: none;
+  background: none;
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-align: left;
+}
+
+.sortMenuItem:hover {
+  background-color: var(--color-bg-hover);
+  color: var(--color-text);
+}
+
+.sortMenuItemActive {
+  color: var(--color-primary);
+  font-weight: var(--font-weight-semibold);
+  background-color: rgba(240, 90, 40, 0.06);
+}
+
+.sortMenuDivider {
+  height: 1px;
+  background-color: var(--color-border);
+  margin: 4px 0;
+}

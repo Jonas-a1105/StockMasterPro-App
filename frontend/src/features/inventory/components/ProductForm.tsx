@@ -1,26 +1,27 @@
 import { useState, useRef } from 'react';
-import { Plus, X } from 'lucide-react';
-import { Modal } from '@shared/ui/Modal';
-import { ButtonLoader } from '@shared/ui/ButtonLoader';
-import { PremiumLockButton } from '@shared/ui/PremiumLockButton';
-import { SearchableSelect } from '@shared/ui/SearchableSelect';
-import { FormField } from '@shared/ui/FormField';
-import { Input } from '@shared/ui/Input';
+import { Plus, X, Upload } from 'lucide-react';
+import { Modal, ConfirmModal, Button, FormField, Input, Textarea, SearchableSelect, Stack, Flex, Grid, Text, ImageContainer } from '@shared/ui';
+import { PremiumLockButton } from '@features/billing/components/PremiumLockButton';
 import { formatUsd } from '@shared/lib/format/currency';
 import { api } from '@shared/lib/http/client';
 import { useToast } from '@contexts/ToastContext';
+import type { ProductFormData } from '../types';
 
-export interface ProductFormData {
-  name: string;
-  barcode: string;
-  price: number;
-  cost: number;
-  stock: number;
-  minStock: number;
-  description: string;
-  brand: string;
-  imageUrl: string;
-  categoryId: string;
+interface ProductFormProps {
+  open: boolean;
+  editingId: string | null;
+  initialData: ProductFormData;
+  onClose: () => void;
+  onSubmit: (data: ProductFormData) => Promise<void>;
+  loading: boolean;
+  isLimitExceeded: boolean;
+  nextRequiredPlan: string;
+  categories: { id: string; name: string }[];
+  onShowNewCategory: () => void;
+  showNewCategory: boolean;
+  newCategoryName: string;
+  onNewCategoryNameChange: (value: string) => void;
+  onCreateCategory: () => void;
 }
 
 export function ProductForm({
@@ -38,24 +39,10 @@ export function ProductForm({
   newCategoryName,
   onNewCategoryNameChange,
   onCreateCategory,
-}: {
-  open: boolean;
-  editingId: string | null;
-  initialData: ProductFormData;
-  onClose: () => void;
-  onSubmit: (data: ProductFormData) => Promise<void>;
-  loading: boolean;
-  isLimitExceeded: boolean;
-  nextRequiredPlan: string;
-  categories: { id: string; name: string }[];
-  onShowNewCategory: () => void;
-  showNewCategory: boolean;
-  newCategoryName: string;
-  onNewCategoryNameChange: (value: string) => void;
-  onCreateCategory: () => void;
-}) {
+}: ProductFormProps) {
   const [form, setForm] = useState<ProductFormData>(initialData);
   const [uploading, setUploading] = useState(false);
+  const [showPriceWarning, setShowPriceWarning] = useState(false);
   const { showToast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const categoryOptions = [
@@ -87,25 +74,26 @@ export function ProductForm({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (form.cost > 0 && form.price < form.cost) {
-      if (
-        !window.confirm(
-          `⚠️ El precio de venta (${formatUsd(form.price)}) es menor que el costo (${formatUsd(form.cost)}).\n\nEsto genera pérdida en cada venta. ¿Desea continuar?`
-        )
-      )
-        return;
+      setShowPriceWarning(true);
+      return;
     }
     await onSubmit(form);
   };
 
+  const confirmPriceWarning = async () => {
+    setShowPriceWarning(false);
+    await onSubmit(form);
+  };
+
+  const cancelPriceWarning = () => {
+    setShowPriceWarning(false);
+  };
+
   return (
     <>
-      <Modal
-        open={open && !showNewCategory}
-        onClose={onClose}
-        title={editingId ? 'Editar Producto' : 'Nuevo Producto'}
-      >
+      <Modal open={open && !showNewCategory} onClose={onClose} title={editingId ? 'Editar Producto' : 'Nuevo Producto'}>
         <form onSubmit={handleSubmit}>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <Grid columns={{ base: 1, md: 2, lg: 3 }} gap="md">
             <FormField label="Nombre *" required>
               <Input
                 value={form.name}
@@ -151,9 +139,9 @@ export function ProductForm({
                 placeholder="0.00"
               />
               {form.cost > 0 && form.price > 0 && form.price < form.cost && (
-                <p className="text-xs text-warning mt-1">
-                  ⚠️ Precio por debajo del costo (margen negativo: -${formatUsd(form.cost - form.price)})
-                </p>
+                <Text variant="caption" color="warning" className="mt-1">
+                  ⚠️ Precio por debajo del costo (margen negativo: -{formatUsd(form.cost - form.price)})
+                </Text>
               )}
             </FormField>
 
@@ -175,27 +163,28 @@ export function ProductForm({
               />
             </FormField>
 
-            <FormField label="Categoría" className="md:col-span-2">
-              <div className="flex gap-2">
+            <FormField label="Categoría" columnSpan={{ md: 2 }}>
+              <Flex gap="sm" align="start">
                 <SearchableSelect
                   value={form.categoryId}
                   onChange={(val) => setForm((p) => ({ ...p, categoryId: val }))}
                   options={categoryOptions}
                   placeholder="Sin categoría"
-                  className="flex-1"
+                  flex="1"
                 />
-                <button
+                <Button
                   type="button"
-                  className="w-10 h-10 rounded-lg border border-primary bg-transparent text-primary hover:bg-primary/5 flex items-center justify-center transition-colors"
+                  variant="ghost"
+                  size="sm"
                   onClick={onShowNewCategory}
-                  title="Crear categoría"
+                  aria-label="Crear categoría"
                 >
                   <Plus size={18} />
-                </button>
-              </div>
+                </Button>
+              </Flex>
             </FormField>
 
-            <FormField label="Imagen del Producto" className="md:col-span-3">
+            <FormField label="Imagen del Producto" columnSpan={3}>
               <input
                 type="file"
                 accept="image/jpeg,image/png,image/webp,image/gif"
@@ -204,43 +193,45 @@ export function ProductForm({
                 className="hidden"
                 ref={fileInputRef}
               />
-              <button
+              <Button
                 type="button"
-                className="inline-flex items-center justify-center px-4 py-2 border border-border rounded-lg bg-surface text-text text-sm font-medium cursor-pointer hover:border-primary hover:text-primary transition-colors disabled:opacity-50"
+                variant="outline"
                 onClick={() => fileInputRef.current?.click()}
                 disabled={uploading}
+                leftIcon={<Upload size={14} />}
               >
                 {uploading ? 'Subiendo...' : form.imageUrl ? 'Cambiar imagen' : 'Subir imagen'}
-              </button>
+              </Button>
               {form.imageUrl && (
-                <div className="mt-2 flex items-center gap-2">
-                  <img src={form.imageUrl} alt="Preview" className="w-16 h-16 rounded-lg object-cover border border-border" />
-                  <button
+                <Flex gap="sm" align="center" className="mt-2">
+                  <ImageContainer src={form.imageUrl} alt="Preview" aspectRatio="1" width={64} height={64} />
+                  <Button
                     type="button"
-                    className="text-text-muted hover:text-danger transition-colors text-xl leading-none"
+                    variant="ghost"
+                    size="sm"
                     onClick={() => setForm((p) => ({ ...p, imageUrl: '' }))}
-                    title="Eliminar imagen"
+                    aria-label="Eliminar imagen"
                   >
-                    ×
-                  </button>
-                </div>
+                    <X size={18} />
+                  </Button>
+                </Flex>
               )}
             </FormField>
 
-            <FormField label="Descripción" className="md:col-span-3">
-              <textarea
+            <FormField label="Descripción" columnSpan={3}>
+              <Textarea
                 value={form.description}
                 onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))}
                 rows={2}
-                className="w-full px-3 py-2 border border-border rounded-lg bg-surface text-text placeholder-text-muted focus:outline-none focus:border-primary"
+                placeholder="Descripción del producto"
               />
             </FormField>
-          </div>
+          </Grid>
 
-          <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-border">
-            <button type="button" className="px-4 py-2 border border-border rounded-lg text-text hover:bg-bg-hover transition-colors" onClick={onClose}>
+          <Flex justify="end" gap="sm" className="mt-6 pt-4 border-t">
+            <Button type="button" variant="secondary" onClick={onClose}>
               Cancelar
-            </button>
+            </Button>
             {isLimitExceeded ? (
               <PremiumLockButton
                 requiredPlan={nextRequiredPlan as any}
@@ -250,16 +241,28 @@ export function ProductForm({
                 sublabel="Mantén pulsado para ampliar"
               />
             ) : (
-              <button type="submit" className="px-4 py-2 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors disabled:opacity-50" disabled={loading}>
-                {loading ? <ButtonLoader /> : 'Guardar'}
-              </button>
+              <Button type="submit" loading={loading}>
+                Guardar
+              </Button>
             )}
-          </div>
+          </Flex>
         </form>
       </Modal>
 
+      <ConfirmModal
+        open={showPriceWarning}
+        onClose={cancelPriceWarning}
+        onConfirm={confirmPriceWarning}
+        title="Precio por debajo del costo"
+        message={`El precio de venta (${formatUsd(form.price)}) es menor que el costo (${formatUsd(form.cost)}).
+Esto genera pérdida en cada venta. ¿Desea continuar?`}
+        confirmText="Continuar"
+        cancelText="Cancelar"
+        type="warning"
+      />
+
       <Modal open={showNewCategory} onClose={onShowNewCategory} title="Nueva Categoría" small>
-        <div className="space-y-4">
+        <Stack gap="md">
           <Input
             value={newCategoryName}
             onChange={(e) => onNewCategoryNameChange(e.target.value)}
@@ -272,20 +275,15 @@ export function ProductForm({
               }
             }}
           />
-          <div className="flex justify-end gap-2">
-            <button type="button" onClick={onShowNewCategory} className="px-4 py-2 border border-border rounded-lg text-text hover:bg-bg-hover transition-colors">
+          <Flex justify="end" gap="sm">
+            <Button type="button" variant="secondary" onClick={onShowNewCategory}>
               Cancelar
-            </button>
-            <button
-              type="button"
-              onClick={onCreateCategory}
-              disabled={!newCategoryName.trim()}
-              className="px-4 py-2 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors disabled:opacity-50"
-            >
+            </Button>
+            <Button onClick={onCreateCategory} disabled={!newCategoryName.trim()}>
               Crear
-            </button>
-          </div>
-        </div>
+            </Button>
+          </Flex>
+        </Stack>
       </Modal>
     </>
   );

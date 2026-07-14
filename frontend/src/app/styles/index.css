@@ -1,3 +1,4 @@
+/* src/app/styles/index.css */
 @import './primitives.css';
 @import './semantic.css';
 @import './utilities.css';
@@ -19,15 +20,18 @@ html {
 }
 
 body {
-  background-color: var(--color-bg);
-  color: var(--color-text);
+  background-color: var(--bg-app);
+  /* Apunta directo al sistema nuevo */
+  color: var(--text-main);
+  /* Apunta directo al sistema nuevo */
   min-height: 100vh;
   line-height: var(--line-height-normal);
 }
 
 /* ─── Focus Visible (accessible focus) ─── */
 :focus-visible {
-  outline: 2px solid var(--color-primary);
+  outline: 2px solid var(--accent-primary);
+  /* Sincronizado con tu token primario actual */
   outline-offset: 2px;
 }
 
@@ -48,12 +52,13 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: var(--color-text-light);
+  background-color: var(--text-muted);
+  /* Ajustado a la escala semántica limpia */
   border-radius: var(--radius-full);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background-color: var(--color-text-muted);
+  background-color: var(--text-main);
 }
 
 /* ─── Image/Video defaults ─── */
@@ -79,93 +84,15 @@ textarea {
   font-size: inherit;
 }
 
-/* ─── Utility: visually hidden ─── */
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
-
-/* ─── Animations (global utilities) ─── */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes slideUp {
-  from {
-    transform: translateY(12px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-@keyframes slideDown {
-  from {
-    transform: translateY(-8px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-.animate-fade-in {
-  animation: fadeIn var(--duration-fast) ease-out;
-}
-.animate-slide-up {
-  animation: slideUp var(--duration-base) cubic-bezier(0.16, 1, 0.3, 1);
-}
-.animate-slide-down {
-  animation: slideDown var(--duration-base) cubic-bezier(0.16, 1, 0.3, 1);
-}
-
 /* ─── Reduced Motion ─── */
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {
-    animation-duration: 0.01ms;
-    animation-iteration-count: 1;
-    transition-duration: 0.01ms;
-    scroll-behavior: auto;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
-}
-
-/* ─── Global Input & Search Bar Border Unification ─── */
-html body input,
-html body textarea,
-html body select,
-html body [class*='inputField' i],
-html body [class*='search' i] {
-  --border-width: var(--border-width-fixed);
-  --color-border: var(--color-border-input);
-  border: var(--border-width) var(--border-style) var(--color-border-input);
-  background-color: var(--color-bg-input);
-  color: var(--color-text);
-  transition: border-color var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
-}
-
-html body input:focus,
-html body textarea:focus,
-html body select:focus,
-html body [class*='inputField' i]:focus,
-html body [class*='search' i]:focus {
-  outline: none;
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 15%, transparent);
 }

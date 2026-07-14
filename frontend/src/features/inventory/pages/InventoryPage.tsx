@@ -1,51 +1,52 @@
-import { useState } from 'react';
+// src/features/inventory/pages/InventoryPage.tsx
+import { useState, lazy, Suspense } from 'react';
 import { Package, Truck, ShoppingCart, AlertTriangle, FileText, ClipboardList } from 'lucide-react';
-import { ProductsTab } from '../components/ProductsTab';
-import { KardexTab } from '../components/KardexTab';
-import { AdjustmentsTab } from '../components/AdjustmentsTab';
-import { ConteoFisicoTab } from '../components/ConteoFisicoTab';
-import { SuppliersTab } from '@features/suppliers';
-import { PurchaseOrdersTab } from '@features/purchase-orders';
-import styles from './InventoryPage.module.css';
+import { TabNav, Stack, Card, CardBody, Skeleton } from '@shared/ui'; // <-- Unificado en barrel
+import { ProductsTab, KardexTab, AdjustmentsTab, ConteoFisicoTab } from '../components'; // <-- Puntos locales
 
-type Tab =
-  'products' | 'suppliers' | 'purchase-orders' | 'adjustments' | 'kardex' | 'conteo-fisico';
+const SuppliersTab = lazy(() => import('@features/suppliers').then(m => ({ default: m.SuppliersTab })));
+const PurchaseOrdersTab = lazy(() => import('@features/purchase-orders').then(m => ({ default: m.PurchaseOrdersTab })));
 
-const TABS: { key: Tab; label: string; icon: any }[] = [
-  { key: 'products', label: 'Productos', icon: Package },
-  { key: 'suppliers', label: 'Proveedores', icon: Truck },
-  { key: 'purchase-orders', label: 'Órdenes de Compra', icon: ShoppingCart },
-  { key: 'adjustments', label: 'Ajustes de Inventario', icon: AlertTriangle },
-  { key: 'kardex', label: 'Kardex', icon: FileText },
-  { key: 'conteo-fisico', label: 'Conteo Físico', icon: ClipboardList },
+type Tab = 'products' | 'suppliers' | 'purchase-orders' | 'adjustments' | 'kardex' | 'conteo-fisico';
+
+const TABS = [
+  { key: 'products' as const, label: 'Productos', icon: <Package size={16} /> },
+  { key: 'suppliers' as const, label: 'Proveedores', icon: <Truck size={16} /> },
+  { key: 'purchase-orders' as const, label: 'Órdenes de Compra', icon: <ShoppingCart size={16} /> },
+  { key: 'adjustments' as const, label: 'Ajustes de Inventario', icon: <AlertTriangle size={16} /> },
+  { key: 'kardex' as const, label: 'Kardex', icon: <FileText size={16} /> },
+  { key: 'conteo-fisico' as const, label: 'Conteo Físico', icon: <ClipboardList size={16} /> },
 ];
+
+const TAB_COMPONENTS: Record<Tab, React.ComponentType> = {
+  products: ProductsTab,
+  suppliers: SuppliersTab,
+  'purchase-orders': PurchaseOrdersTab,
+  adjustments: AdjustmentsTab,
+  kardex: KardexTab,
+  'conteo-fisico': ConteoFisicoTab,
+};
+
+function TabFallback() {
+  return (
+    <Card>
+      <CardBody>
+        <Skeleton height={200} />
+      </CardBody>
+    </Card>
+  );
+}
 
 export function InventoryPage() {
   const [activeTab, setActiveTab] = useState<Tab>('products');
+  const Component = TAB_COMPONENTS[activeTab];
 
   return (
-    <div className={styles.container}>
-      <div className={styles.tabs}>
-        {TABS.map((tab) => {
-          const Icon = tab.icon;
-          return (
-            <button
-              key={tab.key}
-              className={`${styles.tab} ${activeTab === tab.key ? styles.tabActive : ''}`}
-              onClick={() => setActiveTab(tab.key)}
-            >
-              <Icon size={16} />
-              <span>{tab.label}</span>
-            </button>
-          );
-        })}
-      </div>
-      {activeTab === 'products' && <ProductsTab />}
-      {activeTab === 'suppliers' && <SuppliersTab />}
-      {activeTab === 'purchase-orders' && <PurchaseOrdersTab />}
-      {activeTab === 'adjustments' && <AdjustmentsTab />}
-      {activeTab === 'kardex' && <KardexTab />}
-      {activeTab === 'conteo-fisico' && <ConteoFisicoTab />}
-    </div>
+    <Stack gap="xl">
+      <TabNav tabs={TABS} activeTab={activeTab} onTabChange={(key) => setActiveTab(key as Tab)} />
+      <Suspense fallback={<TabFallback />}>
+        <Component />
+      </Suspense>
+    </Stack>
   );
 }

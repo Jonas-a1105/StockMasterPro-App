@@ -10,7 +10,7 @@ import {
   getCategories,
   createCategory,
   getWarehouses,
-} from '@features/inventory/api/inventory.api';
+} from '../api/inventory.api';
 
 export function useProductsQuery(params?: Record<string, unknown>) {
   return useQuery({

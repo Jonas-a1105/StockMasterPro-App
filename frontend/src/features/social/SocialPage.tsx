@@ -20,7 +20,7 @@ import { SocialFeed } from './components/SocialFeed';
 import { SocialCatalogs } from './components/SocialCatalogs';
 import { SocialNotifications } from './components/SocialNotifications';
 import { SocialMessages } from './components/SocialMessages';
-import { SocialProfileView } from './components/SocialProfile';
+import { SocialProfile } from './components/SocialProfile';
 import { useAuth } from '@contexts/AuthContext';
 import { api } from '@shared/lib/http/client';
 import styles from './Social.module.css';
@@ -152,8 +152,8 @@ export function SocialPage() {
         return <SocialMessages />;
       case 'create':
         return <CreatePostView onCreated={() => navigateToTab('feed')} />;
-      case 'profile':
-        return <SocialProfileView />;
+case 'profile':
+          return <SocialProfile />;
       default:
         return <SocialFeed />;
     }

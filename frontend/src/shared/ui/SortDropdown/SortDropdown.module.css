@@ -1,0 +1,104 @@
+.dropdown {
+  position: relative;
+  display: inline-flex;
+}
+
+.trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1-5) var(--space-3);
+  background-color: var(--color-bg);
+  border: var(--border-width) var(--border-style) var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+  min-width: 160px;
+}
+
+.trigger:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.trigger:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.chevron {
+  transition: transform var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.menu {
+  position: absolute;
+  top: calc(100% + var(--space-1-5));
+  right: 0;
+  min-width: 200px;
+  background-color: var(--color-surface);
+  border: var(--border-width) var(--border-style) var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  z-index: var(--z-dropdown);
+  padding: var(--space-1) 0;
+  animation: slideDown var(--transition-base) cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  border: none;
+  background: none;
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
+  cursor: pointer;
+  text-align: left;
+  transition: all var(--transition-fast);
+}
+
+.option:hover {
+  background-color: var(--color-bg-hover);
+  color: var(--color-text);
+}
+
+.optionActive {
+  color: var(--color-primary);
+  font-weight: var(--font-weight-semibold);
+  background-color: color-mix(in srgb, var(--color-primary) 6%, transparent);
+}
+
+.optionIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 16px;
+}
+
+.optionLabel {
+  flex: 1;
+}
+
+.checkIcon {
+  flex-shrink: 0;
+  color: var(--color-primary);
+}

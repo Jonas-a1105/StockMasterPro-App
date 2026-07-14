@@ -1,0 +1,110 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.label {
+  font-size: var(--text-label-size);
+  font-weight: var(--text-label-weight);
+  color: var(--color-text);
+}
+
+.inputWrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input {
+  --border-width: var(--border-width-fixed);
+  height: 40px;
+  padding: 0 12px;
+  border: var(--border-width) var(--border-style) var(--color-border-input) ;
+  border-radius: var(--input-radius);
+  background: var(--color-bg-input);
+  color: var(--color-text);
+  font-size: var(--font-size-md);
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s ease;
+  width: 100%;
+}
+
+.input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--focus-ring-color) var(--focus-ring-opacity), transparent);
+}
+
+.input::placeholder {
+  color: var(--color-text-light);
+}
+
+.hasAddon {
+  padding-right: 36px;
+}
+
+.addonRight {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  pointer-events: none;
+  user-select: none;
+}
+
+.inputError {
+  border-color: var(--color-danger);
+}
+
+.inputError:focus {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-danger) var(--focus-ring-opacity), transparent);
+}
+
+.error {
+  font-size: var(--font-size-caption);
+  color: var(--color-danger);
+}
+
+.helper {
+  font-size: var(--font-size-caption);
+  color: var(--color-text-light);
+}
+
+.hasLeftIcon {
+  padding-left: 36px;
+}
+
+.hasRightIcon {
+  padding-right: 36px;
+}
+
+.leftIconWrap {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-muted);
+  pointer-events: none;
+  z-index: 5;
+}
+
+.rightIconWrap {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+}

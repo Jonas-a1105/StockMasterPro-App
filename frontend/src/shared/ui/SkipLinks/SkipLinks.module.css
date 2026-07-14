@@ -1,4 +1,4 @@
-.skip-links {
+.skipLinks {
   position: fixed;
   top: -100%;
   left: 0;
@@ -12,7 +12,7 @@
   pointer-events: none;
 }
 
-.skip-link {
+.skipLink {
   display: inline-block;
   padding: 12px 24px;
   background: var(--color-primary);
@@ -28,8 +28,8 @@
   box-shadow: var(--shadow-lg) ;
 }
 
-.skip-link:focus,
-.skip-link:focus-visible {
+.skipLink:focus,
+.skipLink:focus-visible {
   top: 0;
   opacity: 1;
   transform: translateY(0);
@@ -39,7 +39,7 @@
   outline-offset: 2px;
 }
 
-.skip-link-visible {
+.skipLinkVisible {
   top: 0 !important;
   opacity: 1 !important;
   transform: translateY(0) !important;

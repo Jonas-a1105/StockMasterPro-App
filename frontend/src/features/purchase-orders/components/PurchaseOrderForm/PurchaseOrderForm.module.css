@@ -1,0 +1,59 @@
+.colorMuted {
+  color: var(--text-muted);
+}
+.fontSize14 {
+  font-size: 0.875rem;
+}
+.mb16 {
+  margin-bottom: 1rem;
+}
+.textCenter {
+  text-align: center;
+}
+.textRight {
+  text-align: right;
+}
+.w100 {
+  width: 100%;
+}
+.w70 {
+  width: 70px;
+}
+.p4px8 {
+  padding: 4px 8px;
+}
+.rounded6 {
+  border-radius: 6px;
+}
+.borderBorder {
+  border: 1px solid var(--border-color);
+}
+.bold {
+  font-weight: 700;
+}
+.formActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 16px;
+}
+.cancelBtn {
+  padding: 8px 16px;
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  cursor: pointer;
+}
+.saveBtn {
+  padding: 8px 16px;
+  background: var(--primary);
+  color: var(--on-primary);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.saveBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

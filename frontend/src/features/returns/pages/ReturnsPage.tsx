@@ -8,7 +8,7 @@ import { useExchangeRate } from '@contexts/ExchangeRateContext';
 import { formatUsd } from '@shared/lib/format/currency';
 import { Search, RefreshCw, RotateCcw, Eye, ArrowLeft, X, Plus, Minus } from 'lucide-react';
 import styles from './ReturnsPage.module.css';
-import tableStyles from '@shared/ui/TableList.module.css';
+import tableStyles from '@shared/ui/TableList/TableList.module.css';
 
 const REFUND_METHODS = [
   { value: 'credit', label: 'Crédito en cuenta' },

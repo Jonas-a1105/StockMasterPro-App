@@ -1,5 +1,11 @@
+// src/features/inventory/components/ProductKpiBar.tsx
 import { useExchangeRate } from '@contexts/ExchangeRateContext';
-import { KpiGrid } from '@shared/ui/KpiGrid';
+import { KpiGrid } from '@shared/ui'; // <-- ¡Mudado al sistema de diseño compartido!
+import shoppingBagData from '@assets/lottie/shopping-bag.json';
+import analyticsData from '@assets/lottie/analytics.json';
+import walletData from '@assets/lottie/wallet.json';
+import creditCardData from '@assets/lottie/credit-card.json';
+import warningData from '@assets/lottie/warning.json';
 
 export function ProductKpiBar({ products }: { products: any[] }) {
   const { formatUsd, formatBs } = useExchangeRate();
@@ -13,31 +19,31 @@ export function ProductKpiBar({ products }: { products: any[] }) {
     {
       value: totalProducts,
       label: 'Productos',
-      lottie: 'bag' as const,
+      lottie: shoppingBagData,
       color: 'var(--color-primary)',
     },
     {
       value: totalStock,
       label: 'Stock Total',
-      lottie: 'analytics' as const,
+      lottie: analyticsData,
       color: 'var(--color-teal)',
     },
     {
       value: formatUsd(totalValuationUsd),
       label: 'Valoración ($)',
-      lottie: 'wallet' as const,
+      lottie: walletData,
       color: 'var(--color-success)',
     },
     {
       value: formatBs(totalValuationUsd),
       label: 'Valoración (Bs)',
-      lottie: 'card' as const,
+      lottie: creditCardData,
       color: 'var(--color-purple)',
     },
     {
       value: lowStockCount,
       label: 'Stock Bajo',
-      lottie: 'warning' as const,
+      lottie: warningData,
       color: 'var(--color-danger)',
     },
   ];

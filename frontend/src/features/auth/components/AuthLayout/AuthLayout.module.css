@@ -1,0 +1,54 @@
+.authContainer {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-family);
+}
+
+.logoWrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo {
+  display: block;
+}
+
+.logoStroke {
+  fill: none;
+  stroke: url(#logoGrad);
+  stroke-width: 8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.logoCrown {
+  fill: url(#logoGrad);
+}
+
+.logoProText {
+  font-family: var(--font-family-mono);
+  font-size: 18;
+  font-weight: 700;
+  fill: var(--color-text);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.headerTitle {
+  margin: 0;
+  letter-spacing: 1px;
+}
+
+.headerSubtitle {
+  margin: 0;
+  opacity: 0.8;
+}
+
+.footerLinks {
+  margin-top: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: var(--border-width) solid var(--color-border);
+  width: 100%;
+  max-width: 400px;
+}

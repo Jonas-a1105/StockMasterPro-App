@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { X, AlertCircle, Search, Package, Users, Truck, ShoppingCart } from 'lucide-react';
+import { AlertCircle, Search, Package } from 'lucide-react';
 import styles from './EmptyState.module.css';
 
 interface EmptyStateProps {
@@ -14,13 +14,10 @@ interface EmptyStateProps {
   className?: string;
 }
 
-const DEFAULT_ICONS: Record<string, ReactNode> = {
+const ICON_MAP: Record<string, ReactNode> = {
+  default: <Package size={48} />,
   search: <Search size={48} />,
   warning: <AlertCircle size={48} />,
-  product: <Package size={48} />,
-  customer: <Users size={48} />,
-  supplier: <Truck size={160} />,
-  sale: <ShoppingCart size={48} />,
   empty: <Package size={48} />,
 };
 
@@ -32,28 +29,7 @@ export function EmptyState({
   variant = 'default',
   className = '',
 }: EmptyStateProps) {
-  const icons: Record<string, ReactNode> = {
-    search: <Search size={48} />,
-    warning: <AlertCircle size={48} />,
-    product: <Package size={48} />,
-    customer: <Users size={48} />,
-    supplier: <Truck size={48} />,
-    sale: <ShoppingCart size={48} />,
-    empty: <Package size={48} />,
-  };
-
-  const iconMap: Record<string, ReactNode> = {
-    default: <Package size={48} />,
-    search: <Search size={48} />,
-    warning: <AlertCircle size={48} />,
-    product: <Package size={48} />,
-    customer: <Users size={48} />,
-    supplier: <Truck size={48} />,
-    sale: <ShoppingCart size={48} />,
-    empty: <Package size={48} />,
-  };
-
-  const iconNode = icon || iconMap[variant] || iconMap.default;
+  const iconNode = icon || ICON_MAP[variant] || ICON_MAP.default;
 
   return (
     <div className={`${styles.emptyState} ${className}`}>

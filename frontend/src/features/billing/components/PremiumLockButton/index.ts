@@ -1,0 +1,1 @@
+export { PremiumLockButton } from './PremiumLockButton';

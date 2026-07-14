@@ -1,0 +1,1 @@
+export { SocialCatalogs } from './SocialCatalogs';

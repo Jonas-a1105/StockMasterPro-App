@@ -44,7 +44,7 @@ import { exportToExcel } from '@shared/lib/excelHelper';
 import { exportToPdf } from '@shared/lib/print/pdfHelper';
 import { useToast } from '@contexts/ToastContext';
 import styles from './ReportsPage.module.css';
-import tableStyles from '@shared/ui/TableList.module.css';
+import tableStyles from '@shared/ui/TableList/TableList.module.css';
 
 export const COLORS = ['#ea580c', '#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899'];
 

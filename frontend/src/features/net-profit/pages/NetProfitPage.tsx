@@ -7,8 +7,8 @@ import { SkeletonReports } from '@shared/ui/Skeleton';
 import { useTheme } from '@contexts/ThemeContext';
 import { formatUsd as usdFormatter } from '@shared/lib/format/currency';
 import { Filter, TrendingUp, TrendingDown, PiggyBank, Percent, Download } from 'lucide-react';
-import { KpiGrid } from '@shared/ui/KpiGrid';
-import { Toolbar } from '@shared/ui/Toolbar';
+import { KpiGrid } from '@features/shared-ui/KpiGrid';
+import { Toolbar } from '@features/shared-ui/Toolbar';
 import {
   LineChart,
   Line,

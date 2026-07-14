@@ -1,5 +1,5 @@
 import { Card } from '@shared/ui/Card';
-import { Table } from '@shared/ui/Table';
+import { DataTable } from '@features/shared-ui/DataTable';
 import { Text } from '@shared/ui/Text';
 
 export function CriticalStockList({ products }: { products: any[] }) {
@@ -31,10 +31,11 @@ export function CriticalStockList({ products }: { products: any[] }) {
         {products.length === 0 ? (
           <Text variant="description">No hay productos con stock bajo.</Text>
         ) : (
-          <Table
+          <DataTable
             data={products.slice(0, 10)}
             columns={columns}
             keyExtractor={(p) => p.id}
+            simple
           />
         )}
       </Card.Body>

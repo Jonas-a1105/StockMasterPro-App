@@ -1,0 +1,1 @@
+export { AriaLiveRegion } from './AriaLiveRegion';

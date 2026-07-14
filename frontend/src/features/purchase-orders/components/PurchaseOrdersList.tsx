@@ -1,10 +1,8 @@
-import { Skeleton } from '@shared/ui/Skeleton';
-import { LoadingDots } from '@shared/ui/LoadingDots';
 import { useExchangeRate } from '@contexts/ExchangeRateContext';
 import { Package, Check, X, Ban } from 'lucide-react';
 import type { PurchaseOrder } from '@types';
-import styles from '@features/inventory/pages/InventoryPage.module.css';
-import tableStyles from '@shared/ui/TableList.module.css';
+import { Button, Badge, Skeleton, Text } from '@shared/ui';
+import tableStyles from '@shared/ui/TableList/TableList.module.css';
 
 export function PurchaseOrdersList({
   orders,
@@ -34,30 +32,30 @@ export function PurchaseOrdersList({
   };
 
   const statusBadge = (status: string) => {
-    const map: Record<string, { className: string; label: string }> = {
-      completed: { className: styles.badgeCompleted, label: 'Completada' },
-      received: { className: styles.badgeCompleted, label: 'Recibida' },
-      pending: { className: styles.badgePending, label: 'Pendiente' },
-      approved: { className: styles.badgeApproved, label: 'Aprobada' },
-      partially_received: { className: styles.badgePartiallyReceived, label: 'Parcial' },
-      rejected: { className: styles.badgeRejected, label: 'Rechazada' },
-      cancelled: { className: styles.badgeCancelled, label: 'Cancelada' },
+    const map: Record<string, { variant: 'success' | 'warning' | 'danger' | 'info' | 'default'; label: string }> = {
+      completed: { variant: 'success', label: 'Completada' },
+      received: { variant: 'success', label: 'Recibida' },
+      pending: { variant: 'warning', label: 'Pendiente' },
+      approved: { variant: 'success', label: 'Aprobada' },
+      partially_received: { variant: 'warning', label: 'Parcial' },
+      rejected: { variant: 'danger', label: 'Rechazada' },
+      cancelled: { variant: 'danger', label: 'Cancelada' },
     };
-    const entry = map[status] ?? { className: styles.badgeRejected, label: status };
-    return <span className={`${styles.badge} ${entry.className}`}>{entry.label}</span>;
+    const entry = map[status] ?? { variant: 'default', label: status };
+    return <Badge variant={entry.variant}>{entry.label}</Badge>;
   };
 
   return (
-    <div className="tableStyles.container">
-      <table className="tableStyles.table">
+    <div className={tableStyles.container}>
+      <table className={tableStyles.table}>
         <thead>
           <tr>
             <th>#</th>
             <th>Proveedor</th>
-            <th className={styles.textCenter}>Estado</th>
-            <th className={styles.textRight}>Total</th>
+            <th className="text-center">Estado</th>
+            <th className="text-right">Total</th>
             <th>Fecha</th>
-            <th className={styles.textCenter}>Acciones</th>
+            <th className="text-center">Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -73,7 +71,7 @@ export function PurchaseOrdersList({
                 <td>
                   <Skeleton height={14} width="80px" />
                 </td>
-                <td className={styles.flexCenter}>
+                <td className="flex justify-center">
                   <Skeleton height={14} width="60px" />
                 </td>
                 <td>
@@ -85,59 +83,66 @@ export function PurchaseOrdersList({
           ) : (
             orders.map((order) => (
               <tr key={order.id}>
-                <td className={`${styles.mono} ${styles.bold} ${styles.textMuted}`}>
+                <td className="font-mono font-bold text-text-muted">
                   {order.id.slice(0, 8)}
                 </td>
                 <td>
-                  <span className="tableStyles.nameText">{getSupplierName(order.supplierId)}</span>
+                  <span className={tableStyles.nameText}>{getSupplierName(order.supplierId)}</span>
                 </td>
-                <td className={styles.textCenter}>{statusBadge(order.status)}</td>
-                <td className={styles.textRight}>
-                  <span className="tableStyles.numberValue">{formatPrice(order.total)}</span>
+                <td className="text-center">{statusBadge(order.status)}</td>
+                <td className="text-right">
+                  <span className={tableStyles.numberValue}>{formatPrice(order.total)}</span>
                 </td>
                 <td>{new Date(order.createdAt).toLocaleDateString()}</td>
-                <td className={styles.textCenter}>
+                <td className="text-center">
                   {userRole !== 'cajero' && (
-                    <>
+                    <div className="flex items-center justify-center gap-1.5">
                       {order.status === 'pending' && onApprove && (
-                        <button
+                        <Button
                           onClick={() => onApprove(order.id)}
                           title="Aprobar orden"
-                          className={`${styles.actionBtn} ${styles.approveBtn}`}
+                          variant="ghost"
+                          size="sm"
+                          className="text-success"
                         >
                           <Check size={14} /> Aprobar
-                        </button>
+                        </Button>
                       )}
                       {order.status === 'pending' && onReject && (
-                        <button
+                        <Button
                           onClick={() => onReject(order.id)}
                           title="Rechazar orden"
-                          className={`${styles.actionBtn} ${styles.rejectBtn}`}
+                          variant="ghost"
+                          size="sm"
+                          className="text-danger"
                         >
                           <X size={14} /> Rechazar
-                        </button>
+                        </Button>
                       )}
                       {['approved', 'partially_received'].includes(order.status) &&
                         onReceiveClick && (
-                          <button
+                          <Button
                             onClick={() => onReceiveClick(order)}
                             title="Recibir productos"
-                            className={`${styles.actionBtn} ${styles.receiveBtn}`}
+                            variant="ghost"
+                            size="sm"
                           >
                             <Package size={14} /> Recibir
-                          </button>
+                          </Button>
                         )}
                       {['pending', 'approved', 'partially_received'].includes(order.status) &&
                         onCancel && (
-                          <button
+                          <Button
                             onClick={() => onCancel(order.id)}
                             title="Cancelar orden"
-                            className={`${styles.actionBtn} ${styles.cancelBtn}`}
+                            variant="ghost"
+                            size="sm"
+                            className="text-text-muted"
                           >
                             <Ban size={14} /> Cancelar
-                          </button>
+                          </Button>
                         )}
-                    </>
+                    </div>
                   )}
                 </td>
               </tr>
@@ -146,7 +151,7 @@ export function PurchaseOrdersList({
         </tbody>
       </table>
       {!loading && orders.length === 0 && (
-        <p className={`${styles.emptyRow} ${styles.p16}`}>No hay órdenes de compra</p>
+        <Text color="muted" className="p-4 text-center block">No hay órdenes de compra</Text>
       )}
     </div>
   );

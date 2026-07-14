@@ -1,24 +1,7 @@
-import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
-import {
-  Plus,
-  Wrench,
-  Edit2,
-  Trash2,
-  Eye,
-  Package,
-  LayoutGrid,
-  LayoutList,
-  Download,
-  Upload,
-  Shield,
-  Lock,
-  X,
-  ArrowUpDown,
-} from 'lucide-react';
+// src/features/inventory/components/ProductsTab.tsx
+import { useState, useCallback, useMemo } from 'react';
 import { useAuth } from '@contexts/AuthContext';
 import { useToast } from '@contexts/ToastContext';
-import { useTheme } from '@contexts/ThemeContext';
 import { useExchangeRate } from '@contexts/ExchangeRateContext';
 import { useProducts } from '../hooks/useProducts';
 import {
@@ -30,19 +13,14 @@ import {
 } from '../api/inventory.api';
 import { ProductKpiBar } from './ProductKpiBar';
 import { ProductForm, type ProductFormData } from './ProductForm';
-import { ProductDetailPanel } from '../pages/ProductDetailPanel';
-import { Modal } from '@shared/ui/Modal';
-import { ConfirmModal } from '@shared/ui/ConfirmModal';
-import { PremiumLockButton } from '@shared/ui/PremiumLockButton';
-import { SkeletonTable, SkeletonCards } from '@shared/ui/Skeleton';
-import { ImportModal } from '@shared/ui/ImportModal';
-import { DataTable } from '@shared/ui/DataTable';
-import { ProductCard } from '@shared/ui/ProductCard';
-import { Toolbar } from '@shared/ui/Toolbar';
+import { ProductDetailPanel } from './ProductDetailPanel';
+import { ProductTable } from './ProductTable';
+import { ProductCardView } from './ProductCardView';
+import { ProductFilters } from './ProductFilters';
+import { Modal, ConfirmModal, SkeletonTable, SkeletonCards, ImportModal, Stack } from '@shared/ui';
 import { exportToExcel, type ColumnMapping } from '@shared/lib/excelHelper';
-import { exportToPdf } from '@shared/lib/print/pdfHelper';
 import type { Product } from '@types';
-import type { SortField, SortDirection, ViewMode } from '../types';
+import type { ViewMode } from '../types';
 
 const PRODUCT_COLUMNS: ColumnMapping[] = [
   { header: 'Nombre', key: 'name', type: 'string' },
@@ -56,14 +34,10 @@ const PRODUCT_COLUMNS: ColumnMapping[] = [
   { header: 'Imagen URL', key: 'imageUrl', type: 'string' },
 ];
 
-
-
 export function ProductsTab() {
   const { showToast } = useToast();
   const { user, licenseStatus, licenseUsage } = useAuth();
-  const navigate = useNavigate();
   const { formatUsd, formatBs } = useExchangeRate();
-  const { config, updateConfig } = useTheme();
   const {
     products,
     categories,
@@ -92,26 +66,16 @@ export function ProductsTab() {
   const [currentViewMode, setCurrentViewMode] = useState<ViewMode>('table');
   const [sortField, setSortField] = useState<string>('');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
-  const [page, setPage] = useState(1);
-  const [pageSize] = useState(20);
 
   const isLimitExceeded = !editingId && licenseUsage?.products && licenseUsage.products.limit !== null && licenseUsage.products.current >= licenseUsage.products.limit;
   const nextRequiredPlan = 'pro';
 
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      // dropdowns handled by shared components
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
-  const handleExportProducts = () => {
+  const handleExportProducts = useCallback(() => {
     exportToExcel(products, PRODUCT_COLUMNS, 'inventario_productos', 'xlsx');
     showToast('Inventario exportado correctamente', 'success');
-  };
+  }, [products, showToast]);
 
-  const handleImportProducts = async (data: any[], onProgress: (c: number, t: number) => void) => {
+  const handleImportProducts = useCallback(async (data: any[], onProgress: (c: number, t: number) => void) => {
     let successCount = 0, errorCount = 0;
     const details: string[] = [];
     for (let i = 0; i < data.length; i++) {
@@ -140,7 +104,7 @@ export function ProductsTab() {
     }
     await loadProducts();
     return { successCount, errorCount, details };
-  };
+  }, [products, loadProducts]);
 
   const filteredProducts = useMemo(() => {
     let result = products.filter(
@@ -149,9 +113,6 @@ export function ProductsTab() {
         p.barcode?.includes(search) ||
         (p.brand && p.brand.toLowerCase().includes(search.toLowerCase()))
     );
-    if (warehouseFilter) {
-      // add warehouse filter logic here if needed
-    }
     if (sortField) {
       result = [...result].sort((a, b) => {
         let cmp = 0;
@@ -166,9 +127,9 @@ export function ProductsTab() {
       });
     }
     return result;
-  }, [products, search, sortField, sortDirection, warehouseFilter]);
+  }, [products, search, sortField, sortDirection]);
 
-  const handleSubmit = async (data: ProductFormData) => {
+  const handleSubmit = useCallback(async (data: ProductFormData) => {
     setLoading(true);
     try {
       const payload: any = { ...data };
@@ -187,9 +148,9 @@ export function ProductsTab() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [editingId, loadProducts, showToast]);
 
-  const startEdit = (product: Product) => {
+  const startEdit = useCallback((product: Product) => {
     setForm({
       name: product.name, barcode: product.barcode || '', price: product.price, cost: product.cost,
       stock: product.stock, minStock: product.minStock, description: product.description || '',
@@ -197,11 +158,11 @@ export function ProductsTab() {
     });
     setEditingId(product.id);
     setShowForm(true);
-  };
+  }, []);
 
-  const handleDelete = (id: string, name: string) => setDeleteConfirm({ id, name });
+  const handleDelete = useCallback((id: string, name: string) => setDeleteConfirm({ id, name }), []);
 
-  const confirmDelete = async () => {
+  const confirmDelete = useCallback(async () => {
     if (!deleteConfirm) return;
     try {
       await deleteInventoryProduct(deleteConfirm.id);
@@ -211,18 +172,18 @@ export function ProductsTab() {
     } catch (err: any) {
       showToast(err.message || 'Error al eliminar el producto', 'error');
     }
-  };
+  }, [deleteConfirm, loadProducts, showToast]);
 
-  const handleViewDetails = async (product: Product) => {
+  const handleViewDetails = useCallback(async (product: Product) => {
     setViewProduct(product);
     setLoadingMovements(true);
     try {
       setMovements(await getInventoryMovements(product.id));
     } catch { setMovements([]); }
     finally { setLoadingMovements(false); }
-  };
+  }, []);
 
-  const handleCreateCategory = async () => {
+  const handleCreateCategory = useCallback(async () => {
     if (!newCategoryName.trim()) return;
     try {
       const cat = await createCategory({ name: newCategoryName.trim() });
@@ -231,200 +192,74 @@ export function ProductsTab() {
       setNewCategoryName(''); setShowNewCategory(false);
       showToast(`Categoría "${cat.name}" creada`, 'success');
     } catch (err: any) { showToast(err.message, 'error'); }
-  };
+  }, [newCategoryName, loadCategories, showToast]);
 
-  const getCategoryName = (catId: string | null) => {
+  const getCategoryName = useCallback((catId: string | null) => {
     if (!catId) return '—';
     const cat = categories.find((c) => c.id === catId);
     return cat ? cat.name : '—';
-  };
+  }, [categories]);
 
-  const handleSort = (field: string) => {
+  const handleSort = useCallback((field: string) => {
     if (sortField === field) setSortDirection((prev) => (prev === 'asc' ? 'desc' : 'asc'));
     else { setSortField(field); setSortDirection('asc'); }
-    setPage(1);
-  };
+  }, [sortField]);
 
-  const tableColumns = useMemo(() => [
-    {
-      key: 'name',
-      header: 'Producto',
-      render: (product: Product) => (
-        <div className="flex items-center gap-3">
-          {product.imageUrl ? (
-            <img src={product.imageUrl} alt="" className="w-8 h-8 rounded-lg object-cover" />
-          ) : (
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-surface-muted">
-              <Package size={14} className="text-text-muted" />
-            </div>
-          )}
-          <span className="font-medium">{product.name}</span>
-        </div>
-      ),
-      onSort: () => handleSort('name'),
-    },
-    { key: 'brand', header: 'Marca', render: (p: Product) => (p as any).brand || '—', onSort: () => handleSort('brand') },
-    { key: 'category', header: 'Categoría', render: (p: Product) => getCategoryName(p.categoryId), onSort: () => handleSort('categoryId') },
-    { key: 'barcode', header: 'Código', render: (p: Product) => <span className="font-mono">{p.barcode || '—'}</span>, onSort: () => handleSort('barcode') },
-    { key: 'price', header: 'Precio ($)', align: 'right' as const, render: (p: Product) => p.price.toFixed(2), onSort: () => handleSort('price') },
-    { key: 'priceBs', header: 'Precio (Bs)', align: 'right' as const, render: (p: Product) => formatBs(p.price), onSort: () => handleSort('priceBs') },
-    { key: 'cost', header: 'Costo ($)', align: 'right' as const, render: (p: Product) => formatUsd(p.cost), onSort: () => handleSort('cost') },
-    { key: 'costBs', header: 'Costo (Bs)', align: 'right' as const, render: (p: Product) => formatBs(p.cost), onSort: () => handleSort('costBs') },
-    {
-      key: 'profit',
-      header: 'Ganancia ($)',
-      align: 'right' as const,
-      render: (p: Product) => {
-        const profit = p.price - p.cost;
-        return <span className={profit >= 0 ? 'text-success' : 'text-danger'}>{formatUsd(profit)}</span>;
-      },
-      onSort: () => handleSort('profit'),
-    },
-    {
-      key: 'profitBs',
-      header: 'Ganancia (Bs)',
-      align: 'right' as const,
-      render: (p: Product) => {
-        const profit = p.price - p.cost;
-        return <span className={profit >= 0 ? 'text-success' : 'text-danger'}>{formatBs(profit)}</span>;
-      },
-      onSort: () => handleSort('profitBs'),
-    },
-    { key: 'stock', header: 'Stock', align: 'right' as const, render: (p: Product) => <span className="font-mono">{p.stock}</span>, onSort: () => handleSort('stock') },
-    { key: 'minStock', header: 'Mín.', align: 'right' as const, render: (p: Product) => <span className="font-mono">{p.minStock}</span>, onSort: () => handleSort('minStock') },
-    {
-      key: 'status',
-      header: 'Estado',
-      align: 'center' as const,
-      render: (p: Product) => (
-        <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold ${
-          p.stock <= p.minStock ? 'bg-danger/10 text-danger' : 'bg-success/10 text-success'
-        }`}>
-          {p.stock <= p.minStock ? 'Stock Bajo' : 'OK'}
-        </span>
-      ),
-    },
-    {
-      key: 'actions',
-      header: 'Acción',
-      align: 'center' as const,
-      render: (p: Product) => (
-        <div className="flex items-center justify-center gap-1.5">
-          <button className="flex items-center justify-center gap-1.5 px-2 py-1.5 text-sm font-medium text-text-muted hover:text-text transition-colors border border-border rounded-md" onClick={() => handleViewDetails(p)} title="Ver">
-            <Eye size={14} />
-          </button>
-          <button className="flex items-center justify-center gap-1.5 px-2 py-1.5 text-sm font-medium text-text-muted hover:text-primary transition-colors border border-border rounded-md" onClick={() => startEdit(p)} title="Editar">
-            <Edit2 size={14} />
-          </button>
-          <button className="flex items-center justify-center gap-1.5 px-2 py-1.5 text-sm font-medium text-text-muted hover:text-danger transition-colors border border-danger/20 rounded-md hover:border-danger" onClick={() => handleDelete(p)} title="Eliminar">
-            <Trash2 size={14} />
-          </button>
-        </div>
-      ),
-    },
-  ], [formatBs, formatUsd, startEdit, handleDelete, handleViewDetails, handleSort, categories]);
+  const canManage = user?.role !== 'cajero';
+  const showExportImport = licenseStatus?.tier !== 'free';
 
   return (
     <>
       <ProductKpiBar products={products} />
 
-      <Toolbar
-        search={{ value: search, onChange: setSearch, placeholder: 'Buscar productos, marcas, códigos...' }}
-        searchExtra={
-          <>
-            <div className="flex gap-2">
-              <select
-                value={warehouseFilter}
-                onChange={(e) => setWarehouseFilter(e.target.value)}
-                className="px-3 py-2 border border-border rounded-lg bg-surface text-text text-sm min-w-[160px] focus:outline-none focus:border-primary"
-              >
-                <option value="">Todos los almacenes</option>
-                {warehouses.filter((w: any) => w.isActive).map((w: any) => (
-                  <option key={w.id} value={w.id}>{w.name}</option>
-                ))}
-              </select>
-            </div>
-          </>
-        }
-        onExport={licenseStatus?.tier !== 'free' ? handleExportProducts : undefined}
-        onImport={licenseStatus?.tier !== 'free' ? () => setShowImport(true) : undefined}
-        addBtn={user?.role !== 'cajero' ? {
-          label: 'Nuevo Producto', onClick: () => {
+      <Stack gap="lg" className="wFull">
+        <ProductFilters
+          search={search}
+          onSearchChange={setSearch}
+          warehouseFilter={warehouseFilter}
+          onWarehouseFilterChange={setWarehouseFilter}
+          warehouses={warehouses}
+          currentViewMode={currentViewMode}
+          onViewModeChange={setCurrentViewMode}
+          onExport={showExportImport ? handleExportProducts : undefined}
+          onImport={showExportImport ? () => setShowImport(true) : undefined}
+          showExportImport={showExportImport}
+          canManage={canManage}
+          onAdd={canManage ? () => {
             setShowForm(true); setEditingId(null);
             setForm({ name: '', barcode: '', price: 0, cost: 0, stock: 0, minStock: 0, description: '', brand: '', imageUrl: '', categoryId: '' });
             setShowNewCategory(false);
-          }, icon: <Plus size={18} />, show: true
-        } : undefined}
-      >
-        <div className="flex items-center gap-2">
-          <button
-            className={`flex items-center justify-center w-8 h-8 rounded-lg border transition-colors ${currentViewMode === 'table' ? 'bg-surface text-primary border-primary' : 'text-text-muted hover:text-text border-border'}`}
-            onClick={() => { setCurrentViewMode('table'); updateConfig({ productViewMode: 'table' }); }}
-            title="Vista de Tabla"
-          ><LayoutList size={15} /></button>
-          <button
-            className={`flex items-center justify-center w-8 h-8 rounded-lg border transition-colors ${currentViewMode === 'cards' ? 'bg-surface text-primary border-primary' : 'text-text-muted hover:text-text border-border'}`}
-            onClick={() => { setCurrentViewMode('cards'); updateConfig({ productViewMode: 'cards' }); }}
-            title="Vista de Tarjetas"
-          ><LayoutGrid size={15} /></button>
-
-          <div className="flex items-center gap-2 ml-auto">
-            <button
-              className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-text-muted hover:text-primary transition-colors border border-border rounded-lg"
-              onClick={() => handleSort('name')}
-            >
-              <ArrowUpDown size={14} /> <span>Ordenar: {sortField ? `${sortField} ${sortDirection === 'asc' ? '↑' : '↓'}` : 'Por defecto'}</span>
-            </button>
-
-            <div className="relative">
-              <button
-                className="flex items-center gap-2 px-3 py-2 bg-bg border border-border rounded-lg text-sm font-medium text-text cursor-pointer hover:border-primary hover:text-primary transition-colors"
-                onClick={() => setShowToolsMenu((prev) => !prev)}
-              >
-                <Wrench size={14} /> <span>Herramientas</span>
-              </button>
-              {/* Tools dropdown handled inline for simplicity */}
-            </div>
-          </div>
-        </div>
-      </Toolbar>
-
-      {initialLoading ? (
-        currentViewMode === 'cards' ? <SkeletonCards count={8} /> : <SkeletonTable rows={8} cols={10} />
-      ) : currentViewMode === 'cards' ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          {filteredProducts.map((product) => (
-            <ProductCard
-              key={product.id}
-              variant="inventory"
-              product={product}
-              onView={handleViewDetails}
-              onEdit={startEdit}
-              onDelete={handleDelete}
-              showActions={user?.role !== 'cajero'}
-            />
-          ))}
-          {filteredProducts.length === 0 && (
-            <div className="col-span-full flex items-center justify-center py-12 text-text-muted">
-              No hay productos registrados
-            </div>
-          )}
-        </div>
-      ) : (
-        <DataTable
-          data={filteredProducts}
-          columns={tableColumns}
-          keyExtractor={(p) => p.id}
-          searchable
-          searchPlaceholder="Buscar productos, marcas, códigos..."
-          searchKeys={['name', 'barcode', 'brand'] as const}
-          sortable
-          onRowClick={handleViewDetails}
-          emptyMessage="No hay productos registrados"
-          pageSize={pageSize}
-          showPagination
+          } : undefined}
         />
-      )}
+
+        {initialLoading ? (
+          currentViewMode === 'cards' ? <SkeletonCards count={8} /> : <SkeletonTable rows={8} cols={10} />
+        ) : currentViewMode === 'cards' ? (
+          <ProductCardView
+            products={filteredProducts}
+            formatUsd={formatUsd}
+            formatBs={formatBs}
+            canManage={canManage}
+            onView={handleViewDetails}
+            onEdit={startEdit}
+            onDelete={handleDelete}
+          />
+        ) : (
+          <ProductTable
+            products={filteredProducts}
+            formatUsd={formatUsd}
+            formatBs={formatBs}
+            canManage={canManage}
+            getCategoryName={getCategoryName}
+            onView={handleViewDetails}
+            onEdit={startEdit}
+            onDelete={handleDelete}
+            sortField={sortField}
+            sortDirection={sortDirection}
+            onSort={handleSort}
+          />
+        )}
+      </Stack>
 
       <ProductForm
         key={editingId || 'new'}

@@ -2,24 +2,21 @@ import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { api } from '@shared/lib/http/client';
 import { useAuth } from '@contexts/AuthContext';
-import { Pencil, Trash2, DollarSign, MessageCircle, Users, Plus, Download, Upload } from 'lucide-react';
 import { useToast } from '@contexts/ToastContext';
-import { PremiumLockButton } from '@shared/ui/PremiumLockButton';
-import { Modal } from '@shared/ui/Modal';
-import { LoadingDots } from '@shared/ui/LoadingDots';
-import { KpiGrid } from '@shared/ui/KpiGrid';
-import { Toolbar } from '@shared/ui/Toolbar';
-import { DataTable } from '@shared/ui/DataTable';
-import { FormField } from '@shared/ui/FormField';
-import { Input } from '@shared/ui/Input';
-import { Select } from '@shared/ui/Select';
-import { Badge } from '@shared/ui/Badge';
-import { ButtonLoader } from '@shared/ui/ButtonLoader';
-import { ImportModal } from '@shared/ui/ImportModal';
-import { exportToExcel, type ColumnMapping } from '@shared/lib/excelHelper';
-import { useTheme } from '@contexts/ThemeContext';
-import type { Customer } from '@types';
 import { useExchangeRate } from '@contexts/ExchangeRateContext';
+import { useTheme } from '@contexts/ThemeContext';
+import { Plus, Trash2, DollarSign, Pencil } from 'lucide-react';
+import { Stack } from '@shared/ui/Stack';
+import { Grid } from '@shared/ui/Grid';
+import { SkeletonTable } from '@shared/ui/Skeleton';
+import { ImportModal } from '@features/shared-ui/ImportModal';
+import { DataTable } from '@features/shared-ui/DataTable';
+import { Toolbar } from '@features/shared-ui/Toolbar';
+import { CustomerForm } from '../components/CustomerForm';
+import { PaymentModal } from '../components/PaymentModal';
+import { CustomerKpiBar } from '../components/CustomerKpiBar';
+import { exportToExcel, type ColumnMapping } from '@shared/lib/excelHelper';
+import type { Customer } from '@types';
 
 const CUSTOMER_COLUMNS: ColumnMapping[] = [
   { header: 'Nombre', key: 'name', type: 'string' },
@@ -33,30 +30,24 @@ export function CustomersPage() {
   const { showToast } = useToast();
   const { user, licenseStatus, licenseUsage } = useAuth();
   const navigate = useNavigate();
-  const { formatPrice } = useExchangeRate();
+  const { formatUsd } = useExchangeRate();
   const { config } = useTheme();
 
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [loading, setLoading] = useState(true);
-  const [showModal, setShowModal] = useState(false);
-  const [showPayModal, setShowPayModal] = useState(false);
-  const [payingCustomer, setPayingCustomer] = useState<Customer | null>(null);
-  const [payAmount, setPayAmount] = useState(0);
+  const [search, setSearch] = useState('');
+  const [showForm, setShowForm] = useState(false);
   const [editingCustomer, setEditingCustomer] = useState<Customer | null>(null);
-  const [form, setForm] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    address: '',
-    taxId: '',
-    documentType: 'V',
-    fiscalAddress: '',
-    creditLimit: 0,
+  const [formData, setFormData] = useState({
+    name: '', email: '', phone: '', address: '',
+    taxId: '', documentType: 'V', fiscalAddress: '', creditLimit: 0,
   });
-  const [error, setError] = useState('');
   const [saving, setSaving] = useState(false);
   const [showImport, setShowImport] = useState(false);
-  const [search, setSearch] = useState('');
+  const [showPayment, setShowPayment] = useState(false);
+  const [payingCustomer, setPayingCustomer] = useState<Customer | null>(null);
+  const [payAmount, setPayAmount] = useState('');
+  const [error, setError] = useState('');
 
   const isLimitExceeded =
     !editingCustomer &&
@@ -125,23 +116,17 @@ export function CustomersPage() {
 
   const openCreate = () => {
     setEditingCustomer(null);
-    setForm({
-      name: '',
-      email: '',
-      phone: '',
-      address: '',
-      taxId: '',
-      documentType: 'V',
-      fiscalAddress: '',
-      creditLimit: 0,
+    setFormData({
+      name: '', email: '', phone: '', address: '',
+      taxId: '', documentType: 'V', fiscalAddress: '', creditLimit: 0,
     });
     setError('');
-    setShowModal(true);
+    setShowForm(true);
   };
 
   const openEdit = (c: Customer) => {
     setEditingCustomer(c);
-    setForm({
+    setFormData({
       name: c.name,
       email: c.email || '',
       phone: c.phone || '',
@@ -152,20 +137,19 @@ export function CustomersPage() {
       creditLimit: c.creditLimit,
     });
     setError('');
-    setShowModal(true);
+    setShowForm(true);
   };
 
-  const handleSave = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSave = async (data: any) => {
     setError('');
     setSaving(true);
 
     const emailPayload =
-      form.email.trim() && !form.email.includes('@')
-        ? `${form.email.trim()}@gmail.com`
-        : form.email.trim();
+      data.email.trim() && !data.email.includes('@')
+        ? `${data.email.trim()}@gmail.com`
+        : data.email.trim();
 
-    const cleanPhone = form.phone.replace(/[\s\-()]/g, '');
+    const cleanPhone = data.phone.replace(/[\s\-()]/g, '');
     const phonePayload =
       cleanPhone === '+58'
         ? ''
@@ -174,7 +158,7 @@ export function CustomersPage() {
           : cleanPhone;
 
     const payload = {
-      ...form,
+      ...data,
       email: emailPayload,
       phone: phonePayload,
     };
@@ -185,17 +169,11 @@ export function CustomersPage() {
       } else {
         await api.createCustomer(payload);
       }
-      setShowModal(false);
+      setShowForm(false);
       setEditingCustomer(null);
-      setForm({
-        name: '',
-        email: '',
-        phone: '',
-        address: '',
-        taxId: '',
-        documentType: 'V',
-        fiscalAddress: '',
-        creditLimit: 0,
+      setFormData({
+        name: '', email: '', phone: '', address: '',
+        taxId: '', documentType: 'V', fiscalAddress: '', creditLimit: 0,
       });
       await loadCustomers();
       showToast(editingCustomer ? 'Cliente actualizado' : 'Cliente creado', 'success');
@@ -206,14 +184,14 @@ export function CustomersPage() {
     }
   };
 
-  const handlePay = async () => {
-    if (!payingCustomer || payAmount <= 0) return;
+  const handlePay = async (amount: number, method: 'cash' | 'card' | 'transfer') => {
+    if (!payingCustomer || amount <= 0) return;
     try {
-      await api.addCustomerPayment(payingCustomer.id, payAmount);
+      await api.addCustomerPayment(payingCustomer.id, amount);
       showToast('Abono registrado', 'success');
-      setShowPayModal(false);
+      setShowPayment(false);
       setPayingCustomer(null);
-      setPayAmount(0);
+      setPayAmount('');
       await loadCustomers();
     } catch (err: any) {
       showToast(err.message, 'error');
@@ -222,88 +200,9 @@ export function CustomersPage() {
 
   const openPay = (c: Customer) => {
     setPayingCustomer(c);
-    setPayAmount(0);
-    setShowPayModal(true);
+    setPayAmount('');
+    setShowPayment(true);
   };
-
-  const customerColumns = useMemo(
-    () => [
-      {
-        key: 'name',
-        header: 'Cliente',
-        render: (c: Customer) => (
-          <div className="flex items-center gap-3">
-            <Users size={18} className="text-text-muted" />
-            <span className="font-semibold">{c.name}</span>
-          </div>
-        ),
-      },
-      { key: 'email', header: 'Email', render: (c: Customer) => c.email || '—' },
-      { key: 'phone', header: 'Teléfono', render: (c: Customer) => c.phone || '—' },
-      { key: 'address', header: 'Dirección', render: (c: Customer) => c.address || '—' },
-      {
-        key: 'balance',
-        header: 'Saldo',
-        align: 'right' as const,
-        render: (c: Customer) => <span className={c.balance >= 0 ? 'text-success' : 'text-danger'}>{formatPrice(c.balance)}</span>,
-      },
-      {
-        key: 'creditLimit',
-        header: 'Límite Crédito',
-        align: 'right' as const,
-        render: (c: Customer) => {
-          const pct = c.creditLimit > 0 ? (c.balance / c.creditLimit) * 100 : 0;
-          const color = pct >= 100 ? 'danger' : pct >= 80 ? 'warning' : 'success';
-          return (
-            <div className="flex items-center gap-2">
-              <span className={`font-mono ${pct >= 100 ? 'text-danger' : pct >= 80 ? 'text-warning' : 'text-success'}`}>
-                {formatPrice(c.creditLimit)}
-              </span>
-              {c.creditLimit > 0 && (
-                <div className="w-24 h-2 bg-surface-muted rounded-full overflow-hidden">
-                  <div
-                    className={`h-full rounded-full transition-all ${pct >= 100 ? 'bg-danger' : pct >= 80 ? 'bg-warning' : 'bg-success'}`}
-                    style={{ width: `${Math.min(pct, 100)}%` }}
-                  />
-                </div>
-              )}
-            </div>
-          );
-        },
-      },
-      {
-        key: 'actions',
-        header: 'Acciones',
-        align: 'center' as const,
-        render: (c: Customer) => (
-          <div className="flex items-center justify-center gap-1.5">
-            <button
-              onClick={() => openEdit(c)}
-              className="p-1.5 rounded-lg hover:bg-bg-hover transition-colors"
-              title="Editar"
-            >
-              <Pencil size={14} />
-            </button>
-            <button
-              onClick={() => openPay(c)}
-              className="p-1.5 rounded-lg hover:bg-success-bg text-success transition-colors"
-              title="Abonar"
-            >
-              <DollarSign size={14} />
-            </button>
-            <button
-              onClick={() => handleDelete(c.id, c.name)}
-              className="p-1.5 rounded-lg hover:bg-danger-bg text-danger transition-colors"
-              title="Eliminar"
-            >
-              <Trash2 size={14} />
-            </button>
-          </div>
-        ),
-      },
-    ],
-    []
-  );
 
   const handleDelete = async (id: string, name: string) => {
     if (!confirm(`¿Eliminar cliente "${name}"?`)) return;
@@ -327,170 +226,143 @@ export function CustomersPage() {
     [customers, search]
   );
 
+  const canManage = user?.role !== 'cajero';
+  const showExportImport = licenseStatus?.tier !== 'free';
+
   return (
-    <div className="space-y-6">
-      <Toolbar
-        search={{ value: search, onChange: setSearch, placeholder: 'Buscar clientes, email, teléfono...' }}
-        onExport={handleExportCustomers}
-        onImport={() => setShowImport(true)}
-        addBtn={isLimitExceeded ? undefined : { label: 'Nuevo Cliente', onClick: openCreate, icon: <Plus size={18} /> }}
-      />
+    <>
+      <CustomerKpiBar customers={customers} />
 
-      <DataTable
-        data={filteredCustomers}
-        columns={customerColumns}
-        keyExtractor={(c) => c.id}
-        searchable
-        searchPlaceholder="Buscar clientes, email, teléfono..."
-        searchKeys={['name', 'email', 'phone']}
-        sortable
-        emptyMessage="No hay clientes registrados"
-        loading={loading}
-      />
-
-      <Modal open={showModal} onClose={() => setShowModal(false)} title={editingCustomer ? 'Editar Cliente' : 'Nuevo Cliente'} wide>
-        <form onSubmit={handleSave}>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <FormField label="Nombre *" required>
-              <Input
-                value={form.name}
-                onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))}
-                required
-              />
-            </FormField>
-
-            <FormField label="Email">
-              <Input
-                type="email"
-                value={form.email}
-                onChange={(e) => setForm((p) => ({ ...p, email: e.target.value }))}
-                placeholder="email@ejemplo.com"
-              />
-            </FormField>
-
-            <FormField label="Teléfono">
-              <Input
-                value={form.phone}
-                onChange={(e) => setForm((p) => ({ ...p, phone: e.target.value }))}
-                placeholder="+58 4XX XXX XXXX"
-              />
-            </FormField>
-
-            <FormField label="Dirección" className="md:col-span-2">
-              <Input
-                value={form.address}
-                onChange={(e) => setForm((p) => ({ ...p, address: e.target.value }))}
-                placeholder="Dirección de entrega"
-              />
-            </FormField>
-
-            <FormField label="RIF / Cédula" className="md:col-span-2">
-              <div className="flex gap-2">
-                <Select
-                  value={form.documentType}
-                  onChange={(v) => setForm((p) => ({ ...p, documentType: v }))}
-                  options={[
-                    { value: 'V', label: 'V' },
-                    { value: 'J', label: 'J' },
-                    { value: 'E', label: 'E' },
-                    { value: 'G', label: 'G' },
-                  ]}
-                  className="w-20"
-                />
-                <Input
-                  value={form.taxId}
-                  onChange={(e) => setForm((p) => ({ ...p, taxId: e.target.value }))}
-                  placeholder="12345678-9"
-                  className="flex-1"
-                />
-              </div>
-            </FormField>
-
-            <FormField label="Dirección Fiscal" className="md:col-span-3">
-              <Input
-                value={form.fiscalAddress}
-                onChange={(e) => setForm((p) => ({ ...p, fiscalAddress: e.target.value }))}
-                placeholder="Dirección fiscal completa"
-              />
-            </FormField>
-
-            <FormField label="Límite de Crédito ($)">
-              <Input
-                type="number"
-                step="0.01"
-                value={form.creditLimit || ''}
-                onChange={(e) => setForm((p) => ({ ...p, creditLimit: Number(e.target.value) }))}
-                placeholder="0.00"
-              />
-            </FormField>
-          </div>
-
-          {error && <div className="mt-4 p-3 bg-danger/10 text-danger rounded-lg text-sm">{error}</div>}
-
-          <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-border">
-            <button type="button" onClick={() => setShowModal(false)} className="px-4 py-2 border border-border rounded-lg text-text hover:bg-bg-hover transition-colors">
-              Cancelar
-            </button>
-            {isLimitExceeded ? (
-              <PremiumLockButton
-                requiredPlan={nextRequiredPlan as any}
-                width="140px"
-                height="38px"
-                label="Límite Superado"
-                sublabel="Mantén pulsado para ampliar"
-              />
-            ) : (
-              <button type="submit" className="px-4 py-2 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors disabled:opacity-50" disabled={saving}>
-                {saving ? <ButtonLoader /> : 'Guardar'}
-              </button>
-            )}
-          </div>
-        </form>
-      </Modal>
-
-      {showPayModal && payingCustomer && (
-        <Modal
-          open={showPayModal}
-          onClose={() => {
-            setShowPayModal(false);
-            setPayingCustomer(null);
+      <Stack gap="lg" className="wFull">
+        <Toolbar
+          search={{ value: search, onChange: setSearch, placeholder: 'Buscar clientes, email, teléfono...' }}
+          onExport={showExportImport ? handleExportCustomers : undefined}
+          onImport={showExportImport ? () => setShowImport(true) : undefined}
+          addBtn={isLimitExceeded ? undefined : {
+            label: 'Nuevo Cliente',
+            onClick: openCreate,
+            icon: <Plus size={18} />,
+            show: canManage,
           }}
-          title={`Abonar a ${payingCustomer.name}`}
-        >
-          <div className="space-y-4">
-            <div className="flex flex-col gap-2 p-4 bg-bg-hover rounded-lg">
-              <div className="flex justify-between">
-                <span>Saldo actual</span>
-                <span className="font-bold">{formatPrice(payingCustomer.balance)}</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Límite de crédito</span>
-                <span>{formatPrice(payingCustomer.creditLimit)}</span>
-              </div>
-            </div>
-            <FormField label="Monto a abonar">
-              <Input
-                type="number"
-                min="0"
-                step="0.01"
-                max={payingCustomer.balance}
-                value={payAmount || ''}
-                onChange={(e) => setPayAmount(parseFloat(e.target.value) || 0)}
-                autoFocus
-                placeholder="Monto a abonar"
-              />
-            </FormField>
-            <div className="flex justify-end gap-2 pt-4 border-t border-border">
-              <button onClick={() => { setShowPayModal(false); setPayingCustomer(null); }} className="px-4 py-2 border border-border rounded-lg text-text hover:bg-bg-hover transition-colors">
-                Cancelar
-              </button>
-              <button className="px-4 py-2 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors disabled:opacity-50" disabled={saving || payAmount <= 0} onClick={handlePay}>
-                {saving ? <ButtonLoader /> : 'Registrar Abono'}
-              </button>
-            </div>
-          </div>
-        </Modal>
-      )}
+        />
+
+        {loading ? (
+          <SkeletonTable rows={8} cols={6} />
+        ) : (
+          <DataTable
+            data={filteredCustomers}
+            columns={[
+              {
+                key: 'name',
+                header: 'Cliente',
+                render: (c: Customer) => (
+                  <div className="flex items-center gap-3">
+                    <span className="font-semibold">{c.name}</span>
+                  </div>
+                ),
+              },
+              { key: 'email', header: 'Email', render: (c: Customer) => c.email || '—' },
+              { key: 'phone', header: 'Teléfono', render: (c: Customer) => c.phone || '—' },
+              { key: 'address', header: 'Dirección', render: (c: Customer) => c.address || '—' },
+              {
+                key: 'balance',
+                header: 'Saldo',
+                align: 'right' as const,
+                render: (c: Customer) => (
+                  <span className={c.balance >= 0 ? 'text-success' : 'text-danger'}>
+                    {formatUsd(c.balance)}
+                  </span>
+                ),
+              },
+              {
+                key: 'creditLimit',
+                header: 'Límite Crédito',
+                align: 'right' as const,
+                render: (c: Customer) => {
+                  const pct = c.creditLimit > 0 ? (c.balance / c.creditLimit) * 100 : 0;
+                  const color = pct >= 100 ? 'danger' : pct >= 80 ? 'warning' : 'success';
+                  return (
+                    <div className="flex items-center gap-2">
+                      <span className={`font-mono ${pct >= 100 ? 'text-danger' : pct >= 80 ? 'text-warning' : 'text-success'}`}>
+                        {formatUsd(c.creditLimit)}
+                      </span>
+                      {c.creditLimit > 0 && (
+                        <div className="w-24 h-2 bg-surface-muted rounded-full overflow-hidden">
+                          <div
+                            className={`h-full rounded-full transition-all ${
+                              pct >= 100 ? 'bg-danger' : pct >= 80 ? 'bg-warning' : 'bg-success'
+                            }`}
+                            style={{ width: `${Math.min(pct, 100)}%` }}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  );
+                },
+              },
+              {
+                key: 'actions',
+                header: 'Acciones',
+                align: 'center' as const,
+                render: (c: Customer) => (
+                  <div className="flex items-center justify-center gap-1.5">
+                    <button
+                      onClick={() => openEdit(c)}
+                      className="p-1.5 rounded-lg hover:bg-bg-hover transition-colors"
+                      title="Editar"
+                    >
+                      <Pencil size={14} />
+                    </button>
+                    <button
+                      onClick={() => openPay(c)}
+                      className="p-1.5 rounded-lg hover:bg-success-bg text-success transition-colors"
+                      title="Abonar"
+                    >
+                      <DollarSign size={14} />
+                    </button>
+                    <button
+                      onClick={() => handleDelete(c.id, c.name)}
+                      className="p-1.5 rounded-lg hover:bg-danger-bg text-danger transition-colors"
+                      title="Eliminar"
+                    >
+                      <Trash2 size={14} />
+                    </button>
+                  </div>
+                ),
+              },
+            ]}
+            data={filteredCustomers}
+            keyExtractor={(c) => c.id}
+            searchable
+            searchPlaceholder="Buscar clientes, email, teléfono..."
+            searchKeys={['name', 'email', 'phone'] as const}
+            sortable
+            emptyMessage="No hay clientes registrados"
+            loading={loading}
+          />
+        )}
+
+      </Stack>
+
+      <CustomerForm
+        open={showForm}
+        onClose={() => { setShowForm(false); setEditingCustomer(null); }}
+        editingCustomer={editingCustomer}
+        initialData={formData}
+        onSubmit={handleSave}
+        saving={saving}
+        error={error}
+        isLimitExceeded={isLimitExceeded}
+        nextRequiredPlan={nextRequiredPlan}
+      />
+
+      <PaymentModal
+        open={showPayment}
+        onClose={() => { setShowPayment(false); setPayingCustomer(null); setPayAmount(''); }}
+        customer={payingCustomer}
+        onPay={handlePay}
+        loading={saving}
+      />
 
       <ImportModal
         open={showImport}
@@ -500,6 +372,6 @@ export function CustomersPage() {
         templateFilename="plantilla_clientes"
         onImport={handleImportCustomers}
       />
-    </div>
+    </>
   );
 }

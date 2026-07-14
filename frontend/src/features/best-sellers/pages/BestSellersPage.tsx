@@ -16,11 +16,11 @@ import {
 } from 'lucide-react';
 import { useTheme } from '@contexts/ThemeContext';
 import { SkeletonTablePage } from '@shared/ui/Skeleton';
-import { KpiGrid } from '@shared/ui/KpiGrid';
-import { Toolbar } from '@shared/ui/Toolbar';
+import { KpiGrid } from '@features/shared-ui/KpiGrid';
+import { Toolbar } from '@features/shared-ui/Toolbar';
 import { exportToExcel } from '@shared/lib/excelHelper';
 import styles from './BestSellersPage.module.css';
-import tableStyles from '@shared/ui/TableList.module.css';
+import tableStyles from '@shared/ui/TableList/TableList.module.css';
 function formatDate(d: string | null) {
   if (!d) return '\u2014';
   return new Date(d).toLocaleDateString('es-MX', {

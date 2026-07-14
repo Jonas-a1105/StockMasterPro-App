@@ -2,12 +2,18 @@ import { useDashboard } from '../hooks/useDashboard';
 import { useExchangeRate } from '@contexts/ExchangeRateContext';
 import { useTheme } from '@contexts/ThemeContext';
 import { SkeletonKPI, SkeletonChart } from '@shared/ui/Skeleton';
-import { KpiGrid } from '@shared/ui/KpiGrid';
+import { KpiGrid } from '@features/shared-ui/KpiGrid';
 import { SalesTrendChart } from '../components/SalesTrendChart';
 import { TopSellersDonut } from '../components/TopSellersDonut';
 import { RecentActivity } from '../components/RecentActivity';
 import { CriticalStockList } from '../components/CriticalStockList';
 import { EventsCalendar } from '../components/EventsCalendar';
+import walletData from '@assets/lottie/wallet.json';
+import creditCardData from '@assets/lottie/credit-card.json';
+import shoppingBagData from '@assets/lottie/shopping-bag.json';
+import analyticsData from '@assets/lottie/analytics.json';
+import warningData from '@assets/lottie/warning.json';
+import trendingUpData from '@assets/lottie/trending-up.json';
 import styles from './DashboardPage.module.css';
 
 export function DashboardPage() {
@@ -46,37 +52,37 @@ export function DashboardPage() {
     {
       value: formatPrice(summary.total),
       label: 'Ventas hoy',
-      lottie: 'wallet' as const,
+      lottie: walletData,
       color: 'var(--color-primary)',
     },
     {
       value: summary.count,
       label: 'Transacciones',
-      lottie: 'card' as const,
+      lottie: creditCardData,
       color: 'var(--color-purple)',
     },
     {
       value: products.length,
       label: 'Productos',
-      lottie: 'bag' as const,
+      lottie: shoppingBagData,
       color: 'var(--color-success)',
     },
     {
       value: totalStock,
       label: 'Stock total',
-      lottie: 'analytics' as const,
+      lottie: analyticsData,
       color: 'var(--color-teal)',
     },
     {
       value: lowStockProducts.length,
       label: 'Stock bajo',
-      lottie: 'warning' as const,
+      lottie: warningData,
       color: 'var(--color-danger)',
     },
     {
       value: formatPrice(netProfit),
       label: 'Utilidad neta',
-      lottie: 'trend' as const,
+      lottie: trendingUpData,
       color: 'var(--color-primary)',
     },
   ];

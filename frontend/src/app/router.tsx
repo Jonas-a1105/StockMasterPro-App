@@ -3,8 +3,8 @@ import { lazy, Suspense, useEffect, useState, useCallback, type ReactNode } from
 import { useAuth } from '@contexts/AuthContext';
 import { useTheme } from '@contexts/ThemeContext';
 import { DashboardLayout } from '@features/dashboard/components/DashboardLayout';
-import { LicenseBlock } from '@shared/ui/LicenseBlock';
-import { PremiumActivationAnimation } from '@shared/ui/PremiumActivationAnimation';
+import { LicenseBlock } from '@features/billing/components/LicenseBlock';
+import { PremiumActivationAnimation } from '@features/billing/components/PremiumActivationAnimation';
 import { LoadingDots } from '@shared/ui/LoadingDots';
 import styles from './router.module.css';
 import {
@@ -17,8 +17,8 @@ import {
   SkeletonCards,
 } from '@shared/ui/Skeleton';
 import { startOfflineSync } from '@shared/lib/sync/sync';
-import { SplashScreen } from '@shared/ui/SplashScreen';
-import { PremiumLockScreen } from '@shared/ui/PremiumLockScreen';
+import { SplashScreen } from '@features/shared-ui';
+import { PremiumLockScreen } from '@features/billing/components/PremiumLockScreen';
 import { ErrorBoundary } from '@shared/ui/ErrorBoundary';
 import { NotFoundPage } from '@pages/NotFoundPage';
 

@@ -1,5 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
-import { Button, Card, CardHeader, CardTitle, CardBody, CardFooter, Badge, Input, Select, Text, Table, TableContainer, ProductCard, DataTable, EmptyState, Toolbar, FormField } from '@shared/ui';
+import { Button, Card, CardHeader, CardTitle, CardBody, CardFooter, Badge, Input, Select, Text, EmptyState, FormField, Toolbar } from '@shared/ui';
+import { DataTable } from '@features/shared-ui';
+import { InventoryProductCard } from '@features/inventory/components/InventoryProductCard';
 import { ThemeProvider } from '@contexts/ThemeContext';
 import styles from './UIDevCatalog.module.css';
 
@@ -72,12 +74,12 @@ const COMPONENTS = [
     ],
   },
   {
-    name: 'Table',
+    name: 'Table (simple)',
     variants: [
-      { label: 'Basic', props: { data: [{ id: 1, name: 'Producto A', price: 100, stock: 10 }, { id: 2, name: 'Producto B', price: 200, stock: 5 }, { id: 3, name: 'Producto C', price: 50, stock: 0 }], columns: [{ key: 'name', header: 'Nombre' }, { key: 'price', header: 'Precio', align: 'right' }, { key: 'stock', header: 'Stock', align: 'center' }], keyExtractor: (r) => r.id } },
-      { label: 'Striped', props: { data: [{ id: 1, name: 'A', price: 100 }, { id: 2, name: 'B', price: 200 }, { id: 3, name: 'C', price: 300 }], columns: [{ key: 'name', header: 'Nombre' }, { key: 'price', header: 'Precio' }], keyExtractor: (r) => r.id, striped: true } },
-      { label: 'Con Acciones', props: { data: [{ id: 1, name: 'Item 1' }, { id: 2, name: 'Item 2' }], columns: [{ key: 'name', header: 'Nombre' }, { key: 'actions', header: 'Acciones', render: (r) => <span>Editar / Eliminar</span> }], keyExtractor: (r) => r.id } },
-      { label: 'Empty', props: { data: [], columns: [{ key: 'name', header: 'Nombre' }], keyExtractor: (r) => r.id, emptyMessage: 'No hay datos' } },
+      { label: 'Basic', props: { simple: true, data: [{ id: 1, name: 'Producto A', price: 100, stock: 10 }, { id: 2, name: 'Producto B', price: 200, stock: 5 }, { id: 3, name: 'Producto C', price: 50, stock: 0 }], columns: [{ key: 'name', header: 'Nombre' }, { key: 'price', header: 'Precio', align: 'right' }, { key: 'stock', header: 'Stock', align: 'center' }], keyExtractor: (r) => r.id } },
+      { label: 'Striped', props: { simple: true, data: [{ id: 1, name: 'A', price: 100 }, { id: 2, name: 'B', price: 200 }, { id: 3, name: 'C', price: 300 }], columns: [{ key: 'name', header: 'Nombre' }, { key: 'price', header: 'Precio' }], keyExtractor: (r) => r.id, striped: true } },
+      { label: 'Con Acciones', props: { simple: true, data: [{ id: 1, name: 'Item 1' }, { id: 2, name: 'Item 2' }], columns: [{ key: 'name', header: 'Nombre' }, { key: 'actions', header: 'Acciones', render: (r) => <span>Editar / Eliminar</span> }], keyExtractor: (r) => r.id } },
+      { label: 'Empty', props: { simple: true, data: [], columns: [{ key: 'name', header: 'Nombre' }], keyExtractor: (r) => r.id, emptyMessage: 'No hay datos' } },
     ],
   },
   {
@@ -105,7 +107,7 @@ const COMPONENTS = [
     ],
   },
   {
-    name: 'ProductCard',
+    name: 'InventoryProductCard',
     variants: [
       { label: 'Con Imagen', props: { product: { id: 1, name: 'Producto Demo', price: 100, cost: 60, stock: 15, minStock: 5, imageUrl: 'https://picsum.photos/seed/product/200' }, onView: () => {}, onEdit: () => {}, onDelete: () => {}, canEdit: true } },
       { label: 'Sin Imagen', props: { product: { id: 2, name: 'Sin Imagen', price: 50, cost: 30, stock: 0, minStock: 5 }, onView: () => {}, onEdit: () => {}, onDelete: () => {}, canEdit: true } },
@@ -190,11 +192,11 @@ export function UIDevCatalog() {
                               Text: () => import('@shared/ui/Text').then(m => m.Text),
                               Input: () => import('@shared/ui/Input').then(m => m.Input),
                               Select: () => import('@shared/ui/Select').then(m => m.Select),
-                              Table: () => import('@shared/ui/Table').then(m => m.Table),
+                              Table: () => import('@shared/ui/DataTable').then(m => m.DataTable),
                               EmptyState: () => import('@shared/ui/EmptyState/EmptyState').then(m => m.EmptyState),
                               Toolbar: () => import('@shared/ui/Toolbar').then(m => m.Toolbar),
                               DataTable: () => import('@shared/ui/DataTable').then(m => m.DataTable),
-                              ProductCard: () => import('@shared/ui/ProductCard').then(m => m.ProductCard),
+                              InventoryProductCard: () => import('@features/inventory/components/InventoryProductCard').then(m => m.InventoryProductCard),
                             };
                             const Loader = ComponentMap[comp.name];
                             if (Loader) {

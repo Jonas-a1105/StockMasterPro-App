@@ -1,5 +1,5 @@
 import type { Product, CartItem } from '@types';
-import { ProductCard } from '@shared/ui/ProductCard';
+import { PosProductCard } from '@features/pos/components/PosProductCard';
 
 export function ProductGrid({
   products,
@@ -15,9 +15,8 @@ export function ProductGrid({
       {products.map((product) => {
         const cartItem = cartItems.find((item) => item.product.id === product.id);
         return (
-          <ProductCard
+          <PosProductCard
             key={product.id}
-            variant="pos"
             product={product}
             onAdd={onAdd}
             cartQuantity={cartItem?.quantity || 0}

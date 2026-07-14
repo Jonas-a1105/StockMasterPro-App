@@ -41,9 +41,7 @@
   --cyan-500: #06b6d4;
   --yellow-500: #eab308;
 
-  /* ─── Additional Missing Colors ─── */
-  --color-cyan: var(--cyan-500);
-  --color-yellow-500: var(--yellow-500);
+
 
   /* ─── Spacing Scale ─── */
   --space-0-5: 2px;
@@ -70,13 +68,7 @@
   --radius-2xl: 24px;
   --radius-full: 9999px;
 
-  /* Aliases for components using the alternative border-radius syntax */
-  --border-radius-sm: var(--radius-sm);
-  --border-radius-md: var(--radius-md);
-  --border-radius-lg: var(--radius-lg);
-  --border-radius-xl: var(--radius-xl);
-  --border-radius-2xl: var(--radius-2xl);
-  --border-radius-full: var(--radius-full);
+
 
 
   /* ─── Typography Scale (Segoe UI stack & Minor Third ratio ~1.20) ─── */
@@ -139,7 +131,7 @@
 
   /* ─── Focus Ring ─── */
   --focus-ring-width: 3px;
-  --focus-ring-color: var(--orange-500);
+  --focus-ring-color: #ea580c;
   --focus-ring-opacity: 0.15;
 
   /* ─── Spinner / Lottie ─── */
@@ -152,14 +144,7 @@
   --duration-base: 150ms;
   --duration-slow: 250ms;
 
-  /* ─── Neutral Scale (New naming) ─── */
-  --color-neutral-50:  var(--gray-50);
-  --color-neutral-100: var(--gray-100);
-  --color-neutral-200: var(--gray-200);
-  --color-neutral-700: var(--gray-700);
-  --color-neutral-800: var(--gray-800);
   --color-neutral-850: #172033;
-  --color-neutral-900: var(--gray-900);
 
   /* ─── Dark Scale ─── */
   --color-dark-100: #f0f0f0;
@@ -173,10 +158,5 @@
   /* ─── OLED ─── */
   --color-oled-black: #000000;
 
-  /* ─── Brand Colors ─── */
-  --color-brand-orange-red: var(--orange-500);
-  --color-brand-orange:    var(--orange-400);
-  --color-brand-green:     var(--green-500);
-  --color-brand-teal:      var(--teal-500);
-  --color-brand-amber:     var(--amber-500);
+
 }
