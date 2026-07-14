@@ -213,10 +213,11 @@ export function ProductForm({
                 />
                 <Button
                   type="button"
-                  variant="outline"
+                  variant="primary"
                   onClick={() => fileInputRef.current?.click()}
                   disabled={uploading}
                   leftIcon={<Upload size={14} />}
+                  width="fit-content"
                 >
                   {uploading ? 'Subiendo...' : form.imageUrl ? 'Cambiar imagen' : 'Subir imagen'}
                 </Button>
