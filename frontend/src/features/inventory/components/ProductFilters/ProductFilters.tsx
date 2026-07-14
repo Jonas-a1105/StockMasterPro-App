@@ -57,19 +57,20 @@ export function ProductFilters({
       {/* Grupo Derecha: Toggle Vista, Import/Export y Botón Añadir */}
       <div className={`${styles.rightGroup} flex itemsCenter gap3`}>
         {/* Selector de Modo de Vista (List / Grid) */}
-        <div className="flex border borderBorder roundedMd p1 bgSurface">
+        {/* Selector de Modo de Vista (List / Grid) */}
+        <div className={styles.viewModeContainer}>
           <button
             onClick={() => onViewModeChange('table')}
-            className={`p2 roundedSm transitionAll ${
-              currentViewMode === 'table' ? 'bgPrimary textWhite' : 'textMuted hoverBgHover'
+            className={`${styles.viewModeBtn} ${
+              currentViewMode === 'table' ? styles.viewModeBtnActive : ''
             }`}
           >
             <List size={16} />
           </button>
           <button
             onClick={() => onViewModeChange('cards')}
-            className={`p2 roundedSm transitionAll ${
-              currentViewMode === 'cards' ? 'bgPrimary textWhite' : 'textMuted hoverBgHover'
+            className={`${styles.viewModeBtn} ${
+              currentViewMode === 'cards' ? styles.viewModeBtnActive : ''
             }`}
           >
             <Grid size={16} />

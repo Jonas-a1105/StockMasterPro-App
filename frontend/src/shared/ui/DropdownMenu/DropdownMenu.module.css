@@ -101,26 +101,27 @@
   justify-content: space-between;
   gap: var(--space-2);
   min-width: 160px;
-  padding: var(--space-2) var(--space-3);
-  background-color: var(--color-bg);
-  border: var(--border-width) solid var(--color-border);
-  border-radius: var(--card-radius);
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-semibold);
+  height: 40px;
+  box-sizing: border-box;
+  padding: 0 var(--space-3);
+  background-color: var(--color-bg-input);
+  border: var(--border-width-fixed) var(--border-style) var(--color-border-input);
+  border-radius: var(--input-radius);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-normal);
   color: var(--color-text);
   cursor: pointer;
-  transition: border-color 0.15s ease, color 0.15s ease;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
   white-space: nowrap;
 }
 
 .selectTrigger:hover {
   border-color: var(--color-primary);
-  color: var(--color-primary);
 }
 
 .selectTrigger.open {
   border-color: var(--color-primary);
-  color: var(--color-primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--focus-ring-color) var(--focus-ring-opacity), transparent);
 }
 
 .selectValue {

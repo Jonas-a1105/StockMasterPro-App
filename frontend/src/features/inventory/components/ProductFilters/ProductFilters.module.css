@@ -14,7 +14,7 @@
   align-items: center;
   gap: 12px;
   flex: 1;
-  max-width: 32rem; /* matches maxWLg */
+  max-width: 42rem;
 }
 
 .rightGroup {
@@ -58,6 +58,47 @@
 }
 
 .warehouseSelect {
-  width: 16rem;
+  width: 12rem;
+}
+
+.viewModeContainer {
+  display: flex;
+  align-items: center;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 4px;
+  background-color: var(--color-surface);
+  height: 40px;
+  box-sizing: border-box;
+}
+
+.viewModeBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: none;
+  padding: 6px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  color: var(--color-text-muted);
+  transition: all var(--transition-base);
+  height: 30px;
+  width: 30px;
+  box-sizing: border-box;
+}
+
+.viewModeBtnActive {
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+.viewModeBtnActive:hover {
+  color: var(--color-on-primary);
+}
+
+.viewModeBtn:hover:not(.viewModeBtnActive) {
+  background-color: var(--color-bg-hover);
+  color: var(--color-text);
 }
 
