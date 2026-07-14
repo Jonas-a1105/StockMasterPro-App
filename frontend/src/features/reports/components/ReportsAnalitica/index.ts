@@ -1,0 +1,1 @@
+export { ReportsAnalitica } from './ReportsAnalitica';

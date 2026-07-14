@@ -23,8 +23,8 @@ import {
   renderTooltip,
   formatUsd as formatUSD,
   demoFinancialCore,
-} from './pages/ReportsPage';
-import styles from './pages/ReportsPage.module.css';
+} from '../../pages/ReportsPage';
+import styles from '../../pages/ReportsPage.module.css';
 import tableStyles from '@shared/ui/TableList/TableList.module.css';
 
 interface Props {

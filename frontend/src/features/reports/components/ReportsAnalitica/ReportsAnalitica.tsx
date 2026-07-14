@@ -30,8 +30,8 @@ import {
   formatUSD,
   demoHeatmap,
   demoTaxLiability,
-} from './pages/ReportsPage';
-import styles from './pages/ReportsPage.module.css';
+} from '../../pages/ReportsPage';
+import styles from '../../pages/ReportsPage.module.css';
 
 interface Props {
   sales: any[];

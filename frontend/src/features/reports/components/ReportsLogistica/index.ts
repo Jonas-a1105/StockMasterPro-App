@@ -1,0 +1,1 @@
+export { ReportsLogistica } from './ReportsLogistica';

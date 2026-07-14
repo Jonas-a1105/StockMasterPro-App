@@ -1,0 +1,1 @@
+export { ReportsFinanzas } from './ReportsFinanzas';

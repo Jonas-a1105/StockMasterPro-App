@@ -16,14 +16,14 @@ import {
   Shuffle,
 } from 'lucide-react';
 import { Skeleton } from '@shared/ui/Skeleton';
-import { SocialFeed } from './components/SocialFeed';
-import { SocialCatalogs } from './components/SocialCatalogs';
-import { SocialNotifications } from './components/SocialNotifications';
-import { SocialMessages } from './components/SocialMessages';
-import { SocialProfile } from './components/SocialProfile';
+import { SocialFeed } from '../../components/SocialFeed';
+import { SocialCatalogs } from '../../components/SocialCatalogs';
+import { SocialNotifications } from '../../components/SocialNotifications';
+import { SocialMessages } from '../../components/SocialMessages';
+import { SocialProfile } from '../../components/SocialProfile';
 import { useAuth } from '@contexts/AuthContext';
 import { api } from '@shared/lib/http/client';
-import styles from './Social.module.css';
+import styles from './SocialPage.module.css';
 
 type SocialTab =
   'feed' | 'explore' | 'catalogs' | 'notifications' | 'messages' | 'profile' | 'create';

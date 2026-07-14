@@ -108,10 +108,10 @@ const SuperAdminDashboard = lazy(() =>
   }))
 );
 const LandingPage = lazy(() =>
-  import('@features/landing/LandingPage').then((m) => ({ default: m.LandingPage }))
+  import('@features/landing').then((m) => ({ default: m.LandingPage }))
 );
 const SocialPage = lazy(() =>
-  import('@features/social/SocialPage').then((m) => ({ default: m.SocialPage }))
+  import('@features/social').then((m) => ({ default: m.SocialPage }))
 );
 const NotificationsPage = lazy(() =>
   import('@features/notifications/pages/NotificationsPage').then((m) => ({

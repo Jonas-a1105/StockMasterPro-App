@@ -1,0 +1,1 @@
+export { ReportsResumen } from './ReportsResumen';
